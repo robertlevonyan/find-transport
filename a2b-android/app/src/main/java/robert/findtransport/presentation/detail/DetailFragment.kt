@@ -1,0 +1,128 @@
+package robert.findtransport.presentation.detail
+
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.setFragmentResult
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import robert.findtransport.R
+import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.model.enums.TransportType
+import robert.findtransport.databinding.FragmentDetailBinding
+import robert.findtransport.presentation.component.adapter.TransportRouteAdapter
+import robert.findtransport.presentation.map.PreviewMapFragment
+import robert.findtransport.presentation.passing.PassingRoutesFragment
+import robert.findtransport.utils.*
+import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.viewbinding.viewBinding
+
+class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
+  override val binding: FragmentDetailBinding by viewBinding(FragmentDetailBinding::inflate)
+  override val viewModel: DetailViewModel by viewModel()
+
+  private var transportId = -1
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    arguments
+      ?.takeIf { it.containsKey(ARG_TRANSPORT_ID) }
+      ?.run { viewModel.getTransport(getInt(ARG_TRANSPORT_ID).also { transportId = it }) }
+      ?: parentFragmentManager.popBackStack()
+    viewModel.setHasOptions(arguments?.getBoolean(ARG_HAS_OPTIONS) == true)
+
+  }
+
+  override fun FragmentDetailBinding.initInsets() {
+    appBar.onWindowInsets { v, windowInsets ->
+      v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+    }
+    rvRoute.onWindowInsets { v, windowInsets ->
+      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin) * 2
+    }
+    fabMap.onWindowInsets { v, windowInsets ->
+      v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
+    }
+  }
+
+  override fun AppCompatActivity.initActionBar() {
+    setSupportActionBar(binding.toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    setHasOptionsMenu(true)
+  }
+
+  override fun FragmentDetailBinding.initViews() {
+    fabMap.setOnClickListener { viewModel.openMapClick() }
+    btnPrimaryRoute.setOnClickListener { viewModel.togglePrimary(true) }
+    btnSecondaryRoute.setOnClickListener { viewModel.togglePrimary(false) }
+  }
+
+  override fun DetailViewModel.initObservers() {
+    observe(fromStop) { selectedStop ->
+      viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
+        setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to selectedStop.id))
+        view?.showSnackbar(String.format(getString(R.string.action_set_from_route), it))
+      }
+    }
+    observe(toStop) { selectedStop ->
+      viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
+        setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
+        view?.showSnackbar(String.format(getString(R.string.action_set_to_route), it))
+      }
+    }
+    observe(openMap) {
+      addWithSlide(
+        PreviewMapFragment.newInstance(
+          bundleOf(
+            ARG_TRANSPORT_ID to transportId,
+            ARG_ROUTE_REVERSE to (viewModel.showPrimary.value ?: false),
+            ARG_UNDERGROUND to (selectedTransport.value?.type == TransportType.METRO)
+          ),
+        )
+      )
+    }
+    observe(openPassingTransports) { selectedStop -> addWithSlide(PassingRoutesFragment.newInstance(selectedStop.id)) }
+    observe(selectedTransport) { transport ->
+      val locale = viewModel.locale.value ?: return@observe
+
+      observe(showPrimary) {
+        val stops = if (it) {
+          transport.stops
+        } else {
+          transport.stopsReversed
+        }
+        binding.rvRoute.adapter = TransportRouteAdapter(viewModel, locale).apply { submitList(stops) }
+      }
+
+      binding.run {
+        tvTransportNumber.text = transport.number
+        ivTransportIcon.setTransportIcon(transport)
+        tvTransportType.setTransportType(transport)
+        tvFirstLastStops.setFirstLastStop(transport, locale)
+        ivFavorite.setImageResource(if (transport.isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_outline)
+        ivFavorite.setOnClickListener {
+          viewModel.toggleTransportFavorite(transport) {
+            setFragmentResult(RESULT_FAVORITE, bundleOf(RESULT_FAVORITE to true))
+          }
+        }
+      }
+    }
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.menu_details, menu.apply { clear() })
+  }
+
+  companion object {
+    fun newInstance(id: Int, hasOption: Boolean) =
+      DetailFragment().apply {
+        arguments = bundleOf(
+          ARG_TRANSPORT_ID to id,
+          ARG_HAS_OPTIONS to hasOption
+        )
+      }
+  }
+}

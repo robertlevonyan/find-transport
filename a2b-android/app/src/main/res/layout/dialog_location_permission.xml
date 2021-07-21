@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_dialog"
+  android:minWidth="300dp">
+
+  <TextView
+    android:id="@+id/tvTitle"
+    style="@style/ToolbarTitleText"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="@dimen/fab_margin"
+    android:text="@string/permission_title"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Title" />
+
+  <ImageView
+    android:id="@+id/ivIllustration"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:contentDescription="@string/permission_title"
+    android:padding="@dimen/margin_large"
+    android:scaleType="centerInside"
+    android:src="@drawable/il_location_access"
+    app:layout_constraintDimensionRatio="1:1"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+  <TextView
+    android:id="@+id/tvMessage"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="@dimen/fab_margin"
+    android:text="@string/permission_message"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/ivIllustration" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btnYes"
+    style="@style/ButtonStyle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@string/permission_yes"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btnNo"
+    style="@style/ButtonStyle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/fab_margin"
+    android:text="@string/permission_no"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/btnYes" />
+</androidx.constraintlayout.widget.ConstraintLayout>

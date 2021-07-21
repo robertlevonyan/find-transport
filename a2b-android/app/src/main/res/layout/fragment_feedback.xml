@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidUnknownAttribute -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/colorPrimary"
+  tools:context=".presentation.feedback.FeedbackFragment">
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fabSend"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    app:backgroundTint="@color/colorSecondary"
+    app:fabSize="normal"
+    app:srcCompat="@drawable/ic_send"
+    app:tint="@color/colorDarkGray"
+    tools:ignore="ContentDescription" />
+
+  <ProgressBar
+    android:id="@+id/progressLoading"
+    android:layout_width="68dp"
+    android:layout_height="68dp"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/margin_small"
+    android:visibility="gone" />
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stateListAnimator="@drawable/appbar_elevation"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      android:background="?attr/colorPrimary"
+      app:layout_collapseMode="pin"
+      app:popupTheme="@style/AppTheme.PopupOverlay">
+
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+          style="@style/ToolbarTitleText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:layout_marginEnd="@dimen/fab_margin"
+          android:text="@string/title_feedback" />
+      </FrameLayout>
+    </androidx.appcompat.widget.Toolbar>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.core.widget.NestedScrollView
+    android:id="@+id/scrollRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingHorizontal="@dimen/margin_tablet">
+
+      <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardFeedbackLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/colorAccentTransparent"
+        app:strokeWidth="1dp">
+
+        <TextView
+          android:id="@+id/tvFeedbackLabel"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:padding="@dimen/margin_large" />
+      </com.google.android.material.card.MaterialCardView>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ilEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:theme="@style/FeedbackInputStyle"
+        app:boxStrokeColor="@color/color_feedback"
+        app:hintTextColor="@color/colorDarkGrayTransparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardFeedbackLabel">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inputEmail"
+          style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/hint_enter_email"
+          android:imeOptions="actionNext"
+          android:inputType="textEmailAddress"
+          android:singleLine="true"
+          android:textColor="@color/colorDarkGray"
+          android:textColorHint="@color/colorDarkGrayTransparent" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ilSubject"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:theme="@style/FeedbackInputStyle"
+        app:boxStrokeColor="@color/color_feedback"
+        app:hintTextColor="@color/colorDarkGrayTransparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ilEmail">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inputSubject"
+          style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/hint_subject"
+          android:imeOptions="actionNext"
+          android:inputType="textCapSentences"
+          android:singleLine="true"
+          android:textColor="@color/colorDarkGray"
+          android:textColorHint="@color/colorDarkGrayTransparent" />
+      </com.google.android.material.textfield.TextInputLayout>
+
+      <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/ilMessage"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:theme="@style/FeedbackInputStyle"
+        app:boxStrokeColor="@color/color_feedback"
+        app:hintTextColor="@color/colorDarkGrayTransparent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ilSubject">
+
+        <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/inputMessage"
+          style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="top|start"
+          android:hint="@string/hint_message"
+          android:imeOptions="actionDone"
+          android:lines="7"
+          android:textColor="@color/colorDarkGray"
+          android:textColorHint="@color/colorDarkGrayTransparent" />
+      </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

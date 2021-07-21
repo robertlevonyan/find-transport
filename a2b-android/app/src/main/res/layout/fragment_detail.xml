@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@color/colorPrimary"
+  tools:context=".presentation.detail.DetailFragment">
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rvRoute"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    android:paddingHorizontal="@dimen/margin_tablet"
+    android:paddingTop="@dimen/fab_margin"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    tools:listitem="@layout/item_route_mid" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fabMap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end|bottom"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:src="@drawable/ic_map"
+    app:backgroundTint="@color/colorAccent"
+    tools:ignore="ContentDescription" />
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:contentScrim="@color/colorPrimary"
+      app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+        <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?actionBarSize"
+          android:background="?attr/colorPrimary"
+          android:stateListAnimator="@drawable/appbar_elevation"
+          app:layout_collapseMode="pin"
+          app:popupTheme="@style/AppTheme.PopupOverlay">
+
+          <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+              android:id="@+id/tvTitle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:text="@string/title_details"
+              android:textAppearance="@style/ToolbarTitleText" />
+
+            <ImageView
+              android:id="@+id/ivFavorite"
+              android:layout_width="?actionBarSize"
+              android:layout_height="?actionBarSize"
+              android:layout_gravity="end"
+              android:background="?selectableItemBackgroundBorderless"
+              android:scaleType="centerInside"
+              tools:src="@drawable/ic_favorite_outline" />
+          </FrameLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingHorizontal="@dimen/margin_tablet"
+          app:layout_collapseMode="pin">
+
+          <ImageView
+            android:id="@+id/ivTransportIcon"
+            android:layout_width="@dimen/transport_icon_size"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTransportType"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_bus" />
+
+          <TextView
+            android:id="@+id/tvTransportNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/number_text_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivTransportIcon"
+            app:layout_constraintStart_toEndOf="@id/ivTransportIcon"
+            app:layout_constraintTop_toTopOf="@id/ivTransportIcon"
+            tools:text="1" />
+
+          <TextView
+            android:id="@+id/tvTransportType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:gravity="end"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/type_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Bus" />
+
+          <TextView
+            android:id="@+id/tvFirstLastStops"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:singleLine="true"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/first_last_text_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+            app:layout_constraintTop_toBottomOf="@id/tvTransportType"
+            tools:text="Stop 1 - Stop N" />
+
+          <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/line_width"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/margin_7"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:background="@color/colorLightGray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFirstLastStops" />
+
+          <com.google.android.material.button.MaterialButtonToggleGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/fab_margin"
+            app:checkedButton="@id/btnPrimaryRoute"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnPrimaryRoute"
+              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:backgroundTint="@color/color_state_selector_bg"
+              android:text="@string/label_primary_route"
+              android:textAllCaps="false"
+              android:textColor="@color/color_state_selector_text"
+              android:textStyle="bold"
+              app:strokeColor="@color/colorAccent" />
+
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btnSecondaryRoute"
+              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:backgroundTint="@color/color_state_selector_bg"
+              android:text="@string/label_secondary_route"
+              android:textAllCaps="false"
+              android:textColor="@color/color_state_selector_text"
+              android:textStyle="bold"
+              app:strokeColor="@color/colorAccent" />
+          </com.google.android.material.button.MaterialButtonToggleGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

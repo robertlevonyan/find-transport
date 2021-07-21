@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingHorizontal="@dimen/margin_tablet"
+  tools:context=".presentation.intro.IntroFragment">
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toTopOf="@id/tvWelcome"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="UseCompoundDrawables">
+
+    <ImageView
+      android:id="@+id/ivLogo"
+      android:layout_width="?actionBarSize"
+      android:layout_height="?actionBarSize"
+      android:layout_gravity="center"
+      android:src="@drawable/ic_logo"
+      tools:ignore="ContentDescription" />
+
+    <TextView
+      android:id="@+id/tvTitle"
+      android:layout_width="@dimen/splash_title_width"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="@string/app_name"
+      android:textColor="@color/colorDarkGray"
+      android:textSize="@dimen/text_size_28"
+      android:textStyle="bold" />
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/tvWelcome"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_xx_large"
+    android:text="@string/message_slider_welcome"
+    android:textSize="@dimen/splash_text_size"
+    app:layout_constraintBottom_toTopOf="@id/pkLanguage"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <ImageView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ob1"
+    tools:ignore="ContentDescription" />
+
+  <com.google.android.material.button.MaterialButtonToggleGroup
+    android:id="@+id/pkLanguage"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/fab_margin"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/fab_margin"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:selectionRequired="true"
+    app:singleSelection="true">
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnArm"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/intro_lng_height"
+      android:layout_weight="1"
+      android:backgroundTint="@color/color_state_selector_bg_2"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:paddingHorizontal="@dimen/margin_xxx_large"
+      android:text="@string/settings_language_am"
+      android:textAllCaps="false"
+      android:textColor="@color/color_state_selector_text_2"
+      android:textSize="@dimen/text_size_18"
+      android:textStyle="bold"
+      app:cornerRadius="@dimen/small_radius"
+      app:icon="@drawable/ic_lng_arm"
+      app:iconTint="@null"
+      app:strokeColor="@color/colorAccent" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnEng"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/intro_lng_height"
+      android:layout_weight="1"
+      android:backgroundTint="@color/color_state_selector_bg_2"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="0dp"
+      android:minHeight="0dp"
+      android:paddingHorizontal="@dimen/margin_xxx_large"
+      android:text="@string/settings_language_en"
+      android:textAllCaps="false"
+      android:textColor="@color/color_state_selector_text_2"
+      android:textSize="@dimen/text_size_18"
+      android:textStyle="bold"
+      app:cornerRadius="@dimen/small_radius"
+      app:icon="@drawable/ic_lng_eng"
+      app:iconTint="@null"
+      app:strokeColor="@color/colorAccent" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnRus"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/intro_lng_height"
+      android:layout_weight="1"
+      android:backgroundTint="@color/color_state_selector_bg_2"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"
+      android:minWidth="0dp"
+      android:minHeight="0dp"
+      android:paddingHorizontal="@dimen/margin_xxx_large"
+      android:text="@string/settings_language_ru"
+      android:textAllCaps="false"
+      android:textColor="@color/color_state_selector_text_2"
+      android:textSize="@dimen/text_size_18"
+      android:textStyle="bold"
+      app:cornerRadius="@dimen/small_radius"
+      app:icon="@drawable/ic_lng_rus"
+      app:iconTint="@null"
+      app:strokeColor="@color/colorAccent" />
+  </com.google.android.material.button.MaterialButtonToggleGroup>
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fabNext"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_xx_large"
+    android:clickable="true"
+    android:contentDescription="@string/cd_next"
+    android:focusable="true"
+    android:minWidth="0dp"
+    android:minHeight="0dp"
+    android:src="@drawable/ic_arrow_right"
+    app:backgroundTint="@color/colorPrimary"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/pkLanguage"
+    app:rippleColor="@color/colorDarkGray"
+    app:tint="@color/colorDarkGray" />
+</androidx.constraintlayout.widget.ConstraintLayout>

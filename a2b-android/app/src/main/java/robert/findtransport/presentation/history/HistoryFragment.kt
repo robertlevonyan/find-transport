@@ -1,0 +1,163 @@
+package robert.findtransport.presentation.history
+
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.setFragmentResultListener
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import robert.findtransport.R
+import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.model.History
+import robert.findtransport.data.model.enums.HistoryDialogType
+import robert.findtransport.databinding.FragmentHistoryBinding
+import robert.findtransport.presentation.component.adapter.HistoryAdapter
+import robert.findtransport.presentation.component.dialog.ArrivedDialog
+import robert.findtransport.presentation.component.dialog.DialogHistory
+import robert.findtransport.presentation.component.rv.SwipeToDeleteCallback
+import robert.findtransport.presentation.search.SearchFragment
+import robert.findtransport.utils.*
+import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.viewbinding.viewBinding
+
+class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>() {
+  override val binding: FragmentHistoryBinding by viewBinding(FragmentHistoryBinding::inflate)
+  override val viewModel: HistoryViewModel by viewModel()
+
+  override fun FragmentHistoryBinding.initInsets() {
+    appBar.onWindowInsets { v, windowInsets ->
+      v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+    }
+    rvHistory.onWindowInsets { v, windowInsets ->
+      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.margin_xx_large)
+    }
+    fabClear.onWindowInsets { v, windowInsets ->
+      v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
+    }
+  }
+
+  override fun AppCompatActivity.initActionBar() {
+    setSupportActionBar(binding.toolbar)
+    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    setHasOptionsMenu(true)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
+      ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
+    }
+  }
+
+  override fun FragmentHistoryBinding.initViews() {
+    rvHistory.layoutManager = GridLayoutManager(context, if (isTablet()) 2 else 1, GridLayoutManager.VERTICAL, true)
+    fabClear.setOnClickListener { viewModel.onClearClicked() }
+  }
+
+  override fun HistoryViewModel.initObservers() {
+    observe(onClear) { createDialog(HistoryDialogType.CLEAR, yesAction = { viewModel.clearHistory() }) }
+    observe(itemClear) {
+      createDialog(
+        type = HistoryDialogType.REMOVE,
+        history = it,
+        yesAction = { history -> viewModel.removeItem(history ?: return@createDialog) },
+      )
+    }
+    observe(itemClicked) {
+      createDialog(
+        type = HistoryDialogType.RESTORE,
+        history = it,
+        yesAction = { history ->
+          history?.run {
+            addWithSlide(
+              SearchFragment.newInstance(
+                bundleOf(
+                  ARG_FROM_ID to history.fromStop.id,
+                  ARG_TO_ID to history.toStop.id,
+                  ARG_ADD_TO_HISTORY to false
+                )
+              )
+            )
+          }
+        },
+      )
+    }
+    observe(itemRemoved) {
+      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
+        val size = (adapter as HistoryAdapter).removeItem(it)
+        if (size == 0) viewModel.setNoHistory()
+      }
+    }
+    observe(historyCleared) {
+      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
+        (adapter as HistoryAdapter).clear()
+        viewModel.setNoHistory()
+      }
+    }
+
+    observe(noHistory) {
+      binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
+      binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
+    }
+    observe(allHistory) { history ->
+      val locale = viewModel.locale.value ?: return@observe
+      binding.rvHistory.adapter = HistoryAdapter(locale, viewModel)
+        .apply {
+          setHasStableIds(false)
+          submitList(history)
+        }
+        .also { adapter ->
+          val ctx = context ?: return@also
+          val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(ctx) { position ->
+            createDialog(
+              type = HistoryDialogType.REMOVE,
+              history = history[position],
+              yesAction = { history -> viewModel.removeItem(history ?: return@createDialog) },
+              noAction = { adapter.notifyItemChanged(position) },
+            )
+          })
+          itemTouchHelper.attachToRecyclerView(binding.rvHistory)
+        }
+    }
+    observe(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+  }
+
+  private fun createDialog(
+    type: HistoryDialogType,
+    history: History? = null,
+    yesAction: (History?) -> Unit,
+    noAction: (History?) -> Unit = {}
+  ) {
+    DialogHistory.newInstance(
+      bundleOf(
+        ARG_HISTORY_DESCRIPTION to when (type) {
+          HistoryDialogType.CLEAR -> R.string.message_history_dialog_clear
+          HistoryDialogType.REMOVE -> R.string.message_history_dialog_delete
+          HistoryDialogType.RESTORE -> R.string.message_history_dialog_restore
+          HistoryDialogType.UNDEFINED -> return
+        },
+        ARG_HISTORY_DIALOG_TYPE to type.ordinal
+      )
+    ).apply {
+      onYesClick = { yesAction(history) }
+      onNoClick = {
+        noAction(history)
+        dismiss()
+      }
+    }.show(parentFragmentManager, DialogHistory::class.java.simpleName)
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.menu_settings, menu.apply { clear() })
+  }
+
+  companion object {
+    fun newInstance() = HistoryFragment()
+  }
+}

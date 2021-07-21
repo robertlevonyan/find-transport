@@ -1,0 +1,95 @@
+package robert.findtransport.presentation.map
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import robert.findtransport.data.model.*
+import robert.findtransport.data.model.enums.ExceptionType
+import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import robert.findtransport.domain.usecase.stop.StopsUseCase
+import robert.findtransport.domain.usecase.transport.TransportUseCase
+
+class SearchMapViewModel(
+  localeUseCase: LocaleUseCase,
+  private val stopsUseCase: StopsUseCase,
+  private val transportUseCase: TransportUseCase,
+) : MapViewModel(stopsUseCase, localeUseCase, transportUseCase) {
+
+  private val _loading = MutableLiveData<Boolean>()
+  val loading: LiveData<Boolean> get() = _loading
+
+  private val _searchMultiTransports = MutableLiveData<Triple<List<MultiRoute>, Stop, Stop>>()
+  val searchMultiTransports: LiveData<Triple<List<MultiRoute>, Stop, Stop>> get() = _searchMultiTransports
+
+  private val _searchEmpty = MutableLiveData<Unit>()
+  val searchEmpty: LiveData<Unit> get() = _searchEmpty
+
+  private val _routeSuccess = MutableLiveData<Pair<RouteResult?, RouteResult?>>()
+  val transportRouteSuccess: LiveData<Pair<RouteResult?, RouteResult?>> get() = _routeSuccess
+
+  fun getMultiRoute(fromId: Int, toId: Int) {
+    viewModelScope.launch(Dispatchers.IO) {
+      val from = stopsUseCase.getStop(fromId)
+      val to = stopsUseCase.getStop(toId)
+
+      transportUseCase.search(from, to).let { search ->
+        when (search) {
+          is Result.Success -> when (search.data) {
+            is SearchResult.Multi -> {
+              val multiRoute = search.data.result.map { multiRoute ->
+                val stop = multiRoute.stop
+                val coordinates = stop?.let { multiRouteStop -> stopsUseCase.getStopCoordinates(multiRouteStop) } ?: emptyList()
+
+                multiRoute.copy(stop = multiRoute.stop?.copy(coordinates = coordinates))
+              }
+
+              _searchMultiTransports.postValue(Triple(multiRoute, from, to)).also { _loading.postValue(false) }
+            }
+            else -> Unit
+          }
+          is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
+            _searchEmpty.postValue(Unit)
+            _loading.postValue(false)
+          }
+        }
+      }
+    }
+  }
+
+  fun getRouteSuccess(id: Int) {
+    viewModelScope.launch(Dispatchers.IO) {
+      val route = async {
+        transportUseCase.getTransportRoute(id, false, false)
+          .flowOn(Dispatchers.IO)
+          .stateIn(viewModelScope).value
+          .let { routeResult ->
+            if (!coroutineContext.isActive) return@let null
+            when (routeResult) {
+              is Result.Success -> routeResult.data
+              else -> return@let null
+            }
+          }
+      }
+      val reverse = async {
+        transportUseCase.getTransportRoute(id, true, false)
+          .flowOn(Dispatchers.IO)
+          .stateIn(viewModelScope).value
+          .let { routeResult ->
+            if (!coroutineContext.isActive) return@let null
+            when (routeResult) {
+              is Result.Success -> routeResult.data
+              else -> return@let null
+            }
+          }
+      }
+
+      _routeSuccess.postValue(route.await() to reverse.await())
+    }
+  }
+}

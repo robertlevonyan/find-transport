@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:minHeight="90dp">
+
+  <View
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/margin_small"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:background="@drawable/bg_route_end"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guide_start"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="vertical"
+    app:layout_constraintGuide_percent="0.1" />
+
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/guide_center_horizontal"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:orientation="horizontal"
+    app:layout_constraintGuide_percent="0.5" />
+
+  <View
+    android:id="@+id/routeLine1"
+    android:layout_width="3dp"
+    android:layout_height="0dp"
+    android:background="@color/colorSecondary"
+    app:layout_constraintBottom_toBottomOf="@id/guide_center_horizontal"
+    app:layout_constraintEnd_toEndOf="@id/guide_start"
+    app:layout_constraintStart_toStartOf="@id/routeDotEnd"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <View
+    android:id="@+id/routeLine2"
+    android:layout_width="3dp"
+    android:layout_height="0dp"
+    android:background="@color/colorSecondary"
+    app:layout_constraintBottom_toBottomOf="@id/guide_center_horizontal"
+    app:layout_constraintEnd_toEndOf="@id/routeDotEnd"
+    app:layout_constraintStart_toStartOf="@id/guide_start"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <TextView
+    android:id="@+id/footer"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/fab_margin"
+    android:layout_marginTop="@dimen/margin_x_small"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:gravity="center"
+    android:text="@string/label_route_end"
+    android:textColor="@color/colorSecondary"
+    android:textSize="@dimen/route_item_text_size"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/stopNameEnd" />
+
+  <ImageView
+    android:id="@+id/routeDotEnd"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@id/guide_start"
+    app:layout_constraintStart_toStartOf="@id/guide_start"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_route_dot_end"
+    tools:ignore="ContentDescription" />
+
+  <TextView
+    android:id="@+id/stopNameEnd"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/fab_margin"
+    android:textColor="@color/colorSecondary"
+    android:textSize="@dimen/route_item_text_size"
+    app:layout_constraintBottom_toBottomOf="@id/routeDotEnd"
+    app:layout_constraintEnd_toStartOf="@id/optionsEnd"
+    app:layout_constraintStart_toEndOf="@id/routeDotEnd"
+    app:layout_constraintTop_toTopOf="@id/routeDotEnd" />
+
+  <ImageView
+    android:id="@+id/optionsEnd"
+    android:layout_width="@dimen/icon_size2"
+    android:layout_height="@dimen/icon_size2"
+    android:layout_marginEnd="@dimen/margin_small"
+    android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@string/cd_options"
+    android:scaleType="centerInside"
+    app:layout_constraintBottom_toBottomOf="@id/routeDotEnd"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/routeDotEnd"
+    app:srcCompat="@drawable/ic_more_white" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:animateLayoutChanges="true"
+  android:background="@color/colorPrimary"
+  tools:context=".presentation.search.SearchFragment">
+
+  <ProgressBar
+    android:id="@+id/progressLoading"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center" />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/rvTransportsList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:overScrollMode="never"
+    android:paddingHorizontal="@dimen/margin_tablet"
+    android:paddingTop="@dimen/margin_large"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+    tools:listitem="@layout/item_transport" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fabShowMap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/fab_margin"
+    android:src="@drawable/ic_map"
+    android:visibility="invisible"
+    app:backgroundTint="@color/colorAccent"
+    app:layout_anchor="@id/appBar"
+    app:layout_anchorGravity="end|bottom" />
+
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:id="@+id/fabTrackRoute"
+    style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="@dimen/fab_margin"
+    android:text="@string/label_track"
+    android:textAllCaps="false"
+    android:textColor="@color/colorDarkGrayUntranslated"
+    android:textStyle="bold"
+    android:visibility="gone"
+    app:backgroundTint="@color/colorAccent"
+    app:icon="@drawable/ic_track_route"
+    app:iconTint="@color/colorDarkGrayUntranslated"
+    tools:visibility="visible" />
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:contentScrim="@color/colorPrimary"
+      app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+        <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?actionBarSize"
+          android:background="?attr/colorPrimary"
+          android:stateListAnimator="@drawable/appbar_elevation"
+          app:layout_collapseMode="pin"
+          app:popupTheme="@style/AppTheme.PopupOverlay">
+
+          <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/title_search"
+            android:textAppearance="@style/ToolbarTitleText" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingHorizontal="@dimen/margin_tablet"
+          app:layout_collapseMode="pin">
+
+          <TextView
+            android:id="@+id/tvFromLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/fab_margin"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/fab_margin"
+            android:paddingTop="@dimen/fab_margin"
+            android:paddingBottom="@dimen/margin_x_small"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/text_size_16"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_start_point"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="From" />
+
+          <TextView
+            android:id="@+id/tvToLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/fab_margin"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="@dimen/fab_margin"
+            android:paddingTop="@dimen/margin_x_small"
+            android:paddingBottom="@dimen/fab_margin"
+            android:textColor="@color/colorDarkGray"
+            android:textSize="@dimen/text_size_16"
+            app:drawableStartCompat="@drawable/ic_end_point"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvFromLabel"
+            tools:text="To" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+      </LinearLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

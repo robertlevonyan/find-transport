@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_dialog"
+  android:orientation="vertical">
+
+  <TextView
+    android:id="@+id/tvWalk"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="@dimen/fab_margin"
+    android:paddingTop="@dimen/fab_margin"
+    android:paddingBottom="@dimen/margin_x_small"
+    android:text="@string/label_walk_to"
+    android:textColor="@color/colorDarkGray"
+    android:textSize="@dimen/text_size_18"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+  <TextView
+    android:id="@+id/tvStopName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:drawablePadding="@dimen/margin_small"
+    android:paddingHorizontal="@dimen/fab_margin"
+    android:paddingTop="@dimen/margin_x_small"
+    android:paddingBottom="@dimen/fab_margin"
+    android:textAppearance="@style/ToolbarTitleText"
+    app:drawableStartCompat="@drawable/ic_walk"
+    tools:text="Stop name" />
+</LinearLayout>

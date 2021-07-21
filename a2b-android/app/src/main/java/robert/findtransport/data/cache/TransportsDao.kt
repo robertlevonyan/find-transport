@@ -1,0 +1,66 @@
+package robert.findtransport.data.cache
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
+import robert.findtransport.data.entity.Stop
+import robert.findtransport.data.entity.Transport
+import robert.findtransport.data.entity.TransportStopJoin
+
+@Dao
+interface TransportsDao {
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun saveTransports(transports: List<Transport>): List<Long>
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun saveJoins(transports: List<TransportStopJoin>): List<Long>
+
+  @Query("DELETE FROM Transport")
+  fun deleteAllTransports()
+
+  @Query("DELETE FROM TransportStopJoin")
+  fun deleteAllJoins()
+
+  @Query("SELECT * FROM Transport WHERE id = :id")
+  fun getTransportById(id: Int): Flow<Transport>
+
+  @Query("SELECT * FROM Transport WHERE CASE(:favorite) WHEN 1 THEN favorite = 1 ELSE  favorite = 1 OR favorite = 0 END ORDER BY type ASC, CAST(name AS DECIMAL) ASC")
+//  fun getAllTransports(favorite: Boolean): Flow<List<Transport>>
+  fun getAllTransports(favorite: Boolean): List<Transport>
+
+  @Query("SELECT count(*) FROM Transport")
+  suspend fun getTransportsCount(): Int
+
+  @Query("SELECT count(*) FROM TransportStopJoin")
+  suspend fun getJoinsCount(): Int
+
+  @Query("""SELECT id, name, type, newTransport, favorite FROM 
+    (SELECT transportId FROM TransportStopJoin WHERE stopId = :id) as TransportIds 
+    INNER JOIN Transport 
+    ON TransportIds.transportId = id
+    GROUP BY name, type, newTransport, favorite
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC""")
+  suspend fun getTransportsForStop(id: Int): List<Transport>
+
+  @Query("""SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
+    INNER JOIN TransportStopJoin
+    ON TransportStopJoin.stopId = Stop.id
+    AND TransportStopJoin.transportId = :transportId
+    AND TransportStopJoin.reverse = 0
+    ORDER BY TransportStopJoin.`order` ASC""")
+  fun getTransportStops(transportId: Int): List<Stop>
+
+  @Query("""SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
+    INNER JOIN TransportStopJoin
+    ON TransportStopJoin.stopId = Stop.id
+    AND TransportStopJoin.transportId = :transportId
+    AND TransportStopJoin.reverse = 1
+    ORDER BY TransportStopJoin.`order` ASC""")
+  fun getTransportStopsReversed(transportId: Int): List<Stop>
+
+  @Query("UPDATE Transport SET favorite = :favorite WHERE id = :id")
+  suspend fun changeFavorite(id: Int, favorite: Boolean)
+
+}

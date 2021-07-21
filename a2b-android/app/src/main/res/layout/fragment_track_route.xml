@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:animateLayoutChanges="true"
+  android:background="@color/colorAccent"
+  android:clickable="false">
+
+  <TextView
+    android:id="@+id/tvLabelSelected"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_85"
+    android:textColor="@color/colorDarkGrayUntranslated"
+    android:textSize="@dimen/text_size_18"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="@string/label_selected_transport" />
+
+  <LinearLayout
+    android:id="@+id/llCurrentStop"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toTopOf="@id/btnStop"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvLabelSelected">
+
+    <TextView
+      android:id="@+id/tvCurrentStop"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="@string/label_current_stop"
+      android:textColor="@color/colorDarkGrayUntranslated"
+      android:visibility="gone" />
+
+    <TextView
+      android:id="@+id/tvCurrentStopName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:paddingHorizontal="@dimen/fab_margin"
+      android:textColor="@color/colorDarkGrayUntranslated"
+      android:textSize="@dimen/text_size_28"
+      android:textStyle="bold"
+      tools:text="@string/label_current_stop" />
+  </LinearLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/btnStop"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/fab_margin"
+    android:backgroundTint="@color/colorDarkGrayUntranslated"
+    android:text="@string/label_stop_tracker"
+    android:textAllCaps="false"
+    android:textColor="@android:color/white"
+    android:textStyle="bold"
+    app:icon="@drawable/ic_close"
+    app:iconTint="@android:color/white"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent" />
+
+  <ProgressBar
+    android:id="@+id/progressLoading"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:indeterminateTint="@color/colorDarkGrayUntranslated"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

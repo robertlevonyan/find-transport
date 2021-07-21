@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "568857098349",
+    "firebase_url": "https://find-transport.firebaseio.com",
+    "project_id": "find-transport",
+    "storage_bucket": "find-transport.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568857098349:android:4aa0e7d8e985ce28",
+        "android_client_info": {
+          "package_name": "robert.findtransport"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568857098349-0becfg6bjkke7j53ubpnbt9v6kbl974p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "robert.findtransport",
+            "certificate_hash": "b95be0bdece8c033aef811c2f001af49f169649b"
+          }
+        },
+        {
+          "client_id": "568857098349-oub7ph2bpptfsb5n0o91l44mfdcrmrrr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "robert.findtransport",
+            "certificate_hash": "c733f32611c5d132c74bbc8a8a2b1e7646eccecc"
+          }
+        },
+        {
+          "client_id": "568857098349-khvputia4mt9p9c8qjo42sf4ftkp6d8r.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "568857098349-iblve68sgjqtt3cuvnh8jkb3192ke1ic.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDf3YfCD69fjJmpdPBb44dBptrKt-yRFso"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

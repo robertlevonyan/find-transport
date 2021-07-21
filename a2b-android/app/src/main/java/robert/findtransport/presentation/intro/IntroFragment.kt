@@ -1,0 +1,42 @@
+package robert.findtransport.presentation.intro
+
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import robert.findtransport.R
+import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.service.LocaleService
+import robert.findtransport.databinding.FragmentIntroBinding
+import robert.findtransport.presentation.home.HomeFragment
+import robert.findtransport.utils.extensions.replaceWithAlpha
+import robert.findtransport.utils.viewbinding.viewBinding
+
+class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
+  override val binding: FragmentIntroBinding by viewBinding(FragmentIntroBinding::inflate)
+  override val viewModel: IntroViewModel by viewModel()
+
+  override fun FragmentIntroBinding.initViews() {
+    btnArm.setOnClickListener { viewModel.setLanguage(0) }
+    btnEng.setOnClickListener { viewModel.setLanguage(1) }
+    btnRus.setOnClickListener { viewModel.setLanguage(2) }
+    fabNext.setOnClickListener { viewModel.setIntroPassed() }
+  }
+
+  override fun IntroViewModel.initObservers() = viewModel.run {
+    observe(languageChanged) { language ->
+      activity?.run {
+        LocaleService(this).changeLocale(language)
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frContainer, newInstance())
+            .commit()
+      }
+    }
+    observe(pickerArmValue) { binding.pkLanguage.check(R.id.btnArm) }
+    observe(pickerEngValue) { binding.pkLanguage.check(R.id.btnEng) }
+    observe(pickerRusValue) { binding.pkLanguage.check(R.id.btnRus) }
+    observe(introPassed) { replaceWithAlpha(HomeFragment.newInstance()) }
+  }
+
+  companion object {
+    fun newInstance() = IntroFragment()
+  }
+}

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".presentation.home.HomeFragment">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/clSearchArea"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:paddingHorizontal="@dimen/margin_tablet"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/cvRate"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/fab_margin"
+      android:layout_marginBottom="@dimen/fab_margin"
+      android:visibility="gone"
+      app:cardBackgroundColor="@color/colorPrimary"
+      app:cardElevation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/placeholder"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:strokeColor="@color/colorAccentTransparent"
+      app:strokeWidth="1dp"
+      tools:visibility="visible">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+          android:id="@+id/tvRateMessage"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/fab_margin"
+          android:text="@string/message_rate"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnRate"
+          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/margin_x_small"
+          android:backgroundTint="@color/colorPrimary"
+          android:text="@string/label_rate"
+          android:textAllCaps="false"
+          android:textColor="@color/colorAccent"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/tvRateMessage" />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/btnDismiss"
+          style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/margin_x_small"
+          android:backgroundTint="@color/colorPrimary"
+          android:text="@string/label_dismiss"
+          android:textAllCaps="false"
+          android:textColor="@color/colorAccent"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnRate"
+          app:layout_constraintTop_toBottomOf="@id/tvRateMessage" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.Placeholder
+      android:id="@+id/placeholder"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintTop_toBottomOf="@id/cvRate"
+      app:layout_constraintBottom_toTopOf="@id/tvFromLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+      android:id="@+id/tvFromLabel"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:text="@string/label_from_long"
+      android:textColor="@color/colorDarkGray"
+      android:textSize="@dimen/text_size_20"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/cvFromInput"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/placeholder"
+      app:layout_constraintWidth_percent="0.9" />
+
+    <androidx.cardview.widget.CardView
+      android:id="@+id/cvFromInput"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/fab_margin"
+      android:clickable="true"
+      android:focusable="true"
+      app:cardBackgroundColor="@color/colorSecondary"
+      app:cardCornerRadius="@dimen/small_radius"
+      app:cardElevation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/tvFromError"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintWidth_percent="0.9">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clFromInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="?selectableItemBackground"
+        app:rippleColor="@color/colorGray">
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/ilFrom"
+          style="@style/Widget.Design.TextInputLayout"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/margin_7"
+          android:layout_marginTop="@dimen/margin_2"
+          android:layout_marginEnd="@dimen/margin_7"
+          android:layout_marginBottom="@dimen/margin_7"
+          android:hint="@string/hint_from"
+          android:theme="@style/InputTextStyle"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnFromClear"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputFrom"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_input_height"
+            android:background="@null"
+            android:ellipsize="end"
+            android:focusableInTouchMode="false"
+            android:gravity="center_vertical|start"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:paddingTop="@dimen/margin_x_small"
+            android:textColor="@color/colorToolbarTitleText"
+            android:textColorHint="@color/colorHint"
+            android:textCursorDrawable="@drawable/bg_cursor"
+            android:textSize="@dimen/input_text_size"
+            android:theme="@style/EditTextStyle" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+          android:id="@+id/btnFromMap"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:layout_marginStart="@dimen/margin_small"
+          android:layout_marginEnd="@dimen/margin_small"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="centerInside"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          tools:ignore="ContentDescription" />
+
+        <ImageButton
+          android:id="@+id/btnFromList"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="center"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnFromMap"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_arrow_drop_down"
+          tools:ignore="ContentDescription" />
+
+        <ImageButton
+          android:id="@+id/btnFromClear"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="centerInside"
+          android:visibility="gone"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnFromList"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_close_black_24dp"
+          tools:ignore="ContentDescription" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+      android:id="@+id/tvFromError"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:layout_marginStart="@dimen/margin_medium"
+      android:layout_marginEnd="@dimen/margin_medium"
+      android:alpha="0"
+      android:textColor="@color/colorError"
+      app:layout_constraintBottom_toTopOf="@id/tvToLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+      android:id="@+id/tvToLabel"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:text="@string/label_to_long"
+      android:textColor="@color/colorDarkGray"
+      android:textSize="@dimen/text_size_20"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/toInputCard"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintWidth_percent="0.9" />
+
+    <androidx.cardview.widget.CardView
+      android:id="@+id/toInputCard"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      app:cardBackgroundColor="@color/colorSecondary"
+      app:cardCornerRadius="@dimen/small_radius"
+      app:cardElevation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/tvToError"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintWidth_percent="0.9">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clToInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="?selectableItemBackground"
+        app:rippleColor="@color/colorGray">
+
+        <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/ilTo"
+          style="@style/Widget.Design.TextInputLayout"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/margin_7"
+          android:layout_marginTop="@dimen/margin_2"
+          android:layout_marginEnd="@dimen/margin_7"
+          android:layout_marginBottom="@dimen/margin_7"
+          android:hint="@string/hint_to"
+          android:theme="@style/InputTextStyle"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnToClear"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+
+          <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputTo"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_input_height"
+            android:background="@android:color/transparent"
+            android:ellipsize="end"
+            android:focusableInTouchMode="false"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:paddingTop="@dimen/margin_x_small"
+            android:textColor="@color/colorToolbarTitleText"
+            android:textColorHint="@color/colorHint"
+            android:textSize="@dimen/input_text_size" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+          android:id="@+id/btnToMap"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:layout_marginStart="@dimen/margin_small"
+          android:layout_marginEnd="@dimen/margin_small"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="centerInside"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_map"
+          tools:ignore="ContentDescription" />
+
+        <ImageButton
+          android:id="@+id/btnToList"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="center"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnToMap"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_arrow_drop_down"
+          tools:ignore="ContentDescription" />
+
+        <ImageButton
+          android:id="@+id/btnToClear"
+          android:layout_width="@dimen/icon_size2"
+          android:layout_height="@dimen/icon_size2"
+          android:background="?selectableItemBackgroundBorderless"
+          android:scaleType="centerInside"
+          android:visibility="gone"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toStartOf="@id/btnToList"
+          app:layout_constraintTop_toTopOf="parent"
+          app:srcCompat="@drawable/ic_close_black_24dp"
+          tools:ignore="ContentDescription" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+      android:id="@+id/tvToError"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:layout_marginStart="@dimen/margin_medium"
+      android:layout_marginEnd="@dimen/margin_medium"
+      android:alpha="0"
+      android:textColor="@color/colorError"
+      app:layout_constraintBottom_toTopOf="@id/btnSearch"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnSearch"
+      style="@style/Widget.MaterialComponents.Button.Icon"
+      android:layout_width="wrap_content"
+      android:layout_height="?actionBarSize"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:text="@string/label_search"
+      android:textAllCaps="true"
+      android:textColor="@color/colorDarkGray"
+      app:backgroundTint="@color/colorSecondary"
+      app:cornerRadius="?actionBarSize"
+      app:icon="@drawable/ic_search_colored"
+      app:iconTint="@android:color/transparent"
+      app:iconTintMode="add"
+      app:layout_constraintBottom_toTopOf="@id/btnTransports"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:rippleColor="@color/colorPrimary" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fabSwap"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:backgroundTint="@color/colorSecondary"
+      app:elevation="3dp"
+      app:fabSize="mini"
+      app:layout_constraintBottom_toTopOf="@id/toInputCard"
+      app:layout_constraintEnd_toEndOf="@id/toInputCard"
+      app:layout_constraintTop_toBottomOf="@id/cvFromInput"
+      app:srcCompat="@drawable/ic_swap"
+      app:tint="@color/colorDarkGray"
+      tools:ignore="ContentDescription" />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnTransports"
+      style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/fab_margin"
+      android:paddingHorizontal="@dimen/fab_margin"
+      android:text="@string/label_all_transports"
+      android:textAllCaps="false"
+      android:textColor="@color/colorDarkGray"
+      app:backgroundTint="@android:color/transparent"
+      app:cornerRadius="?actionBarSize"
+      app:icon="@drawable/ic_arrow_up"
+      app:iconGravity="textTop"
+      app:iconTint="@color/colorDarkGray"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:rippleColor="@color/colorSecondary" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    app:elevation="0dp">
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      app:popupTheme="@style/AppTheme.PopupOverlay">
+
+      <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+          android:id="@+id/ivLogo"
+          android:layout_width="36dp"
+          android:layout_height="36dp"
+          android:layout_gravity="center"
+          android:background="?selectableItemBackgroundBorderless"
+          android:clickable="true"
+          android:focusable="true"
+          android:src="@drawable/ic_logo"
+          tools:ignore="ContentDescription" />
+
+        <TextView
+          android:id="@+id/tvTitle"
+          style="@style/ToolbarTitleText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="@string/app_name" />
+      </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+  </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

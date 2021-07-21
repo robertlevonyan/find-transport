@@ -1,0 +1,23 @@
+package robert.findtransport.domain.usecase.preference
+
+import robert.findtransport.data.model.Result
+import robert.findtransport.domain.repository.VersionRepository
+
+class VersionUseCaseImpl(private val versionRepository: VersionRepository) : VersionUseCase {
+  
+  override suspend fun isNewerVersion(): Boolean {
+    return try {
+      val localVersion = versionRepository.getVersionFromCache()
+      when (val remoteVersion = versionRepository.getVersionFromApi()) {
+        is Result.Success -> {
+          versionRepository.cacheVersion(remoteVersion.data)
+          localVersion.toDouble() < remoteVersion.data.toDouble()
+        }
+        is Result.Error -> false
+      }
+    } catch (e: Exception) {
+      false
+    }
+  }
+  
+}
