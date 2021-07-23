@@ -50,7 +50,9 @@ class ChooserMapFragment : MapFragment() {
     SymbolManager(binding.mapView, mapboxMap, style).apply {
       addClickListener { symbol ->
         symbol?.data?.let { data ->
-          showStopOptions(data.fromJson<Stop>().toStop())
+          if (!isStateSaved) {
+            showStopOptions(data.fromJson<Stop>().toStop())
+          }
         }
         true
       }
@@ -61,7 +63,9 @@ class ChooserMapFragment : MapFragment() {
   private fun showStops(mapboxMap: MapboxMap, style: Style, stops: List<SymbolOptions>) {
     SymbolManager(binding.mapView, mapboxMap, style).apply {
       addClickListener { symbol ->
-        symbol?.data?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
+        if (!isStateSaved) {
+          symbol?.data?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
+        }
         true
       }
       create(stops)
