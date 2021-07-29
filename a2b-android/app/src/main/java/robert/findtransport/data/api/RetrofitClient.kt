@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
 class RetrofitClient private constructor() {
   companion object {
     private var retrofit: Retrofit? = null

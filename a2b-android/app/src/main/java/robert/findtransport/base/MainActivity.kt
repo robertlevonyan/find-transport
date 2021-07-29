@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity(), ChainHolder {
 
     override fun applyCommandsSync(commands: Array<out Command>) {
       super.applyCommandsSync(commands)
+      if (supportFragmentManager.isDestroyed) return
+
       supportFragmentManager.executePendingTransactions()
     }
   }

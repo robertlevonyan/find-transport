@@ -15,8 +15,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 21
     targetSdk = 31
-    versionCode = 224
-    versionName = "3.5.7"
+    versionCode = 225
+    versionName = "3.6.0"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -103,7 +103,7 @@ dependencies {
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.code.gson:gson:2.8.6")
   implementation("com.google.android.gms:play-services-location:18.0.0")
-  implementation(platform("com.google.firebase:firebase-bom:28.0.1"))
+  implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
   //androidx
