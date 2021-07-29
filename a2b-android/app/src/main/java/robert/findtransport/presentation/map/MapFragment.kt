@@ -74,7 +74,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         locationEnabled = true
         initMap(this)
       }
-    } ?: parentFragmentManager.popBackStack()
+    } ?: router.exit()
   }
 
   override fun FragmentMapBinding.initInsets() {
@@ -93,11 +93,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   override fun FragmentMapBinding.initViews() {
-    fabLocation.setOnClickListener { viewModel.getCurrentLocation() }
-  }
-
-  override fun MapViewModel.initObservers() {
-    observe(onCurrentLocation) { goToCurrentLocation(mapboxMap ?: return@observe) }
+    fabLocation.setOnClickListener { goToCurrentLocation(mapboxMap ?: return@setOnClickListener) }
   }
 
   @Suppress("SameParameterValue")
@@ -113,7 +109,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   private fun initMap(activity: FragmentActivity) = binding.run {
     if (!Mapbox.hasInstance()) {
-      parentFragmentManager.popBackStack()
+      router.exit()
       return@run
     }
     mapView.getMapAsync { map ->

@@ -13,6 +13,8 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.base.MainActivity
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.databinding.FragmentSplashBinding
+import robert.findtransport.di.homeScreen
+import robert.findtransport.di.introScreen
 import robert.findtransport.presentation.component.dialog.MessageDialog
 import robert.findtransport.presentation.home.HomeFragment
 import robert.findtransport.presentation.intro.IntroFragment
@@ -21,7 +23,6 @@ import robert.findtransport.utils.ARG_MESSAGE_TITLE
 import robert.findtransport.utils.extensions.bottomMargin
 import robert.findtransport.utils.extensions.getDimenInt
 import robert.findtransport.utils.extensions.onWindowInsets
-import robert.findtransport.utils.extensions.replaceWithAlpha
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class SplashFragment : BaseFragment<SplashViewModel, FragmentSplashBinding>() {
@@ -55,8 +56,8 @@ class SplashFragment : BaseFragment<SplashViewModel, FragmentSplashBinding>() {
         ?.run { delegate.localNightMode = theme }
     }
     observe(currentLanguage) { activity?.run { LocaleService(this).changeLocale(it) } }
-    observe(nextIntro) { replaceWithAlpha(IntroFragment.newInstance()) }
-    observe(nextMain) { replaceWithAlpha(HomeFragment.newInstance()) }
+    observe(nextIntro) { router.replaceScreen(introScreen()) }
+    observe(nextMain) { router.replaceScreen(homeScreen()) }
     observe(loadStart) { startLoadingAnimation() }
     observe(loaded) { startLaunchAnimation() }
     observe(emptyDatabase) { showEmptyDatabaseDialog() }

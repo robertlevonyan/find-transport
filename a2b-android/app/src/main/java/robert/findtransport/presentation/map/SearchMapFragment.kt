@@ -42,7 +42,7 @@ class SearchMapFragment : MapFragment() {
     val toId = arguments?.getInt(ARG_TO_ID)
 
     if (fromId == null || toId == null) {
-      parentFragmentManager.popBackStack()
+      router.exit()
       return
     }
 
@@ -51,7 +51,7 @@ class SearchMapFragment : MapFragment() {
     searchMapViewModel.run {
       observe(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
       observe(searchMultiTransports) { onDataLoaded(it.first, it.second, it.third) }
-      observe(searchEmpty) { parentFragmentManager.popBackStack() }
+      observe(searchEmpty) { router.exit() }
     }
   }
 

@@ -131,6 +131,7 @@ class TrackRouteService : Service() {
         if (current.id == destination.id && _notifyArrived.value == null) {
           _notifyArrived.postValue(Unit)
           showArrivedNotification()
+          trackRouteScope.cancel()
         }
       }
     }
@@ -142,7 +143,7 @@ class TrackRouteService : Service() {
       .setContentText(notificationText)
       .setSmallIcon(R.drawable.ic_notification)
       .addAction(
-        R.drawable.ic_close,
+        R.drawable.ic_close_black_24dp,
         getString(R.string.label_stop_tracker),
         PendingIntent.getService(
           this,

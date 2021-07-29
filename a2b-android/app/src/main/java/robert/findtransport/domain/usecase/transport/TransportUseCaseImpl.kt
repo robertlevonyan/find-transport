@@ -338,6 +338,7 @@ class TransportUseCaseImpl(
       coordinates = stopsRepository.getStopLocations(destination.id).map { it.toStopLocation(destination.toApiStop()) }
     )
 
+    if (filledDestination.coordinates.isEmpty()) return@flow
     val destinationCoordinates = filledDestination.coordinates.first()
     val destinationLocation = Location("destination").apply {
       latitude = destinationCoordinates.lat
@@ -359,6 +360,7 @@ class TransportUseCaseImpl(
         )
       }
     }
+
 
     if (nearby.isEmpty() || nearbyDestination.isEmpty()) {
       emit(Stop.EMPTY to Stop.EMPTY)

@@ -9,14 +9,13 @@ import com.mapbox.mapboxsdk.plugins.annotation.SymbolManager
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import robert.findtransport.R
 import robert.findtransport.data.entity.Stop
+import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.component.bottomsheet.map.StopOptionsBottomSheet
-import robert.findtransport.presentation.passing.PassingRoutesFragment
 import robert.findtransport.utils.ARG_STOP
 import robert.findtransport.utils.RESULT_FROM
 import robert.findtransport.utils.RESULT_TO
-import robert.findtransport.utils.extensions.addWithSlide
 import robert.findtransport.utils.extensions.getDrawableFromRes
 
 class ChooserMapFragment : MapFragment() {
@@ -77,17 +76,17 @@ class ChooserMapFragment : MapFragment() {
       onFromSelected = { selectedStop ->
         this@ChooserMapFragment.viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
           setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to selectedStop.id))
-          parentFragmentManager.popBackStack()
+          router.exit()
         }
       }
       onToSelected = { selectedStop ->
         this@ChooserMapFragment.viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
           setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
-          parentFragmentManager.popBackStack()
+          router.exit()
         }
       }
       onShowTransports = { selectedStop ->
-        addWithSlide(PassingRoutesFragment.newInstance(selectedStop.id))
+        router.navigateTo(passingRoutesScreen(selectedStop.id))
       }
     }.show(parentFragmentManager, StopOptionsBottomSheet::class.java.simpleName)
   }

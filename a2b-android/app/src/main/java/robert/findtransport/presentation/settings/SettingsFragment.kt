@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.settings
 
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
@@ -17,7 +18,6 @@ import robert.findtransport.presentation.component.bottomsheet.theme.ThemePicker
 import robert.findtransport.presentation.component.rv.VerticalSpaceItemDecoration
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
-import timber.log.Timber
 
 class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding>() {
   override val binding: FragmentSettingsBinding by viewBinding(FragmentSettingsBinding::inflate)
@@ -99,13 +99,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
           val flow = reviewManager.launchReviewFlow(this, reviewInfo)
           flow.addOnCompleteListener {
             if (it.isSuccessful) {
-              Timber.tag("Rate: ").d(request.result.toString())
+              Log.d("Rate: ", request.result.toString())
             } else {
-              Timber.tag("Error: ").d(it.exception.toString())
+              Log.e("Error: ", it.exception.toString())
             }
           }
         } else {
-          Timber.tag("Error: ").d(request.exception.toString())
+          Log.e("Error: ", request.exception.toString())
         }
       }
     }

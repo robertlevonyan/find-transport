@@ -2,8 +2,10 @@ package robert.findtransport.data.service
 
 import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.MapboxDirections
+import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.api.matching.v5.MapboxMapMatching
 import com.mapbox.geojson.Point
+import com.mapbox.navigation.base.extensions.coordinates
 import robert.findtransport.BuildConfig
 import robert.findtransport.utils.extensions.asPairs
 
@@ -43,11 +45,24 @@ class MapboxNavigationService {
 //  }
 
   private fun createDirection(pair: Pair<Point, Point?>) = MapboxDirections.builder()
-      .origin(pair.first)
-      .destination(pair.second ?: pair.first)
-      .overview(DirectionsCriteria.OVERVIEW_FULL)
-      .profile(DirectionsCriteria.PROFILE_DRIVING)
-      .accessToken(BuildConfig.MAPBOX_TOKEN)
-      .post()
+      .routeOptions(
+          RouteOptions.builder()
+              .accessToken(BuildConfig.MAPBOX_TOKEN)
+              .coordinates(
+                  origin = pair.first,
+                  waypoints = null,
+                  destination = pair.second ?: pair.first
+              )
+              .overview(DirectionsCriteria.OVERVIEW_SIMPLIFIED)
+              .profile(DirectionsCriteria.PROFILE_DRIVING)
+              .build()
+      )
+      .usePostMethod(true)
+//      .origin(pair.first)
+//      .destination(pair.second ?: pair.first)
+//      .overview(DirectionsCriteria.OVERVIEW_FULL)
+//      .profile(DirectionsCriteria.PROFILE_DRIVING)
+//      .accessToken(BuildConfig.MAPBOX_TOKEN)
+//      .post()
       .build()
 }

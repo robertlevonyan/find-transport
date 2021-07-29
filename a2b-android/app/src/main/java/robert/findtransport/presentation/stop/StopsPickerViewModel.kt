@@ -1,12 +1,13 @@
 package robert.findtransport.presentation.stop
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -14,37 +15,27 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
-import robert.findtransport.presentation.component.ld.SingleLiveEvent
 
 class StopsPickerViewModel(
-    private val stopsUseCase: StopsUseCase,
-    private val localeUseCase: LocaleUseCase
+  private val stopsUseCase: StopsUseCase,
+  private val localeUseCase: LocaleUseCase
 ) : BaseViewModel() {
+  val allStops: Flow<PagingData<Stop>> = stopsUseCase.getStopsPaged().cachedIn(viewModelScope + Dispatchers.IO)
 
-  val allStops: LiveData<PagingData<Stop>> = stopsUseCase.getStopsPaged().cachedIn(viewModelScope + Dispatchers.IO).asLiveData()
+  private val _autocompleteStops = MutableSharedFlow<List<Stop>>()
+  val autocompleteStops: Flow<List<Stop>> get() = _autocompleteStops
 
-  private val _autocompleteStops = SingleLiveEvent<List<Stop>>()
-  val autocompleteStops: LiveData<List<Stop>> get() = _autocompleteStops
+  private val _selectedStop = MutableSharedFlow<Stop>()
+  val selectedStop: Flow<Stop> get() = _selectedStop
 
-  private val _selectedStop = MutableLiveData<Stop>()
-  val selectedStop: LiveData<Stop> get() = _selectedStop
+  private val _searchMode = MutableStateFlow(false)
+  val searchMode: Flow<Boolean> get() = _searchMode
 
-  private val _searchMode = MutableLiveData<Boolean>()
-  val searchMode: LiveData<Boolean> get() = _searchMode
+  private val _showNoData = MutableStateFlow(false)
+  val showNoData: Flow<Boolean> get() = _showNoData
 
-  private val _showNoData = MutableLiveData<Boolean>()
-  val showNoData: LiveData<Boolean> get() = _showNoData
-
-  private val _locale = MutableLiveData<String>()
-  val locale: LiveData<String> get() = _locale
-
-  private var isInSearchMode = false
-
-  init {
-    _searchMode.postValue(isInSearchMode)
-    _showNoData.postValue(false)
-    _locale.postValue(localeUseCase.getCurrentLanguage())
-  }
+  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val locale: StateFlow<String> get() = _locale
 
   fun findStops(word: String) {
     viewModelScope.launch(Dispatchers.IO) {
@@ -52,26 +43,25 @@ class StopsPickerViewModel(
       val stops = stopsUseCase.getStopsAutocomplete(word, locale)
       withContext(Dispatchers.Main) {
         if (stops.isEmpty() && word.isEmpty()) {
-//          allStops = stopsUseCase.getStopsPaged().toLiveData(
-//              Config(pageSize = 30, enablePlaceholders = false), fetchExecutor = Dispatchers.Default.asExecutor())
-          _showNoData.postValue(false)
+          _showNoData.value = false
         } else if (stops.isEmpty() && word.isNotEmpty()) {
-          _autocompleteStops.postValue(stops)
-          _showNoData.postValue(true)
+          _autocompleteStops.emit(stops)
+          _showNoData.value = true
         } else {
-          _autocompleteStops.postValue(stops)
-          _showNoData.postValue(false)
+          _autocompleteStops.emit(stops)
+          _showNoData.value = false
         }
       }
     }
   }
 
   fun onStopClicked(stop: Stop) {
-    _selectedStop.postValue(stop)
+    viewModelScope.launch {
+      _selectedStop.emit(stop)
+    }
   }
 
   fun toggleSearchMode() {
-    isInSearchMode = !isInSearchMode
-    _searchMode.postValue(isInSearchMode)
+    _searchMode.value = !_searchMode.value
   }
 }

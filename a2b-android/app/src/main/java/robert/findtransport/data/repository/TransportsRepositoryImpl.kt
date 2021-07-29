@@ -1,13 +1,13 @@
 package robert.findtransport.data.repository
 
+import android.util.Log
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.matching.v5.models.MapMatchingResponse
 import com.mapbox.geojson.Point
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,49 +27,60 @@ import robert.findtransport.utils.PREF_JOINS_ERROR
 import robert.findtransport.utils.PREF_ONLY_FAVORITES
 import robert.findtransport.utils.PREF_TRANSPORTS_ERROR
 import robert.findtransport.utils.extensions.makeApiCall
-import timber.log.Timber
 
 class TransportsRepositoryImpl(
-    private val apiService: ApiService,
-    private val transportsDao: TransportsDao,
-    private val mapboxNavigationService: MapboxNavigationService,
-    private val preferencesService: SharedPreferencesService
+  private val apiService: ApiService,
+  private val transportsDao: TransportsDao,
+  private val mapboxNavigationService: MapboxNavigationService,
+  private val preferencesService: SharedPreferencesService
 ) : TransportsRepository {
   override suspend fun getTransportsFromApi(): Result<List<Transport>> =
-      makeApiCall { apiService.getTransport() }
+    makeApiCall { apiService.getTransport() }
 
   override suspend fun getJoinsFromApi(): Result<List<TransportStopJoin>> =
-      makeApiCall { apiService.getJoins() }
+    makeApiCall { apiService.getJoins() }
 
-  override suspend fun cacheTransports(transports: List<Transport>) =
-      println("A2B Transport ${transportsDao.saveTransports(transports).size}")
+  override suspend fun cacheTransports(transports: List<Transport>) {
+    val saved = transportsDao.saveTransports(transports)
+    Log.d("A2B Transport", "${saved.size}")
+  }
 
-  override suspend fun cacheJoins(joins: List<TransportStopJoin>) =
-      println("A2B Join ${transportsDao.saveJoins(joins).size}")
+  override suspend fun cacheJoins(joins: List<TransportStopJoin>) {
+    val saved = transportsDao.saveJoins(joins)
+    Log.d("A2B Join", "${saved.size}")
+  }
 
-//  override fun getAllTransports(favorite: Boolean): Flow<List<Transport>> =
-//      transportsDao.getAllTransports(favorite)
   override fun getAllTransports(favorite: Boolean): List<Transport> =
-      transportsDao.getAllTransports(favorite)
+    transportsDao.getAllTransports(favorite)
 
   override fun getTransportById(id: Int): Flow<Transport> =
-      transportsDao.getTransportById(id)
-          .distinctUntilChanged()
+    transportsDao.getTransportById(id)
+      .distinctUntilChanged()
 
   override suspend fun getTransportsForStop(id: Int): List<Transport> =
-      transportsDao.getTransportsForStop(id)
+    transportsDao.getTransportsForStop(id)
 
   override fun getTransportStops(transportId: Int): List<Stop> =
-      transportsDao.getTransportStops(transportId)
+    transportsDao.getTransportStops(transportId)
 
   override fun getTransportStopsReversed(transportId: Int): List<Stop> =
-      transportsDao.getTransportStopsReversed(transportId)
+    transportsDao.getTransportStopsReversed(transportId)
 
-  @Suppress("EXPERIMENTAL_API_USAGE")
+  @OptIn(ExperimentalCoroutinesApi::class)
   override suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>> = channelFlow {
     if (coordinates.size < 2) {
       if (!channel.isClosedForSend) {
-        channel.offer(Result.Error(A2bException(ExceptionType.NAVIGATION_EMPTY, R.string.error_no_routes, Exception(""))))
+        launch {
+          channel.send(
+            Result.Error(
+              A2bException(
+                type = ExceptionType.NAVIGATION_EMPTY,
+                errorMessage = R.string.error_no_routes,
+                error = Exception("")
+              )
+            )
+          )
+        }
       }
       return@channelFlow
     }
@@ -77,22 +88,42 @@ class TransportsRepositoryImpl(
     navigation.enqueueCall(object : Callback<MapMatchingResponse> {
       override fun onResponse(call: Call<MapMatchingResponse>, response: Response<MapMatchingResponse>) {
         response.takeIf { it.isSuccessful }
-            ?.body()?.matchings()?.run {
-              val route = get(0).toDirectionRoute()
-              if (!channel.isClosedForSend) {
-                channel.offer(Result.Success(route))
-              }
-              println("Navigation $route")
+          ?.body()?.matchings()?.run {
+            val route = get(0).toDirectionRoute()
+            if (!channel.isClosedForSend) {
+              launch { channel.send(Result.Success(route)) }
             }
-            ?: if (!channel.isClosedForSend) {
-              channel.offer(Result.Error(A2bException(ExceptionType.NAVIGATION_EMPTY, R.string.error_no_routes, Exception(""))))
+            println("Navigation $route")
+          }
+          ?: if (!channel.isClosedForSend) {
+            launch {
+              channel.send(
+                Result.Error(
+                  A2bException(
+                    type = ExceptionType.NAVIGATION_EMPTY,
+                    errorMessage = R.string.error_no_routes,
+                    error = Exception("")
+                  )
+                )
+              )
             }
+          }
       }
 
       override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
-        Timber.tag("Navigation").e(t, "Error")
+        Log.e("Navigation", "Error", t)
         if (!channel.isClosedForSend) {
-          channel.offer(Result.Error(A2bException(ExceptionType.NAVIGATION_ERROR, R.string.error_no_routes, Exception(t))))
+          launch {
+            channel.send(
+              Result.Error(
+                A2bException(
+                  type = ExceptionType.NAVIGATION_ERROR,
+                  errorMessage = R.string.error_no_routes,
+                  error = Exception(t)
+                )
+              )
+            )
+          }
         }
       }
     })

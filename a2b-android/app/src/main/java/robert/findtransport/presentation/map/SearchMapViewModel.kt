@@ -1,10 +1,10 @@
 package robert.findtransport.presentation.map
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
@@ -21,17 +21,17 @@ class SearchMapViewModel(
   private val transportUseCase: TransportUseCase,
 ) : MapViewModel(stopsUseCase, localeUseCase, transportUseCase) {
 
-  private val _loading = MutableLiveData<Boolean>()
-  val loading: LiveData<Boolean> get() = _loading
+  private val _loading = MutableSharedFlow<Boolean>()
+  val loading: Flow<Boolean> get() = _loading
 
-  private val _searchMultiTransports = MutableLiveData<Triple<List<MultiRoute>, Stop, Stop>>()
-  val searchMultiTransports: LiveData<Triple<List<MultiRoute>, Stop, Stop>> get() = _searchMultiTransports
+  private val _searchMultiTransports = MutableSharedFlow<Triple<List<MultiRoute>, Stop, Stop>>()
+  val searchMultiTransports: Flow<Triple<List<MultiRoute>, Stop, Stop>> get() = _searchMultiTransports
 
-  private val _searchEmpty = MutableLiveData<Unit>()
-  val searchEmpty: LiveData<Unit> get() = _searchEmpty
+  private val _searchEmpty = MutableSharedFlow<Unit>()
+  val searchEmpty: Flow<Unit> get() = _searchEmpty
 
-  private val _routeSuccess = MutableLiveData<Pair<RouteResult?, RouteResult?>>()
-  val transportRouteSuccess: LiveData<Pair<RouteResult?, RouteResult?>> get() = _routeSuccess
+  private val _routeSuccess = MutableSharedFlow<Pair<RouteResult?, RouteResult?>>()
+  val transportRouteSuccess: Flow<Pair<RouteResult?, RouteResult?>> get() = _routeSuccess
 
   fun getMultiRoute(fromId: Int, toId: Int) {
     viewModelScope.launch(Dispatchers.IO) {
@@ -49,13 +49,13 @@ class SearchMapViewModel(
                 multiRoute.copy(stop = multiRoute.stop?.copy(coordinates = coordinates))
               }
 
-              _searchMultiTransports.postValue(Triple(multiRoute, from, to)).also { _loading.postValue(false) }
+              _searchMultiTransports.emit(Triple(multiRoute, from, to)).also { _loading.emit(false) }
             }
             else -> Unit
           }
           is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
-            _searchEmpty.postValue(Unit)
-            _loading.postValue(false)
+            _searchEmpty.emit(Unit)
+            _loading.emit(false)
           }
         }
       }
@@ -65,7 +65,7 @@ class SearchMapViewModel(
   fun getRouteSuccess(id: Int) {
     viewModelScope.launch(Dispatchers.IO) {
       val route = async {
-        transportUseCase.getTransportRoute(id, false, false)
+        transportUseCase.getTransportRoute(id, reverse = false, isUnderground = false)
           .flowOn(Dispatchers.IO)
           .stateIn(viewModelScope).value
           .let { routeResult ->
@@ -77,7 +77,7 @@ class SearchMapViewModel(
           }
       }
       val reverse = async {
-        transportUseCase.getTransportRoute(id, true, false)
+        transportUseCase.getTransportRoute(id, reverse = true, isUnderground = false)
           .flowOn(Dispatchers.IO)
           .stateIn(viewModelScope).value
           .let { routeResult ->
@@ -89,7 +89,7 @@ class SearchMapViewModel(
           }
       }
 
-      _routeSuccess.postValue(route.await() to reverse.await())
+      _routeSuccess.emit(route.await() to reverse.await())
     }
   }
 }

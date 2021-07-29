@@ -17,7 +17,4 @@ class LocationRepositoryImpl(
 
   override suspend fun subscribeToLocationUpdates(): Flow<Location> =
     locationObserverService.getLocationUpdates()
-
-  override fun disconnect() =
-      fusedLocationService.disconnect()
 }

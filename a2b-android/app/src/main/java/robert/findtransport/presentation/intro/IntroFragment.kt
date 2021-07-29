@@ -5,8 +5,7 @@ import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.databinding.FragmentIntroBinding
-import robert.findtransport.presentation.home.HomeFragment
-import robert.findtransport.utils.extensions.replaceWithAlpha
+import robert.findtransport.di.homeScreen
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
@@ -25,15 +24,15 @@ class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
       activity?.run {
         LocaleService(this).changeLocale(language)
         supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.frContainer, newInstance())
-            .commit()
+          .beginTransaction()
+          .replace(R.id.frContainer, newInstance())
+          .commit()
       }
     }
     observe(pickerArmValue) { binding.pkLanguage.check(R.id.btnArm) }
     observe(pickerEngValue) { binding.pkLanguage.check(R.id.btnEng) }
     observe(pickerRusValue) { binding.pkLanguage.check(R.id.btnRus) }
-    observe(introPassed) { replaceWithAlpha(HomeFragment.newInstance()) }
+    observe(introPassed) { router.replaceScreen(homeScreen()) }
   }
 
   companion object {

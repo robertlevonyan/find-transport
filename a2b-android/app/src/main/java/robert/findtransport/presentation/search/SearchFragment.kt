@@ -8,18 +8,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.MultiRouteCase
 import robert.findtransport.data.model.MultiType
 import robert.findtransport.databinding.FragmentSearchBinding
+import robert.findtransport.di.detailsScreen
+import robert.findtransport.di.mapSearchScreen
+import robert.findtransport.di.trackRouteScreen
 import robert.findtransport.presentation.component.adapter.MultiRouteAdapter
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
-import robert.findtransport.presentation.detail.DetailFragment
-import robert.findtransport.presentation.map.SearchMapFragment
-import robert.findtransport.presentation.track.TrackRouteFragment
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -60,17 +64,19 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
   override fun FragmentSearchBinding.initViews() {
     fabShowMap.setOnClickListener {
-      val fromId = viewModel.fromStop.value?.id ?: return@setOnClickListener
-      val toId = viewModel.toStop.value?.id ?: return@setOnClickListener
+      lifecycleScope.launch {
+        val fromId = viewModel.fromStop.firstOrNull()?.id ?: 0
+        val toId = viewModel.toStop.firstOrNull()?.id ?: 0
 
-      addWithSlide(
-        SearchMapFragment.newInstance(
-          bundleOf(
-            ARG_FROM_ID to fromId,
-            ARG_TO_ID to toId,
+        router.navigateTo(
+          mapSearchScreen(
+            bundleOf(
+              ARG_FROM_ID to fromId,
+              ARG_TO_ID to toId,
+            )
           )
         )
-      )
+      }
     }
 
     fabTrackRoute.setOnClickListener { }
@@ -78,19 +84,24 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
   override fun SearchViewModel.initObservers() {
     observe(searchEmpty) { showToast("NOTHING") }
-    observe(selectedTransport) { addWithSlide(DetailFragment.newInstance(it.id, false)) }
+    observe(selectedTransport) { router.navigateTo(detailsScreen(it.id, false)) }
     observe(emptyStop) { stopNotFound() }
     observe(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
-    observe(searchTransports) { transports ->
-      val locale = viewModel.locale.value ?: return@observe
-      val fromId = viewModel.fromStop.value?.id ?: return@observe
-      val toId = viewModel.toStop.value?.id ?: return@observe
+    observe(
+      searchTransports
+        .combineTransform(fromStop) { transports, fromStop -> emit(transports to fromStop) }
+        .combineTransform(toStop) { pair, toStop -> emit(Triple(pair.first, pair.second, toStop)) }
+    ) {
+      val locale = viewModel.locale.value
+      val fromId = it.second.id
+      val toId = it.third.id
+      if (it.first.isEmpty()) return@observe
 
       binding.rvTransportsList.adapter = TransportsListAdapter(viewModel::openTransport).apply {
         currentLocale = locale
         setOnTransportTrackClickListener { transport ->
-          add(
-            TrackRouteFragment.newInstance(
+          router.navigateTo(
+            trackRouteScreen(
               bundleOf(
                 ARG_TRANSPORT_ID to transport.id,
                 ARG_FROM_ID to fromId,
@@ -99,11 +110,16 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             )
           )
         }
-        submitList(transports)
+        submitList(it.first)
       }
     }
-    observe(searchMultiTransports) { multiRoots ->
-      val locale = viewModel.locale.value ?: return@observe
+    observe(
+      searchMultiTransports.combineTransform(toStop) { transports, toStop -> emit(transports to toStop) }
+    ) {
+      val locale = viewModel.locale.value
+      val multiRoots = it.first
+      val toStop = it.second
+      if (multiRoots.isEmpty()) return@observe
 
       binding.rvTransportsList.adapter = MultiRouteAdapter(locale, viewModel).apply {
         var fromId = 0
@@ -126,7 +142,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
                   when (multiRoot.type) {
                     MultiType.INTERCHANGE_FROM -> {
                       fromId = multiRoot.stop?.id ?: 0
-                      toId = viewModel.toStop.value?.id ?: 0
+                      toId = toStop.id
                     }
                     else -> Unit
                   }
@@ -170,8 +186,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
               }
             }
           }
-          add(
-            TrackRouteFragment.newInstance(
+
+          router.navigateTo(
+            trackRouteScreen(
               bundleOf(
                 ARG_TRANSPORT_ID to transport.id,
                 ARG_FROM_ID to fromId,
@@ -184,18 +201,18 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       }
     }
     observe(fromStop) { stop ->
-      val locale = viewModel.locale.value ?: return@observe
+      val locale = viewModel.locale.value
       binding.tvFromLabel.setStopName(stop, locale)
     }
     observe(toStop) { stop ->
-      val locale = viewModel.locale.value ?: return@observe
+      val locale = viewModel.locale.value
       binding.tvToLabel.setStopName(stop, locale)
     }
   }
 
   private fun stopNotFound() {
     showToast(getString(R.string.error_stop_not_found))
-    parentFragmentManager.popBackStack()
+    router.exit()
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

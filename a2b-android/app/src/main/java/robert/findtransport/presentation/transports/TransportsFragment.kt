@@ -7,15 +7,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
+import kotlinx.coroutines.flow.combineTransform
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentTransportsBinding
+import robert.findtransport.di.detailsScreen
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
-import robert.findtransport.presentation.detail.DetailFragment
-import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.RESULT_FAVORITE
-import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.extensions.bottomPadding
+import robert.findtransport.utils.extensions.getDimenInt
+import robert.findtransport.utils.extensions.onWindowInsets
+import robert.findtransport.utils.extensions.topMargin
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsBinding>() {
@@ -60,15 +63,13 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
   }
 
   override fun TransportsViewModel.initObservers() {
-    observe(viewModel.allTransports) { transports ->
-      adapter.currentLocale = viewModel.locale.value ?: LNG_EN
-      adapter.submitList(transports)
+    observe(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
+      adapter.currentLocale = data.second
+      adapter.submitList(data.first)
       adapter.notifyDataSetChanged()
     }
-    observe(viewModel.selectedTransport) { transport ->
-      addWithSlide(DetailFragment.newInstance(transport.id, true))
-    }
-    observe(viewModel.showOnlyFavorites) { binding.swListToggle.isChecked = it }
+    observe(selectedTransport) { transport -> router.navigateTo(detailsScreen(transport.id, true)) }
+    observe(showOnlyFavorites) { binding.swListToggle.isChecked = it }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

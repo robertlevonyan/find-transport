@@ -10,4 +10,8 @@ data class Transport(
     var stops: List<Stop> = emptyList(),
     var stopsReversed: List<Stop> = emptyList(),
     var isFavorite: Boolean = false,
-)
+) {
+    companion object {
+        val EMPTY = Transport()
+    }
+}

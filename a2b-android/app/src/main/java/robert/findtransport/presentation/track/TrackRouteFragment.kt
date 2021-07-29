@@ -52,7 +52,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     if (granted) {
       initData()
     } else {
-      parentFragmentManager.popBackStack()
+      router.exit()
       context?.showToast(getString(R.string.error_location))
     }
   }
@@ -101,7 +101,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     root.setOnClickListener { }
     btnStop.setOnClickListener {
       stopTracker()
-      parentFragmentManager.popBackStack()
+      router.exit()
     }
   }
 
@@ -136,13 +136,11 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     observe(predestination) { println(it) }
     observe(notifyNextStop) { NextStopDialog.newInstance().show(parentFragmentManager, NextStopDialog::class.java.simpleName) }
     observe(notifyArrived) {
-      parentFragmentManager.run {
-        setFragmentResult(RESULT_ARRIVED, bundleOf())
-        popBackStack()
-      }
+      parentFragmentManager.setFragmentResult(RESULT_ARRIVED, bundleOf())
+      router.exit()
     }
     observe(notifyStop) {
-      parentFragmentManager.popBackStack()
+      router.exit()
     }
   }
 

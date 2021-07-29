@@ -6,11 +6,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentFeedbackBinding
 import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding>() {

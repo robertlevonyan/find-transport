@@ -41,7 +41,7 @@ class PreviewMapFragment : MapFragment() {
       ?.takeIf { it != -1 }
       ?.let { id = it }
       ?: run {
-        parentFragmentManager.popBackStack()
+        router.exit()
         return
       }
     reverse = arguments?.getBoolean(ARG_ROUTE_REVERSE) ?: false
@@ -90,7 +90,7 @@ class PreviewMapFragment : MapFragment() {
 
     observe(routeError) { message ->
       showToast(getString(message))
-      parentFragmentManager.popBackStack()
+      router.exit()
     }
   }
 

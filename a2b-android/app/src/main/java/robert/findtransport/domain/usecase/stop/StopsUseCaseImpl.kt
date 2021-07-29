@@ -121,9 +121,6 @@ class StopsUseCaseImpl(
     }
   }
 
-  override fun disconnectFromLocationService() =
-      locationRepository.disconnect()
-
   override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {
     stopsRepository.getStopById(id)?.toStop() ?: Stop.EMPTY
   }

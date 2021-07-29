@@ -10,17 +10,18 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import kotlinx.coroutines.flow.combineTransform
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.History
 import robert.findtransport.data.model.enums.HistoryDialogType
 import robert.findtransport.databinding.FragmentHistoryBinding
+import robert.findtransport.di.searchScreen
 import robert.findtransport.presentation.component.adapter.HistoryAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
 import robert.findtransport.presentation.component.dialog.DialogHistory
 import robert.findtransport.presentation.component.rv.SwipeToDeleteCallback
-import robert.findtransport.presentation.search.SearchFragment
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -49,6 +50,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    viewModel.loadHistory()
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
       ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
@@ -75,8 +77,8 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
         history = it,
         yesAction = { history ->
           history?.run {
-            addWithSlide(
-              SearchFragment.newInstance(
+            router.navigateTo(
+              searchScreen(
                 bundleOf(
                   ARG_FROM_ID to history.fromStop.id,
                   ARG_TO_ID to history.toStop.id,
@@ -105,8 +107,10 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
       binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
       binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
     }
-    observe(allHistory) { history ->
-      val locale = viewModel.locale.value ?: return@observe
+    observe(allHistory.combineTransform(locale) {history, locale -> emit(history to locale)}) { historyAndLocale ->
+      val history = historyAndLocale.first
+      val locale = historyAndLocale.second
+
       binding.rvHistory.adapter = HistoryAdapter(locale, viewModel)
         .apply {
           setHasStableIds(false)

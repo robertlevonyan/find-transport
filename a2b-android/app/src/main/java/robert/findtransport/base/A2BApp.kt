@@ -8,10 +8,7 @@ import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import robert.findtransport.R
-import robert.findtransport.di.dataModule
-import robert.findtransport.di.presenterModule
-import robert.findtransport.di.repositoryModule
-import robert.findtransport.di.useCaseModule
+import robert.findtransport.di.*
 
 class A2BApp : MultiDexApplication() {
   override fun onCreate() {
@@ -23,12 +20,15 @@ class A2BApp : MultiDexApplication() {
     super.onCreate()
     startKoin {
       androidContext(this@A2BApp)
-      modules(listOf(
+      modules(
+        listOf(
+          navigationModule,
           dataModule,
           repositoryModule,
           useCaseModule,
           presenterModule
-      ))
+        )
+      )
     }
   }
 }

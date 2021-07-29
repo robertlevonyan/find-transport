@@ -1,10 +1,8 @@
 package robert.findtransport.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
@@ -15,76 +13,76 @@ import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 
 class DetailViewModel(
-    private val localeUseCase: LocaleUseCase,
-    private val transportUseCase: TransportUseCase,
+  private val localeUseCase: LocaleUseCase,
+  private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
 
-  private val _selectedTransport = MutableLiveData<Transport>()
-  val selectedTransport: LiveData<Transport> get() = _selectedTransport
+  private val _selectedTransport = MutableStateFlow(Transport.EMPTY)
+  val selectedTransport: StateFlow<Transport> get() = _selectedTransport
 
-  private val _openPassingTransports = MutableLiveData<Stop>()
-  val openPassingTransports: LiveData<Stop> get() = _openPassingTransports
+  private val _openPassingTransports = MutableSharedFlow<Stop>()
+  val openPassingTransports: Flow<Stop> get() = _openPassingTransports
 
-  private val _hasOptions = MutableLiveData<Boolean>()
-  val hasOptions: LiveData<Boolean> get() = _hasOptions
+  private val _hasOptions = MutableStateFlow(false)
+  val hasOptions: StateFlow<Boolean> get() = _hasOptions
 
-  private val _showPrimary = MutableLiveData<Boolean>().apply { value = true }
-  val showPrimary: LiveData<Boolean> get() = _showPrimary
+  private val _showPrimary = MutableStateFlow(true)
+  val showPrimary: StateFlow<Boolean> get() = _showPrimary
 
-  private val _fromStop = MutableLiveData<Stop>()
-  val fromStop: LiveData<Stop> get() = _fromStop
+  private val _fromStop = MutableStateFlow(Stop.EMPTY)
+  val fromStop: Flow<Stop> get() = _fromStop
 
-  private val _toStop = MutableLiveData<Stop>()
-  val toStop: LiveData<Stop> get() = _toStop
+  private val _toStop = MutableStateFlow(Stop.EMPTY)
+  val toStop: Flow<Stop> get() = _toStop
 
-  private val _locale = MutableLiveData<String>()
-  val locale: LiveData<String> get() = _locale
+  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val locale: StateFlow<String> get() = _locale
 
-  private val _openMap = MutableLiveData<Unit>()
-  val openMap: LiveData<Unit> get() = _openMap
-
-  init {
-    _locale.postValue(localeUseCase.getCurrentLanguage())
-  }
+  private val _openMap = MutableSharedFlow<Boolean>()
+  val openMap: Flow<Boolean> get() = _openMap
 
   fun getTransport(id: Int) {
     viewModelScope.launch(Dispatchers.IO) {
       transportUseCase.getTransportById(id).collect { transport ->
-        _selectedTransport.postValue(transport)
+        _selectedTransport.value = transport
         println(transport.stopsReversed.map { it.id })
       }
     }
   }
 
   fun setHasOptions(has: Boolean) {
-    _hasOptions.postValue(has)
+    _hasOptions.value = has
   }
 
   fun togglePrimary(primary: Boolean) {
-    _showPrimary.postValue(primary)
+    _showPrimary.value = primary
   }
 
   fun setFromStop(stop: Stop) {
-    _fromStop.postValue(stop)
+    _fromStop.value = stop
   }
 
   fun setToStop(stop: Stop) {
-    _toStop.postValue(stop)
+    _toStop.value = stop
   }
 
   fun getStopName(stop: Stop): String =
-      when (localeUseCase.getCurrentLanguage()) {
-        LNG_EN -> stop.nameEn
-        LNG_RU -> stop.nameRu
-        else -> stop.nameAm
-      }
+    when (localeUseCase.getCurrentLanguage()) {
+      LNG_EN -> stop.nameEn
+      LNG_RU -> stop.nameRu
+      else -> stop.nameAm
+    }
 
   fun openMapClick() {
-    _openMap.postValue(Unit)
+    viewModelScope.launch {
+      _openMap.emit(true)
+    }
   }
 
   fun onShowTransportsClicked(stop: Stop) {
-    _openPassingTransports.postValue(stop)
+    viewModelScope.launch {
+      _openPassingTransports.emit(stop)
+    }
   }
 
   override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {

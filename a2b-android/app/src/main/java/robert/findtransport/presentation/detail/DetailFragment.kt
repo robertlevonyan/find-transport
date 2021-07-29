@@ -8,14 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResult
+import kotlinx.coroutines.flow.combineTransform
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.enums.TransportType
 import robert.findtransport.databinding.FragmentDetailBinding
+import robert.findtransport.di.mapPreviewScreen
+import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.adapter.TransportRouteAdapter
-import robert.findtransport.presentation.map.PreviewMapFragment
-import robert.findtransport.presentation.passing.PassingRoutesFragment
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -31,7 +32,7 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
     arguments
       ?.takeIf { it.containsKey(ARG_TRANSPORT_ID) }
       ?.run { viewModel.getTransport(getInt(ARG_TRANSPORT_ID).also { transportId = it }) }
-      ?: parentFragmentManager.popBackStack()
+      ?: router.exit()
     viewModel.setHasOptions(arguments?.getBoolean(ARG_HAS_OPTIONS) == true)
 
   }
@@ -67,35 +68,49 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
         view?.showSnackbar(String.format(getString(R.string.action_set_from_route), it))
       }
     }
+
     observe(toStop) { selectedStop ->
       viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
         setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
         view?.showSnackbar(String.format(getString(R.string.action_set_to_route), it))
       }
     }
-    observe(openMap) {
-      addWithSlide(
-        PreviewMapFragment.newInstance(
-          bundleOf(
-            ARG_TRANSPORT_ID to transportId,
-            ARG_ROUTE_REVERSE to (viewModel.showPrimary.value ?: false),
-            ARG_UNDERGROUND to (selectedTransport.value?.type == TransportType.METRO)
-          ),
-        )
-      )
-    }
-    observe(openPassingTransports) { selectedStop -> addWithSlide(PassingRoutesFragment.newInstance(selectedStop.id)) }
-    observe(selectedTransport) { transport ->
-      val locale = viewModel.locale.value ?: return@observe
 
-      observe(showPrimary) {
-        val stops = if (it) {
+    observe(openMap) { open ->
+      if (open) {
+        router.navigateTo(
+          mapPreviewScreen(
+            bundleOf(
+              ARG_TRANSPORT_ID to transportId,
+              ARG_ROUTE_REVERSE to viewModel.showPrimary.value,
+              ARG_UNDERGROUND to (selectedTransport.value.type == TransportType.METRO)
+            )
+          )
+        )
+      }
+    }
+
+    observe(openPassingTransports) { selectedStop ->
+      router.navigateTo(passingRoutesScreen(selectedStop.id))
+    }
+
+    observe(selectedTransport
+      .combineTransform(showPrimary) { transport, show ->
+        val stops = if (show) {
           transport.stops
         } else {
           transport.stopsReversed
         }
-        binding.rvRoute.adapter = TransportRouteAdapter(viewModel, locale).apply { submitList(stops) }
+        emit(transport to stops)
       }
+      .combineTransform(locale) { transportWithStops, locale ->
+        emit(Triple(transportWithStops.first, transportWithStops.second, locale))
+      }) { data ->
+      val transport = data.first
+      val stops = data.second
+      val locale = data.third
+
+      binding.rvRoute.adapter = TransportRouteAdapter(viewModel, locale).apply { submitList(stops) }
 
       binding.run {
         tvTransportNumber.text = transport.number

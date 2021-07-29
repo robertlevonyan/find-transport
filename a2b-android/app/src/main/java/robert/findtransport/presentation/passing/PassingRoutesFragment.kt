@@ -29,7 +29,7 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
           viewModel.getStop(it)
           viewModel.getTransports(it)
         }
-        ?: parentFragmentManager.popBackStack()
+        ?: router.exit()
   }
 
   override fun FragmentPassingRoutesBinding.initInsets() {
@@ -49,14 +49,14 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
 
   override fun PassingRoutesViewModel.initObservers() {
     observe(stopTransports) { transports ->
-      val locale = viewModel.locale.value ?: return@observe
+      val locale = viewModel.locale.value
       binding.rvTransportsList.adapter = TransportsListAdapter().apply {
         currentLocale = locale
         submitList(transports)
       }
     }
     observe(stopReceived) { stop ->
-      val locale = viewModel.locale.value ?: return@observe
+      val locale = viewModel.locale.value
       binding.tvSelectedStop.setSelectedStopName(stop, locale)
     }
   }

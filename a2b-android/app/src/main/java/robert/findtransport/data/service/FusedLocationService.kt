@@ -3,53 +3,43 @@ package robert.findtransport.data.service
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
-import com.mapzen.android.lost.api.LocationServices
-import com.mapzen.android.lost.api.LostApiClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
 class FusedLocationService(private val context: Context) {
-  private var fusedLocationClient: Location? = null
-  private var lostApiClient: LostApiClient? = null
-  
+  private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
+  @SuppressLint("MissingPermission")
   @Suppress("EXPERIMENTAL_API_USAGE")
   fun subscribeToCurrentLocation() = callbackFlow<Location> {
-    lostApiClient = LostApiClient.Builder(context)
-        .run {
-          addConnectionCallbacks(object : LostApiClient.ConnectionCallbacks {
-            @SuppressLint("MissingPermission")
-            override fun onConnected() {
-              fusedLocationClient = fusedLocationClient
-                  ?.run { fusedLocationClient }
-                  ?: kotlin.run {
-                    if (lostApiClient?.isConnected == true) {
-                      LocationServices.FusedLocationApi.getLastLocation(lostApiClient ?: return)
-                    } else null
-                  }
-              
-              val lat = (fusedLocationClient?.latitude ?: return)
-              val lng = (fusedLocationClient?.longitude ?: return)
+    val locationCallback = object : LocationCallback() {
+      override fun onLocationResult(locationResult: LocationResult) {
+        super.onLocationResult(locationResult)
 
-              launch {
-                channel.send(Location("current_location").apply {
-                  latitude = lat
-                  longitude = lng
-                })
-              }
-            }
-            
-            override fun onConnectionSuspended() = Unit
-            
+        val lastLocation = locationResult.lastLocation
+
+        launch {
+          channel.send(Location("current_location").also { currentLocation ->
+            currentLocation.latitude = lastLocation.latitude
+            currentLocation.longitude = lastLocation.longitude
           })
-          build()
         }
-        ?.apply { connect() }
-    
-    awaitClose { }
-  }
+      }
+    }
 
-  fun disconnect() {
-    lostApiClient?.disconnect()
+    fusedLocationClient.requestLocationUpdates(
+      LocationRequest.create(),
+      locationCallback,
+      context.mainLooper,
+    )
+
+    awaitClose {
+      fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
   }
 }

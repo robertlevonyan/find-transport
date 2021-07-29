@@ -41,7 +41,7 @@ class TransportRouteAdapter(
       binding.run {
         stopNameStart.setStopName(item, currentLocale)
         optionsStart.setStopOptionsMenu(detailViewModel, item)
-        optionsStart.visibility = if (detailViewModel.hasOptions.value == true) View.VISIBLE else View.GONE
+        optionsStart.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }
@@ -51,7 +51,7 @@ class TransportRouteAdapter(
       binding.run {
         stopNameMid.setStopName(item, currentLocale)
         optionsMid.setStopOptionsMenu(detailViewModel, item)
-        optionsMid.visibility = if (detailViewModel.hasOptions.value == true) View.VISIBLE else View.GONE
+        optionsMid.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }
@@ -61,7 +61,7 @@ class TransportRouteAdapter(
       binding.run {
         stopNameEnd.setStopName(item, currentLocale)
         optionsEnd.setStopOptionsMenu(detailViewModel, item)
-        optionsEnd.visibility = if (detailViewModel.hasOptions.value == true) View.VISIBLE else View.GONE
+        optionsEnd.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }

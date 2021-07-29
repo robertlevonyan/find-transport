@@ -21,8 +21,6 @@ interface StopsUseCase {
 
   suspend fun getNearbyStop(stops: List<Stop>, coroutineScope: CoroutineScope): Flow<Stop>
 
-  fun disconnectFromLocationService()
-
   suspend fun getStop(id: Int): Stop
 
   suspend fun downloadStops(): Result<Unit>

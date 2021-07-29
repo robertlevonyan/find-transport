@@ -12,17 +12,18 @@ import robert.findtransport.presentation.stop.StopsPickerViewModel
 import robert.findtransport.utils.extensions.setStopName
 
 class FoundStopsAdapter(private val stopsPickerViewModel: StopsPickerViewModel) :
-    BaseRecyclerViewAdapter<ItemSpinnerBinding, Stop, FoundStopsAdapter.StopsViewHolder>(
-        AsyncDifferConfig.Builder(StopsDiffCallback())) {
+  BaseRecyclerViewAdapter<ItemSpinnerBinding, Stop, FoundStopsAdapter.StopsViewHolder>(
+    AsyncDifferConfig.Builder(StopsDiffCallback())
+  ) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StopsViewHolder =
-      StopsViewHolder(ItemSpinnerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    StopsViewHolder(ItemSpinnerBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
   inner class StopsViewHolder(private val binding: ItemSpinnerBinding) :
-      BaseViewHolder<ItemSpinnerBinding, Stop>(binding) {
+    BaseViewHolder<ItemSpinnerBinding, Stop>(binding) {
     override fun bind(item: Stop) {
       binding.run {
-        val locale = stopsPickerViewModel.locale.value ?: return@run
+        val locale = stopsPickerViewModel.locale.value
         tvItem.setStopName(item, locale)
         tvItem.setOnClickListener { stopsPickerViewModel.onStopClicked(item) }
       }

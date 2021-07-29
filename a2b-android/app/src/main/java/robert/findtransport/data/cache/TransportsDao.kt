@@ -27,7 +27,6 @@ interface TransportsDao {
   fun getTransportById(id: Int): Flow<Transport>
 
   @Query("SELECT * FROM Transport WHERE CASE(:favorite) WHEN 1 THEN favorite = 1 ELSE  favorite = 1 OR favorite = 0 END ORDER BY type ASC, CAST(name AS DECIMAL) ASC")
-//  fun getAllTransports(favorite: Boolean): Flow<List<Transport>>
   fun getAllTransports(favorite: Boolean): List<Transport>
 
   @Query("SELECT count(*) FROM Transport")

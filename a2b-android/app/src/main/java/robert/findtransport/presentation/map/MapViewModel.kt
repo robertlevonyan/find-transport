@@ -1,10 +1,11 @@
 package robert.findtransport.presentation.map
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -20,40 +21,33 @@ import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 
 open class MapViewModel(
-    private val stopsUseCase: StopsUseCase,
-    private val localeUseCase: LocaleUseCase,
-    private val transportUseCase: TransportUseCase
+  private val stopsUseCase: StopsUseCase,
+  private val localeUseCase: LocaleUseCase,
+  private val transportUseCase: TransportUseCase
 ) : BaseViewModel() {
-  private val _locale = MutableLiveData<String>()
-  val locale: LiveData<String> get() = _locale
+  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val locale: Flow<String> get() = _locale
 
-  private val _onCurrentLocation = MutableLiveData<Unit>()
-  val onCurrentLocation: LiveData<Unit> get() = _onCurrentLocation
+  private val _allStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
+  val allStops: Flow<List<SymbolOptions>> get() = _allStops
 
-  private val _allStops = MutableLiveData<List<SymbolOptions>>()
-  val allStops: LiveData<List<SymbolOptions>> get() = _allStops
+  private val _metroStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
+  val metroStops: Flow<List<SymbolOptions>> get() = _metroStops
 
-  private val _metroStops = MutableLiveData<List<SymbolOptions>>()
-  val metroStops: LiveData<List<SymbolOptions>> get() = _metroStops
+  private val _routeSuccess = MutableSharedFlow<RouteResult>()
+  val routeSuccess: Flow<RouteResult> get() = _routeSuccess
 
-  private val _routeSuccess = MutableLiveData<RouteResult>()
-  val routeSuccess: LiveData<RouteResult> get() = _routeSuccess
-
-  private val _routeError = MutableLiveData<Int>()
-  val routeError: LiveData<Int> get() = _routeError
-
-  init {
-    _locale.postValue(localeUseCase.getCurrentLanguage())
-  }
+  private val _routeError = MutableSharedFlow<Int>()
+  val routeError: Flow<Int> get() = _routeError
 
   fun getStops() {
     viewModelScope.launch(Dispatchers.IO) {
       try {
         if (!coroutineContext.isActive) return@launch
         val stops = stopsUseCase.getStopsLocations()
-        _allStops.postValue(stops)
+        _allStops.value = stops
         val metroStops = stopsUseCase.getMetroStopsLocations()
-        _metroStops.postValue(metroStops)
+        _metroStops.value = metroStops
       } catch (e: Exception) {
         e.printStackTrace()
       }
@@ -69,10 +63,10 @@ open class MapViewModel(
           when (routeResult) {
             is Result.Success -> {
               val successData = routeResult.data
-              _routeSuccess.postValue(successData)
+              _routeSuccess.emit(successData)
             }
             is Result.Error -> when (routeResult.exception.type) {
-              ExceptionType.NAVIGATION_EMPTY, ExceptionType.NAVIGATION_ERROR -> _routeError.postValue(routeResult.exception.errorMessage)
+              ExceptionType.NAVIGATION_EMPTY, ExceptionType.NAVIGATION_ERROR -> _routeError.emit(routeResult.exception.errorMessage)
               else -> return@collect
             }
           }
@@ -91,12 +85,11 @@ open class MapViewModel(
           if (!coroutineContext.isActive) return@collect
           when (routeResult) {
             is Result.Success -> {
-              val successData = routeResult.data
-              _routeSuccess.postValue(successData)
+              _routeSuccess.emit(routeResult.data)
             }
             is Result.Error -> when (routeResult.exception.type) {
-              ExceptionType.NAVIGATION_EMPTY -> _routeError.postValue(routeResult.exception.errorMessage)
-              ExceptionType.NAVIGATION_ERROR -> _routeError.postValue(routeResult.exception.errorMessage)
+              ExceptionType.NAVIGATION_EMPTY -> _routeError.emit(routeResult.exception.errorMessage)
+              ExceptionType.NAVIGATION_ERROR -> _routeError.emit(routeResult.exception.errorMessage)
               else -> return@collect
             }
           }
@@ -105,10 +98,6 @@ open class MapViewModel(
         e.printStackTrace()
       }
     }
-  }
-
-  fun getCurrentLocation() {
-    _onCurrentLocation.postValue(Unit)
   }
 
   fun getStopName(stop: Stop): String = when (localeUseCase.getCurrentLanguage()) {

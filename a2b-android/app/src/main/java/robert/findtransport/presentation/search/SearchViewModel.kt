@@ -1,9 +1,9 @@
 package robert.findtransport.presentation.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.*
@@ -12,7 +12,6 @@ import robert.findtransport.domain.usecase.history.HistoryUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.presentation.component.ld.SingleLiveEvent
 import java.util.*
 
 class SearchViewModel(
@@ -21,56 +20,57 @@ class SearchViewModel(
   private val transportUseCase: TransportUseCase,
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
+  private val _loading = MutableSharedFlow<Boolean>()
+  val loading: Flow<Boolean> get() = _loading
 
-  private val _loading = MutableLiveData<Boolean>()
-  val loading: LiveData<Boolean> get() = _loading
+  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val locale: StateFlow<String> get() = _locale
 
-  private val _locale = MutableLiveData<String>()
-  val locale: LiveData<String> get() = _locale
+  private val _fromStop = MutableSharedFlow<Stop>()
+  val fromStop: Flow<Stop> get() = _fromStop
 
-  private val _fromStop = MutableLiveData<Stop>()
-  val fromStop: LiveData<Stop> get() = _fromStop
+  private val _toStop = MutableSharedFlow<Stop>()
+  val toStop: Flow<Stop> get() = _toStop
 
-  private val _toStop = MutableLiveData<Stop>()
-  val toStop: LiveData<Stop> get() = _toStop
+  private val _searchTransports = MutableStateFlow<List<Transport>>(emptyList())
+  val searchTransports: Flow<List<Transport>> get() = _searchTransports
 
-  private val _searchTransports = SingleLiveEvent<List<Transport>>()
-  val searchTransports: LiveData<List<Transport>> get() = _searchTransports
+  private val _searchMultiTransports = MutableStateFlow<List<MultiRoute>>(emptyList())
+  val searchMultiTransports: Flow<List<MultiRoute>> get() = _searchMultiTransports
 
-  private val _searchMultiTransports = MutableLiveData<List<MultiRoute>>()
-  val searchMultiTransports: LiveData<List<MultiRoute>> get() = _searchMultiTransports
+  private val _searchEmpty = MutableSharedFlow<Unit>()
+  val searchEmpty: Flow<Unit> get() = _searchEmpty
 
-  private val _searchEmpty = MutableLiveData<Unit>()
-  val searchEmpty: LiveData<Unit> get() = _searchEmpty
+  private val _selectedTransport = MutableSharedFlow<Transport>()
+  val selectedTransport: Flow<Transport> get() = _selectedTransport
 
-  private val _selectedTransport = MutableLiveData<Transport>()
-  val selectedTransport: LiveData<Transport> get() = _selectedTransport
-
-  private val _emptyStop = MutableLiveData<Unit>()
-  val emptyStop: LiveData<Unit> get() = _emptyStop
-
-  init {
-    _locale.postValue(localeUseCase.getCurrentLanguage())
-  }
+  private val _emptyStop = MutableSharedFlow<Unit>()
+  val emptyStop: Flow<Unit> get() = _emptyStop
 
   fun getData(fromId: Int, toId: Int, addToHistory: Boolean) {
-    _loading.postValue(true)
     viewModelScope.launch(Dispatchers.IO) {
+      _loading.emit(true)
       val from = stopsUseCase.getStop(fromId)
       val to = stopsUseCase.getStop(toId)
+
       if (from == Stop.EMPTY || to == Stop.EMPTY) {
-        _emptyStop.postValue(Unit)
+        _emptyStop.emit(Unit)
         return@launch
       }
-      _fromStop.postValue(from)
-      _toStop.postValue(to)
+      _fromStop.emit(from)
+      _toStop.emit(to)
+
       when (val search = transportUseCase.search(from, to)) {
         is Result.Success -> when (search.data) {
           is SearchResult.Single -> {
-            _searchTransports.postValue(search.data.result).also { _loading.postValue(false) }
+            delay(100)
+            _searchTransports.value = search.data.result
+            _loading.emit(false)
           }
           is SearchResult.Multi -> {
-            _searchMultiTransports.postValue(search.data.result).also { _loading.postValue(false) }
+            delay(100)
+            _searchMultiTransports.value = search.data.result
+            _loading.emit(false)
           }
         }.run {
           if (addToHistory) {
@@ -84,15 +84,17 @@ class SearchViewModel(
           }
         }
         is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
-          _searchEmpty.postValue(Unit)
-          _loading.postValue(false)
+          _searchEmpty.emit(Unit)
+          _loading.emit(false)
         }
       }
     }
   }
 
   fun openTransport(transport: Transport?) {
-    _selectedTransport.postValue(transport ?: return)
+    viewModelScope.launch {
+      _selectedTransport.emit(transport ?: return@launch)
+    }
   }
 
   override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {

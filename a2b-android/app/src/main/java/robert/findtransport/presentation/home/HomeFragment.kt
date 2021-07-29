@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -8,23 +9,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.marginBottom
 import androidx.fragment.app.setFragmentResultListener
 import com.google.android.play.core.review.ReviewManagerFactory
+import kotlinx.coroutines.flow.combineTransform
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentHomeBinding
-import robert.findtransport.presentation.history.HistoryFragment
-import robert.findtransport.presentation.map.ChooserMapFragment
-import robert.findtransport.presentation.search.SearchFragment
-import robert.findtransport.presentation.stop.StopsPickerFragment
-import robert.findtransport.presentation.transports.TransportsFragment
-import robert.findtransport.presentation.update.UpdateFragment
+import robert.findtransport.di.*
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
-import timber.log.Timber
 
 class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override val binding: FragmentHomeBinding by viewBinding(FragmentHomeBinding::inflate)
@@ -76,32 +71,37 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     btnToMap.setOnClickListener { viewModel.notifyOpenMap() }
     btnSearch.setOnClickListener { viewModel.search() }
     fabSwap.setOnClickListener { viewModel.swapStops() }
-    btnTransports.setOnClickListener { add(TransportsFragment.newInstance()) }
+    btnTransports.setOnClickListener { router.navigateTo(transportsScreen()) }
   }
 
   override fun HomeViewModel.initObservers() {
-    observe(openMap) { addWithSlide(ChooserMapFragment.newInstance()) }
+    observe(openMap) { router.navigateTo(mapChooserScreen()) }
     observe(allTransportsError) { showToast("ERROR") }
-    observe(openStops) { type -> addWithSlide(StopsPickerFragment.newInstance(type)) }
+    observe(openStops) { type -> router.navigateTo(stopsPickerScreen(type)) }
     observe(openRate) { rate() }
-    observe(openUpdate) { replaceWithSlide(UpdateFragment.newInstance()) }
+    observe(openUpdate) { router.navigateTo(updateScreen()) }
     observe(openSearch) { ids ->
-      val fragment = SearchFragment.newInstance(
-        bundleOf(
-          ARG_FROM_ID to ids.first,
-          ARG_TO_ID to ids.second,
-          ARG_ADD_TO_HISTORY to true
+      router.navigateTo(
+        searchScreen(
+          bundleOf(
+            ARG_FROM_ID to ids.first,
+            ARG_TO_ID to ids.second,
+            ARG_ADD_TO_HISTORY to true
+          )
         )
       )
-      addWithSlide(fragment)
     }
     observe(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
-    observe(fromStop) { stop ->
-      val locale = viewModel.locale.value ?: return@observe
+    observe(fromStop.combineTransform(locale) {stop, locale -> emit(stop to locale)}) { stopAndLocale ->
+      val stop = stopAndLocale.first
+      val locale = stopAndLocale.second
+
       binding.inputFrom.setStopName(stop, locale)
     }
-    observe(toStop) { stop ->
-      val locale = viewModel.locale.value ?: return@observe
+    observe(toStop.combineTransform(locale) {stop, locale -> emit(stop to locale)}) { stopAndLocale ->
+      val stop = stopAndLocale.first
+      val locale = stopAndLocale.second
+
       binding.inputTo.setStopName(stop, locale)
     }
     observe(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
@@ -118,13 +118,13 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         val flow = reviewManager.launchReviewFlow(this, reviewInfo)
         flow.addOnCompleteListener {
           if (it.isSuccessful) {
-            Timber.tag("Rate: ").d(request.result.toString())
+            Log.d("Rate: ", request.result.toString())
           } else {
-            Timber.tag("Error: ").d(it.exception.toString())
+            Log.e("Error: ", it.exception.toString())
           }
         }
       } else {
-        Timber.tag("Error: ").d(request.exception.toString())
+        Log.e("Error: ", request.exception.toString())
       }
     }
   }
@@ -135,7 +135,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.action_history -> {
-        addWithSlide(HistoryFragment.newInstance())
+        router.navigateTo(historyScreen())
         true
       }
       else -> super.onOptionsItemSelected(item)

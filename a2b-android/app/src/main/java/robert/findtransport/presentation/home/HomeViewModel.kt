@@ -1,10 +1,11 @@
 package robert.findtransport.presentation.home
 
 import android.Manifest
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collect
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
@@ -16,53 +17,52 @@ import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.presentation.component.ld.SingleLiveEvent
 
 class HomeViewModel(
-    localeUseCase: LocaleUseCase,
-    private val stopsUseCase: StopsUseCase,
-    private val transportUseCase: TransportUseCase,
-    private val permissionUseCase: PermissionUseCase,
-    private val rateUseCase: RateUseCase
+  localeUseCase: LocaleUseCase,
+  private val stopsUseCase: StopsUseCase,
+  private val transportUseCase: TransportUseCase,
+  private val permissionUseCase: PermissionUseCase,
+  private val rateUseCase: RateUseCase
 ) : BaseViewModel() {
-  private val _allTransportsError = MutableLiveData<Unit>()
-  val allTransportsError: LiveData<Unit> get() = _allTransportsError
+  private val _allTransportsError = MutableSharedFlow<Unit>()
+  val allTransportsError: Flow<Unit> get() = _allTransportsError
 
-  private val _fromStop = MutableLiveData<Stop>()
-  val fromStop: LiveData<Stop> get() = _fromStop
+  private val _fromStop = MutableStateFlow(Stop.EMPTY)
+  val fromStop: Flow<Stop> get() = _fromStop
 
-  private val _fromError = MutableLiveData<Int>()
-  val fromError: LiveData<Int> get() = _fromError
+  private val _fromError = MutableSharedFlow<Int>()
+  val fromError: Flow<Int> get() = _fromError
 
-  private val _toStop = MutableLiveData<Stop>()
-  val toStop: LiveData<Stop> get() = _toStop
+  private val _toStop = MutableStateFlow(Stop.EMPTY)
+  val toStop: Flow<Stop> get() = _toStop
 
-  private val _toError = MutableLiveData<Int>()
-  val toError: LiveData<Int> get() = _toError
+  private val _toError = MutableSharedFlow<Int>()
+  val toError: Flow<Int> get() = _toError
 
-  private val _hasLocationPermission = MutableLiveData<LocationPermission>()
-  val hasLocationPermission: LiveData<LocationPermission> get() = _hasLocationPermission
+  private val _hasLocationPermission = MutableStateFlow(LocationPermission.NO_PERMISSION)
+  val hasLocationPermission: Flow<LocationPermission> get() = _hasLocationPermission
 
-  private val _locale = MutableLiveData<String>()
-  val locale: LiveData<String> get() = _locale
+  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val locale: Flow<String> get() = _locale
 
-  private val _openMap = SingleLiveEvent<Unit>()
-  val openMap: LiveData<Unit> get() = _openMap
+  private val _openMap = MutableSharedFlow<Unit>()
+  val openMap: Flow<Unit> get() = _openMap
 
-  private val _openStops = SingleLiveEvent<Int>()
-  val openStops: LiveData<Int> get() = _openStops
+  private val _openStops = MutableSharedFlow<Int>()
+  val openStops: Flow<Int> get() = _openStops
 
-  private val _openSearch = SingleLiveEvent<Pair<Int, Int>>()
-  val openSearch: LiveData<Pair<Int, Int>> get() = _openSearch
+  private val _openSearch = MutableSharedFlow<Pair<Int, Int>>()
+  val openSearch: Flow<Pair<Int, Int>> get() = _openSearch
 
-  private val _showRate = MutableLiveData<Boolean>()
-  val showRate: LiveData<Boolean> get() = _showRate
+  private val _showRate = MutableStateFlow(rateUseCase.showDialog())
+  val showRate: Flow<Boolean> get() = _showRate
 
-  private val _openRate = MutableLiveData<Unit>()
-  val openRate: LiveData<Unit> get() = _openRate
+  private val _openRate = MutableSharedFlow<Unit>()
+  val openRate: Flow<Unit> get() = _openRate
 
-  private val _openUpdate = MutableLiveData<Unit>()
-  val openUpdate: LiveData<Unit> get() = _openUpdate
+  private val _openUpdate = MutableSharedFlow<Unit>()
+  val openUpdate: Flow<Unit> get() = _openUpdate
 
   private val scope = CoroutineScope(Dispatchers.IO)
   private var job: Job? = null
@@ -72,13 +72,12 @@ class HomeViewModel(
       delay(1000)
     }
 
-    _locale.postValue(localeUseCase.getCurrentLanguage())
     rateUseCase.updateInterval()
-    _showRate.postValue(rateUseCase.showDialog())
     viewModelScope.launch {
       if (!transportUseCase.areJoinsCached() || !transportUseCase.areTransportsCached()
-          || !stopsUseCase.areLocationsCached() || !stopsUseCase.areStopsCached()) {
-        _openUpdate.postValue(Unit)
+        || !stopsUseCase.areLocationsCached() || !stopsUseCase.areStopsCached()
+      ) {
+        _openUpdate.emit(Unit)
       }
       val hasPermission = permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
       startFindNearbyLocation(hasPermission)
@@ -87,7 +86,7 @@ class HomeViewModel(
 
   fun startFindNearbyLocation(hasPermission: Boolean) {
     viewModelScope.launch {
-      _hasLocationPermission.postValue(if (hasPermission) LocationPermission.LOADING else LocationPermission.NO_PERMISSION)
+      _hasLocationPermission.emit(if (hasPermission) LocationPermission.LOADING else LocationPermission.NO_PERMISSION)
       findNearbyLocation(hasPermission, stopsUseCase.getStops())
     }
   }
@@ -97,53 +96,64 @@ class HomeViewModel(
       stopsUseCase.getNearbyStop(stops, this).collect { nearbyStop ->
         if (nearbyStop == Stop.EMPTY) {
           withContext(Dispatchers.Main) {
-            _hasLocationPermission.postValue(LocationPermission.HAS_PERMISSION)
+            _hasLocationPermission.emit(LocationPermission.HAS_PERMISSION)
           }
           return@collect
         }
-        _fromStop.postValue(nearbyStop)
-        _hasLocationPermission.postValue(LocationPermission.HAS_PERMISSION)
+        _fromStop.emit(nearbyStop)
+        _hasLocationPermission.emit(LocationPermission.HAS_PERMISSION)
       }
     }
   }
 
   fun notifyOpenMap() {
-    _openMap.postValue(Unit)
+    viewModelScope.launch {
+      _openMap.emit(Unit)
+    }
   }
 
   fun notifyOpenStops(type: Int) {
-    _openStops.postValue(type)
+    viewModelScope.launch {
+      _openStops.emit(type)
+    }
   }
 
   fun setFromStop(stopId: Int) {
     viewModelScope.launch {
       val stop = stopsUseCase.getStop(stopId)
-      _fromStop.postValue(stop)
+      _fromStop.emit(stop)
     }
   }
 
   fun setToStop(stopId: Int) {
     viewModelScope.launch {
       val stop = stopsUseCase.getStop(stopId)
-      _toStop.postValue(stop)
+      _toStop.emit(stop)
     }
   }
 
   fun swapStops() {
-    val from = _fromStop.value ?: Stop.EMPTY
-    val to = _toStop.value ?: Stop.EMPTY
-    _fromStop.postValue(to)
-    _toStop.postValue(from)
+    val from = _fromStop.value
+    val to = _toStop.value
+
+    viewModelScope.launch {
+      _fromStop.emit(to)
+      _toStop.emit(from)
+    }
   }
 
   fun openRate() {
-    rateUseCase.setRate()
-    _openRate.postValue(Unit)
-    _showRate.postValue(false)
+    viewModelScope.launch {
+      rateUseCase.setRate()
+      _openRate.emit(Unit)
+      _showRate.emit(false)
+    }
   }
 
   fun dismissRate() {
-    _showRate.postValue(false)
+    viewModelScope.launch {
+      _showRate.emit(false)
+    }
   }
 
   fun search() {
@@ -152,19 +162,14 @@ class HomeViewModel(
 
     viewModelScope.launch(Dispatchers.IO) {
       when (val search = transportUseCase.searchCheck(from, to)) {
-        is Result.Success -> _openSearch.postValue((from?.id ?: 0) to (to?.id ?: 0))
+        is Result.Success -> _openSearch.emit(from.id to to.id)
         is Result.Error -> when (search.exception.type) {
-          ExceptionType.EMPTY_OR_WRONG_FROM -> _fromError.postValue(search.exception.errorMessage)
-          ExceptionType.EMPTY_OR_WRONG_TO -> _toError.postValue(search.exception.errorMessage)
-          ExceptionType.SAME_STOPS -> _toError.postValue(search.exception.errorMessage)
+          ExceptionType.EMPTY_OR_WRONG_FROM -> _fromError.emit(search.exception.errorMessage)
+          ExceptionType.EMPTY_OR_WRONG_TO -> _toError.emit(search.exception.errorMessage)
+          ExceptionType.SAME_STOPS -> _toError.emit(search.exception.errorMessage)
           else -> return@launch
         }
       }
     }
-  }
-
-  override fun onCleared() {
-    super.onCleared()
-    stopsUseCase.disconnectFromLocationService()
   }
 }

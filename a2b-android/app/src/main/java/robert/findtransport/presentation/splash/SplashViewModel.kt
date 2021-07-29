@@ -1,9 +1,10 @@
 package robert.findtransport.presentation.splash
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
@@ -30,38 +31,36 @@ class SplashViewModel(
   private val databaseUseCase: DatabaseUseCase,
   private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
-  private val _themeLiveData by lazy { MutableLiveData<Int>() }
-  val themeLiveData: LiveData<Int> get() = _themeLiveData
+  private val _themeLiveData = MutableStateFlow(themeUseCase.getTheme())
+  val themeLiveData: Flow<Int> get() = _themeLiveData
 
-  private val _currentLanguage by lazy { MutableLiveData<String>() }
-  val currentLanguage: LiveData<String> get() = _currentLanguage
+  private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
+  val currentLanguage: Flow<String> get() = _currentLanguage
 
-  private val _loadStart = MutableLiveData<Unit>()
-  val loadStart: LiveData<Unit> get() = _loadStart
+  private val _loadStart = MutableSharedFlow<Unit>()
+  val loadStart: Flow<Unit> get() = _loadStart
 
-  private val _loaded = MutableLiveData<Unit>()
-  val loaded: LiveData<Unit> get() = _loaded
+  private val _loaded = MutableSharedFlow<Unit>()
+  val loaded: Flow<Unit> get() = _loaded
 
-  private val _emptyDatabase = MutableLiveData<Unit>()
-  val emptyDatabase: LiveData<Unit> get() = _emptyDatabase
+  private val _emptyDatabase = MutableSharedFlow<Unit>()
+  val emptyDatabase: Flow<Unit> get() = _emptyDatabase
 
-  private val _nextIntro = MutableLiveData<Unit>()
-  val nextIntro: LiveData<Unit> get() = _nextIntro
+  private val _nextIntro = MutableSharedFlow<Unit>()
+  val nextIntro: Flow<Unit> get() = _nextIntro
 
-  private val _nextMain = MutableLiveData<Unit>()
-  val nextMain: LiveData<Unit> get() = _nextMain
+  private val _nextMain = MutableSharedFlow<Unit>()
+  val nextMain: Flow<Unit> get() = _nextMain
 
-  private val _loadingError = MutableLiveData<String>()
-  val loadingError: LiveData<String> get() = _loadingError
+  private val _loadingError = MutableSharedFlow<String>()
+  val loadingError: Flow<String> get() = _loadingError
 
-  private val _loadingDiskFull = MutableLiveData<Unit>()
-  val loadingDiskFull: LiveData<Unit> get() = _loadingDiskFull
+  private val _loadingDiskFull = MutableSharedFlow<Unit>()
+  val loadingDiskFull: Flow<Unit> get() = _loadingDiskFull
 
   private var downloaded = false
 
   init {
-    _themeLiveData.postValue(themeUseCase.getTheme())
-    _currentLanguage.postValue(localeUseCase.getCurrentLanguage())
     checkData()
   }
 
@@ -72,7 +71,7 @@ class SplashViewModel(
         return@launch
       }
       if (checkInternetUseCase.isResolveIp() && checkInternetUseCase.isInternetConnected()) {
-        _loadStart.postValue(Unit)
+        _loadStart.emit(Unit)
         try {
           if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
             notifyLoaded()
@@ -91,7 +90,7 @@ class SplashViewModel(
         } catch (e: Exception) {
           val message = e.message ?: ""
           if (message.contains("database or disk is full (code 13)")) {
-            _loadingDiskFull.postValue(Unit)
+            _loadingDiskFull.emit(Unit)
           }
           notifyLoadingError(message)
         }
@@ -106,16 +105,20 @@ class SplashViewModel(
   }
 
   private fun notifyLoaded() {
-    _loaded.postValue(Unit)
+    viewModelScope.launch {
+      _loaded.emit(Unit)
+    }
   }
 
   private fun notifyEmptyDatabase() {
-    _emptyDatabase.postValue(Unit)
+    viewModelScope.launch {
+      _emptyDatabase.emit(Unit)
+    }
   }
 
   private fun notifyLoadingError(message: String?) {
-    _loadingError.postValue(message ?: return)
     viewModelScope.launch(Dispatchers.IO) {
+      _loadingError.emit(message ?: return@launch)
       feedbackUseCase.sendFeedback("error@a2b.com", "Splash", message)
     }
   }
@@ -150,9 +153,13 @@ class SplashViewModel(
     }
   }
 
-  fun onNext() = if (introUseCase.isIntroPassed) {
-    _nextMain.postValue(Unit)
-  } else {
-    _nextIntro.postValue(Unit)
+  fun onNext() {
+    viewModelScope.launch {
+      if (introUseCase.isIntroPassed) {
+        _nextMain.emit(Unit)
+      } else {
+        _nextIntro.emit(Unit)
+      }
+    }
   }
 }
