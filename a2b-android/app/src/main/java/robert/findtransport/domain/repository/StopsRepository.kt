@@ -5,7 +5,6 @@ import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.StopLocation
 import robert.findtransport.data.model.Result
 
-
 interface StopsRepository {
   suspend fun getStopsFromApi(): Result<List<Stop>>
 

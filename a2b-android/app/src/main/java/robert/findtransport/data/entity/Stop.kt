@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity
-@Serializable()
+@Serializable
 class Stop {
   @PrimaryKey
   @SerialName("id")

@@ -43,7 +43,7 @@
       android:name="firebase_crashlytics_collection_enabled"
       android:value="${crashlyticsCollectionEnabled}" />
 
-    <!-- suppress AndroidDomInspection -->
+    <!--suppress AndroidDomInspection -->
     <service
       android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService"
       android:exported="false"

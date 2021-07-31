@@ -2,7 +2,10 @@ package robert.findtransport.data.api
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
@@ -10,6 +13,10 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
 import robert.findtransport.BuildConfig
+import robert.findtransport.data.entity.Stop
+import robert.findtransport.data.entity.StopLocation
+import robert.findtransport.data.entity.Transport
+import robert.findtransport.data.entity.TransportStopJoin
 import robert.findtransport.utils.BASE_URL
 import robert.findtransport.utils.extensions.md5
 import java.text.SimpleDateFormat
@@ -20,10 +27,23 @@ class RetrofitClient private constructor() {
   companion object {
     private var retrofit: Retrofit? = null
 
+    private val json = Json {
+      useArrayPolymorphism = true
+      serializersModule = SerializersModule {
+        polymorphic(Any::class) {
+          PolymorphicSerializer(Stop::class)
+          PolymorphicSerializer(StopLocation::class)
+          PolymorphicSerializer(Transport::class)
+          PolymorphicSerializer(TransportStopJoin::class)
+        }
+      }
+    }
+
     @OptIn(ExperimentalSerializationApi::class)
     fun getClient(): Retrofit = retrofit ?: Retrofit.Builder().run {
       baseUrl(BASE_URL)
-      addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+
+      addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
       client(getOkHttpClient())
       build().also { retrofit = it }
     }
