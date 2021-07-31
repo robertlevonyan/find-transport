@@ -6,6 +6,7 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.databinding.FragmentIntroBinding
 import robert.findtransport.di.homeScreen
+import robert.findtransport.di.introScreen
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
@@ -23,15 +24,24 @@ class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
     observe(languageChanged) { language ->
       activity?.run {
         LocaleService(this).changeLocale(language)
-        supportFragmentManager
-          .beginTransaction()
-          .replace(R.id.frContainer, newInstance())
-          .commit()
+        router.replaceScreen(introScreen())
       }
     }
-    observe(pickerArmValue) { binding.pkLanguage.check(R.id.btnArm) }
-    observe(pickerEngValue) { binding.pkLanguage.check(R.id.btnEng) }
-    observe(pickerRusValue) { binding.pkLanguage.check(R.id.btnRus) }
+    observe(pickerArmValue) {
+      if (it) {
+        binding.pkLanguage.check(R.id.btnArm)
+      }
+    }
+    observe(pickerEngValue) {
+      if (it) {
+        binding.pkLanguage.check(R.id.btnEng)
+      }
+    }
+    observe(pickerRusValue) {
+      if (it) {
+        binding.pkLanguage.check(R.id.btnRus)
+      }
+    }
     observe(introPassed) { router.replaceScreen(homeScreen()) }
   }
 

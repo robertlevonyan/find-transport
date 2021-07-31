@@ -2,20 +2,22 @@ package robert.findtransport.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity
+@Serializable()
 class Stop {
   @PrimaryKey
-  @SerializedName("id")
+  @SerialName("id")
   var id: Int? = null
 
-  @SerializedName("name_am")
+  @SerialName("name_am")
   var nameAm: String? = null
 
-  @SerializedName("name_ru")
+  @SerialName("name_ru")
   var nameRu: String? = null
 
-  @SerializedName("name_en")
+  @SerialName("name_en")
   var nameEn: String? = null
 }

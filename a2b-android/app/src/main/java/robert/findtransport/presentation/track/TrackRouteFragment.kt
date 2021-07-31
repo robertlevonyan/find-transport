@@ -147,7 +147,9 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
   private fun stopTracker() {
     try {
       trackRouteService?.run {
-        this@TrackRouteFragment.context?.unbindService(serviceConnection)
+        if (isBound) {
+          this@TrackRouteFragment.context?.unbindService(serviceConnection)
+        }
         stopForeground(true)
         stopSelf()
       }

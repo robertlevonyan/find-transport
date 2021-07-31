@@ -2,20 +2,22 @@ package robert.findtransport.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Entity
+@Serializable
 class StopLocation {
   @PrimaryKey
-  @SerializedName("id")
+  @SerialName("id")
   var id: Int? = null
 
-  @SerializedName("stop_id")
+  @SerialName("stop_id")
   var stopId: Int? = null
 
-  @SerializedName("lat")
+  @SerialName("lat")
   var lat: Double? = null
 
-  @SerializedName("lng")
+  @SerialName("lng")
   var lng: Double? = null
 }

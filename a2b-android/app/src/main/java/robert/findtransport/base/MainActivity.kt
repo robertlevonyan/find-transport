@@ -42,7 +42,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       nextFragment: Fragment
     ) {
       if (nextFragment is HomeFragment || nextFragment is IntroFragment) {
-        fragmentTransaction.setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out)
+        if (currentFragment !is IntroFragment) {
+          fragmentTransaction.setCustomAnimations(R.anim.alpha_in, R.anim.alpha_out)
+        }
       } else {
         fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right, R.anim.slide_in_left, R.anim.slide_out_left)
       }

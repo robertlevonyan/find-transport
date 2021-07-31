@@ -94,9 +94,9 @@ class TrackRouteService : Service() {
     return START_NOT_STICKY
   }
 
-  suspend fun subscribeToLocationChanges() = locationUseCase.subscribeToLocationUpdates().stateIn(trackRouteScope)
+  private suspend fun subscribeToLocationChanges() = locationUseCase.subscribeToLocationUpdates().stateIn(trackRouteScope)
 
-  fun getNearbyStopNames(location: Location) {
+  private fun getNearbyStopNames(location: Location) {
     val transport = _selectedTransport.value ?: return
     val start = _fromStop.value ?: return
     val destination = _toStop.value ?: return
