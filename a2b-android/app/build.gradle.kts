@@ -4,7 +4,6 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  kotlin("plugin.serialization") version "1.5.20"
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
@@ -16,7 +15,7 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 21
     targetSdk = 31
-    versionCode = 230
+    versionCode = 231
     versionName = "3.6.0"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
@@ -97,17 +96,17 @@ dependencies {
   kotlin("stdlib")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
 
   //google
   implementation("com.google.android.material:material:1.4.0")
   implementation("com.google.android.play:core:1.10.0")
   implementation("com.google.android.play:core-ktx:1.8.1")
-//  implementation("com.google.code.gson:gson:2.8.7")
   implementation("com.google.android.gms:play-services-location:18.0.0")
-  implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+  implementation("com.google.code.gson:gson:2.8.7")
+  implementation(platform("com.google.firebase:firebase-bom:28.0.1"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
+
   //androidx
   implementation("androidx.activity:activity-ktx:1.3.0")
   implementation("androidx.appcompat:appcompat:1.3.1")
@@ -135,10 +134,8 @@ dependencies {
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
-//  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
   implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-
-  kapt ("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
 
   //mapbox
   implementation("com.mapbox.maps:android:10.0.0-rc.4")

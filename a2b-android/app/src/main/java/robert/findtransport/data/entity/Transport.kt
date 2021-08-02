@@ -2,23 +2,21 @@ package robert.findtransport.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
 @Entity
-@Serializable
 class Transport {
   @PrimaryKey
-  @SerialName("id")
+  @SerializedName("id")
   var id: Int? = null
 
-  @SerialName("name")
+  @SerializedName("name")
   var name: String? = null
 
-  @SerialName("type")
+  @SerializedName("type")
   var type: Int? = null
 
-  @SerialName("isNew")
+  @SerializedName("isNew")
   var newTransport: Int? = null
 
   var favorite: Boolean = false

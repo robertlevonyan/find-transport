@@ -2,25 +2,23 @@ package robert.findtransport.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import com.google.gson.annotations.SerializedName
 
 @Entity
-@Serializable
 class TransportStopJoin {
   @PrimaryKey
-  @SerialName("id")
+  @SerializedName("id")
   var id: Int? = null
 
-  @SerialName("transport_id")
+  @SerializedName("transport_id")
   var transportId: Int? = 0
 
-  @SerialName("stop_id")
+  @SerializedName("stop_id")
   var stopId: Int? = 0
 
-  @SerialName("reverse")
+  @SerializedName("reverse")
   var reverse: Int? = 0
 
-  @SerialName("position")
+  @SerializedName("position")
   var order: Int? = 0
 }

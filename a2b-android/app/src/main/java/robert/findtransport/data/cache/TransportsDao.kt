@@ -35,28 +35,34 @@ interface TransportsDao {
   @Query("SELECT count(*) FROM TransportStopJoin")
   suspend fun getJoinsCount(): Int
 
-  @Query("""SELECT id, name, type, newTransport, favorite FROM 
+  @Query(
+    """SELECT id, name, type, newTransport, favorite FROM 
     (SELECT transportId FROM TransportStopJoin WHERE stopId = :id) as TransportIds 
     INNER JOIN Transport 
     ON TransportIds.transportId = id
     GROUP BY name, type, newTransport, favorite
-    ORDER BY type ASC, CAST(name AS DECIMAL) ASC""")
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
   suspend fun getTransportsForStop(id: Int): List<Transport>
 
-  @Query("""SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
+  @Query(
+    """SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
     INNER JOIN TransportStopJoin
     ON TransportStopJoin.stopId = Stop.id
     AND TransportStopJoin.transportId = :transportId
     AND TransportStopJoin.reverse = 0
-    ORDER BY TransportStopJoin.`order` ASC""")
+    ORDER BY TransportStopJoin.`order` ASC"""
+  )
   fun getTransportStops(transportId: Int): List<Stop>
 
-  @Query("""SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
+  @Query(
+    """SELECT Stop.id, nameAm, nameRu, nameEn FROM Stop
     INNER JOIN TransportStopJoin
     ON TransportStopJoin.stopId = Stop.id
     AND TransportStopJoin.transportId = :transportId
     AND TransportStopJoin.reverse = 1
-    ORDER BY TransportStopJoin.`order` ASC""")
+    ORDER BY TransportStopJoin.`order` ASC"""
+  )
   fun getTransportStopsReversed(transportId: Int): List<Stop>
 
   @Query("UPDATE Transport SET favorite = :favorite WHERE id = :id")

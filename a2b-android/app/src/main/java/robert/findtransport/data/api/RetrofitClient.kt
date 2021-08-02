@@ -1,24 +1,19 @@
 package robert.findtransport.data.api
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.PolymorphicSerializer
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
+import android.os.Build
+import com.google.gson.*
+import com.google.gson.reflect.TypeToken
 import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import robert.findtransport.BuildConfig
-import robert.findtransport.data.entity.Stop
-import robert.findtransport.data.entity.StopLocation
-import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.entity.TransportStopJoin
 import robert.findtransport.utils.BASE_URL
 import robert.findtransport.utils.extensions.md5
+import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -27,25 +22,38 @@ class RetrofitClient private constructor() {
   companion object {
     private var retrofit: Retrofit? = null
 
-    private val json = Json {
-      useArrayPolymorphism = true
-      serializersModule = SerializersModule {
-        polymorphic(Any::class) {
-          PolymorphicSerializer(Stop::class)
-          PolymorphicSerializer(StopLocation::class)
-          PolymorphicSerializer(Transport::class)
-          PolymorphicSerializer(TransportStopJoin::class)
-        }
-      }
-    }
-
-    @OptIn(ExperimentalSerializationApi::class)
     fun getClient(): Retrofit = retrofit ?: Retrofit.Builder().run {
       baseUrl(BASE_URL)
-
-      addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+      addConverterFactory(GsonConverterFactory.create(getGson()))
       client(getOkHttpClient())
       build().also { retrofit = it }
+    }
+
+    private fun getGson(): Gson {
+      val type = object : TypeToken<List<TransportStopJoin>>() {}.type
+      return GsonBuilder().registerTypeAdapter(
+        type,
+        object : JsonDeserializer<List<TransportStopJoin>> {
+          override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): List<TransportStopJoin> {
+            val list = mutableListOf<TransportStopJoin>()
+            json?.run {
+              val array = asJsonArray
+
+              array.map { it.asJsonObject }.forEach { jsonObject ->
+                list.add(
+                  TransportStopJoin().apply {
+                    id = jsonObject.get("id").asInt
+                    transportId = jsonObject.get("transport_id").asInt
+                    stopId = jsonObject.get("stop_id").asInt
+                    reverse = jsonObject.get("reverse").asInt
+                    order = jsonObject.get("position").asInt
+                  }
+                )
+              }
+            }
+            return list
+          }
+        }).create()
     }
 
     private fun getOkHttpClient(): OkHttpClient = OkHttpClient.Builder().run {
