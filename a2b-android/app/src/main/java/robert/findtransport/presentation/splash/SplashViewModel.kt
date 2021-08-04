@@ -31,8 +31,8 @@ class SplashViewModel(
   private val databaseUseCase: DatabaseUseCase,
   private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
-  private val _themeLiveData = MutableStateFlow(themeUseCase.getTheme())
-  val themeLiveData: Flow<Int> get() = _themeLiveData
+  private val _theme = MutableStateFlow(themeUseCase.getTheme())
+  val theme: Flow<Int> get() = _theme
 
   private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val currentLanguage: Flow<String> get() = _currentLanguage

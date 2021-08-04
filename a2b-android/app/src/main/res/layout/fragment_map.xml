@@ -9,10 +9,13 @@
   android:background="@color/colorPrimary"
   tools:context=".presentation.map.MapFragment">
 
-  <com.mapbox.mapboxsdk.maps.MapView
+  <com.mapbox.maps.MapView
     android:id="@+id/mapView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    app:mapbox_cameraTargetLat="40.180982"
+    app:mapbox_cameraTargetLng="44.5114422"
+    app:mapbox_cameraZoom="15.0" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fabLocation"

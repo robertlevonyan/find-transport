@@ -14,23 +14,22 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
-import com.mapbox.geojson.*
-import com.mapbox.mapboxsdk.Mapbox
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.LocationComponentOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.Style
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapboxMap
+import com.mapbox.maps.ScreenCoordinate
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.camera
+import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.locationcomponent.location
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentMapBinding
 import robert.findtransport.presentation.component.dialog.LocationPermissionDialog
-import robert.findtransport.utils.*
+import robert.findtransport.utils.RESULT_LOCATION_PERMISSION
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
@@ -39,8 +38,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   override val viewModel: MapViewModel by viewModel()
 
   private var locationEnabled = false
-  protected var mapboxMap: MapboxMap? = null
-    private set
+  protected val mapboxMap by lazy { binding.mapView.getMapboxMap() }
 
   private val permissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
     binding.fabLocation.visibility = if (permissions.all { it.value }) {
@@ -54,15 +52,8 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     activity?.run { initMap(this) }
   }
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    context?.run { Mapbox.getInstance(this, BuildConfig.MAPBOX_TOKEN) }
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    binding.mapView.onCreate(savedInstanceState)
-
     val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
     activity?.run {
@@ -93,7 +84,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   override fun FragmentMapBinding.initViews() {
-    fabLocation.setOnClickListener { goToCurrentLocation(mapboxMap ?: return@setOnClickListener) }
+    fabLocation.setOnClickListener { goToCurrentLocation(binding.mapView.getMapboxMap()) }
   }
 
   @Suppress("SameParameterValue")
@@ -108,29 +99,30 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
 
   private fun initMap(activity: FragmentActivity) = binding.run {
-    if (!Mapbox.hasInstance()) {
-      router.exit()
-      return@run
+    mapView.compass.apply {
+      marginLeft = 0f
+      marginTop = context?.getDimen(R.dimen.margin_85) ?: 200f
+      marginRight = context?.getDimen(R.dimen.fab_margin) ?: 50f
+      marginBottom = 0f
     }
-    mapView.getMapAsync { map ->
-      mapboxMap = map.apply {
-        uiSettings.run {
-          setCompassMargins(
-            compassMarginLeft,
-            context?.getDimenInt(R.dimen.margin_85) ?: 200,
-            compassMarginRight,
-            compassMarginBottom
-          )
-        }
-        setStyle(Style.Builder().fromUri(getString(R.string.map_style))) { style ->
-          createMap(style)
 
-          if (locationEnabled) {
-            enableLocationComponent(activity, style)
-          } else {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(40.180982, 44.5114422), 15.0))
+    mapView.getMapboxMap().loadStyleUri(getString(R.string.map_style)) { style ->
+      createMap(style)
+      if (locationEnabled) {
+        enableLocationComponent(activity, style)
+      } else {
+        mapView.camera.flyTo(
+          cameraOptions = CameraOptions.Builder()
+            .anchor(ScreenCoordinate(40.180982, 44.5114422))
+            .zoom(15.0)
+            .build(),
+          animationOptions = MapAnimationOptions.mapAnimationOptions {
+            duration(200)
+            interpolator(FastOutSlowInInterpolator())
           }
-        }
+        )
+
+//        mapView.camera.animate(CameraUpdateFactory.newLatLngZoom(LatLng(40.180982, 44.5114422), 15.0))
       }
     }
   }
@@ -143,55 +135,46 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   @SuppressLint("MissingPermission")
   private fun enableLocationComponent(activity: FragmentActivity, style: Style) {
-    val customLocationComponentOptions = LocationComponentOptions.builder(activity)
-      .trackingGesturesManagement(true)
-      .accuracyColor(activity.getColorFromRes(R.color.colorAccentTransparent))
-      .foregroundTintColor(activity.getColorFromRes(R.color.colorAccent))
-      .bearingTintColor(activity.getColorFromRes(R.color.colorAccent))
-      .build()
+//    val customLocationComponentOptions = LocationComponentOptions.builder(activity)
+//      .trackingGesturesManagement(true)
+//      .accuracyColor(activity.getColorFromRes(R.color.colorAccentTransparent))
+//      .foregroundTintColor(activity.getColorFromRes(R.color.colorAccent))
+//      .bearingTintColor(activity.getColorFromRes(R.color.colorAccent))
+//      .build()
 
-    val locationComponentActivationOptions = LocationComponentActivationOptions.builder(activity, style)
-      .locationComponentOptions(customLocationComponentOptions)
-      .build()
+//    val locationComponentActivationOptions = LocationComponentActivationOptions.builder(activity, style)
+//      .locationComponentOptions(customLocationComponentOptions)
+//      .build()
 
-    mapboxMap?.let { map ->
-      map.locationComponent.run {
-        activateLocationComponent(locationComponentActivationOptions)
-        isLocationComponentEnabled = true
-        cameraMode = CameraMode.TRACKING
-        renderMode = RenderMode.COMPASS
-        goToCurrentLocation(map)
-      }
+    binding.mapView.location.updateSettings {
+      enabled = true
+      pulsingEnabled = true
+      locationPuck = LocationPuck2D()
     }
+
+//    mapboxMap?.let { map ->
+//      map.locationComponent.run {
+//        activateLocationComponent(locationComponentActivationOptions)
+//        isLocationComponentEnabled = true
+//        cameraMode = CameraMode.TRACKING
+//        renderMode = RenderMode.COMPASS
+//        goToCurrentLocation(map)
+//      }
+//    }
   }
 
   private fun goToCurrentLocation(mapboxMap: MapboxMap) {
-    mapboxMap.locationComponent.run {
-      if (!isLocationComponentActivated) return@run
-      val latitude = lastKnownLocation?.latitude ?: DEFAULT_LATITUDE
-      val longitude = lastKnownLocation?.longitude ?: DEFAULT_LONGITUDE
-      mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0))
-    }
-  }
-
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    binding.mapView.onSaveInstanceState(outState)
+//    mapboxMap.locationComponent.run {
+//      if (!isLocationComponentActivated) return@run
+//      val latitude = lastKnownLocation?.latitude ?: DEFAULT_LATITUDE
+//      val longitude = lastKnownLocation?.longitude ?: DEFAULT_LONGITUDE
+//      mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0))
+//    }
   }
 
   override fun onStart() {
     super.onStart()
     binding.mapView.onStart()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    binding.mapView.onResume()
-  }
-
-  override fun onPause() {
-    binding.mapView.onPause()
-    super.onPause()
   }
 
   override fun onStop() {
@@ -206,10 +189,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   override fun onDestroyView() {
     binding.mapView.onDestroy()
-    mapboxMap?.style?.let { style ->
-      style.sources.forEach { style.removeSource(it) }
-      style.layers.forEach { style.removeLayer(it) }
-    }
+
+//    mapboxMap?.style?.let { style ->
+//      style.sources.forEach { style.removeSource(it) }
+//      style.layers.forEach { style.removeLayer(it) }
+//    }
     super.onDestroyView()
   }
 

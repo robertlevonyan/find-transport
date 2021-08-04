@@ -3,16 +3,13 @@ package robert.findtransport.presentation.track
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.location.Location
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.LiveData
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import org.koin.android.ext.android.inject
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
@@ -21,12 +18,12 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.presentation.component.ld.SingleLiveEvent
 import robert.findtransport.utils.EXTRA_FROM
 import robert.findtransport.utils.EXTRA_TO
 import robert.findtransport.utils.EXTRA_TRANSPORT_ID
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getTypeName
+import java.util.concurrent.atomic.AtomicInteger
 
 class TrackRouteService : Service() {
   private val transportUseCase: TransportUseCase by inject()
@@ -38,32 +35,45 @@ class TrackRouteService : Service() {
   private val binder = TrackRouteBinder()
   var isBound: Boolean = false
 
-  private val _selectedTransport = SingleLiveEvent<Transport>()
-  val selectedTransport: LiveData<Transport> get() = _selectedTransport
+  private val _selectedTransport = MutableSharedFlow<Transport>()
+  val selectedTransport: Flow<Transport> get() = _selectedTransport
 
-  private val _fromStop = SingleLiveEvent<Stop>()
-  val fromStop: LiveData<Stop> get() = _fromStop
+  private val _fromStop = MutableSharedFlow<Stop>()
+  val fromStop: Flow<Stop> get() = _fromStop
 
-  private val _toStop = SingleLiveEvent<Stop>()
-  val toStop: LiveData<Stop> get() = _toStop
+  private val _toStop = MutableSharedFlow<Stop>()
+  val toStop: Flow<Stop> get() = _toStop
 
-  private val _currentStop = SingleLiveEvent<Stop>()
-  val currentStop: LiveData<Stop> get() = _currentStop
+  private val _currentStop = MutableSharedFlow<Stop>()
+  val currentStop: Flow<Stop> get() = _currentStop
 
-  private val _previousStop = SingleLiveEvent<Stop>()
-  val previousStop: LiveData<Stop> get() = _previousStop
+  private val _previousStop = MutableSharedFlow<Stop>()
+  val previousStop: Flow<Stop> get() = _previousStop
 
-  private val _predestination = SingleLiveEvent<Stop>()
-  val predestination: LiveData<Stop> get() = _predestination
+  private val _predestination = MutableSharedFlow<Stop>()
+  val predestination: Flow<Stop> get() = _predestination
 
-  private val _notifyNextStop = SingleLiveEvent<Stop>()
-  val notifyNextStop: LiveData<Stop> get() = _notifyNextStop
+  private val _notifyNextStop = MutableSharedFlow<Stop>()
+  val notifyNextStop: Flow<Stop> get() = _notifyNextStop
 
-  private val _notifyArrived = SingleLiveEvent<Unit>()
-  val notifyArrived: LiveData<Unit> get() = _notifyArrived
+  private val _notifyArrived = MutableSharedFlow<Unit?>()
+  val notifyArrived: Flow<Unit?> get() = _notifyArrived
 
-  private val _notifyStop = SingleLiveEvent<Unit>()
-  val notifyStop: LiveData<Unit> get() = _notifyStop
+  private val _notifyStop = MutableSharedFlow<Unit>().apply {
+    onStart {
+      println("notifyStopObservers inc")
+      notifyStopObservers.incrementAndGet()
+      println("notifyStopObservers inc ${notifyStopObservers.get()}")
+    }
+    onCompletion {
+      println("notifyStopObservers dec")
+      notifyStopObservers.decrementAndGet()
+      println("notifyStopObservers dec ${notifyStopObservers.get()}")
+    }
+  }
+  val notifyStop: Flow<Unit> get() = _notifyStop
+
+  private val notifyStopObservers = AtomicInteger(0)
 
   val currentLanguage: String
     get() = localeUseCase.getCurrentLanguage()
@@ -84,8 +94,9 @@ class TrackRouteService : Service() {
       onHandleIntent(intent)
     }
     if (intent?.action == STOP_ACTION) {
-      if (notifyStop.hasActiveObservers() || notifyStop.hasObservers()) {
-        _notifyStop.postValue(Unit)
+      println("notifyStopObservers ${notifyStopObservers.get()}")
+      if (notifyStopObservers.get() > 0) {
+        trackRouteScope.launch { _notifyStop.emit(Unit) }
       } else {
         stopForeground(true)
         stopSelf()
@@ -96,10 +107,13 @@ class TrackRouteService : Service() {
 
   private suspend fun subscribeToLocationChanges() = locationUseCase.subscribeToLocationUpdates().stateIn(trackRouteScope)
 
-  private fun getNearbyStopNames(location: Location) {
-    val transport = _selectedTransport.value ?: return
-    val start = _fromStop.value ?: return
-    val destination = _toStop.value ?: return
+  private suspend fun getNearbyStopNames(location: Location) {
+    println("getNearbyStopNames $location")
+    val transport = _selectedTransport.firstOrNull() ?: return
+    val start = _fromStop.firstOrNull() ?: return
+    val destination = _toStop.firstOrNull() ?: return
+
+    println("getNearbyStopNames $transport, $start, $destination")
 
     trackRouteScope.launch(Dispatchers.IO) {
       transportUseCase.getNearbyStopFromTransport(
@@ -114,22 +128,30 @@ class TrackRouteService : Service() {
 
         if (current == Stop.EMPTY) return@collect
 
-        _previousStop.postValue(_currentStop.value)
-        _currentStop.postValue(current)
-        _predestination.postValue(predestination)
+        println("getNearbyStopNames current $current")
 
-        if (_previousStop.value?.id != _currentStop.value?.id) {
+        val currentStopValue = _currentStop.firstOrNull() ?: return@collect
+        val previousStopValue = _previousStop.firstOrNull() ?: return@collect
+
+        println("getNearbyStopNames currentStopValue $currentStopValue")
+        println("getNearbyStopNames previousStopValue $previousStopValue")
+
+        _previousStop.emit(currentStopValue)
+        _currentStop.emit(current)
+        _predestination.emit(predestination)
+
+        if (previousStopValue.id != currentStopValue.id) {
           updateNotification(
             notificationTitle = "${getString(R.string.label_tracker_transport)} ${getString(transport.getTypeName())} ${transport.number}",
             notificationText = current.getCurrentName(localeUseCase.getCurrentLanguage()),
           )
         }
 
-        if (current.id == predestination.id && _notifyNextStop.value == null) {
-          _notifyNextStop.postValue(predestination)
+        if (current.id == predestination.id) {
+          _notifyNextStop.emit(predestination)
         }
-        if (current.id == destination.id && _notifyArrived.value == null) {
-          _notifyArrived.postValue(Unit)
+        if (current.id == destination.id && _notifyArrived.firstOrNull() == null) {
+          _notifyArrived.emit(Unit)
           showArrivedNotification()
           trackRouteScope.cancel()
         }
@@ -207,9 +229,9 @@ class TrackRouteService : Service() {
       val fromStop = async { stopsUseCase.getStop(fromId) }
       val toStop = async { stopsUseCase.getStop(toId) }
 
-      _fromStop.postValue(fromStop.await())
-      _toStop.postValue(toStop.await())
-      launch { selectedTransport.await().collect(_selectedTransport::postValue) }
+      _fromStop.emit(fromStop.await())
+      _toStop.emit(toStop.await())
+      launch { selectedTransport.await().collect(_selectedTransport::emit) }
     }
 
     return START_NOT_STICKY

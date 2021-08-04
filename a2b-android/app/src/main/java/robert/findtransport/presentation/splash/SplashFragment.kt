@@ -50,7 +50,7 @@ class SplashFragment : BaseFragment<SplashViewModel, FragmentSplashBinding>() {
   }
 
   override fun SplashViewModel.initObservers() {
-    observe(themeLiveData) { theme ->
+    observe(theme) { theme ->
       activity?.takeIf { it is MainActivity }
         ?.let { it as MainActivity }
         ?.run { delegate.localNightMode = theme }

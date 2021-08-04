@@ -1,7 +1,6 @@
 package robert.findtransport.presentation.map
 
 import androidx.lifecycle.viewModelScope
-import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -28,11 +27,11 @@ open class MapViewModel(
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: Flow<String> get() = _locale
 
-  private val _allStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
-  val allStops: Flow<List<SymbolOptions>> get() = _allStops
+//  private val _allStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
+//  val allStops: Flow<List<SymbolOptions>> get() = _allStops
 
-  private val _metroStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
-  val metroStops: Flow<List<SymbolOptions>> get() = _metroStops
+//  private val _metroStops = MutableStateFlow<List<SymbolOptions>>(emptyList())
+//  val metroStops: Flow<List<SymbolOptions>> get() = _metroStops
 
   private val _routeSuccess = MutableSharedFlow<RouteResult>()
   val routeSuccess: Flow<RouteResult> get() = _routeSuccess
@@ -44,10 +43,10 @@ open class MapViewModel(
     viewModelScope.launch(Dispatchers.IO) {
       try {
         if (!coroutineContext.isActive) return@launch
-        val stops = stopsUseCase.getStopsLocations()
-        _allStops.value = stops
-        val metroStops = stopsUseCase.getMetroStopsLocations()
-        _metroStops.value = metroStops
+//        val stops = stopsUseCase.getStopsLocations()
+//        _allStops.value = stops
+//        val metroStops = stopsUseCase.getMetroStopsLocations()
+//        _metroStops.value = metroStops
       } catch (e: Exception) {
         e.printStackTrace()
       }
