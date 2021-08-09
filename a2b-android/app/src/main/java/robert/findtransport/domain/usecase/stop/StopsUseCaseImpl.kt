@@ -2,6 +2,8 @@ package robert.findtransport.domain.usecase.stop
 
 import android.location.Location
 import androidx.paging.*
+import com.mapbox.geojson.Point
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -12,9 +14,11 @@ import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
 import robert.findtransport.domain.mapper.toApiStop
+import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.domain.mapper.toStopLocation
 import robert.findtransport.domain.repository.LocationRepository
+import robert.findtransport.domain.repository.ResourcesRepository
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
@@ -22,24 +26,25 @@ import robert.findtransport.utils.LNG_RU
 import java.util.*
 
 class StopsUseCaseImpl(
-    private val stopsRepository: StopsRepository,
-    private val locationRepository: LocationRepository,
+  private val stopsRepository: StopsRepository,
+  private val locationRepository: LocationRepository,
+  private val resourcesRepository: ResourcesRepository,
 ) : StopsUseCase {
 
   override suspend fun getStops(): List<Stop> = withContext(Dispatchers.IO) {
     (stopsRepository.getStopsFromInMemoryCache()
-        .takeIf { it.isNotEmpty() }
-        ?: run { stopsRepository.getStopsFromCache() })
-        .takeIf { it.isNotEmpty() }
-        ?.let { cachedStops ->
-          cachedStops.map { apiStop ->
-            apiStop.toStop(runBlocking {
-              stopsRepository.getStopLocations(apiStop.id ?: 0)
-                  .map { it.toStopLocation(apiStop) }
-            })
-          }
+      .takeIf { it.isNotEmpty() }
+      ?: run { stopsRepository.getStopsFromCache() })
+      .takeIf { it.isNotEmpty() }
+      ?.let { cachedStops ->
+        cachedStops.map { apiStop ->
+          apiStop.toStop(runBlocking {
+            stopsRepository.getStopLocations(apiStop.id ?: 0)
+              .map { it.toStopLocation(apiStop) }
+          })
         }
-        ?: emptyList()
+      }
+      ?: emptyList()
   }
 
   override fun getStopsPaged(): Flow<PagingData<Stop>> = Pager(config = PagingConfig(pageSize = 50)) {
@@ -51,44 +56,47 @@ class StopsUseCaseImpl(
   }
 
   override suspend fun getStopsAutocomplete(word: String, locale: String) =
-      stopsRepository.getStopsAutocomplete(word.replace("'", ""), when (locale) {
+    stopsRepository.getStopsAutocomplete(
+      word.replace("'", ""), when (locale) {
         LNG_EN -> "nameEn"
         LNG_AM -> "nameAm"
         LNG_RU -> "nameRu"
         else -> ""
-      }).map { apiStop -> apiStop.toStop() }
+      }
+    ).map { apiStop -> apiStop.toStop() }
 
-//  override suspend fun getStopsLocations(): List<SymbolOptions> = withContext(Dispatchers.IO) {
-//    getStops()
-//        .asSequence()
-//        .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
-//        .flatMap { it.coordinates.asSequence() }
-//        .map { location ->
-//          SymbolOptions().apply {
-//            withData(location.parentStop.toApiStop().toJson())
-//            withLatLng(LatLng(location.lat, location.lng))
-//            withIconImage(MapFragment.STOP_IMAGE)
-//            withIconSize(MapFragment.STOP_ICON_SIZE)
-//          }
-//        }
-//        .toList()
-//  }
 
-//  override suspend fun getMetroStopsLocations(): List<SymbolOptions> = withContext(Dispatchers.IO) {
-//    getStops()
-//        .asSequence()
-//        .filter { it.nameEn.contains("m/s", ignoreCase = true) }
-//        .flatMap { it.coordinates.asSequence() }
-//        .map { location ->
-//          SymbolOptions().apply {
-//            withData(location.parentStop.toApiStop().toJson())
-//            withLatLng(LatLng(location.lat, location.lng))
-//            withIconImage(MapFragment.METRO_IMAGE)
-//            withIconSize(MapFragment.STOP_ICON_SIZE)
-//          }
-//        }
-//        .toList()
-//  }
+  override suspend fun getStopsLocations(): List<PointAnnotationOptions> = withContext(Dispatchers.IO) {
+    val iconBitmap = resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()
+    getStops()
+      .asSequence()
+      .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
+      .flatMap { it.coordinates.asSequence() }
+      .map { location ->
+        PointAnnotationOptions()
+          .withPoint(Point.fromLngLat(location.lng, location.lat))
+          .withData(location.parentStop.toApiStop().toJson())
+          .withIconSize(STOP_ICON_SIZE)
+          .withIconImage(iconBitmap)
+      }
+      .toList()
+  }
+
+  override suspend fun getMetroStopsLocations(): List<PointAnnotationOptions> = withContext(Dispatchers.IO) {
+    val iconBitmap = resourcesRepository.getMetroStopIconBitmap() ?: return@withContext emptyList()
+    getStops()
+      .asSequence()
+      .filter { it.nameEn.contains("m/s", ignoreCase = true) }
+      .flatMap { it.coordinates.asSequence() }
+      .map { location ->
+        PointAnnotationOptions()
+          .withPoint(Point.fromLngLat(location.lng, location.lat))
+          .withData(location.parentStop.toApiStop().toJson())
+          .withIconSize(STOP_ICON_SIZE)
+          .withIconImage(iconBitmap)
+      }
+      .toList()
+  }
 
   override suspend fun getNearbyStop(stops: List<Stop>, coroutineScope: CoroutineScope): Flow<Stop> = flow {
     if (!coroutineScope.coroutineContext.isActive) return@flow
@@ -160,4 +168,9 @@ class StopsUseCaseImpl(
   override fun areLocationsCached(): Boolean = stopsRepository.areLocationsCached
 
   override fun areStopsCached(): Boolean = stopsRepository.areLocationsCached
+
+  companion object {
+    private const val STOP_ICON_SIZE = 0.12
+    private const val STOP_ICON_BIG_SIZE = 0.15f
+  }
 }

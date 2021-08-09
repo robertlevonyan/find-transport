@@ -11,6 +11,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.*
 import robert.findtransport.data.model.enums.ExceptionType
+import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
@@ -19,7 +20,8 @@ class SearchMapViewModel(
   localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
-) : MapViewModel(stopsUseCase, localeUseCase, transportUseCase) {
+  locationUseCase: LocationUseCase,
+) : MapViewModel(stopsUseCase, localeUseCase, transportUseCase, locationUseCase) {
 
   private val _loading = MutableSharedFlow<Boolean>()
   val loading: Flow<Boolean> get() = _loading

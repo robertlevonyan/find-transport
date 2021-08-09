@@ -1,6 +1,7 @@
 package robert.findtransport.domain.usecase.stop
 
 import androidx.paging.PagingData
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
@@ -14,9 +15,9 @@ interface StopsUseCase {
 
   suspend fun getStopsAutocomplete(word: String, locale: String): List<Stop>
 
-//  suspend fun getStopsLocations(): List<SymbolOptions>
+  suspend fun getStopsLocations(): List<PointAnnotationOptions>
 
-//  suspend fun getMetroStopsLocations(): List<SymbolOptions>
+  suspend fun getMetroStopsLocations(): List<PointAnnotationOptions>
 
   suspend fun getNearbyStop(stops: List<Stop>, coroutineScope: CoroutineScope): Flow<Stop>
 

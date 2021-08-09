@@ -22,40 +22,130 @@ import robert.findtransport.presentation.transports.TransportsViewModel
 import robert.findtransport.presentation.update.UpdateViewModel
 
 val presenterModule = module {
+  viewModel {
+    SplashViewModel(
+      checkInternetUseCase = get(),
+      themeUseCase = get(),
+      localeUseCase = get(),
+      versionUseCase = get(),
+      introUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+      databaseUseCase = get(),
+      feedbackUseCase = get(),
+    )
+  }
 
-  viewModel { SplashViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+  viewModel {
+    IntroViewModel(
+      introUseCase = get(),
+      localeUseCase = get(),
+    )
+  }
 
-  viewModel { IntroViewModel(get(), get()) }
+  viewModel {
+    HomeViewModel(
+      localeUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+      permissionUseCase = get(),
+      rateUseCase = get(),
+    )
+  }
 
-  viewModel { HomeViewModel(get(), get(), get(), get(), get()) }
+  viewModel {
+    SearchViewModel(
+      localeUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+      historyUseCase = get(),
+    )
+  }
 
-  viewModel { SearchViewModel(get(), get(), get(), get()) }
+  viewModel {
+    StopsPickerViewModel(
+      stopsUseCase = get(),
+      localeUseCase = get(),
+    )
+  }
 
-  viewModel { StopsPickerViewModel(get(), get()) }
+  viewModel {
+    DetailViewModel(
+      localeUseCase = get(),
+      transportUseCase = get(),
+    )
+  }
 
-  viewModel { DetailViewModel(get(), get()) }
+  viewModel {
+    MapViewModel(
+      stopsUseCase = get(),
+      localeUseCase = get(),
+      transportUseCase = get(),
+      locationUseCase = get(),
+    )
+  }
 
-  viewModel { MapViewModel(get(), get(), get()) }
+  viewModel {
+    StopOptionsViewModel(
+      localeUseCase = get(),
+      stopsUseCase = get(),
+    )
+  }
 
-  viewModel { StopOptionsViewModel(get(), get()) }
+  viewModel {
+    HistoryViewModel(
+      localeUseCase = get(),
+      historyUseCase = get(),
+    )
+  }
 
-  viewModel { HistoryViewModel(get(), get()) }
+  viewModel { FeedbackViewModel(feedbackUseCase = get()) }
 
-  viewModel { FeedbackViewModel(get()) }
+  viewModel {
+    SettingsViewModel(
+      settingsUseCase = get(),
+      themeUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+      databaseUseCase = get(),
+    )
+  }
 
-  viewModel { SettingsViewModel(get(), get(), get(), get(), get()) }
+  viewModel { LanguagePickerViewModel(settingsUseCase = get()) }
 
-  viewModel { LanguagePickerViewModel(get()) }
+  viewModel { ThemePickerViewModel(settingsUseCase = get()) }
 
-  viewModel { ThemePickerViewModel(get()) }
+  viewModel {
+    PassingRoutesViewModel(
+      localeUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+    )
+  }
 
-  viewModel { PassingRoutesViewModel(get(), get(), get()) }
+  viewModel {
+    UpdateViewModel(
+      databaseUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+    )
+  }
 
-  viewModel { UpdateViewModel(get(), get(), get()) }
+  viewModel {
+    TransportsViewModel(
+      localeUseCase = get(),
+      transportUseCase = get(),
+    )
+  }
 
-  viewModel { TransportsViewModel(get(), get()) }
-
-  viewModel { SearchMapViewModel(get(), get(), get()) }
+  viewModel {
+    SearchMapViewModel(
+      localeUseCase = get(),
+      stopsUseCase = get(),
+      transportUseCase = get(),
+      locationUseCase = get(),
+    )
+  }
 
   viewModel { TrackRouteViewModel() }
 }

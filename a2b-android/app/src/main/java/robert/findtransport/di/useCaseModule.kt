@@ -40,7 +40,7 @@ val useCaseModule = module {
 
   single<FeedbackUseCase> { FeedbackUseCaseImpl(get()) }
 
-  single<StopsUseCase> { StopsUseCaseImpl(get(), get()) }
+  single<StopsUseCase> { StopsUseCaseImpl(get(), get(), get()) }
 
   single<TransportUseCase> { TransportUseCaseImpl(get(), get()) }
 

@@ -1,7 +1,6 @@
 package robert.findtransport.presentation.map
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -15,19 +14,25 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.Style
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.camera
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.entity.Stop
 import robert.findtransport.databinding.FragmentMapBinding
+import robert.findtransport.domain.mapper.fromJson
+import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.component.dialog.LocationPermissionDialog
 import robert.findtransport.utils.RESULT_LOCATION_PERMISSION
 import robert.findtransport.utils.extensions.*
@@ -39,6 +44,16 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   private var locationEnabled = false
   protected val mapboxMap by lazy { binding.mapView.getMapboxMap() }
+  protected val pointAnnotationManager by lazy {
+    binding.mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
+      addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+        if (!isStateSaved) {
+          pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
+        }
+        true
+      })
+    }
+  }
 
   private val permissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
     binding.fabLocation.visibility = if (permissions.all { it.value }) {
@@ -49,7 +64,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       locationEnabled = false
       View.GONE
     }
-    activity?.run { initMap(this) }
+    activity?.run { initMap() }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,7 +78,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         showDialogForPermissions(this, permissions)
       } else {
         locationEnabled = true
-        initMap(this)
+        initMap()
       }
     } ?: router.exit()
   }
@@ -84,21 +99,26 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   override fun FragmentMapBinding.initViews() {
-    fabLocation.setOnClickListener { goToCurrentLocation(binding.mapView.getMapboxMap()) }
+    fabLocation.setOnClickListener { goToCurrentLocation() }
   }
 
-  @Suppress("SameParameterValue")
+  override fun MapViewModel.initObservers() {
+    observe(currentLocation) { location ->
+      flyTo(location.latitude, location.longitude)
+    }
+  }
+
   private fun showDialogForPermissions(activity: FragmentActivity, permissions: Array<String>) =
     LocationPermissionDialog().run {
       positiveClick = { permissionRequest.launch(permissions) }
       negativeClick = {
         binding.fabLocation.visibility = View.GONE
-        initMap(activity)
+        initMap()
       }
       show(activity.supportFragmentManager, "")
     }
 
-  private fun initMap(activity: FragmentActivity) = binding.run {
+  private fun initMap() = binding.run {
     mapView.compass.apply {
       marginLeft = 0f
       marginTop = context?.getDimen(R.dimen.margin_85) ?: 200f
@@ -109,67 +129,47 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     mapView.getMapboxMap().loadStyleUri(getString(R.string.map_style)) { style ->
       createMap(style)
       if (locationEnabled) {
-        enableLocationComponent(activity, style)
+        enableLocationComponent()
       } else {
-        mapView.camera.flyTo(
-          cameraOptions = CameraOptions.Builder()
-            .anchor(ScreenCoordinate(40.180982, 44.5114422))
-            .zoom(15.0)
-            .build(),
-          animationOptions = MapAnimationOptions.mapAnimationOptions {
-            duration(200)
-            interpolator(FastOutSlowInInterpolator())
-          }
-        )
-
-//        mapView.camera.animate(CameraUpdateFactory.newLatLngZoom(LatLng(40.180982, 44.5114422), 15.0))
+        flyTo(40.180982, 44.5114422)
       }
     }
   }
 
+  private fun flyTo(latitude: Double, longitude: Double) {
+    binding.mapView.camera.flyTo(
+      cameraOptions = CameraOptions.Builder()
+        .center(Point.fromLngLat(longitude, latitude))
+        .zoom(15.0)
+        .build(),
+      animationOptions = MapAnimationOptions.mapAnimationOptions {
+        duration(200)
+        interpolator(FastOutSlowInInterpolator())
+      }
+    )
+  }
+
   abstract fun createMap(style: Style)
+
+  open fun showStopOptions(stop: robert.findtransport.data.model.Stop) = Unit
 
   protected fun hideLoading() {
     binding.flLoading.visibility = View.GONE
   }
 
-  @SuppressLint("MissingPermission")
-  private fun enableLocationComponent(activity: FragmentActivity, style: Style) {
-//    val customLocationComponentOptions = LocationComponentOptions.builder(activity)
-//      .trackingGesturesManagement(true)
-//      .accuracyColor(activity.getColorFromRes(R.color.colorAccentTransparent))
-//      .foregroundTintColor(activity.getColorFromRes(R.color.colorAccent))
-//      .bearingTintColor(activity.getColorFromRes(R.color.colorAccent))
-//      .build()
-
-//    val locationComponentActivationOptions = LocationComponentActivationOptions.builder(activity, style)
-//      .locationComponentOptions(customLocationComponentOptions)
-//      .build()
-
+  private fun enableLocationComponent() {
     binding.mapView.location.updateSettings {
       enabled = true
       pulsingEnabled = true
+      pulsingColor = binding.mapView.context.getColorFromRes(R.color.colorAccent)
       locationPuck = LocationPuck2D()
     }
-
-//    mapboxMap?.let { map ->
-//      map.locationComponent.run {
-//        activateLocationComponent(locationComponentActivationOptions)
-//        isLocationComponentEnabled = true
-//        cameraMode = CameraMode.TRACKING
-//        renderMode = RenderMode.COMPASS
-//        goToCurrentLocation(map)
-//      }
-//    }
   }
 
-  private fun goToCurrentLocation(mapboxMap: MapboxMap) {
-//    mapboxMap.locationComponent.run {
-//      if (!isLocationComponentActivated) return@run
-//      val latitude = lastKnownLocation?.latitude ?: DEFAULT_LATITUDE
-//      val longitude = lastKnownLocation?.longitude ?: DEFAULT_LONGITUDE
-//      mapboxMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15.0))
-//    }
+  private fun goToCurrentLocation() {
+    viewModel.currentLocation.value.let { location ->
+      flyTo(location.latitude, location.longitude)
+    }
   }
 
   override fun onStart() {
@@ -189,11 +189,6 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   override fun onDestroyView() {
     binding.mapView.onDestroy()
-
-//    mapboxMap?.style?.let { style ->
-//      style.sources.forEach { style.removeSource(it) }
-//      style.layers.forEach { style.removeLayer(it) }
-//    }
     super.onDestroyView()
   }
 
