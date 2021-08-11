@@ -93,7 +93,6 @@ class TransportsRepositoryImpl(
             if (!channel.isClosedForSend) {
               launch { channel.send(Result.Success(route)) }
             }
-            println("Navigation $route")
           }
           ?: if (!channel.isClosedForSend) {
             launch {

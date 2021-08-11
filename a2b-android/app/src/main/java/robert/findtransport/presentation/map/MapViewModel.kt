@@ -2,7 +2,6 @@ package robert.findtransport.presentation.map
 
 import android.location.Location
 import androidx.lifecycle.viewModelScope
-import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -17,6 +16,8 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 
@@ -43,8 +44,8 @@ open class MapViewModel(
 
   private val _currentLocation = MutableStateFlow(
     Location("").apply {
-      latitude = 40.180982
-      longitude = 44.5114422
+      latitude = DEFAULT_LATITUDE
+      longitude = DEFAULT_LONGITUDE
     }
   )
   val currentLocation: StateFlow<Location> get() = _currentLocation
@@ -52,7 +53,7 @@ open class MapViewModel(
   init {
     viewModelScope.launch {
       locationUseCase.subscribeToCurrentLocation().collect {
-        _currentLocation.emit(it)
+        _currentLocation.value = it
       }
     }
   }

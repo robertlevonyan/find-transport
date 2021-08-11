@@ -16,14 +16,15 @@ import androidx.fragment.app.setFragmentResult
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
-import com.mapbox.maps.ScreenCoordinate
 import com.mapbox.maps.Style
+import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
-import com.mapbox.maps.plugin.animation.camera
+import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,6 +35,8 @@ import robert.findtransport.databinding.FragmentMapBinding
 import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.component.dialog.LocationPermissionDialog
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.RESULT_LOCATION_PERMISSION
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -47,11 +50,17 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   protected val pointAnnotationManager by lazy {
     binding.mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
       addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+        println(isStateSaved)
         if (!isStateSaved) {
           pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
         }
         true
       })
+    }
+  }
+  protected val polylineAnnotationManager by lazy {
+    binding.mapView.annotations.createPolylineAnnotationManager(binding.mapView).apply {
+      lineCap = LineCap.ROUND
     }
   }
 
@@ -126,18 +135,18 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       marginBottom = 0f
     }
 
-    mapView.getMapboxMap().loadStyleUri(getString(R.string.map_style)) { style ->
+    mapboxMap.loadStyleUri(getString(R.string.map_style)) { style ->
       createMap(style)
       if (locationEnabled) {
         enableLocationComponent()
       } else {
-        flyTo(40.180982, 44.5114422)
+        flyTo(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
       }
     }
   }
 
   private fun flyTo(latitude: Double, longitude: Double) {
-    binding.mapView.camera.flyTo(
+    mapboxMap.flyTo(
       cameraOptions = CameraOptions.Builder()
         .center(Point.fromLngLat(longitude, latitude))
         .zoom(15.0)
@@ -145,7 +154,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       animationOptions = MapAnimationOptions.mapAnimationOptions {
         duration(200)
         interpolator(FastOutSlowInInterpolator())
-      }
+      },
     )
   }
 
@@ -194,14 +203,5 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
     inflater.inflate(R.menu.menu_settings, menu.apply { clear() })
-  }
-
-  companion object {
-    const val STOP_IMAGE = "Stop_Image"
-    const val METRO_IMAGE = "Metro_Image"
-    const val ROUTE_SOURCE = "Route_Source"
-    const val ROUTE_LAYER = "Route_Layer"
-    const val STOP_ICON_SIZE = 0.12f
-    const val STOP_ICON_BIG_SIZE = 0.15f
   }
 }

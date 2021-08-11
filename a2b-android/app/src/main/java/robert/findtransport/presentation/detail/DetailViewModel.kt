@@ -45,7 +45,6 @@ class DetailViewModel(
     viewModelScope.launch(Dispatchers.IO) {
       transportUseCase.getTransportById(id).collect { transport ->
         _selectedTransport.value = transport
-        println(transport.stopsReversed.map { it.id })
       }
     }
   }

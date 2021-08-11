@@ -18,7 +18,6 @@ interface TransportsRepository {
 
   suspend fun cacheJoins(joins: List<TransportStopJoin>)
 
-//  fun getAllTransports(favorite: Boolean): Flow<List<Transport>>
   fun getAllTransports(favorite: Boolean): List<Transport>
 
   fun getTransportById(id: Int): Flow<Transport>

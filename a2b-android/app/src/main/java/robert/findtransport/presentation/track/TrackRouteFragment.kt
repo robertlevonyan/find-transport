@@ -133,7 +133,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
       binding.tvCurrentStopName.setStopName(it, currentLanguage)
       binding.progressLoading.visibility = View.GONE
     }
-    observe(predestination) { println(it) }
+    observe(predestination) { }
     observe(notifyNextStop) { NextStopDialog.newInstance().show(parentFragmentManager, NextStopDialog::class.java.simpleName) }
     observe(notifyArrived) {
       parentFragmentManager.setFragmentResult(RESULT_ARRIVED, bundleOf())

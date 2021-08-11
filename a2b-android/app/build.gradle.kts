@@ -107,11 +107,11 @@ dependencies {
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.3.0")
+  implementation("androidx.activity:activity-ktx:1.3.1")
   implementation("androidx.appcompat:appcompat:1.3.1")
   implementation("androidx.browser:browser:1.3.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.0")
   implementation("androidx.core:core-ktx:1.7.0-alpha01")
   implementation("androidx.fragment:fragment-ktx:1.3.6")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
@@ -137,7 +137,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.0.0-rc.4")
+  implementation("com.mapbox.maps:android:10.0.0-rc.5")
   implementation("com.mapbox.navigation:android:2.0.0-beta.20")
 
   //other

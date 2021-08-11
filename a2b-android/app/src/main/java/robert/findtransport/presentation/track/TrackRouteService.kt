@@ -60,16 +60,8 @@ class TrackRouteService : Service() {
   val notifyArrived: Flow<Unit?> get() = _notifyArrived
 
   private val _notifyStop = MutableSharedFlow<Unit>().apply {
-    onStart {
-      println("notifyStopObservers inc")
-      notifyStopObservers.incrementAndGet()
-      println("notifyStopObservers inc ${notifyStopObservers.get()}")
-    }
-    onCompletion {
-      println("notifyStopObservers dec")
-      notifyStopObservers.decrementAndGet()
-      println("notifyStopObservers dec ${notifyStopObservers.get()}")
-    }
+    onStart { notifyStopObservers.incrementAndGet() }
+    onCompletion { notifyStopObservers.decrementAndGet() }
   }
   val notifyStop: Flow<Unit> get() = _notifyStop
 
@@ -94,7 +86,6 @@ class TrackRouteService : Service() {
       onHandleIntent(intent)
     }
     if (intent?.action == STOP_ACTION) {
-      println("notifyStopObservers ${notifyStopObservers.get()}")
       if (notifyStopObservers.get() > 0) {
         trackRouteScope.launch { _notifyStop.emit(Unit) }
       } else {
@@ -108,12 +99,9 @@ class TrackRouteService : Service() {
   private suspend fun subscribeToLocationChanges() = locationUseCase.subscribeToLocationUpdates().stateIn(trackRouteScope)
 
   private suspend fun getNearbyStopNames(location: Location) {
-    println("getNearbyStopNames $location")
     val transport = _selectedTransport.firstOrNull() ?: return
     val start = _fromStop.firstOrNull() ?: return
     val destination = _toStop.firstOrNull() ?: return
-
-    println("getNearbyStopNames $transport, $start, $destination")
 
     trackRouteScope.launch(Dispatchers.IO) {
       transportUseCase.getNearbyStopFromTransport(
@@ -128,13 +116,8 @@ class TrackRouteService : Service() {
 
         if (current == Stop.EMPTY) return@collect
 
-        println("getNearbyStopNames current $current")
-
         val currentStopValue = _currentStop.firstOrNull() ?: return@collect
         val previousStopValue = _previousStop.firstOrNull() ?: return@collect
-
-        println("getNearbyStopNames currentStopValue $currentStopValue")
-        println("getNearbyStopNames previousStopValue $previousStopValue")
 
         _previousStop.emit(currentStopValue)
         _currentStop.emit(current)

@@ -23,6 +23,7 @@ import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
+import robert.findtransport.utils.STOP_ICON_SIZE
 import java.util.*
 
 class StopsUseCaseImpl(
@@ -168,9 +169,4 @@ class StopsUseCaseImpl(
   override fun areLocationsCached(): Boolean = stopsRepository.areLocationsCached
 
   override fun areStopsCached(): Boolean = stopsRepository.areLocationsCached
-
-  companion object {
-    private const val STOP_ICON_SIZE = 0.12
-    private const val STOP_ICON_BIG_SIZE = 0.15f
-  }
 }

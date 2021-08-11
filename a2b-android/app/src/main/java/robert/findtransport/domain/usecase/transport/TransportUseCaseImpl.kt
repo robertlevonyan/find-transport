@@ -337,8 +337,6 @@ class TransportUseCaseImpl(
     val filledDestination = destination.copy(
       coordinates = stopsRepository.getStopLocations(destination.id).map { it.toStopLocation(destination.toApiStop()) }
     )
-    println("filledDestination")
-    println(filledDestination)
 
     if (filledDestination.coordinates.isEmpty()) return@flow
     val destinationCoordinates = filledDestination.coordinates.first()
@@ -374,11 +372,6 @@ class TransportUseCaseImpl(
 
     val nearbyStop = stops.find { stop -> stop.id == nearby.first().stopId } ?: Stop.EMPTY
     val preDestination = stops.findLast { stop -> stop.id == nearbyDestination[1].stopId } ?: Stop.EMPTY
-
-    println("nearbyStop")
-    println(nearbyStop)
-    println("preDestination")
-    println(preDestination)
 
     emit(nearbyStop to preDestination)
   }

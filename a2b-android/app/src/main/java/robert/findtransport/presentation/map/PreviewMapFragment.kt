@@ -2,17 +2,19 @@ package robert.findtransport.presentation.map
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
-import com.mapbox.core.constants.Constants
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.mapbox.geojson.*
-import com.mapbox.maps.MapboxMap
-import com.mapbox.maps.Style
+import com.mapbox.maps.*
+import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.easeTo
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
 import robert.findtransport.R
-import robert.findtransport.data.model.RouteResult
+import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
-import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
-import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 
@@ -48,32 +50,50 @@ class PreviewMapFragment : MapFragment() {
 
   override fun MapViewModel.initObservers() {
     observe(routeSuccess) { routeResult ->
-      val style = mapStyle ?: return@observe
-
       val coordinates = routeResult.transport.run {
         if (reverse) stops else stopsReversed
       }.flatMap { it.coordinates }
 
-      createRoute(routeResult, style, coordinates)
-
-//      style.addLayer(createRouteLayer())
-//      val latLngBounds = createLatLngBounds(coordinates)
-
-//      getDrawableFromRes(R.drawable.ic_stop_sign)?.let { style.addImage(STOP_IMAGE, it) }
+      createRoute(coordinates)
 
       hideLoading()
 
-//      mapboxMap?.let { map ->
-//        map.easeCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 200), 5000)
-//        showStops(map, style, coordinates.map { location ->
-//          SymbolOptions().apply {
-//            withData(location.parentStop.toApiStop().toJson())
-//            withLatLng(LatLng(location.lat, location.lng))
-//            withIconImage(STOP_IMAGE)
-//            withIconSize(STOP_ICON_SIZE)
-//          }
-//        })
-//      }
+
+      mapboxMap.setBounds(
+        CameraBoundsOptions.Builder()
+          .bounds(createCoordinateBounds(coordinates))
+          .minZoom(11.0)
+          .build()
+      )
+
+      val padding = getDimenInt(R.dimen.fab_margin).toDouble()
+      val center = coordinates.getOrNull(coordinates.lastIndex / 2)
+        ?.run { Point.fromLngLat(lng, lat) }
+        ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
+
+      mapboxMap.easeTo(
+        cameraOptions = CameraOptions.Builder()
+          .zoom(11.0)
+          .padding(EdgeInsets(padding, padding, padding, padding))
+          .center(center)
+          .build(),
+        animationOptions = MapAnimationOptions.mapAnimationOptions {
+          duration(200)
+          interpolator(FastOutSlowInInterpolator())
+        },
+      )
+
+      val iconBitmap = context?.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign) ?: return@observe
+
+      val points = coordinates.map { location ->
+        PointAnnotationOptions()
+          .withPoint(Point.fromLngLat(location.lng, location.lat))
+          .withData(location.parentStop.toApiStop().toJson())
+          .withIconSize(STOP_ICON_SIZE)
+          .withIconImage(iconBitmap)
+      }
+
+      pointAnnotationManager.create(points)
     }
 
     observe(routeError) { message ->
@@ -82,60 +102,33 @@ class PreviewMapFragment : MapFragment() {
     }
   }
 
-  private fun createRoute(routeResult: RouteResult, style: Style, coordinates: List<StopLocation>) {
-//    routeResult.route?.run {
-//      geometry()?.let { geometry ->
-//        val routeSource = GeoJsonSource(ROUTE_SOURCE)
-//        if (!style.sources.contains(routeSource)) {
-//          style.addSource(routeSource)
-//        }
-//        style.getSource(ROUTE_SOURCE)
-//          .takeIf { it is GeoJsonSource }
-//          ?.let { it as GeoJsonSource }
-//          ?.setGeoJson(LineString.fromPolyline(geometry, Constants.PRECISION_6))
-//      }
-//    } ?: style.addSource(createGeoJsonSource(coordinates))
+  private fun createRoute(coordinates: List<StopLocation>) {
+    val points = coordinates.map { Point.fromLngLat(it.lng, it.lat) }
+    val options = PolylineAnnotationOptions()
+      .withLineColor(getColorFromRes(R.color.colorAccent))
+      .withLineWidth(5.0)
+      .withLineJoin(LineJoin.ROUND)
+      .withGeometry(LineString.fromLngLats(points))
+
+    polylineAnnotationManager.create(options)
   }
 
-//  private fun createGeoJsonSource(coordinates: List<StopLocation>): Source = GeoJsonSource(
-//    ROUTE_SOURCE,
-//    FeatureCollection.fromFeatures(
-//      arrayOf(
-//        Feature.fromGeometry(
-//          LineString.fromLngLats(MultiPoint.fromLngLats(coordinates.map { Point.fromLngLat(it.lng, it.lat) }))
-//        )
-//      )
-//    )
-//  )
-//
-//  private fun createRouteLayer(): Layer = LineLayer(ROUTE_LAYER, ROUTE_SOURCE).apply {
-//    setProperties(
-//      PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
-//      PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
-//      PropertyFactory.lineWidth(5f),
-//      PropertyFactory.lineColor(getColorFromRes(R.color.colorAccent))
-//    )
-//  }
+  override fun showStopOptions(stop: Stop) {
+    super.showStopOptions(stop)
+    viewModel.getStopName(stop).let { name ->
+      view?.showSnackbar(name)
+    }
+  }
 
-//  private fun createLatLngBounds(coordinates: List<StopLocation>): LatLngBounds = LatLngBounds.Builder()
-//    .include(coordinates.firstOrNull()?.run { LatLng(lat, lng) } ?: LatLng())
-//    .include(coordinates.lastOrNull()?.run { LatLng(lat, lng) } ?: LatLng())
-//    .build()
-
-//  private fun showStops(mapboxMap: MapboxMap, style: Style, stops: List<SymbolOptions>) {
-//    SymbolManager(binding.mapView, mapboxMap, style).apply {
-//      addClickListener { symbol ->
-//        symbol?.data?.let { data ->
-//          val stop = data.fromJson<robert.findtransport.data.entity.Stop>().toStop()
-//          viewModel.getStopName(stop)
-//            .takeIf { it != "" }
-//            ?.let { name -> view?.showSnackbar(name) }
-//        }
-//        true
-//      }
-//      create(stops)
-//    }
-//  }
+  private fun createCoordinateBounds(coordinates: List<StopLocation>): CoordinateBounds {
+    val (southwestLng, southwestLat) = coordinates.firstOrNull()?.run { lng to lat } ?: DEFAULT_LONGITUDE to DEFAULT_LATITUDE
+    val (northeastLng, northeastLat) = coordinates.lastOrNull()?.run { lng to lat } ?: DEFAULT_LONGITUDE to DEFAULT_LATITUDE
+    return CoordinateBounds(
+      Point.fromLngLat(southwestLng, southwestLat),
+      Point.fromLngLat(northeastLng, northeastLat),
+      false,
+    )
+  }
 
   companion object {
     fun newInstance(data: Bundle = bundleOf()) = PreviewMapFragment().apply {

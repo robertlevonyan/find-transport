@@ -44,6 +44,7 @@ const val MEM_CACHE_STOP = "memCacheStop"
 
 const val DEFAULT_LATITUDE = 40.177576
 const val DEFAULT_LONGITUDE = 44.5114867
+const val STOP_ICON_SIZE = 0.12
 
 const val RESULT_FROM = "resFrom"
 const val RESULT_TO = "resTo"
