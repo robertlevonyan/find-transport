@@ -50,7 +50,6 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   protected val pointAnnotationManager by lazy {
     binding.mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
       addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
-        println(isStateSaved)
         if (!isStateSaved) {
           pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
         }
@@ -179,26 +178,6 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     viewModel.currentLocation.value.let { location ->
       flyTo(location.latitude, location.longitude)
     }
-  }
-
-  override fun onStart() {
-    super.onStart()
-    binding.mapView.onStart()
-  }
-
-  override fun onStop() {
-    binding.mapView.onStop()
-    super.onStop()
-  }
-
-  override fun onLowMemory() {
-    binding.mapView.onLowMemory()
-    super.onLowMemory()
-  }
-
-  override fun onDestroyView() {
-    binding.mapView.onDestroy()
-    super.onDestroyView()
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -17,9 +17,6 @@ import androidx.core.content.ContextCompat
 
 import android.graphics.drawable.Drawable
 
-
-
-
 fun Context.showToast(message: String) {
   Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
