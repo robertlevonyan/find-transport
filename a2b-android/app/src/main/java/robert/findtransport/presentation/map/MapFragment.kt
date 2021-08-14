@@ -2,6 +2,7 @@ package robert.findtransport.presentation.map
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -72,7 +73,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       locationEnabled = false
       View.GONE
     }
-    activity?.run { initMap() }
+    activity?.run {
+      if (!isDetached) {
+        initMap()
+      }
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,7 +91,9 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         showDialogForPermissions(this, permissions)
       } else {
         locationEnabled = true
-        initMap()
+        if (!isDetached) {
+          initMap()
+        }
       }
     } ?: router.exit()
   }
@@ -121,7 +128,9 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       positiveClick = { permissionRequest.launch(permissions) }
       negativeClick = {
         binding.fabLocation.visibility = View.GONE
-        initMap()
+        if (!isDetached) {
+          initMap()
+        }
       }
       show(activity.supportFragmentManager, "")
     }
@@ -169,7 +178,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     binding.mapView.location.updateSettings {
       enabled = true
       pulsingEnabled = true
-      pulsingColor = binding.mapView.context.getColorFromRes(R.color.colorAccent)
+      pulsingColor = context?.getColorFromRes(R.color.colorAccent) ?: Color.YELLOW
       locationPuck = LocationPuck2D()
     }
   }

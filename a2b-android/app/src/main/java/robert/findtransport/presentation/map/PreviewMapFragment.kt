@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.map
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -105,7 +106,7 @@ class PreviewMapFragment : MapFragment() {
   private fun createRoute(coordinates: List<StopLocation>) {
     val points = coordinates.map { Point.fromLngLat(it.lng, it.lat) }
     val options = PolylineAnnotationOptions()
-      .withLineColor(getColorFromRes(R.color.colorAccent))
+      .withLineColor(context?.getColorFromRes(R.color.colorAccent) ?: Color.YELLOW)
       .withLineWidth(5.0)
       .withLineJoin(LineJoin.ROUND)
       .withGeometry(LineString.fromLngLats(points))

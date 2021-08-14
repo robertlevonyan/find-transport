@@ -55,7 +55,11 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       super.applyCommandsSync(commands)
       if (supportFragmentManager.isDestroyed || supportFragmentManager.isStateSaved) return
 
-      supportFragmentManager.executePendingTransactions()
+      try {
+        supportFragmentManager.executePendingTransactions()
+      } catch (e: Exception) {
+        e.printStackTrace()
+      }
     }
   }
 
