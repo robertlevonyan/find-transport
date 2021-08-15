@@ -63,7 +63,6 @@ class PreviewMapFragment : MapFragment() {
       mapboxMap.setBounds(
         CameraBoundsOptions.Builder()
           .bounds(createCoordinateBounds(coordinates))
-          .minZoom(11.0)
           .build()
       )
 

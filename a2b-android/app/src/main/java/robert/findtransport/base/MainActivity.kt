@@ -52,10 +52,10 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     }
 
     override fun applyCommandsSync(commands: Array<out Command>) {
-      super.applyCommandsSync(commands)
-      if (supportFragmentManager.isDestroyed || supportFragmentManager.isStateSaved) return
+      if (isDestroyed || isFinishing || supportFragmentManager.isDestroyed || supportFragmentManager.isStateSaved) return
 
       try {
+        super.applyCommandsSync(commands)
         supportFragmentManager.executePendingTransactions()
       } catch (e: Exception) {
         e.printStackTrace()
@@ -104,8 +104,8 @@ class MainActivity : AppCompatActivity(), ChainHolder {
   }
 
   override fun onResumeFragments() {
-    super.onResumeFragments()
     navigatorHolder.setNavigator(navigator)
+    super.onResumeFragments()
   }
 
   override fun onPause() {
