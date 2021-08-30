@@ -26,7 +26,7 @@ fun Context.gerDimenFromRes(@DimenRes dmn: Int): Float {
 }
 
 fun BaseFragment<*, *>.gerDimenFromRes(@DimenRes dmn: Int): Float {
-  return requireContext().gerDimenFromRes(dmn)
+  return context?.gerDimenFromRes(dmn) ?: 0f
 }
 
 fun Context.getDimen(@DimenRes dmn: Int): Float {
@@ -38,5 +38,5 @@ fun Context.getDimenInt(@DimenRes dmn: Int): Int {
 }
 
 fun BaseFragment<*, *>.getDimenInt(@DimenRes dmn: Int): Int {
-  return requireContext().getDimenInt(dmn)
+  return context?.getDimenInt(dmn) ?: 0
 }

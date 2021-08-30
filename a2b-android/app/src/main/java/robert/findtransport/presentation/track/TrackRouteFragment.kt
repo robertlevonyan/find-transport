@@ -106,6 +106,9 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
   }
 
   private fun onServiceBound() = trackRouteService?.run {
+    if (activity == null || activity?.hasWindowFocus() == false) {
+      return@run
+    }
     observe(selectedTransport) { transport ->
       binding.progressLoading.visibility = View.GONE
 
