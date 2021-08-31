@@ -92,17 +92,6 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     openApp()
   }
 
-  override fun onResume() {
-    super.onResume()
-//    requestedOrientation = if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-//      if (isTablet()) {
-//        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-//      } else {
-//        ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-//      }
-//    } else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-  }
-
   override fun onResumeFragments() {
     navigatorHolder.setNavigator(navigator)
     super.onResumeFragments()
@@ -111,9 +100,6 @@ class MainActivity : AppCompatActivity(), ChainHolder {
   override fun onPause() {
     navigatorHolder.removeNavigator()
     super.onPause()
-//    requestedOrientation = if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-//      ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-//    } else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
   }
 
   private fun openApp() {
