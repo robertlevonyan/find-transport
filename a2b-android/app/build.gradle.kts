@@ -15,8 +15,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 21
     targetSdk = 31
-    versionCode = 238
-    versionName = "3.6.4"
+    versionCode = 239
+    versionName = "3.6.5"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -98,7 +98,7 @@ dependencies {
 
   //google
   implementation("com.google.android.material:material:1.4.0")
-  implementation("com.google.android.play:core:1.10.0")
+  implementation("com.google.android.play:core:1.10.1")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")
   implementation("com.google.code.gson:gson:2.8.7")
@@ -112,7 +112,7 @@ dependencies {
   implementation("androidx.browser:browser:1.3.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-  implementation("androidx.core:core-ktx:1.7.0-alpha01")
+  implementation("androidx.core:core-ktx:1.7.0-beta01")
   implementation("androidx.fragment:fragment-ktx:1.3.6")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
