@@ -15,8 +15,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 21
     targetSdk = 31
-    versionCode = 239
-    versionName = "3.6.5"
+    versionCode = 240
+    versionName = "3.6.6"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -33,7 +33,7 @@ android {
     }
   }
   buildTypes {
-    getByName("debug") {
+    debug {
       addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
 
       val localProperties = Properties()
@@ -49,7 +49,7 @@ android {
       buildConfigField("String", "KEY_PREFIX", keyPrefix)
     }
 
-    getByName("release") {
+    release {
       isMinifyEnabled = true
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "$project.rootDir/tools/proguard-rules.pro")
       ndk {

@@ -59,13 +59,6 @@ class PreviewMapFragment : MapFragment() {
 
       hideLoading()
 
-
-      mapboxMap.setBounds(
-        CameraBoundsOptions.Builder()
-          .bounds(createCoordinateBounds(coordinates))
-          .build()
-      )
-
       val padding = getDimenInt(R.dimen.fab_margin).toDouble()
       val center = coordinates.getOrNull(coordinates.lastIndex / 2)
         ?.run { Point.fromLngLat(lng, lat) }
@@ -118,16 +111,6 @@ class PreviewMapFragment : MapFragment() {
     viewModel.getStopName(stop).let { name ->
       view?.showSnackbar(name)
     }
-  }
-
-  private fun createCoordinateBounds(coordinates: List<StopLocation>): CoordinateBounds {
-    val (southwestLng, southwestLat) = coordinates.firstOrNull()?.run { lng to lat } ?: DEFAULT_LONGITUDE to DEFAULT_LATITUDE
-    val (northeastLng, northeastLat) = coordinates.lastOrNull()?.run { lng to lat } ?: DEFAULT_LONGITUDE to DEFAULT_LATITUDE
-    return CoordinateBounds(
-      Point.fromLngLat(southwestLng, southwestLat),
-      Point.fromLngLat(northeastLng, northeastLat),
-      false,
-    )
   }
 
   companion object {
