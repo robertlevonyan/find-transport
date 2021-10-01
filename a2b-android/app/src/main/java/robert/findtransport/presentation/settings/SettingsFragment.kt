@@ -46,10 +46,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
   override fun FragmentSettingsBinding.initViews() {
     val horizontalPadding = if (isTablet()) getDimenInt(R.dimen.activity_horizontal_margin_big) else 0
     rvSettings.setPaddingRelative(
-        horizontalPadding,
-        getDimenInt(R.dimen.fab_margin),
-        horizontalPadding,
-        0,
+      horizontalPadding,
+      getDimenInt(R.dimen.fab_margin),
+      horizontalPadding,
+      0,
     )
   }
 

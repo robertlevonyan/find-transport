@@ -36,7 +36,7 @@
                 android:propertyName="fillColor"
                 android:duration="1000"
                 android:valueFrom="#8c8c8c"
-                android:valueTo="@color/colorDarkGray"
+                android:valueTo="@color/colorOnPrimary"
                 android:valueType="colorType"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>
@@ -58,7 +58,7 @@
                 android:propertyName="fillColor"
                 android:duration="1000"
                 android:valueFrom="#8c8c8c"
-                android:valueTo="@color/colorDarkGray"
+                android:valueTo="@color/colorOnPrimary"
                 android:valueType="colorType"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>

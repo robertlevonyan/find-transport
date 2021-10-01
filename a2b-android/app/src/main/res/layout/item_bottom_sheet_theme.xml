@@ -10,5 +10,5 @@
   android:paddingStart="@dimen/fab_margin"
   android:paddingEnd="@dimen/fab_margin"
   android:singleLine="true"
-  android:textColor="@color/colorDarkGray"
+  android:textColor="@color/colorOnPrimary"
   tools:ignore="Overdraw" />

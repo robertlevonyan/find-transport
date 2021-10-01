@@ -30,6 +30,7 @@
   <dimen name="transport_icon_size">45dp</dimen>
   <dimen name="fab_size">56dp</dimen>
   <dimen name="splash_icon_size">100dp</dimen>
+  <dimen name="button_size">66dp</dimen>
 
   <dimen name="card_radius">16dp</dimen>
   <dimen name="small_radius">8dp</dimen>

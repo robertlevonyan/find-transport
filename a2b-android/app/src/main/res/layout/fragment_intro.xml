@@ -31,7 +31,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:text="@string/app_name"
-      android:textColor="@color/colorDarkGray"
+      android:textColor="@color/colorOnPrimary"
       android:textSize="@dimen/text_size_28"
       android:textStyle="bold" />
   </LinearLayout>
@@ -150,6 +150,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/pkLanguage"
-    app:rippleColor="@color/colorDarkGray"
-    app:tint="@color/colorDarkGray" />
+    app:rippleColor="@color/colorOnPrimary"
+    app:tint="@color/colorOnPrimary" />
 </androidx.constraintlayout.widget.ConstraintLayout>

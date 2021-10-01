@@ -2,13 +2,10 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:width="53.2dp"
-  android:height="69.25dp"
+  android:height="60dp"
   android:viewportWidth="53.2"
-  android:viewportHeight="69.25">
+  android:viewportHeight="60">
   
-  <path
-    android:fillColor="@color/colorIconShadow"
-    android:pathData="M 26.6 65.463 C 40.4071187458 65.463 51.6 66.0508501235 51.6 66.776 C 51.6 67.5011498765 40.4071187458 68.089 26.6 68.089 C 12.7928812542 68.089 1.6 67.5011498765 1.6 66.776 C 1.6 66.0508501235 12.7928812542 65.463 26.6 65.463 Z" />
   <path
     android:fillColor="@color/colorIconWheels"
     android:pathData="M10.244,58.315c0,0.323,0.582,0.587,1.294,0.587h2.352c0.712,0,1.294-0.264,1.294-0.587V54.82h-4.94

@@ -3,17 +3,17 @@
   
   <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDarkTransparent</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:fontFamily">@font/app_font</item>
     <item name="android:windowLightStatusBar">true</item>
     <item name="android:windowLightNavigationBar">true</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryDarkTransparent</item>
+    <item name="android:navigationBarColor">@color/colorPrimaryVariantTransparent</item>
   </style>
 
   <style name="BottomSheetDialogThemeDark" parent="BaseBottomSheetDialogDark">
     <item name="android:statusBarColor">@android:color/transparent</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryDark23</item>
+    <item name="android:navigationBarColor">@color/colorPrimaryVariant23</item>
     <item name="android:windowLightNavigationBar">true</item>
   </style>
 </resources>

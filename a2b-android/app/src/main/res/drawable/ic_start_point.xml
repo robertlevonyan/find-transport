@@ -4,20 +4,20 @@
     android:viewportWidth="100"
     android:viewportHeight="100">
   <path
-      android:fillColor="@color/colorDarkGray"
+      android:fillColor="@color/colorOnPrimary"
       android:pathData="M38,93.4h3v4h-3z"/>
   <path
-      android:fillColor="@color/colorDarkGray"
+      android:fillColor="@color/colorOnPrimary"
       android:pathData="M59,93.4h3v4h-3z"/>
   <path
-      android:fillColor="@color/colorDarkGray"
+      android:fillColor="@color/colorOnPrimary"
       android:pathData="M38,34.9h3v53h-3z"/>
   <path
-      android:fillColor="@color/colorDarkGray"
+      android:fillColor="@color/colorOnPrimary"
       android:pathData="M59,34.9h3v53h-3z"/>
   <path
       android:pathData="M50,50.5m-20,0a20,20 0,1 1,40 0a20,20 0,1 1,-40 0"
       android:strokeWidth="5"
       android:fillColor="@color/colorAccent"
-      android:strokeColor="@color/colorDarkGray"/>
+      android:strokeColor="@color/colorOnPrimary"/>
 </vector>

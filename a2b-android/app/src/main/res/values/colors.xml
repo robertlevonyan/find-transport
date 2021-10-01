@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="colorPrimary">#ffffff</color>
-  <color name="colorPrimaryDark">#cecece</color>
-  <color name="colorPrimaryDark23">#f1f1f1</color>
-  <color name="colorPrimaryDarkTransparent">#65F1F1F1</color>
+  <color name="colorPrimaryVariant">#cecece</color>
+  <color name="colorPrimaryVariant23">#f1f1f1</color>
+  <color name="colorPrimaryVariantTransparent">#65F1F1F1</color>
   <color name="colorSecondary">#f1f1f1</color>
   <color name="colorAccent">#e7a942</color>
+  <color name="colorAccentVariant">#FFEDD1</color>
+  <color name="colorAccentVariantDark">#CEA053</color>
   <color name="colorAccentTransparent">#55f5b241</color>
-  <color name="colorToolbarTitleText">#1a1a1a</color>
-  <color name="colorDarkGray">#1a1a1a</color>
-  <color name="colorDarkGrayUntranslated">#1a1a1a</color>
-  <color name="colorDarkGrayTransparent">#801a1a1a</color>
-  <color name="colorDarkGrayTransparentUntranslated">#801a1a1a</color>
-  <color name="colorGray">#5b5b5b</color>
-  <color name="colorLightGray">#9E9E9E</color>
-  <color name="colorLighterGray">#f3f3f3</color>
+  <color name="colorOnPrimary">#1a1a1a</color>
+  <color name="colorOnPrimaryUntranslated">#1a1a1a</color>
+  <color name="colorOnPrimaryTransparent">#801a1a1a</color>
+  <color name="colorOnPrimaryTransparentUntranslated">#801a1a1a</color>
+  <color name="colorOnPrimaryLight">#5b5b5b</color>
+  <color name="colorOnPrimaryLighter">#9E9E9E</color>
+  <color name="colorOnPrimaryLightest">#f3f3f3</color>
+
   <color name="colorHint">#000000</color>
   <color name="colorError">#9f0000</color>
   <color name="colorWhite">#ffffff</color>
@@ -27,5 +29,6 @@
   <color name="colorTrolleyGreen">#6CB64B</color>
   <color name="colorTrolleySecondary">#404C37</color>
   <color name="colorRemove">#F44336</color>
+
   <color name="ic_launcher_background">#f1f1f1</color>
 </resources>

@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:animateLayoutChanges="true"
-  android:background="@color/colorPrimary"
   tools:context=".presentation.map.MapFragment">
 
   <com.mapbox.maps.MapView
@@ -17,18 +16,21 @@
     app:mapbox_cameraTargetLng="44.5114422"
     app:mapbox_cameraZoom="15.0" />
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/fabLocation"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.Button.Icon"
+    android:layout_width="@dimen/fab_size"
+    android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/fab_margin"
     android:layout_marginBottom="@dimen/fab_margin"
-    android:src="@drawable/ic_current_location_black"
+    android:text="@null"
     app:backgroundTint="@color/colorAccent"
-    app:elevation="4dp"
-    app:fabSize="normal"
-    tools:ignore="ContentDescription" />
+    app:cornerRadius="@dimen/card_radius"
+    app:icon="@drawable/ic_current_location_black"
+    app:iconGravity="textStart|end"
+    app:iconTint="@color/colorAccentVariant"
+    app:iconTintMode="src_in" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
@@ -66,7 +68,7 @@
     android:id="@+id/flLoading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDarkGrayTransparentUntranslated"
+    android:background="@color/colorOnPrimaryTransparentUntranslated"
     android:clickable="false"
     android:focusable="false"
     android:focusableInTouchMode="false">
@@ -92,6 +94,5 @@
           android:layout_margin="@dimen/fab_margin" />
       </LinearLayout>
     </androidx.cardview.widget.CardView>
-
   </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

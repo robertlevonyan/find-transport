@@ -17,7 +17,7 @@ M70.738,22.651h8.057v4.604h-8.057V22.651z" />
     android:fillColor="@color/colorAccent"
     android:pathData="M34.39,16.447c-2.944,17.338-15.375,31.732-15.375,31.732S6.584,33.785,3.64,16.447" />
   <path
-    android:fillColor="@color/colorDarkGray"
+    android:fillColor="@color/colorOnPrimary"
     android:pathData="M14.554,28.145h-3.94L17.279,8.7h3.992l6.691,19.444h-3.939l-1.322-4.193h-6.824L14.554,28.145z
 M19.322,13.254h-0.08l-2.404,7.639h4.901L19.322,13.254z" />
 </vector>

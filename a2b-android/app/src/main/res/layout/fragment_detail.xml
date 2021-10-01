@@ -5,7 +5,6 @@
   android:id="@+id/root"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorPrimary"
   tools:context=".presentation.detail.DetailFragment">
 
   <androidx.recyclerview.widget.RecyclerView
@@ -21,26 +20,29 @@
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
     tools:listitem="@layout/item_route_mid" />
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/fabMap"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.Button.Icon"
+    android:layout_width="@dimen/fab_size"
+    android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/fab_margin"
-    android:src="@drawable/ic_map"
     app:backgroundTint="@color/colorAccent"
-    tools:ignore="ContentDescription" />
+    app:cornerRadius="@dimen/card_radius"
+    app:icon="@drawable/ic_map"
+    app:iconGravity="textStart|end"
+    app:iconTint="@color/colorAccentVariant" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
     android:theme="@style/AppTheme.AppBarOverlay">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:contentScrim="@color/colorPrimary"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
       <LinearLayout
@@ -54,7 +56,6 @@
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?actionBarSize"
-          android:background="?attr/colorPrimary"
           android:stateListAnimator="@drawable/appbar_elevation"
           app:layout_collapseMode="pin"
           app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -85,6 +86,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="@dimen/half_margin"
+          android:background="@drawable/bg_section_box"
           android:paddingHorizontal="@dimen/margin_tablet"
           app:layout_collapseMode="pin">
 
@@ -93,7 +96,7 @@
             android:layout_width="@dimen/transport_icon_size"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="@id/divider"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvTransportType"
             tools:ignore="ContentDescription"
@@ -105,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/margin_12"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             android:textSize="@dimen/number_text_size"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivTransportIcon"
@@ -121,7 +124,7 @@
             android:layout_marginTop="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
             android:gravity="end"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             android:textSize="@dimen/type_text_size"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
@@ -138,67 +141,55 @@
             android:ellipsize="end"
             android:gravity="end"
             android:singleLine="true"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             android:textSize="@dimen/first_last_text_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
             app:layout_constraintTop_toBottomOf="@id/tvTransportType"
             tools:text="Stop 1 - Stop N" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-          <View
-            android:id="@+id/divider"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/line_width"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/margin_7"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:background="@color/colorLightGray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFirstLastStops" />
+        <com.google.android.material.button.MaterialButtonToggleGroup
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="@dimen/half_margin"
+          android:orientation="horizontal"
+          android:paddingHorizontal="@dimen/fab_margin"
+          app:checkedButton="@id/btnPrimaryRoute"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/divider"
+          app:selectionRequired="true"
+          app:singleSelection="true">
 
-          <com.google.android.material.button.MaterialButtonToggleGroup
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrimaryRoute"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/fab_margin"
-            app:checkedButton="@id/btnPrimaryRoute"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            app:selectionRequired="true"
-            app:singleSelection="true">
+            android:layout_weight="1"
+            android:backgroundTint="@color/color_state_selector_bg"
+            android:text="@string/label_primary_route"
+            android:textAllCaps="false"
+            android:textColor="@color/color_state_selector_text"
+            android:textStyle="bold"
+            app:strokeColor="@color/colorAccent" />
 
-            <com.google.android.material.button.MaterialButton
-              android:id="@+id/btnPrimaryRoute"
-              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:backgroundTint="@color/color_state_selector_bg"
-              android:text="@string/label_primary_route"
-              android:textAllCaps="false"
-              android:textColor="@color/color_state_selector_text"
-              android:textStyle="bold"
-              app:strokeColor="@color/colorAccent" />
-
-            <com.google.android.material.button.MaterialButton
-              android:id="@+id/btnSecondaryRoute"
-              style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="1"
-              android:backgroundTint="@color/color_state_selector_bg"
-              android:text="@string/label_secondary_route"
-              android:textAllCaps="false"
-              android:textColor="@color/color_state_selector_text"
-              android:textStyle="bold"
-              app:strokeColor="@color/colorAccent" />
-          </com.google.android.material.button.MaterialButtonToggleGroup>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSecondaryRoute"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/color_state_selector_bg"
+            android:text="@string/label_secondary_route"
+            android:textAllCaps="false"
+            android:textColor="@color/color_state_selector_text"
+            android:textStyle="bold"
+            app:strokeColor="@color/colorAccent" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
       </LinearLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>

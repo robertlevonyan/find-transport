@@ -68,7 +68,7 @@ fun TextInputLayout.setCustomError(message: Int?) {
 
 fun ImageView.setTransportIcon(transport: Transport) {
   when (transport.type) {
-    BUS -> setImageResource(R.drawable.ic_bus)
+    BUS -> if (transport.isNew) setImageResource(R.drawable.ic_new_bus) else setImageResource(R.drawable.ic_bus)
     MICROBUS -> if (transport.isNew) setImageResource(R.drawable.ic_new_microbus) else setImageResource(R.drawable.ic_microbus)
     TROLLEYBUS -> setImageResource(R.drawable.ic_trolleybus)
     METRO -> setImageResource(R.drawable.ic_metro)

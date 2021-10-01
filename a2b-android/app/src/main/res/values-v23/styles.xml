@@ -3,7 +3,7 @@
   
   <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDarkTransparent</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:fontFamily">@font/app_font</item>
     <item name="android:windowLightStatusBar">true</item>

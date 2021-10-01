@@ -37,14 +37,14 @@
                   android:propertyName="fillColor"
                   android:duration="500"
                   android:valueFrom="#8c8c8c"
-                  android:valueTo="@color/colorDarkGray"
+                  android:valueTo="@color/colorOnPrimary"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
                 <objectAnimator
                   android:propertyName="fillColor"
                   android:startOffset="500"
                   android:duration="500"
-                  android:valueFrom="@color/colorDarkGray"
+                  android:valueFrom="@color/colorOnPrimary"
                   android:valueTo="#8c8c8c"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
@@ -58,14 +58,14 @@
                   android:propertyName="fillColor"
                   android:duration="500"
                   android:valueFrom="#8c8c8c"
-                  android:valueTo="@color/colorDarkGray"
+                  android:valueTo="@color/colorOnPrimary"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
                 <objectAnimator
                   android:propertyName="fillColor"
                   android:startOffset="500"
                   android:duration="500"
-                  android:valueFrom="@color/colorDarkGray"
+                  android:valueFrom="@color/colorOnPrimary"
                   android:valueTo="#8c8c8c"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
@@ -79,14 +79,14 @@
                   android:propertyName="fillColor"
                   android:duration="500"
                   android:valueFrom="#8c8c8c"
-                  android:valueTo="@color/colorDarkGray"
+                  android:valueTo="@color/colorOnPrimary"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
                 <objectAnimator
                   android:propertyName="fillColor"
                   android:startOffset="500"
                   android:duration="500"
-                  android:valueFrom="@color/colorDarkGray"
+                  android:valueFrom="@color/colorOnPrimary"
                   android:valueTo="#8c8c8c"
                   android:valueType="colorType"
                   android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>

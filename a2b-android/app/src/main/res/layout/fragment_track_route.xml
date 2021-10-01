@@ -14,12 +14,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_85"
-    android:textColor="@color/colorDarkGrayUntranslated"
+    android:textColor="@color/colorOnPrimaryUntranslated"
     android:textSize="@dimen/text_size_18"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:text="@string/label_selected_transport" />
+    app:layout_constraintTop_toTopOf="parent" />
 
   <LinearLayout
     android:id="@+id/llCurrentStop"
@@ -38,7 +37,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:text="@string/label_current_stop"
-      android:textColor="@color/colorDarkGrayUntranslated"
+      android:textColor="@color/colorOnPrimaryUntranslated"
       android:visibility="gone" />
 
     <TextView
@@ -48,7 +47,7 @@
       android:layout_gravity="center"
       android:gravity="center"
       android:paddingHorizontal="@dimen/fab_margin"
-      android:textColor="@color/colorDarkGrayUntranslated"
+      android:textColor="@color/colorOnPrimaryUntranslated"
       android:textSize="@dimen/text_size_28"
       android:textStyle="bold"
       tools:text="@string/label_current_stop" />
@@ -60,7 +59,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/fab_margin"
-    android:backgroundTint="@color/colorDarkGrayUntranslated"
+    android:backgroundTint="@color/colorOnPrimaryUntranslated"
     android:text="@string/label_stop_tracker"
     android:textAllCaps="false"
     android:textColor="@android:color/white"
@@ -75,7 +74,7 @@
     android:id="@+id/progressLoading"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:indeterminateTint="@color/colorDarkGrayUntranslated"
+    android:indeterminateTint="@color/colorOnPrimaryUntranslated"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

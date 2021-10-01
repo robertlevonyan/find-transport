@@ -96,7 +96,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
           setDefaultColorSchemeParams(
             CustomTabColorSchemeParams.Builder()
               .setToolbarColor(getColorFromRes(R.color.colorPrimary))
-              .setSecondaryToolbarColor(getColorFromRes(R.color.colorDarkGray))
+              .setSecondaryToolbarColor(getColorFromRes(R.color.colorOnPrimary))
               .build()
           )
           build()

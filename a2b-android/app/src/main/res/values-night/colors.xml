@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="colorPrimary">#1a1a1a</color>
-  <color name="colorPrimaryDark">#000000</color>
-  <color name="colorPrimaryDark23">#000000</color>
-  <color name="colorPrimaryDarkTransparent">#65000000</color>
+  <color name="colorPrimaryVariant">#000000</color>
+  <color name="colorPrimaryVariant23">#000000</color>
+  <color name="colorPrimaryVariantTransparent">#65000000</color>
   <color name="colorSecondary">#303030</color>
-  <color name="colorAccent">#e7a942</color>
-  <color name="colorAccentTransparent">#55f5b241</color>
-  <color name="colorToolbarTitleText">#f1f1f1</color>
-  <color name="colorDarkGray">#C9C9C9</color>
-  <color name="colorDarkGrayTransparent">#80C9C9C9</color>
-  <color name="colorGray">#9C9C9C</color>
-  <color name="colorLightGray">#555555</color>
-  <color name="colorLighterGray">#f3f3f3</color>
+  <color name="colorOnPrimary">#C9C9C9</color>
+  <color name="colorOnPrimaryTransparent">#80C9C9C9</color>
+  <color name="colorOnPrimaryLight">#9C9C9C</color>
+  <color name="colorOnPrimaryLighter">#555555</color>
+  <color name="colorOnPrimaryLightest">#f3f3f3</color>
+
   <color name="colorHint">#DBDBDB</color>
   <color name="colorError">#B85252</color>
   <color name="colorWhite">#ffffff</color>

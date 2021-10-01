@@ -1,12 +1,12 @@
 package robert.findtransport.data.api
 
-import android.os.Build
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import robert.findtransport.BuildConfig
@@ -78,6 +78,9 @@ class RetrofitClient private constructor() {
           .build()
 
         chain.proceed(newRequest)
+      })
+      addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply {
+        this.level = HttpLoggingInterceptor.Level.HEADERS
       })
       build()
     }

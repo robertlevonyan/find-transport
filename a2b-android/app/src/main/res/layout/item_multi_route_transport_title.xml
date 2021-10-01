@@ -13,7 +13,7 @@
     android:paddingTop="@dimen/fab_margin"
     android:paddingBottom="@dimen/margin_x_small"
     android:text="@string/label_from2"
-    android:textColor="@color/colorDarkGray"
+    android:textColor="@color/colorOnPrimary"
     android:textSize="@dimen/text_size_18"
     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -35,7 +35,7 @@
     android:paddingTop="@dimen/fab_margin"
     android:paddingBottom="@dimen/margin_x_small"
     android:text="@string/label_take_transport"
-    android:textColor="@color/colorDarkGray"
+    android:textColor="@color/colorOnPrimary"
     android:textSize="@dimen/text_size_18"
     app:layout_constraintEnd_toEndOf="parent" />
 </LinearLayout>

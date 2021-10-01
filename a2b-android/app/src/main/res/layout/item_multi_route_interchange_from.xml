@@ -14,7 +14,7 @@
     android:paddingTop="@dimen/fab_margin"
     android:paddingBottom="@dimen/margin_x_small"
     android:text="@string/label_interchange_from"
-    android:textColor="@color/colorDarkGray"
+    android:textColor="@color/colorOnPrimary"
     android:textSize="@dimen/text_size_18"
     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/fab_margin"
     android:layout_marginVertical="@dimen/margin_x_small"
-    app:cardBackgroundColor="@color/colorDarkGray"
+    app:cardBackgroundColor="@color/colorOnPrimary"
     app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="0dp">
 

@@ -4,7 +4,6 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorPrimary"
   tools:context=".presentation.history.HistoryFragment">
 
   <TextView
@@ -26,17 +25,20 @@
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
     tools:listitem="@layout/item_history" />
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
+  <com.google.android.material.button.MaterialButton
     android:id="@+id/fabClear"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    style="@style/Widget.MaterialComponents.Button.Icon"
+    android:layout_width="@dimen/fab_size"
+    android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
     android:contentDescription="@string/action_clear_history"
-    android:src="@drawable/ic_delete"
     android:visibility="gone"
     app:backgroundTint="@color/colorAccent"
-    app:fabSize="normal" />
+    app:cornerRadius="@dimen/card_radius"
+    app:icon="@drawable/ic_delete"
+    app:iconGravity="textStart|end"
+    app:iconTint="@color/colorAccentVariant" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"

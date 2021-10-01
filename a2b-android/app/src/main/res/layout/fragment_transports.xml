@@ -4,7 +4,6 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorPrimary"
   tools:context=".presentation.feedback.FeedbackFragment">
 
   <androidx.recyclerview.widget.RecyclerView
@@ -23,13 +22,13 @@
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
     android:stateListAnimator="@drawable/appbar_elevation"
     android:theme="@style/AppTheme.AppBarOverlay">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:contentScrim="@color/colorPrimary"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
       <LinearLayout
@@ -43,7 +42,6 @@
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
-          android:background="?attr/colorPrimary"
           app:layout_collapseMode="pin"
           app:popupTheme="@style/AppTheme.PopupOverlay">
 
@@ -64,7 +62,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="@dimen/half_margin"
           android:animateLayoutChanges="true"
+          android:background="@drawable/bg_section_box"
           app:layout_collapseMode="pin">
 
           <TextView
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_small"
             android:text="@string/label_show"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -92,7 +92,7 @@
             android:gravity="center_vertical|end"
             android:padding="@dimen/margin_small"
             android:text="@string/label_see_all"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="@id/swListToggle"
             app:layout_constraintEnd_toStartOf="@id/swListToggle"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,7 @@
             android:gravity="center_vertical"
             android:padding="@dimen/margin_small"
             android:text="@string/label_see_favorites"
-            android:textColor="@color/colorDarkGray"
+            android:textColor="@color/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="@id/swListToggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/swListToggle"

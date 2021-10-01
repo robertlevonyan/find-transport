@@ -87,7 +87,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
         putExtra(EXTRA_TO, toId)
       }
       .also { intent ->
-        context?.run {
+        context?.applicationContext?.run {
           startService(intent)
           if (trackRouteService?.isBound == true) {
             unbindService(serviceConnection)
@@ -151,7 +151,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     try {
       trackRouteService?.run {
         if (isBound) {
-          this@TrackRouteFragment.context?.unbindService(serviceConnection)
+          this@TrackRouteFragment.context?.applicationContext?.unbindService(serviceConnection)
         }
         stopForeground(true)
         stopSelf()

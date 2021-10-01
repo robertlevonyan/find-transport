@@ -6,13 +6,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentFeedbackBinding
 import robert.findtransport.utils.extensions.*
-import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding>() {
@@ -25,9 +23,6 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
     }
     fabSend.onWindowInsets { v, windowInsets ->
       v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
-    }
-    progressLoading.onWindowInsets { v, windowInsets ->
-      v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.margin_small)
     }
   }
 
@@ -42,7 +37,9 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
     inputEmail.doAfterTextChanged { viewModel.onEmailInput(it) }
     inputSubject.doAfterTextChanged { viewModel.onSubjectInput(it) }
     inputMessage.doAfterTextChanged { viewModel.onMessageInput(it) }
-    fabSend.setOnClickListener { viewModel.sendFeedback() }
+    fabSend.setOnClickListener {
+      viewModel.sendFeedback()
+    }
   }
 
   override fun FeedbackViewModel.initObservers() {
@@ -50,7 +47,7 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
       showToast(getString(R.string.feedback_sent))
       onBackPressed()
     }
-    observe(showHideLoading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+    observe(showHideLoading) { binding.flLoading.visibility = if (it) View.VISIBLE else View.GONE }
     observe(errorEmail) { binding.ilEmail.setCustomError(it) }
     observe(errorSubject) { binding.ilSubject.setCustomError(it) }
     observe(errorMessage) { binding.ilMessage.setCustomError(it) }
