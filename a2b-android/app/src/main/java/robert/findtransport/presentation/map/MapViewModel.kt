@@ -42,18 +42,13 @@ open class MapViewModel(
   private val _routeError = MutableSharedFlow<Int>()
   val routeError: Flow<Int> get() = _routeError
 
-  private val _currentLocation = MutableStateFlow(
-    Location("").apply {
-      latitude = DEFAULT_LATITUDE
-      longitude = DEFAULT_LONGITUDE
-    }
-  )
-  val currentLocation: StateFlow<Location> get() = _currentLocation
+  private val _currentLocation = MutableSharedFlow<Location>()
+  val currentLocation: Flow<Location> get() = _currentLocation
 
-  init {
-    viewModelScope.launch {
+  fun getCurrentLocation() {
+    viewModelScope.launch(Dispatchers.Main) {
       locationUseCase.subscribeToCurrentLocation().collect {
-        _currentLocation.value = it
+        _currentLocation.emit(it)
       }
     }
   }

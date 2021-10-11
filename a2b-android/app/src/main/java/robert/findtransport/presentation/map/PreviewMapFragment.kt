@@ -50,6 +50,10 @@ class PreviewMapFragment : MapFragment() {
   }
 
   override fun MapViewModel.initObservers() {
+    observe(currentLocation) { location ->
+      flyTo(location.latitude, location.longitude)
+    }
+
     observe(routeSuccess) { routeResult ->
       val coordinates = routeResult.transport.run {
         if (reverse) stops else stopsReversed

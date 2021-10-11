@@ -44,10 +44,10 @@ class TrackRouteService : Service() {
   private val _toStop = MutableSharedFlow<Stop>()
   val toStop: Flow<Stop> get() = _toStop
 
-  private val _currentStop = MutableSharedFlow<Stop>()
+  private val _currentStop = MutableStateFlow(Stop.EMPTY)
   val currentStop: Flow<Stop> get() = _currentStop
 
-  private val _previousStop = MutableSharedFlow<Stop>()
+  private val _previousStop = MutableStateFlow(Stop.EMPTY)
   val previousStop: Flow<Stop> get() = _previousStop
 
   private val _predestination = MutableSharedFlow<Stop>()
@@ -75,10 +75,6 @@ class TrackRouteService : Service() {
   override fun onCreate() {
     super.onCreate()
     startNotification()
-
-    trackRouteScope.launch {
-      subscribeToLocationChanges().collect(::getNearbyStopNames)
-    }
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -98,11 +94,12 @@ class TrackRouteService : Service() {
 
   private suspend fun subscribeToLocationChanges() = locationUseCase.subscribeToLocationUpdates().stateIn(trackRouteScope)
 
-  private suspend fun getNearbyStopNames(location: Location) {
-    val transport = _selectedTransport.firstOrNull() ?: return
-    val start = _fromStop.firstOrNull() ?: return
-    val destination = _toStop.firstOrNull() ?: return
-
+  private suspend fun getNearbyStopNames(
+    location: Location,
+    transport: Transport,
+    start: Stop,
+    destination: Stop,
+  ) {
     trackRouteScope.launch(Dispatchers.IO) {
       transportUseCase.getNearbyStopFromTransport(
         transport = transport,
@@ -116,14 +113,16 @@ class TrackRouteService : Service() {
 
         if (current == Stop.EMPTY) return@collect
 
-        val currentStopValue = _currentStop.firstOrNull() ?: return@collect
-        val previousStopValue = _previousStop.firstOrNull() ?: return@collect
+        val currentStopValue = _currentStop.value
+        val previousStopValue = _previousStop.value
 
-        _previousStop.emit(currentStopValue)
+        if (currentStopValue != Stop.EMPTY) {
+          _previousStop.emit(currentStopValue)
+        }
         _currentStop.emit(current)
         _predestination.emit(predestination)
 
-        if (previousStopValue.id != currentStopValue.id) {
+        if (previousStopValue != Stop.EMPTY && previousStopValue.id != currentStopValue.id) {
           updateNotification(
             notificationTitle = "${getString(R.string.label_tracker_transport)} ${getString(transport.getTypeName())} ${transport.number}",
             notificationText = current.getCurrentName(localeUseCase.getCurrentLanguage()),
@@ -154,7 +153,11 @@ class TrackRouteService : Service() {
           this,
           1,
           Intent(this, TrackRouteService::class.java).apply { action = STOP_ACTION },
-          0
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE
+          } else {
+            0
+          },
         )
       )
       .build()
@@ -215,6 +218,19 @@ class TrackRouteService : Service() {
       _fromStop.emit(fromStop.await())
       _toStop.emit(toStop.await())
       launch { selectedTransport.await().collect(_selectedTransport::emit) }
+
+      subscribeToLocationChanges()
+        .combine(selectedTransport.await()) { location: Location, transport: Transport ->
+          location to transport
+        }
+        .collect { locationAndTransport ->
+          getNearbyStopNames(
+            location = locationAndTransport.first,
+            transport = locationAndTransport.second,
+            start = fromStop.await(),
+            destination = toStop.await(),
+          )
+        }
     }
 
     return START_NOT_STICKY

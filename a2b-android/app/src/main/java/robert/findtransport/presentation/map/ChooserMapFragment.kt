@@ -16,6 +16,10 @@ class ChooserMapFragment : MapFragment() {
   }
 
   override fun MapViewModel.initObservers() {
+    observe(currentLocation) { location ->
+      flyTo(location.latitude, location.longitude)
+    }
+
     observe(allStops) { stops ->
       if (stops.isEmpty()) return@observe
       pointAnnotationManager.create(stops)

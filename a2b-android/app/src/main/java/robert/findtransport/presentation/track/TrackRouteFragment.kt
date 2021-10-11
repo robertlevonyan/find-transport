@@ -113,7 +113,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
       binding.progressLoading.visibility = View.GONE
 
       val typeNameRes = transport.getTypeName()
-      val typeName = if (typeNameRes == -1) "" else getString(typeNameRes).toLowerCase(Locale.ROOT)
+      val typeName = if (typeNameRes == -1) "" else getString(typeNameRes).lowercase(Locale.ROOT)
       val label = getString(R.string.label_tracker_transport)
       binding.tvLabelSelected.text = buildSpannedString {
         append(label)

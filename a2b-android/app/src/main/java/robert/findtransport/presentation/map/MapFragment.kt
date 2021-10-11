@@ -3,6 +3,7 @@ package robert.findtransport.presentation.map
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -68,15 +69,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     binding.fabLocation.visibility = if (permissions.all { it.value }) {
       locationEnabled = true
       setFragmentResult(RESULT_LOCATION_PERMISSION, bundleOf())
+      viewModel.getCurrentLocation()
       View.VISIBLE
     } else {
       locationEnabled = false
       View.GONE
-    }
-    activity?.run {
-      if (!isDetached) {
-        initMap()
-      }
     }
   }
 
@@ -91,9 +88,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         showDialogForPermissions(this, permissions)
       } else {
         locationEnabled = true
-        if (!isDetached) {
-          initMap()
-        }
+        viewModel.getCurrentLocation()
+      }
+
+      if (!isDetached) {
+        initMap()
       }
     } ?: router.exit()
   }
@@ -114,13 +113,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   override fun FragmentMapBinding.initViews() {
-    fabLocation.setOnClickListener { goToCurrentLocation() }
-  }
-
-  override fun MapViewModel.initObservers() {
-    observe(currentLocation) { location ->
-      flyTo(location.latitude, location.longitude)
-    }
+    fabLocation.setOnClickListener { viewModel.getCurrentLocation() }
   }
 
   private fun showDialogForPermissions(activity: FragmentActivity, permissions: Array<String>) =
@@ -153,7 +146,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
   }
 
-  private fun flyTo(latitude: Double, longitude: Double) {
+  protected fun flyTo(latitude: Double, longitude: Double) {
     mapboxMap.flyTo(
       cameraOptions = CameraOptions.Builder()
         .center(Point.fromLngLat(longitude, latitude))
@@ -179,13 +172,9 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       enabled = true
       pulsingEnabled = true
       pulsingColor = context?.getColorFromRes(R.color.colorAccent) ?: Color.YELLOW
-      locationPuck = LocationPuck2D()
-    }
-  }
-
-  private fun goToCurrentLocation() {
-    viewModel.currentLocation.value.let { location ->
-      flyTo(location.latitude, location.longitude)
+      locationPuck = LocationPuck2D().apply {
+        topImage = BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
+      }
     }
   }
 

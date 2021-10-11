@@ -4,8 +4,10 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.util.LogWriter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.lifecycleScope
 import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -20,17 +22,23 @@ import org.koin.android.ext.android.inject
 import robert.findtransport.R
 import robert.findtransport.databinding.ActivityMainBinding
 import robert.findtransport.di.splashScreen
+import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
 import robert.findtransport.presentation.home.HomeFragment
 import robert.findtransport.presentation.intro.IntroFragment
 import robert.findtransport.utils.extensions.fitSystemWindows
 import robert.findtransport.utils.extensions.isTablet
 import robert.findtransport.utils.viewbinding.viewBinding
+import java.io.BufferedWriter
+import java.io.PrintWriter
+import java.io.StringWriter
+import java.io.Writer
 import java.lang.ref.WeakReference
 
 class MainActivity : AppCompatActivity(), ChainHolder {
   @Suppress("unused")
   private val binding by viewBinding(ActivityMainBinding::inflate)
   private val navigatorHolder: NavigatorHolder by inject()
+  private val feedbackUseCase: FeedbackUseCase by inject()
 
   override val chain: MutableList<WeakReference<Fragment>> = mutableListOf()
 
@@ -73,6 +81,10 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       }
     } else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 
+//    if (DynamicColors.isDynamicColorAvailable()) {
+//      DynamicColors.applyIfAvailable(this)
+//    }
+
     ActivityMainBinding.inflate(layoutInflater).run {
       setContentView(root)
       window.fitSystemWindows()
@@ -86,6 +98,23 @@ class MainActivity : AppCompatActivity(), ChainHolder {
         appUpdateManager.startUpdateFlow(appUpdateInfo, this, AppUpdateOptions.defaultOptions(AppUpdateType.IMMEDIATE))
           .addOnSuccessListener { recreate() }
           .addOnFailureListener { openApp() }
+      }
+    }
+
+    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+      lifecycleScope.launchWhenCreated {
+        val printWriter = PrintWriter(StringWriter())
+        throwable.printStackTrace(printWriter)
+
+        feedbackUseCase.sendFeedback(
+          email = "error@a2b.com",
+          subject = "ActivityThread",
+          message = """
+            Thread name: ${thread.name}
+            Error message: ${throwable.message}
+            Stacktrace: $printWriter
+          """.trimIndent(),
+        )
       }
     }
 
