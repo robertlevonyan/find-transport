@@ -1,13 +1,14 @@
-package robert.findtransport.presentation.splash
+package robert.findtransport.base
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import robert.findtransport.base.BaseViewModel
+import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.model.Result
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
@@ -19,8 +20,10 @@ import robert.findtransport.domain.usecase.preference.VersionUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import java.io.EOFException
+import java.io.PrintWriter
+import java.io.StringWriter
 
-class SplashViewModel(
+class MainViewModel(
   private val checkInternetUseCase: CheckInternetUseCase,
   themeUseCase: ThemeUseCase,
   localeUseCase: LocaleUseCase,
@@ -37,11 +40,8 @@ class SplashViewModel(
   private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val currentLanguage: Flow<String> get() = _currentLanguage
 
-  private val _loadStart = MutableSharedFlow<Unit>()
-  val loadStart: Flow<Unit> get() = _loadStart
-
-  private val _loaded = MutableSharedFlow<Unit>()
-  val loaded: Flow<Unit> get() = _loaded
+  private val _loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
+  val loaded: StateFlow<DataLoading> get() = _loaded
 
   private val _emptyDatabase = MutableSharedFlow<Unit>()
   val emptyDatabase: Flow<Unit> get() = _emptyDatabase
@@ -71,7 +71,7 @@ class SplashViewModel(
         return@launch
       }
       if (checkInternetUseCase.isResolveIp() && checkInternetUseCase.isInternetConnected()) {
-        _loadStart.emit(Unit)
+        _loaded.value = DataLoading.Loading
         try {
           if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
             notifyLoaded()
@@ -106,18 +106,21 @@ class SplashViewModel(
 
   private fun notifyLoaded() {
     viewModelScope.launch {
-      _loaded.emit(Unit)
+      onNext()
+      _loaded.value = DataLoading.Loaded
     }
   }
 
   private fun notifyEmptyDatabase() {
     viewModelScope.launch {
+      _loaded.value = DataLoading.Failed(Exception())
       _emptyDatabase.emit(Unit)
     }
   }
 
   private fun notifyLoadingError(message: String?) {
     viewModelScope.launch(Dispatchers.IO) {
+      _loaded.value = DataLoading.Failed(Exception(message))
       _loadingError.emit(message ?: return@launch)
       feedbackUseCase.sendFeedback("error@a2b.com", "Splash", message)
     }
@@ -153,13 +156,28 @@ class SplashViewModel(
     }
   }
 
-  fun onNext() {
-    viewModelScope.launch {
-      if (introUseCase.isIntroPassed) {
-        _nextMain.emit(Unit)
-      } else {
-        _nextIntro.emit(Unit)
-      }
+  private suspend fun onNext() {
+    if (introUseCase.isIntroPassed) {
+      _nextMain.emit(Unit)
+    } else {
+      _nextIntro.emit(Unit)
+    }
+  }
+
+  fun sendErrorFeedback(thread: Thread, throwable: Throwable) {
+    viewModelScope.launch(Dispatchers.IO) {
+      val printWriter = PrintWriter(StringWriter())
+      throwable.printStackTrace(printWriter)
+
+      feedbackUseCase.sendFeedback(
+        email = "error@a2b.com",
+        subject = "ActivityThread",
+        message = """
+            Thread name: ${thread.name}
+            Error message: ${throwable.message}
+            Stacktrace: $printWriter
+          """.trimIndent(),
+      )
     }
   }
 }

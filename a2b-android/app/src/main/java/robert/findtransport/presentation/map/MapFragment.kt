@@ -171,7 +171,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     binding.mapView.location.updateSettings {
       enabled = true
       pulsingEnabled = true
-      pulsingColor = context?.getColorFromRes(R.color.colorAccent) ?: Color.YELLOW
+      pulsingColor = context?.getColorFromRes(R.color.color_accent_300) ?: Color.YELLOW
       locationPuck = LocationPuck2D().apply {
         topImage = BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
       }

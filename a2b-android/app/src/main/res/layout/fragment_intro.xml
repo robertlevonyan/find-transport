@@ -88,7 +88,7 @@
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_arm"
       app:iconTint="@null"
-      app:strokeColor="@color/colorAccent" />
+      app:strokeColor="@color/color_accent_500" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnEng"
@@ -110,7 +110,7 @@
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_eng"
       app:iconTint="@null"
-      app:strokeColor="@color/colorAccent" />
+      app:strokeColor="@color/color_accent_500" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnRus"
@@ -132,7 +132,7 @@
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_rus"
       app:iconTint="@null"
-      app:strokeColor="@color/colorAccent" />
+      app:strokeColor="@color/color_accent_500" />
   </com.google.android.material.button.MaterialButtonToggleGroup>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -13,15 +13,10 @@ import robert.findtransport.presentation.map.SearchMapFragment
 import robert.findtransport.presentation.passing.PassingRoutesFragment
 import robert.findtransport.presentation.search.SearchFragment
 import robert.findtransport.presentation.settings.SettingsFragment
-import robert.findtransport.presentation.splash.SplashFragment
 import robert.findtransport.presentation.stop.StopsPickerFragment
 import robert.findtransport.presentation.track.TrackRouteFragment
 import robert.findtransport.presentation.transports.TransportsFragment
 import robert.findtransport.presentation.update.UpdateFragment
-
-fun splashScreen() = FragmentScreen {
-  SplashFragment.newInstance()
-}
 
 fun introScreen() = FragmentScreen {
   IntroFragment.newInstance()

@@ -13,10 +13,10 @@ android {
   compileSdk = 31
   defaultConfig {
     applicationId = "robert.findtransport"
-    minSdk = 21
+    minSdk = 23
     targetSdk = 31
-    versionCode = 243
-    versionName = "3.7.2"
+    versionCode = 244
+    versionName = "3.7.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -112,7 +112,8 @@ dependencies {
   implementation("androidx.browser:browser:1.3.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.1")
-  implementation("androidx.core:core-ktx:1.7.0-beta02")
+  implementation("androidx.core:core-ktx:1.7.0-rc01")
+  implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
   implementation("androidx.fragment:fragment-ktx:1.3.6")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")

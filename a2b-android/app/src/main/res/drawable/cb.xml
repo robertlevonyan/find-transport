@@ -6,15 +6,15 @@
   android:viewportHeight="50">
   
   <path
-    android:fillColor="@color/colorAccent"
+    android:fillColor="@color/color_accent_500"
     android:pathData="M34.228,27.255h-1.12v-4.604h1.12V27.255z
 M25.051,27.255h-8.057v-4.604h8.057V27.255z M8.936,27.255
 H0.879v-4.604h8.057V27.255z" />
   <path
-    android:fillColor="@color/colorAccent"
+    android:fillColor="@color/color_accent_300"
     android:pathData="M 60.822 1.726 C 69.4039527276 1.726 76.361 8.68304727238 76.361 17.265 C 76.361 25.8469527276 69.4039527276 32.804 60.822 32.804 C 52.2400472724 32.804 45.283 25.8469527276 45.283 17.265 C 45.283 8.68304727238 52.2400472724 1.726 60.822 1.726 Z" />
   <path
-    android:fillColor="@color/colorAccent"
+    android:fillColor="@color/color_accent_300"
     android:pathData="M76.034,16.447C73.09,33.785,60.659,48.179,60.659,48.179S48.228,33.785,45.284,16.447" />
   <path
     android:fillColor="@color/colorOnPrimary"

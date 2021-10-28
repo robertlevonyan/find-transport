@@ -34,11 +34,11 @@
     android:layout_margin="@dimen/fab_margin"
     android:contentDescription="@string/action_clear_history"
     android:visibility="gone"
-    app:backgroundTint="@color/colorAccent"
+    app:backgroundTint="@color/color_accent_300"
     app:cornerRadius="@dimen/card_radius"
     app:icon="@drawable/ic_delete"
     app:iconGravity="textStart|end"
-    app:iconTint="@color/colorAccentVariant" />
+    app:iconTint="@color/color_accent_100" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"

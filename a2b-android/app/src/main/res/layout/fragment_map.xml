@@ -25,11 +25,11 @@
     android:layout_marginEnd="@dimen/fab_margin"
     android:layout_marginBottom="@dimen/fab_margin"
     android:text="@null"
-    app:backgroundTint="@color/colorAccent"
+    app:backgroundTint="@color/color_accent_300"
     app:cornerRadius="@dimen/card_radius"
     app:icon="@drawable/ic_current_location_black"
     app:iconGravity="textStart|end"
-    app:iconTint="@color/colorAccentVariant"
+    app:iconTint="@color/color_accent_100"
     app:iconTintMode="src_in" />
 
   <com.google.android.material.appbar.AppBarLayout

@@ -27,11 +27,11 @@
     android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/fab_margin"
-    app:backgroundTint="@color/colorAccent"
+    app:backgroundTint="@color/color_accent_300"
     app:cornerRadius="@dimen/card_radius"
     app:icon="@drawable/ic_map"
     app:iconGravity="textStart|end"
-    app:iconTint="@color/colorAccentVariant" />
+    app:iconTint="@color/color_accent_100" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
@@ -175,7 +175,7 @@
             android:textAllCaps="false"
             android:textColor="@color/color_state_selector_text"
             android:textStyle="bold"
-            app:strokeColor="@color/colorAccent" />
+            app:strokeColor="@color/color_accent_500" />
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSecondaryRoute"
@@ -188,7 +188,7 @@
             android:textAllCaps="false"
             android:textColor="@color/color_state_selector_text"
             android:textStyle="bold"
-            app:strokeColor="@color/colorAccent" />
+            app:strokeColor="@color/color_accent_500" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
       </LinearLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>

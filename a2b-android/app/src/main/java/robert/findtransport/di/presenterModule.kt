@@ -2,6 +2,7 @@ package robert.findtransport.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
+import robert.findtransport.base.MainViewModel
 import robert.findtransport.presentation.component.bottomsheet.language.LanguagePickerViewModel
 import robert.findtransport.presentation.component.bottomsheet.map.StopOptionsViewModel
 import robert.findtransport.presentation.component.bottomsheet.theme.ThemePickerViewModel
@@ -15,7 +16,6 @@ import robert.findtransport.presentation.map.SearchMapViewModel
 import robert.findtransport.presentation.passing.PassingRoutesViewModel
 import robert.findtransport.presentation.search.SearchViewModel
 import robert.findtransport.presentation.settings.SettingsViewModel
-import robert.findtransport.presentation.splash.SplashViewModel
 import robert.findtransport.presentation.stop.StopsPickerViewModel
 import robert.findtransport.presentation.track.TrackRouteViewModel
 import robert.findtransport.presentation.transports.TransportsViewModel
@@ -23,7 +23,7 @@ import robert.findtransport.presentation.update.UpdateViewModel
 
 val presenterModule = module {
   viewModel {
-    SplashViewModel(
+    MainViewModel(
       checkInternetUseCase = get(),
       themeUseCase = get(),
       localeUseCase = get(),

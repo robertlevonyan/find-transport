@@ -102,7 +102,7 @@ class PreviewMapFragment : MapFragment() {
   private fun createRoute(coordinates: List<StopLocation>) {
     val points = coordinates.map { Point.fromLngLat(it.lng, it.lat) }
     val options = PolylineAnnotationOptions()
-      .withLineColor(context?.getColorFromRes(R.color.colorAccent) ?: Color.YELLOW)
+      .withLineColor(context?.getColorFromRes(R.color.color_accent_300) ?: Color.YELLOW)
       .withLineWidth(5.0)
       .withLineJoin(LineJoin.ROUND)
       .withGeometry(LineString.fromLngLats(points))

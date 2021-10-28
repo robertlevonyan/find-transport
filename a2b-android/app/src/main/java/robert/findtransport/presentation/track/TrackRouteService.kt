@@ -153,11 +153,7 @@ class TrackRouteService : Service() {
           this,
           1,
           Intent(this, TrackRouteService::class.java).apply { action = STOP_ACTION },
-          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PendingIntent.FLAG_IMMUTABLE
-          } else {
-            0
-          },
+          PendingIntent.FLAG_IMMUTABLE,
         )
       )
       .build()

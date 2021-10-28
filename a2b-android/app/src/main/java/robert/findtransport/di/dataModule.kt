@@ -8,25 +8,22 @@ import robert.findtransport.data.api.ApiService
 import robert.findtransport.data.api.RetrofitClient
 import robert.findtransport.data.cache.AppDatabase
 import robert.findtransport.data.service.*
-import robert.findtransport.presentation.splash.SplashFragment
 
 val dataModule = module {
   single { SharedPreferencesService.getPreferences(get()) }
-  
+
   single { AppDatabase.getInstance(get()) }
-  
+
   single<ApiService> { RetrofitClient.getClient().create(ApiService::class.java) }
-  
+
   single { get<AppDatabase>().stopsDao() }
-  
+
   single { get<AppDatabase>().transportsDao() }
 
   single { get<AppDatabase>().historyDao() }
 
-  single { SplashFragment.newInstance() }
-  
   single { ResourcesService(get()) }
-  
+
   single { FusedLocationService(get()) }
 
   single { LocationObserverService(get()) }

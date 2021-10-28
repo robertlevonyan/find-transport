@@ -16,7 +16,7 @@
       android:fillColor="@color/colorOnPrimaryLight"/>
   <path
       android:pathData="M44.188,647.736c19.761,11.889 27.371,35.503 27.371,35.503s-24.428,4.339 -44.188,-7.55 -27.371,-35.503 -27.371,-35.503S24.428,635.847 44.188,647.736Z"
-      android:fillColor="#e7a942"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M238.648,16.143v679.83h-11.24a45.897,45.897 0,0 1,-8.76 -0.83L218.648,16.973a45.892,45.892 0,0 1,8.76 -0.83Z"
       android:fillColor="@color/colorOnPrimaryLight"/>
@@ -46,7 +46,7 @@
       android:fillColor="@color/colorOnPrimaryLight"/>
   <path
       android:pathData="M571.648,215.343c0,63.513 -115,205 -115,205s-115,-141.487 -115,-205a115,115 0,0 1,230 0Z"
-      android:fillColor="#e7a942"/>
+      android:fillColor="@color/color_accent_500"/>
   <path
       android:fillColor="#FF000000"
       android:pathData="M456.648,210.343m-68,0a68,68 0,1 1,136 0a68,68 0,1 1,-136 0"
@@ -54,10 +54,10 @@
       android:fillAlpha="0.2"/>
   <path
       android:pathData="M454.412,211.852m-25.333,0a25.333,25.333 0,1 1,50.667 0a25.333,25.333 0,1 1,-50.667 0"
-      android:fillColor="#e7a942"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M493.962,285.343a38,38 0,1 0,-74.628 0Z"
-      android:fillColor="#e7a942"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M576.488,122.786s-18.068,-6.453 -29.683,19.358 -29.683,54.204 -29.683,54.204l10.325,2.581s2.581,-18.068 9.034,-20.649l-2.581,23.23s77.434,27.102 112.279,-2.581l-1.291,-9.034s5.162,1.291 5.162,9.034l3.872,-3.872s-3.872,-7.743 -15.487,-18.068c-7.624,-6.777 -10.243,-19.669 -11.144,-27.729a33.556,33.556 0,0 0,-7.725 -18.274C611.847,122.041 597.782,112.533 576.488,122.786Z"
       android:fillColor="#2f2e41"/>
@@ -102,5 +102,5 @@
       android:fillColor="#575a89"/>
   <path
       android:pathData="M466.648,472.343m-31,0a31,31 0,1 1,62 0a31,31 0,1 1,-62 0"
-      android:fillColor="#e7a942"/>
+      android:fillColor="@color/color_accent_300"/>
 </vector>

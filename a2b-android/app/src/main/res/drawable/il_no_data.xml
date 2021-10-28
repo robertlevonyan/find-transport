@@ -11,10 +11,10 @@
       android:fillColor="@color/colorPrimary"/>
   <path
       android:pathData="M183.007,98.422l195.393,-41.924l9.917,46.218l-195.393,41.924z"
-      android:fillColor="@color/colorAccent"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M271.01,32.31a27.93,27.93 0,1 0,33.17 21.45A27.93,27.93 0,0 0,271.01 32.31ZM280.25,75.41a16.12,16.12 0,1 1,12.38 -19.14A16.12,16.12 0,0 1,280.25 75.41Z"
-      android:fillColor="@color/colorAccent"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M257.89,116.91h437.02v603.82h-437.02z"
       android:fillColor="@color/colorPrimaryVariant"/>
@@ -23,10 +23,10 @@
       android:fillColor="@color/colorPrimary"/>
   <path
       android:pathData="M377.02,104.56h199.84v47.27h-199.84z"
-      android:fillColor="@color/colorAccent"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M476.94,58.41a27.93,27.93 0,1 0,27.93 27.93A27.93,27.93 0,0 0,476.94 58.41ZM476.94,102.46A16.12,16.12 0,1 1,493.08 86.3,16.12 16.12,0 0,1 476.94,102.41Z"
-      android:fillColor="@color/colorAccent"/>
+      android:fillColor="@color/color_accent_300"/>
   <path
       android:pathData="M15.27,737.05h3.76v21.33h-3.76z"
       android:strokeAlpha="0.5"

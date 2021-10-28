@@ -92,13 +92,13 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
       )
     }
     observe(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
-    observe(fromStop.combineTransform(locale) {stop, locale -> emit(stop to locale)}) { stopAndLocale ->
+    observe(fromStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
       binding.inputFrom.setStopName(stop, locale)
     }
-    observe(toStop.combineTransform(locale) {stop, locale -> emit(stop to locale)}) { stopAndLocale ->
+    observe(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 

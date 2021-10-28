@@ -5,6 +5,7 @@
     <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:fontFamily">@font/app_font</item>
+    <item name="android:windowLightStatusBar">true</item>
   </style>
 
   <style name="AppTheme.NoActionBar">
@@ -31,7 +32,7 @@
   </style>
 
   <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-    <item name="android:textColor">@color/colorAccent</item>
+    <item name="android:textColor">@color/color_accent_500</item>
     <item name="textAllCaps">false</item>
     <item name="android:textStyle">bold</item>
     <item name="android:background">?selectableItemBackground</item>
@@ -66,9 +67,21 @@
   </style>
 
   <style name="FeedbackInputStyle" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-    <item name="colorControlNormal">@color/colorAccent</item>
-    <item name="colorControlActivated">@color/colorAccent</item>
-    <item name="colorControlHighlight">@color/colorAccent</item>
-    <item name="android:textColorHighlight">@color/colorAccent</item>
+    <item name="colorControlNormal">@color/color_accent_500</item>
+    <item name="colorControlActivated">@color/color_accent_300</item>
+    <item name="colorControlHighlight">@color/color_accent_300</item>
+    <item name="android:textColorHighlight">@color/color_accent_300</item>
+  </style>
+
+  <style name="AppSplash" parent="Theme.SplashScreen">
+    <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
+    <item name="windowSplashScreenIconBackgroundColor">@color/colorPrimaryVariant</item>
+    <item name="windowSplashScreenAnimationDuration">1000</item>
+    <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+
+    <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+    <item name="android:navigationBarColor">@color/colorPrimaryVariant</item>
+    <item name="android:windowLightStatusBar">true</item>
   </style>
 </resources>
