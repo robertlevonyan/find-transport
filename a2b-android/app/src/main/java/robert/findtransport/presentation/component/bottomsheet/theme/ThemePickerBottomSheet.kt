@@ -2,7 +2,7 @@ package robert.findtransport.presentation.component.bottomsheet.theme
 
 import android.os.Bundle
 import android.view.View
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
 import robert.findtransport.base.BaseBottomSheetFragment
 import robert.findtransport.data.model.ThemeData
 import robert.findtransport.databinding.BottomSheetThemePickerBinding
@@ -11,7 +11,7 @@ import robert.findtransport.utils.viewbinding.viewBinding
 
 class ThemePickerBottomSheet : BaseBottomSheetFragment<ThemePickerViewModel, BottomSheetThemePickerBinding>() {
   override val binding: BottomSheetThemePickerBinding by viewBinding(BottomSheetThemePickerBinding::inflate)
-  override val viewModel: ThemePickerViewModel by viewModel()
+  override val viewModel: ThemePickerViewModel by viewModels()
 
   var onThemeSelected: (ThemeData) -> Unit = {}
 

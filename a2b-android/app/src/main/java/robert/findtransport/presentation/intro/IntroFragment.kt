@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.intro
 
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.service.LocaleService
@@ -9,9 +10,10 @@ import robert.findtransport.di.homeScreen
 import robert.findtransport.di.introScreen
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
   override val binding: FragmentIntroBinding by viewBinding(FragmentIntroBinding::inflate)
-  override val viewModel: IntroViewModel by viewModel()
+  override val viewModel: IntroViewModel by viewModels()
 
   override fun FragmentIntroBinding.initViews() {
     btnArm.setOnClickListener { viewModel.setLanguage(0) }

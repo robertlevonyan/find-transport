@@ -7,7 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentPassingRoutesBinding
@@ -16,20 +17,21 @@ import robert.findtransport.utils.ARG_STOP
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassingRoutesBinding>() {
   override val binding: FragmentPassingRoutesBinding by viewBinding(FragmentPassingRoutesBinding::inflate)
-  override val viewModel: PassingRoutesViewModel by viewModel()
+  override val viewModel: PassingRoutesViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     arguments
-        ?.takeIf { it.containsKey(ARG_STOP) }
-        ?.run { getInt(ARG_STOP) }
-        ?.let {
-          viewModel.getStop(it)
-          viewModel.getTransports(it)
-        }
-        ?: router.exit()
+      ?.takeIf { it.containsKey(ARG_STOP) }
+      ?.run { getInt(ARG_STOP) }
+      ?.let {
+        viewModel.getStop(it)
+        viewModel.getTransports(it)
+      }
+      ?: router.exit()
   }
 
   override fun FragmentPassingRoutesBinding.initInsets() {

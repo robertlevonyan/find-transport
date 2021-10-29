@@ -27,12 +27,13 @@ import robert.findtransport.utils.PREF_JOINS_ERROR
 import robert.findtransport.utils.PREF_ONLY_FAVORITES
 import robert.findtransport.utils.PREF_TRANSPORTS_ERROR
 import robert.findtransport.utils.extensions.makeApiCall
+import javax.inject.Inject
 
-class TransportsRepositoryImpl(
+class TransportsRepositoryImpl @Inject constructor(
   private val apiService: ApiService,
   private val transportsDao: TransportsDao,
   private val mapboxNavigationService: MapboxNavigationService,
-  private val preferencesService: SharedPreferencesService
+  private val preferencesService: SharedPreferencesService,
 ) : TransportsRepository {
   override suspend fun getTransportsFromApi(): Result<List<Transport>> =
     makeApiCall { apiService.getTransport() }

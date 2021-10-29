@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.passing
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,9 +14,11 @@ import robert.findtransport.data.model.Transport
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import javax.inject.Inject
 
-class PassingRoutesViewModel(
-  localeUseCase: LocaleUseCase,
+@HiltViewModel
+class PassingRoutesViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase
 ) : BaseViewModel() {

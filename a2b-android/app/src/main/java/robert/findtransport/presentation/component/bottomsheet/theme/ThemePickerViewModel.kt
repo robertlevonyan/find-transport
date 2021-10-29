@@ -2,11 +2,14 @@ package robert.findtransport.presentation.component.bottomsheet.theme
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
 import robert.findtransport.base.BasePickerViewModel
 import robert.findtransport.data.model.ThemeData
 import robert.findtransport.domain.usecase.settings.SettingsUseCase
+import javax.inject.Inject
 
-class ThemePickerViewModel(settingsUseCase: SettingsUseCase) : BasePickerViewModel<ThemeData>() {
+@HiltViewModel
+class ThemePickerViewModel @Inject constructor(private val settingsUseCase: SettingsUseCase) : BasePickerViewModel<ThemeData>() {
   private val _themesList = MutableLiveData<List<ThemeData>>()
   val themesList: LiveData<List<ThemeData>> get() = _themesList
 

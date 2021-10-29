@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.intro
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +12,10 @@ import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
+import javax.inject.Inject
 
-class IntroViewModel(
+@HiltViewModel
+class IntroViewModel @Inject constructor(
   private val introUseCase: IntroUseCase,
   private val localeUseCase: LocaleUseCase
 ) : BaseViewModel() {

@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.history
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -10,9 +11,11 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.History
 import robert.findtransport.domain.usecase.history.HistoryUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import javax.inject.Inject
 
-class HistoryViewModel(
-  localeUseCase: LocaleUseCase,
+@HiltViewModel
+class HistoryViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
 

@@ -8,20 +8,21 @@ import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.repository.VersionRepository
 import robert.findtransport.utils.PREF_VERSION
 import robert.findtransport.utils.extensions.makeApiCall
+import javax.inject.Inject
 
-class VersionRepositoryImpl(
-    private val apiService: ApiService,
-    private val sharedPreferences: SharedPreferencesService
+class VersionRepositoryImpl @Inject constructor(
+  private val apiService: ApiService,
+  private val sharedPreferencesService: SharedPreferencesService,
 ) : VersionRepository {
-  
+
   override suspend fun getVersionFromApi(): Result<String> =
-      makeApiCall { apiService.getVersion() }
-  
+    makeApiCall { apiService.getVersion() }
+
   override suspend fun getVersionFromCache(): String =
-      withContext(Dispatchers.IO) {
-        sharedPreferences.getString(PREF_VERSION, "0.0") ?: "0.0"
-      }
-  
+    withContext(Dispatchers.IO) {
+      sharedPreferencesService.getString(PREF_VERSION, "0.0") ?: "0.0"
+    }
+
   override suspend fun cacheVersion(version: String) =
-      sharedPreferences.putString(PREF_VERSION, version)
+    sharedPreferencesService.putString(PREF_VERSION, version)
 }

@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.settings
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -20,8 +21,10 @@ import robert.findtransport.domain.usecase.settings.SettingsUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import robert.findtransport.utils.extensions.inverse
+import javax.inject.Inject
 
-class SettingsViewModel(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
   private val settingsUseCase: SettingsUseCase,
   private val themeUseCase: ThemeUseCase,
   private val stopsUseCase: StopsUseCase,

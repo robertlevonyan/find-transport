@@ -2,8 +2,9 @@ package robert.findtransport.domain.usecase.preference
 
 import robert.findtransport.data.model.Result
 import robert.findtransport.domain.repository.VersionRepository
+import javax.inject.Inject
 
-class VersionUseCaseImpl(private val versionRepository: VersionRepository) : VersionUseCase {
+class VersionUseCaseImpl @Inject constructor(private val versionRepository: VersionRepository) : VersionUseCase {
   
   override suspend fun isNewerVersion(): Boolean {
     return try {
@@ -19,5 +20,4 @@ class VersionUseCaseImpl(private val versionRepository: VersionRepository) : Ver
       false
     }
   }
-  
 }

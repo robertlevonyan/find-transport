@@ -3,8 +3,9 @@ package robert.findtransport.data.repository
 import robert.findtransport.data.cache.HistoryDao
 import robert.findtransport.data.entity.History
 import robert.findtransport.domain.repository.HistoryRepository
+import javax.inject.Inject
 
-class HistoryRepositoryImpl(private val historyDao: HistoryDao) : HistoryRepository {
+class HistoryRepositoryImpl @Inject constructor(private val historyDao: HistoryDao) : HistoryRepository {
   override suspend fun getHistory(): List<History> =
       historyDao.getHistory()
 

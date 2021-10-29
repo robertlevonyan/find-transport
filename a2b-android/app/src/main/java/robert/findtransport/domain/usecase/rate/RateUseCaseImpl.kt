@@ -1,8 +1,9 @@
 package robert.findtransport.domain.usecase.rate
 
 import robert.findtransport.domain.repository.RateRepository
+import javax.inject.Inject
 
-class RateUseCaseImpl(private val rateRepository: RateRepository) : RateUseCase {
+class RateUseCaseImpl @Inject constructor(private val rateRepository: RateRepository) : RateUseCase {
   override fun setRate() {
     rateRepository.isRate = true
   }

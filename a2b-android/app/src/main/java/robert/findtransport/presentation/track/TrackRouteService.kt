@@ -8,9 +8,9 @@ import android.os.Binder
 import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import org.koin.android.ext.android.inject
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
@@ -24,12 +24,18 @@ import robert.findtransport.utils.EXTRA_TRANSPORT_ID
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getTypeName
 import java.util.concurrent.atomic.AtomicInteger
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class TrackRouteService : Service() {
-  private val transportUseCase: TransportUseCase by inject()
-  private val stopsUseCase: StopsUseCase by inject()
-  private val locationUseCase: LocationUseCase by inject()
-  private val localeUseCase: LocaleUseCase by inject()
+  @Inject
+  lateinit var transportUseCase: TransportUseCase
+  @Inject
+  lateinit var stopsUseCase: StopsUseCase
+  @Inject
+  lateinit var locationUseCase: LocationUseCase
+  @Inject
+  lateinit var localeUseCase: LocaleUseCase
 
   private val trackRouteScope = CoroutineScope(Dispatchers.IO)
   private val binder = TrackRouteBinder()

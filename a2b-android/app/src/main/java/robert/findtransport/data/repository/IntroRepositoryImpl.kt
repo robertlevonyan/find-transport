@@ -3,13 +3,13 @@ package robert.findtransport.data.repository
 import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.repository.IntroRepository
 import robert.findtransport.utils.PREF_INTRO
+import javax.inject.Inject
 
-class IntroRepositoryImpl(private val preferencesService: SharedPreferencesService) : IntroRepository {
+class IntroRepositoryImpl @Inject constructor(private val sharedPreferencesService: SharedPreferencesService) : IntroRepository {
   override val isIntroPassed: Boolean
-    get() = preferencesService.getBoolean(PREF_INTRO, false)
-  
+    get() = sharedPreferencesService.getBoolean(PREF_INTRO, false)
+
   override fun setIntroPassed() {
-    preferencesService.putBoolean(PREF_INTRO, true)
+    sharedPreferencesService.putBoolean(PREF_INTRO, true)
   }
-  
 }

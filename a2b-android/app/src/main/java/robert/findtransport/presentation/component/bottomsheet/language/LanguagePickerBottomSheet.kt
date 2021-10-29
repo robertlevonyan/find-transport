@@ -2,7 +2,7 @@ package robert.findtransport.presentation.component.bottomsheet.language
 
 import android.os.Bundle
 import android.view.View
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
 import robert.findtransport.base.BaseBottomSheetFragment
 import robert.findtransport.data.model.LanguageData
 import robert.findtransport.databinding.BottomSheetLanguagePickerBinding
@@ -13,7 +13,7 @@ class LanguagePickerBottomSheet : BaseBottomSheetFragment<LanguagePickerViewMode
   var onLanguageSelected: (LanguageData) -> Unit = {}
 
   override val binding: BottomSheetLanguagePickerBinding by viewBinding(BottomSheetLanguagePickerBinding::inflate)
-  override val viewModel: LanguagePickerViewModel by viewModel()
+  override val viewModel: LanguagePickerViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -11,7 +11,6 @@ import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 
 class ResourcesService(private val context: Context) {
-
   val languageShortNames by lazy {
     arrayOf(
       context.getString(R.string.settings_language_am_short),

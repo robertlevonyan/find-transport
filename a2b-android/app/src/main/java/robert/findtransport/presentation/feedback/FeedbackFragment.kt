@@ -6,16 +6,18 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentFeedbackBinding
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding>() {
   override val binding: FragmentFeedbackBinding by viewBinding(FragmentFeedbackBinding::inflate)
-  override val viewModel: FeedbackViewModel by viewModel()
+  override val viewModel: FeedbackViewModel by viewModels()
 
   override fun FragmentFeedbackBinding.initInsets() {
     appBar.onWindowInsets { v, windowInsets ->

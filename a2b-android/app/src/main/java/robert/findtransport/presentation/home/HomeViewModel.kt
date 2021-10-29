@@ -2,6 +2,7 @@ package robert.findtransport.presentation.home
 
 import android.Manifest
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,9 +18,11 @@ import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import javax.inject.Inject
 
-class HomeViewModel(
-  localeUseCase: LocaleUseCase,
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   private val permissionUseCase: PermissionUseCase,

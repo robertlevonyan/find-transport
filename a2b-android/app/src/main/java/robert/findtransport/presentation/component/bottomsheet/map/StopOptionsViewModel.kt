@@ -3,16 +3,19 @@ package robert.findtransport.presentation.component.bottomsheet.map
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
+import javax.inject.Inject
 
-class StopOptionsViewModel(
-    localeUseCase: LocaleUseCase,
-    private val stopsUseCase: StopsUseCase,
+@HiltViewModel
+class StopOptionsViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
+  private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
   private val _locale = MutableLiveData<String>()
   val locale: LiveData<String> get() = _locale

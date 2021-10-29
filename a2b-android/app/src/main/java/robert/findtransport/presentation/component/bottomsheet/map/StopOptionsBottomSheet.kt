@@ -2,7 +2,7 @@ package robert.findtransport.presentation.component.bottomsheet.map
 
 import android.os.Bundle
 import android.view.View
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
 import robert.findtransport.R
 import robert.findtransport.base.BaseBottomSheetFragment
 import robert.findtransport.data.model.Stop
@@ -18,7 +18,7 @@ class StopOptionsBottomSheet : BaseBottomSheetFragment<StopOptionsViewModel, Bot
   }
 
   override val binding: BottomSheetStopOptionsBinding by viewBinding(BottomSheetStopOptionsBinding::inflate)
-  override val viewModel: StopOptionsViewModel by viewModel()
+  override val viewModel: StopOptionsViewModel by viewModels()
 
   var onFromSelected: (Stop) -> Unit = {}
   var onToSelected: (Stop) -> Unit = {}

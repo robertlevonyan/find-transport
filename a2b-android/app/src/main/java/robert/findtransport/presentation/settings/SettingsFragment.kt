@@ -5,9 +5,10 @@ import android.view.Menu
 import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.service.LocaleService
@@ -19,9 +20,10 @@ import robert.findtransport.presentation.component.rv.VerticalSpaceItemDecoratio
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding>() {
   override val binding: FragmentSettingsBinding by viewBinding(FragmentSettingsBinding::inflate)
-  override val viewModel: SettingsViewModel by viewModel()
+  override val viewModel: SettingsViewModel by viewModels()
 
   private var downloadSnackbar: Snackbar? = null
 

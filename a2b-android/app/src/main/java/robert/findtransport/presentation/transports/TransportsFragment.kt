@@ -7,8 +7,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentTransportsBinding
@@ -21,9 +22,10 @@ import robert.findtransport.utils.extensions.onWindowInsets
 import robert.findtransport.utils.extensions.topMargin
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsBinding>() {
   override val binding: FragmentTransportsBinding by viewBinding(FragmentTransportsBinding::inflate)
-  override val viewModel: TransportsViewModel by viewModel()
+  override val viewModel: TransportsViewModel by viewModels()
 
   private val adapter by lazy { TransportsListAdapter(viewModel::selectTransport) }
 

@@ -1,5 +1,8 @@
 package robert.findtransport.presentation.track
 
+import dagger.hilt.android.lifecycle.HiltViewModel
 import robert.findtransport.base.BaseViewModel
+import javax.inject.Inject
 
-class TrackRouteViewModel : BaseViewModel()
+@HiltViewModel
+class TrackRouteViewModel @Inject constructor() : BaseViewModel()

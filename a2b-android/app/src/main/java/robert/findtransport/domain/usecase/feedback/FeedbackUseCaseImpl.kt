@@ -6,8 +6,9 @@ import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.domain.repository.FeedbackRepository
 import robert.findtransport.utils.extensions.isEmail
 import java.lang.Exception
+import javax.inject.Inject
 
-class FeedbackUseCaseImpl(private val feedbackRepository: FeedbackRepository) : FeedbackUseCase {
+class FeedbackUseCaseImpl @Inject constructor(private val feedbackRepository: FeedbackRepository) : FeedbackUseCase {
   
   override suspend fun sendFeedback(email: String, subject: String, message: String): Result<String> {
     if (email.isEmpty()) {

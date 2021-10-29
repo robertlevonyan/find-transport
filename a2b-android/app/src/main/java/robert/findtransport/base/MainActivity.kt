@@ -9,6 +9,7 @@ import android.provider.Settings
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AnticipateInterpolator
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
@@ -26,10 +27,9 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.service.LocaleService
@@ -46,12 +46,16 @@ import robert.findtransport.utils.extensions.isTablet
 import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
 import java.lang.ref.WeakReference
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), ChainHolder {
   @Suppress("unused")
   private val binding by viewBinding(ActivityMainBinding::inflate)
-  private val navigatorHolder: NavigatorHolder by inject()
-  private val mainViewModel: MainViewModel by viewModel()
+  private val mainViewModel: MainViewModel by viewModels()
+
+  @Inject
+  lateinit var navigatorHolder: NavigatorHolder
 
   override val chain: MutableList<WeakReference<Fragment>> = mutableListOf()
 

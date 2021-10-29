@@ -5,10 +5,11 @@ import robert.findtransport.domain.mapper.toApiHistory
 import robert.findtransport.domain.mapper.toHistory
 import robert.findtransport.domain.repository.HistoryRepository
 import robert.findtransport.domain.usecase.stop.StopsUseCase
+import javax.inject.Inject
 
-class HistoryUseCaseImpl(
+class HistoryUseCaseImpl @Inject constructor(
     private val historyRepo: HistoryRepository,
-    private val stopsUseCase: StopsUseCase
+    private val stopsUseCase: StopsUseCase,
 ) : HistoryUseCase {
   override suspend fun getHistory(): List<History> =
       historyRepo.getHistory().map { apiHistory ->

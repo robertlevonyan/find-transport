@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.enums.TransportType
@@ -21,9 +22,10 @@ import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
   override val binding: FragmentDetailBinding by viewBinding(FragmentDetailBinding::inflate)
-  override val viewModel: DetailViewModel by viewModel()
+  override val viewModel: DetailViewModel by viewModels()
 
   private var transportId = -1
 

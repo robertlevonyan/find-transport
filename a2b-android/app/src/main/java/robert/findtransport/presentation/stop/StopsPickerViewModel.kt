@@ -3,6 +3,7 @@ package robert.findtransport.presentation.stop
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,8 +16,10 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
+import javax.inject.Inject
 
-class StopsPickerViewModel(
+@HiltViewModel
+class StopsPickerViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
   private val localeUseCase: LocaleUseCase
 ) : BaseViewModel() {

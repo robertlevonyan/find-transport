@@ -18,18 +18,20 @@ import androidx.viewbinding.ViewBinding
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.onEach
-import org.koin.android.ext.android.inject
 import robert.findtransport.R
 import robert.findtransport.di.feedbackScreen
 import robert.findtransport.di.settingsScreen
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.showToast
 import robert.findtransport.utils.observeInLifecycle
+import javax.inject.Inject
 
 abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : Fragment() {
   abstract val binding: Binding
   abstract val viewModel: ViewModel
-  protected val router: Router by inject()
+
+  @Inject
+  protected lateinit var router: Router
 
   override fun onAttach(context: Context) {
     super.onAttach(context)

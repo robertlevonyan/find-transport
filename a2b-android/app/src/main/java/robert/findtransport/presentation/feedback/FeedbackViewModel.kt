@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.feedback
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -9,8 +10,10 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
+import javax.inject.Inject
 
-class FeedbackViewModel(private val feedbackUseCase: FeedbackUseCase) : BaseViewModel() {
+@HiltViewModel
+class FeedbackViewModel @Inject constructor(private val feedbackUseCase: FeedbackUseCase) : BaseViewModel() {
   private var email = ""
   private var subject = ""
   private var message = ""

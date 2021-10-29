@@ -16,9 +16,10 @@ import robert.findtransport.domain.mapper.toTransport
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.domain.repository.TransportsRepository
 import robert.findtransport.utils.extensions.correctStops
+import javax.inject.Inject
 import robert.findtransport.data.entity.Transport as ApiTransport
 
-class TransportUseCaseImpl(
+class TransportUseCaseImpl @Inject constructor(
   private val transportsRepository: TransportsRepository,
   private val stopsRepository: StopsRepository,
 ) : TransportUseCase {

@@ -25,8 +25,9 @@ import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
 import java.util.*
+import javax.inject.Inject
 
-class StopsUseCaseImpl(
+class StopsUseCaseImpl @Inject constructor(
   private val stopsRepository: StopsRepository,
   private val locationRepository: LocationRepository,
   private val resourcesRepository: ResourcesRepository,

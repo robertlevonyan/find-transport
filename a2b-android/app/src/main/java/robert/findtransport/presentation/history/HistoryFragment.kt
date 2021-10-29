@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.History
@@ -26,9 +27,10 @@ import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>() {
   override val binding: FragmentHistoryBinding by viewBinding(FragmentHistoryBinding::inflate)
-  override val viewModel: HistoryViewModel by viewModel()
+  override val viewModel: HistoryViewModel by viewModels()
 
   override fun FragmentHistoryBinding.initInsets() {
     appBar.onWindowInsets { v, windowInsets ->
@@ -107,7 +109,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
       binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
       binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
     }
-    observe(allHistory.combineTransform(locale) {history, locale -> emit(history to locale)}) { historyAndLocale ->
+    observe(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
       val history = historyAndLocale.first
       val locale = historyAndLocale.second
 

@@ -3,10 +3,11 @@ package robert.findtransport.data.repository
 import robert.findtransport.data.cache.StopsDao
 import robert.findtransport.data.cache.TransportsDao
 import robert.findtransport.domain.repository.DatabaseRepository
+import javax.inject.Inject
 
-class DatabaseRepositoryImpl(
+class DatabaseRepositoryImpl @Inject constructor(
     private val stopsDao: StopsDao,
-    private val transportsDao: TransportsDao
+    private val transportsDao: TransportsDao,
 ) : DatabaseRepository {
 
   override suspend fun getTransportsCount(): Int =

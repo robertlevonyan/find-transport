@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.callbackFlow
 import robert.findtransport.data.service.FusedLocationService
 import robert.findtransport.data.service.LocationObserverService
 import robert.findtransport.domain.repository.LocationRepository
+import javax.inject.Inject
 
-class LocationRepositoryImpl(
+class LocationRepositoryImpl @Inject constructor(
   private val fusedLocationService: FusedLocationService,
   private val locationObserverService: LocationObserverService,
 ) : LocationRepository {

@@ -16,7 +16,8 @@ import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentTrackRouteBinding
@@ -26,9 +27,10 @@ import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 import java.util.*
 
+@AndroidEntryPoint
 class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteBinding>() {
   override val binding: FragmentTrackRouteBinding by viewBinding(FragmentTrackRouteBinding::inflate)
-  override val viewModel: TrackRouteViewModel by viewModel()
+  override val viewModel: TrackRouteViewModel by viewModels()
 
   private var isBound: Boolean = false
   private var trackRouteService: TrackRouteService? = null

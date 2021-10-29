@@ -7,6 +7,7 @@ plugins {
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
+  id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -29,6 +30,7 @@ android {
     kapt {
       arguments {
         arg("room.schemaLocation", "$projectDir/schemas")
+//        arg("dagger.hilt.disableModulesHaveInstallInCheck", "true")
       }
     }
   }
@@ -105,6 +107,9 @@ dependencies {
   implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
+  implementation("com.google.dagger:hilt-android:2.38.1")
+
+  kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.3.1")
@@ -128,9 +133,9 @@ dependencies {
 
   kapt("androidx.room:room-compiler:2.3.0")
 
-  //koin
-  implementation("io.insert-koin:koin-core:3.1.0")
-  implementation("io.insert-koin:koin-android:3.1.0")
+//  //koin
+//  implementation("io.insert-koin:koin-core:3.1.0")
+//  implementation("io.insert-koin:koin-android:3.1.0")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")

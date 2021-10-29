@@ -11,6 +11,7 @@ import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
@@ -19,6 +20,7 @@ import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 
+@AndroidEntryPoint
 class PreviewMapFragment : MapFragment() {
   private var reverse = false
   private var mapStyle: Style? = null

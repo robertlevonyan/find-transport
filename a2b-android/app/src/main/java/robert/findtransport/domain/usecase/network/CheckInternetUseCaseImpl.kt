@@ -10,9 +10,10 @@ import robert.findtransport.BuildConfig
 import java.net.InetAddress
 import java.net.UnknownHostException
 import java.util.*
+import javax.inject.Inject
 
 @SuppressLint("MissingPermission")
-class CheckInternetUseCaseImpl(private val connectivityManager: ConnectivityManager) : CheckInternetUseCase {
+class CheckInternetUseCaseImpl @Inject constructor(private val connectivityManager: ConnectivityManager) : CheckInternetUseCase {
   @Suppress("BlockingMethodInNonBlockingContext")
   override suspend fun isResolveIp(): Boolean =
     try {

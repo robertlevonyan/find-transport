@@ -3,12 +3,14 @@ package robert.findtransport.presentation.map
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.mapbox.maps.Style
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.bottomsheet.map.StopOptionsBottomSheet
 import robert.findtransport.utils.ARG_STOP
 import robert.findtransport.utils.RESULT_FROM
 import robert.findtransport.utils.RESULT_TO
 
+@AndroidEntryPoint
 class ChooserMapFragment : MapFragment() {
 
   override fun createMap(style: Style) {

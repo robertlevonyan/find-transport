@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.map
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -15,9 +16,11 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import javax.inject.Inject
 
-class SearchMapViewModel(
-  localeUseCase: LocaleUseCase,
+@HiltViewModel
+class SearchMapViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   locationUseCase: LocationUseCase,

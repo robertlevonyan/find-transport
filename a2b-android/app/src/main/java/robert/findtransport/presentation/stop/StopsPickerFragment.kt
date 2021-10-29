@@ -11,9 +11,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.enums.OpenStopType
@@ -27,26 +28,27 @@ import robert.findtransport.utils.extensions.onWindowInsets
 import robert.findtransport.utils.extensions.topMargin
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class StopsPickerFragment : BaseFragment<StopsPickerViewModel, FragmentStopsPickerBinding>() {
   override val binding: FragmentStopsPickerBinding by viewBinding(FragmentStopsPickerBinding::inflate)
-  override val viewModel: StopsPickerViewModel by viewModel()
+  override val viewModel: StopsPickerViewModel by viewModels()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     arguments
-        ?.takeIf { it.containsKey(ARG_STOP_TYPE) }
-        ?.run { OpenStopType.getByIndex(getInt(ARG_STOP_TYPE)) }
-        ?.let { openStopType ->
-          observe(viewModel.selectedStop) { stop ->
-            when (openStopType) {
-              OpenStopType.FROM -> setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to stop.id))
-              OpenStopType.TO -> setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to stop.id))
-              OpenStopType.UNDEFINED -> router.exit()
-            }
-            router.exit()
+      ?.takeIf { it.containsKey(ARG_STOP_TYPE) }
+      ?.run { OpenStopType.getByIndex(getInt(ARG_STOP_TYPE)) }
+      ?.let { openStopType ->
+        observe(viewModel.selectedStop) { stop ->
+          when (openStopType) {
+            OpenStopType.FROM -> setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to stop.id))
+            OpenStopType.TO -> setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to stop.id))
+            OpenStopType.UNDEFINED -> router.exit()
           }
+          router.exit()
         }
-        ?: router.exit()
+      }
+      ?: router.exit()
   }
 
   override fun FragmentStopsPickerBinding.initInsets() {

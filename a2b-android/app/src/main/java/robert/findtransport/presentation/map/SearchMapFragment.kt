@@ -1,26 +1,19 @@
 package robert.findtransport.presentation.map
 
 import android.os.Bundle
-import com.mapbox.core.constants.Constants
+import androidx.fragment.app.viewModels
 import com.mapbox.geojson.*
-import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.data.model.*
-import robert.findtransport.domain.mapper.fromJson
-import robert.findtransport.domain.mapper.toApiStop
-import robert.findtransport.domain.mapper.toJson
-import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.utils.ARG_FROM_ID
 import robert.findtransport.utils.ARG_TO_ID
-import robert.findtransport.utils.extensions.getColorFromRes
-import robert.findtransport.utils.extensions.getDrawableFromRes
 import robert.findtransport.utils.extensions.showInfiniteSnackbar
-import robert.findtransport.utils.extensions.showSnackbar
 
+@AndroidEntryPoint
 class SearchMapFragment : MapFragment() {
-  private val searchMapViewModel: SearchMapViewModel by viewModel()
+  private val searchMapViewModel: SearchMapViewModel by viewModels()
   private val loadingSnackbar by lazy { view?.showInfiniteSnackbar(R.string.message_loading_data) }
   private var mapStyle: Style? = null
 

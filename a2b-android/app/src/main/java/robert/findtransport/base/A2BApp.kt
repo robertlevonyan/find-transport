@@ -5,11 +5,10 @@ package robert.findtransport.base
 import android.widget.Toast
 import androidx.multidex.MultiDexApplication
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
-import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import dagger.hilt.android.HiltAndroidApp
 import robert.findtransport.R
-import robert.findtransport.di.*
 
+@HiltAndroidApp
 class A2BApp : MultiDexApplication() {
   override fun onCreate() {
     if (MissingSplitsManagerFactory.create(this).disableAppIfMissingRequiredSplits()) {
@@ -18,17 +17,5 @@ class A2BApp : MultiDexApplication() {
     }
 
     super.onCreate()
-    startKoin {
-      androidContext(this@A2BApp)
-      modules(
-        listOf(
-          navigationModule,
-          dataModule,
-          repositoryModule,
-          useCaseModule,
-          presenterModule
-        )
-      )
-    }
   }
 }

@@ -1,8 +1,9 @@
 package robert.findtransport.domain.usecase.database
 
 import robert.findtransport.domain.repository.DatabaseRepository
+import javax.inject.Inject
 
-class DatabaseUseCaseImpl(private val databaseRepository: DatabaseRepository) : DatabaseUseCase {
+class DatabaseUseCaseImpl @Inject constructor(private val databaseRepository: DatabaseRepository) : DatabaseUseCase {
   override suspend fun isDatabaseEmpty(): Boolean =
       databaseRepository.getJoinsCount() == 0 &&
           databaseRepository.getLocationsCount() == 0 &&

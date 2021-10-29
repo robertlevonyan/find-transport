@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.update
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -9,8 +10,10 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import javax.inject.Inject
 
-class UpdateViewModel(
+@HiltViewModel
+class UpdateViewModel @Inject constructor(
   private val databaseUseCase: DatabaseUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
@@ -30,5 +33,4 @@ class UpdateViewModel(
       _onComplete.emit(Unit)
     }
   }
-
 }

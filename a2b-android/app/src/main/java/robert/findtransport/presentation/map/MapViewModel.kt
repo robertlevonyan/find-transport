@@ -3,6 +3,7 @@ package robert.findtransport.presentation.map
 import android.location.Location
 import androidx.lifecycle.viewModelScope
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
@@ -20,8 +21,10 @@ import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
+import javax.inject.Inject
 
-open class MapViewModel(
+@HiltViewModel
+open class MapViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
   private val localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,

@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.transports
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -10,9 +11,11 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Transport
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import javax.inject.Inject
 
-class TransportsViewModel(
-  localeUseCase: LocaleUseCase,
+@HiltViewModel
+class TransportsViewModel @Inject constructor(
+  private val localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
   private val _allTransports = MutableSharedFlow<List<Transport>>()

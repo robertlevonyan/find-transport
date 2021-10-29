@@ -7,8 +7,9 @@ import robert.findtransport.data.model.ThemeData
 import robert.findtransport.domain.repository.SettingsRepository
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
+import javax.inject.Inject
 
-class SettingsUseCaseImpl(private val settingsRepository: SettingsRepository) : SettingsUseCase {
+class SettingsUseCaseImpl @Inject constructor(private val settingsRepository: SettingsRepository) : SettingsUseCase {
   
   override fun saveLanguage(language: String) =
       settingsRepository.saveLanguage(language)

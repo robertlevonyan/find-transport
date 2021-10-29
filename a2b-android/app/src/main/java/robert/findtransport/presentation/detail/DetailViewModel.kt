@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.detail
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -11,8 +12,10 @@ import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
+import javax.inject.Inject
 
-class DetailViewModel(
+@HiltViewModel
+class DetailViewModel @Inject constructor(
   private val localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {

@@ -15,6 +15,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -29,7 +30,6 @@ import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.locationcomponent.location
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.entity.Stop
@@ -45,7 +45,7 @@ import robert.findtransport.utils.viewbinding.viewBinding
 
 abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   override val binding: FragmentMapBinding by viewBinding(FragmentMapBinding::inflate)
-  override val viewModel: MapViewModel by viewModel()
+  override val viewModel: MapViewModel by viewModels()
 
   private var locationEnabled = false
   protected val mapboxMap by lazy { binding.mapView.getMapboxMap() }

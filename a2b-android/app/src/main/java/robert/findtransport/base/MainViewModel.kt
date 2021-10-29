@@ -1,6 +1,7 @@
 package robert.findtransport.base
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,11 +23,13 @@ import robert.findtransport.domain.usecase.transport.TransportUseCase
 import java.io.EOFException
 import java.io.PrintWriter
 import java.io.StringWriter
+import javax.inject.Inject
 
-class MainViewModel(
+@HiltViewModel
+class MainViewModel @Inject constructor(
   private val checkInternetUseCase: CheckInternetUseCase,
-  themeUseCase: ThemeUseCase,
-  localeUseCase: LocaleUseCase,
+  private val themeUseCase: ThemeUseCase,
+  private val localeUseCase: LocaleUseCase,
   private val versionUseCase: VersionUseCase,
   private val introUseCase: IntroUseCase,
   private val stopsUseCase: StopsUseCase,
