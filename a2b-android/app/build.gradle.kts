@@ -16,7 +16,7 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 244
+    versionCode = 245
     versionName = "3.7.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
@@ -30,7 +30,6 @@ android {
     kapt {
       arguments {
         arg("room.schemaLocation", "$projectDir/schemas")
-//        arg("dagger.hilt.disableModulesHaveInstallInCheck", "true")
       }
     }
   }
@@ -120,10 +119,10 @@ dependencies {
   implementation("androidx.core:core-ktx:1.7.0-rc01")
   implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
   implementation("androidx.fragment:fragment-ktx:1.3.6")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-  implementation("androidx.lifecycle:lifecycle-common-java8:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
+  implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.0.1")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -132,10 +131,6 @@ dependencies {
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
   kapt("androidx.room:room-compiler:2.3.0")
-
-//  //koin
-//  implementation("io.insert-koin:koin-core:3.1.0")
-//  implementation("io.insert-koin:koin-android:3.1.0")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")

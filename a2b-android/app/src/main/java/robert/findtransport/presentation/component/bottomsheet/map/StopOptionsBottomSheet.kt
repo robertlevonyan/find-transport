@@ -3,6 +3,7 @@ package robert.findtransport.presentation.component.bottomsheet.map
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseBottomSheetFragment
 import robert.findtransport.data.model.Stop
@@ -12,6 +13,7 @@ import robert.findtransport.utils.extensions.setStopName
 import robert.findtransport.utils.extensions.showToast
 import robert.findtransport.utils.viewbinding.viewBinding
 
+@AndroidEntryPoint
 class StopOptionsBottomSheet : BaseBottomSheetFragment<StopOptionsViewModel, BottomSheetStopOptionsBinding>() {
   companion object {
     fun newInstance(args: Bundle) = StopOptionsBottomSheet().apply { arguments = args }
