@@ -11,7 +11,7 @@ interface HistoryDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   fun insert(history: History)
 
-  @Query("SELECT * FROM History")
+  @Query("SELECT * FROM History ORDER BY timestamp DESC")
   fun getHistory(): List<History>
 
   @Query("DELETE FROM History")
@@ -19,5 +19,4 @@ interface HistoryDao {
 
   @Query("DELETE FROM History WHERE id = :id")
   fun removeHistoryItem(id: Int)
-
 }

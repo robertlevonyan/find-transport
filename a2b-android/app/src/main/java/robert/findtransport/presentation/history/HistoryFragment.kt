@@ -37,7 +37,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
       v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
     }
     rvHistory.onWindowInsets { v, windowInsets ->
-      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.margin_xx_large)
+      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom * 2 + getDimenInt(R.dimen.margin_xx_large)
     }
     fabClear.onWindowInsets { v, windowInsets ->
       v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
@@ -60,7 +60,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
   }
 
   override fun FragmentHistoryBinding.initViews() {
-    rvHistory.layoutManager = GridLayoutManager(context, if (isTablet()) 2 else 1, GridLayoutManager.VERTICAL, true)
+    rvHistory.layoutManager = GridLayoutManager(context, if (isTablet()) 2 else 1, GridLayoutManager.VERTICAL, false)
     fabClear.setOnClickListener { viewModel.onClearClicked() }
   }
 
