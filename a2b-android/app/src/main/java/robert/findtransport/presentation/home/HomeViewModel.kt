@@ -67,14 +67,7 @@ class HomeViewModel @Inject constructor(
   private val _openUpdate = MutableSharedFlow<Unit>()
   val openUpdate: Flow<Unit> get() = _openUpdate
 
-  private val scope = CoroutineScope(Dispatchers.IO)
-  private var job: Job? = null
-
   init {
-    job = scope.launch {
-      delay(1000)
-    }
-
     rateUseCase.updateInterval()
     viewModelScope.launch {
       if (!transportUseCase.areJoinsCached() || !transportUseCase.areTransportsCached()

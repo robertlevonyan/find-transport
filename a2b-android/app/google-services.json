@@ -31,29 +31,23 @@
           }
         },
         {
-          "client_id": "568857098349-khvputia4mt9p9c8qjo42sf4ftkp6d8r.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
           "client_id": "568857098349-iblve68sgjqtt3cuvnh8jkb3192ke1ic.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDf3YfCD69fjJmpdPBb44dBptrKt-yRFso"
+          "current_key": "AIzaSyA7ljp-QBVwlioHWu0aiTKnu16hk5Wfn6E"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568857098349-iblve68sgjqtt3cuvnh8jkb3192ke1ic.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

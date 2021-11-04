@@ -130,9 +130,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       }
     }
 
-    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-      mainViewModel.sendErrorFeedback(thread, throwable)
-    }
+//    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
+//      mainViewModel.sendErrorFeedback(thread, throwable)
+//    }
 
     mainViewModel.run {
       observe(theme) { theme -> delegate.localNightMode = theme }

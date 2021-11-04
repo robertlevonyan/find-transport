@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 245
-    versionName = "3.7.3"
+    versionCode = 247
+    versionName = "3.7.5"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -98,12 +98,12 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
   //google
-  implementation("com.google.android.material:material:1.5.0-alpha04")
+  implementation("com.google.android.material:material:1.5.0-alpha05")
   implementation("com.google.android.play:core:1.10.2")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")
   implementation("com.google.code.gson:gson:2.8.8")
-  implementation(platform("com.google.firebase:firebase-bom:28.3.0"))
+  implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
   implementation("com.google.dagger:hilt-android:2.38.1")
@@ -111,12 +111,12 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.3.1")
+  implementation("androidx.activity:activity-ktx:1.4.0")
   implementation("androidx.appcompat:appcompat:1.3.1")
   implementation("androidx.browser:browser:1.3.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.1")
-  implementation("androidx.core:core-ktx:1.7.0-rc01")
+  implementation("androidx.core:core-ktx:1.7.0")
   implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
   implementation("androidx.fragment:fragment-ktx:1.3.6")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")

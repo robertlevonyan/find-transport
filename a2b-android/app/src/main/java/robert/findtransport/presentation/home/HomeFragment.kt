@@ -48,7 +48,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     appBar.onWindowInsets { v, windowInsets ->
       v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
     }
-    clSearchArea.onWindowInsets { v, windowInsets ->
+    nsvSearchArea.onWindowInsets { v, windowInsets ->
       val padding = getDimenInt(R.dimen.margin_xx_large)
       v.bottomMargin = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom * 2 + padding) * 2
     }

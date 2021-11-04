@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import robert.findtransport.BuildConfig
 import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.model.Result
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
@@ -169,16 +170,14 @@ class MainViewModel @Inject constructor(
 
   fun sendErrorFeedback(thread: Thread, throwable: Throwable) {
     viewModelScope.launch(Dispatchers.IO) {
-      val printWriter = PrintWriter(StringWriter())
-      throwable.printStackTrace(printWriter)
-
       feedbackUseCase.sendFeedback(
         email = "error@a2b.com",
         subject = "ActivityThread",
         message = """
             Thread name: ${thread.name}
-            Error message: ${throwable.message}
-            Stacktrace: $printWriter
+            Version: ${BuildConfig.VERSION_CODE}
+            Error message: ${throwable.message} 
+            Stacktrace: ${throwable.stackTrace.joinToString("\n")}
           """.trimIndent(),
       )
     }
