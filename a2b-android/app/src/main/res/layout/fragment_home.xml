@@ -284,19 +284,11 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSearch"
-        style="@style/Widget.MaterialComponents.Button.Icon"
+        style="@style/SearchButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/button_size"
-        android:layout_marginVertical="@dimen/fab_margin"
         android:text="@string/label_search"
-        android:textAllCaps="false"
-        android:textColor="@color/colorOnPrimary"
-        android:textStyle="bold"
-        app:backgroundTint="@color/colorSecondary"
-        app:cornerRadius="@dimen/card_radius"
         app:icon="@drawable/ic_search_colored"
-        app:iconTint="@color/color_accent_500"
-        app:iconTintMode="src_in"
         app:layout_constraintBottom_toTopOf="@+id/btnTransports"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -305,24 +297,16 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTransports"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        style="@style/TransportsButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/fab_margin"
-        android:paddingHorizontal="@dimen/fab_margin"
         android:text="@string/label_all_transports"
-        android:textAllCaps="false"
-        android:textColor="@color/colorOnPrimary"
-        app:backgroundTint="@android:color/transparent"
-        app:cornerRadius="?actionBarSize"
         app:icon="@drawable/ic_arrow_up"
         app:iconGravity="textTop"
-        app:iconTint="@color/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@+id/cvRate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/colorSecondary" />
+        app:layout_constraintStart_toStartOf="parent" />
 
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvRate"
@@ -355,29 +339,21 @@
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRate"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x_small"
-            android:backgroundTint="@color/colorPrimary"
             android:text="@string/label_rate"
-            android:textAllCaps="false"
-            android:textColor="@color/color_accent_500"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDismiss"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            style="@style/ButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x_small"
-            android:backgroundTint="@color/colorPrimary"
             android:text="@string/label_dismiss"
-            android:textAllCaps="false"
-            android:textColor="@color/color_accent_500"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnRate"
             app:layout_constraintTop_toBottomOf="@id/tvRateMessage" />

@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 247
-    versionName = "3.7.5"
+    versionCode = 248
+    versionName = "3.7.6"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -143,7 +143,7 @@ dependencies {
 
   //other
   implementation("com.airbnb.android:lottie:4.1.0")
-  implementation("com.github.terrakok:cicerone:7.0")
+  implementation("com.github.terrakok:cicerone:7.1")
   implementation("com.github.ybq:Android-SpinKit:1.4.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")

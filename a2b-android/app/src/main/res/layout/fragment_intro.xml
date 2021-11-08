@@ -72,7 +72,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnArm"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/SelectorButtonStyle"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"
@@ -81,18 +81,15 @@
       android:insetBottom="0dp"
       android:paddingHorizontal="@dimen/margin_xxx_large"
       android:text="@string/settings_language_am"
-      android:textAllCaps="false"
       android:textColor="@color/color_state_selector_text_2"
       android:textSize="@dimen/text_size_18"
-      android:textStyle="bold"
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_arm"
-      app:iconTint="@null"
-      app:strokeColor="@color/color_accent_500" />
+      app:iconTint="@null" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnEng"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/SelectorButtonStyle"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"
@@ -103,18 +100,15 @@
       android:minHeight="0dp"
       android:paddingHorizontal="@dimen/margin_xxx_large"
       android:text="@string/settings_language_en"
-      android:textAllCaps="false"
       android:textColor="@color/color_state_selector_text_2"
       android:textSize="@dimen/text_size_18"
-      android:textStyle="bold"
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_eng"
-      app:iconTint="@null"
-      app:strokeColor="@color/color_accent_500" />
+      app:iconTint="@null" />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnRus"
-      style="@style/Widget.MaterialComponents.Button.TextButton"
+      style="@style/SelectorButtonStyle"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"
@@ -125,14 +119,11 @@
       android:minHeight="0dp"
       android:paddingHorizontal="@dimen/margin_xxx_large"
       android:text="@string/settings_language_ru"
-      android:textAllCaps="false"
       android:textColor="@color/color_state_selector_text_2"
       android:textSize="@dimen/text_size_18"
-      android:textStyle="bold"
       app:cornerRadius="@dimen/small_radius"
       app:icon="@drawable/ic_lng_rus"
-      app:iconTint="@null"
-      app:strokeColor="@color/color_accent_500" />
+      app:iconTint="@null" />
   </com.google.android.material.button.MaterialButtonToggleGroup>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -28,35 +28,26 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabShowMap"
-    style="@style/Widget.MaterialComponents.Button.Icon"
+    style="@style/FabStyle"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_marginEnd="@dimen/fab_margin"
     android:visibility="invisible"
-    app:backgroundTint="@color/color_accent_300"
-    app:cornerRadius="@dimen/card_radius"
     app:icon="@drawable/ic_map"
-    app:iconGravity="textStart|end"
-    app:iconTint="@color/color_accent_100"
     app:layout_anchor="@id/appBar"
     app:layout_anchorGravity="end|bottom" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabTrackRoute"
-    style="@style/Widget.MaterialComponents.Button.Icon"
+    style="@style/FabStyle"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
     android:text="@string/label_track"
-    android:textAllCaps="false"
-    android:textColor="@color/color_accent_100"
-    android:textStyle="bold"
     android:visibility="gone"
-    app:backgroundTint="@color/color_accent_300"
     app:cornerRadius="@dimen/card_radius"
     app:icon="@drawable/ic_track_route"
-    app:iconTint="@color/color_accent_100"
     tools:visibility="visible" />
 
   <com.google.android.material.appbar.AppBarLayout

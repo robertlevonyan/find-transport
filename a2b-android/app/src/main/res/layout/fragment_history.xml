@@ -27,18 +27,14 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabClear"
-    style="@style/Widget.MaterialComponents.Button.Icon"
+    style="@style/FabStyle"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
     android:contentDescription="@string/action_clear_history"
     android:visibility="gone"
-    app:backgroundTint="@color/color_accent_300"
-    app:cornerRadius="@dimen/card_radius"
-    app:icon="@drawable/ic_delete"
-    app:iconGravity="textStart|end"
-    app:iconTint="@color/color_accent_100" />
+    app:icon="@drawable/ic_delete" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"

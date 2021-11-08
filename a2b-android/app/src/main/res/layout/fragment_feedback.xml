@@ -141,16 +141,12 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabSend"
-    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+    style="@style/FabStyle"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
-    app:backgroundTint="@color/color_accent_300"
-    app:cornerRadius="@dimen/card_radius"
-    app:fabSize="normal"
-    app:icon="@drawable/ic_send"
-    app:iconTint="@color/color_accent_100" />
+    app:icon="@drawable/ic_send" />
 
   <FrameLayout
     android:id="@+id/flLoading"

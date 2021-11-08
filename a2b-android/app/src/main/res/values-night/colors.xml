@@ -5,6 +5,9 @@
   <color name="colorPrimaryVariant23">#000000</color>
   <color name="colorPrimaryVariantTransparent">#65000000</color>
   <color name="colorSecondary">#303030</color>
+  <color name="colorAccent100">#FFEDD1</color>
+  <color name="colorAccent300">#e7a942</color>
+  <color name="colorAccent500">#CEA053</color>
   <color name="colorOnPrimary">#C9C9C9</color>
   <color name="colorOnPrimaryTransparent">#80C9C9C9</color>
   <color name="colorOnPrimaryLight">#9C9C9C</color>

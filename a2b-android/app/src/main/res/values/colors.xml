@@ -5,10 +5,9 @@
   <color name="colorPrimaryVariant23">#f1f1f1</color>
   <color name="colorPrimaryVariantTransparent">#65F1F1F1</color>
   <color name="colorSecondary">#f1f1f1</color>
-  <color name="colorAccent">#e7a942</color>
-  <color name="colorAccentVariant">#FFEDD1</color>
-  <color name="colorAccentVariantDark">#CEA053</color>
-  <color name="colorAccentTransparent">#55f5b241</color>
+  <color name="colorAccent100">#FFEDD1</color>
+  <color name="colorAccent300">#e7a942</color>
+  <color name="colorAccent500">#CEA053</color>
   <color name="colorOnPrimary">#1a1a1a</color>
   <color name="colorOnPrimaryUntranslated">#1a1a1a</color>
   <color name="colorOnPrimaryTransparent">#801a1a1a</color>

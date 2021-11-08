@@ -181,8 +181,8 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     }
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onStart() {
+    super.onStart()
     mainViewModel.checkData()
   }
 

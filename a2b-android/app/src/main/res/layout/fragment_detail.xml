@@ -22,16 +22,12 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabMap"
-    style="@style/Widget.MaterialComponents.Button.Icon"
+    style="@style/FabStyle"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/fab_margin"
-    app:backgroundTint="@color/color_accent_300"
-    app:cornerRadius="@dimen/card_radius"
-    app:icon="@drawable/ic_map"
-    app:iconGravity="textStart|end"
-    app:iconTint="@color/color_accent_100" />
+    app:icon="@drawable/ic_map" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
@@ -166,29 +162,19 @@
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPrimaryRoute"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/SelectorButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/color_state_selector_bg"
-            android:text="@string/label_primary_route"
-            android:textAllCaps="false"
-            android:textColor="@color/color_state_selector_text"
-            android:textStyle="bold"
-            app:strokeColor="@color/color_accent_500" />
+            android:text="@string/label_primary_route"/>
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSecondaryRoute"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/SelectorButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:backgroundTint="@color/color_state_selector_bg"
-            android:text="@string/label_secondary_route"
-            android:textAllCaps="false"
-            android:textColor="@color/color_state_selector_text"
-            android:textStyle="bold"
-            app:strokeColor="@color/color_accent_500" />
+            android:text="@string/label_secondary_route" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
       </LinearLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>

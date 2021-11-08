@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import com.google.android.material.color.MaterialColors
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -168,10 +170,15 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   private fun enableLocationComponent() {
+    val colorRes = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      android.R.color.system_accent1_300
+    } else {
+      R.color.colorAccent300
+    }
     binding.mapView.location.updateSettings {
       enabled = true
       pulsingEnabled = true
-      pulsingColor = context?.getColorFromRes(R.color.color_accent_300) ?: Color.YELLOW
+      pulsingColor = context?.getColorFromRes(colorRes) ?: Color.YELLOW
       locationPuck = LocationPuck2D().apply {
         topImage = BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
       }
