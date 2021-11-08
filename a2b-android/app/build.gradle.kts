@@ -103,10 +103,10 @@ dependencies {
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")
   implementation("com.google.code.gson:gson:2.8.8")
+  implementation("com.google.dagger:hilt-android:2.38.1")
   implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
-  implementation("com.google.dagger:hilt-android:2.38.1")
 
   kapt("com.google.dagger:hilt-android-compiler:2.38.1")
 
