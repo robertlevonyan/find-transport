@@ -9,7 +9,7 @@
 
   <TextView
     android:id="@+id/tvTitle"
-    style="@style/ToolbarTitleText"
+    style="@style/Text.Toolbar"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -46,7 +46,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btnYes"
-    style="@style/ButtonStyle"
+    style="@style/Button.Regular"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="@string/permission_yes"
@@ -56,7 +56,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btnNo"
-    style="@style/ButtonStyle"
+    style="@style/Button.Regular"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/fab_margin"

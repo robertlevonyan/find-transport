@@ -11,7 +11,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/fab_margin"
     android:text="@string/title_theme_picker"
-    android:textAppearance="@style/ToolbarTitleText"
+    android:textAppearance="@style/Text.Toolbar"
     android:textSize="@dimen/title_text_size2" />
 
   <androidx.recyclerview.widget.RecyclerView

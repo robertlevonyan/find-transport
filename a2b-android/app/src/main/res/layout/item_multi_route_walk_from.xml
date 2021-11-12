@@ -27,7 +27,7 @@
     android:paddingHorizontal="@dimen/fab_margin"
     android:paddingTop="@dimen/margin_x_small"
     android:paddingBottom="@dimen/fab_margin"
-    android:textAppearance="@style/ToolbarTitleText"
+    android:textAppearance="@style/Text.Toolbar"
     app:drawableStartCompat="@drawable/ic_walk"
     tools:text="Stop name" />
 </LinearLayout>

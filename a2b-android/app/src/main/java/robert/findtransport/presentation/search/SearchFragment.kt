@@ -41,7 +41,9 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     }
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
-      ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
+      if (activity?.isFinishing != true) {
+        ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
+      }
     }
   }
 

@@ -17,6 +17,7 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:stateListAnimator="@drawable/appbar_elevation"
@@ -26,11 +27,10 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
       app:popupTheme="@style/AppTheme.PopupOverlay">
 
       <TextView
-        style="@style/ToolbarTitleText"
+        style="@style/Text.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="@dimen/fab_margin"

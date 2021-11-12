@@ -8,9 +8,9 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
     android:stateListAnimator="@drawable/appbar_elevation"
     android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -26,7 +26,7 @@
         android:layout_height="match_parent">
 
         <TextView
-          style="@style/ToolbarTitleText"
+          style="@style/Text.Toolbar"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"
@@ -65,7 +65,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:theme="@style/FeedbackInputStyle"
+        android:theme="@style/Input.Feedback"
         app:boxStrokeColor="@color/color_feedback"
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:theme="@style/FeedbackInputStyle"
+        android:theme="@style/Input.Feedback"
         app:boxStrokeColor="@color/color_feedback"
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -117,7 +117,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
-        android:theme="@style/FeedbackInputStyle"
+        android:theme="@style/Input.Feedback"
         app:boxStrokeColor="@color/color_feedback"
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -141,7 +141,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabSend"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"

@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
-import com.google.android.material.color.MaterialColors
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
@@ -120,14 +119,25 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
 
   private fun showDialogForPermissions(activity: FragmentActivity, permissions: Array<String>) =
     LocationPermissionDialog().run {
-      positiveClick = { permissionRequest.launch(permissions) }
+      positiveClick = {
+        view?.post {
+          try {
+            permissionRequest.launch(permissions)
+          } catch (e: Exception) {
+            e.printStackTrace()
+            router.exit()
+          }
+        }
+      }
       negativeClick = {
         binding.fabLocation.visibility = View.GONE
         if (!isDetached) {
           initMap()
         }
       }
-      show(activity.supportFragmentManager, "")
+      if (!activity.isFinishing) {
+        show(activity.supportFragmentManager, "")
+      }
     }
 
   private fun initMap() = binding.run {

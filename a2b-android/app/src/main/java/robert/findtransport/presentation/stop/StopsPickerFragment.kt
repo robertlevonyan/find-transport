@@ -74,11 +74,15 @@ class StopsPickerFragment : BaseFragment<StopsPickerViewModel, FragmentStopsPick
     observe(searchMode) { binding.etSearch.visibility = if (it) View.VISIBLE else View.GONE }
     observe(showNoData) { binding.tvNoStops.visibility = if (it) View.VISIBLE else View.GONE }
     observe(autocompleteStops) { binding.rvStops.adapter = FoundStopsAdapter(viewModel).apply { submitList(it) } }
-    observe(allStops) {
-      binding.rvStops.adapter = StopsAdapter(viewModel).apply { submitData(viewLifecycleOwner.lifecycle, it) }
+    observe(allStops) { allStops ->
+      binding.rvStops.adapter = StopsAdapter(
+        locale = viewModel.locale.value,
+        onItemClick = viewModel::onStopClicked
+      ).apply { submitData(viewLifecycleOwner.lifecycle, allStops) }
     }
-    observe(searchMode) {
-      if (!it) return@observe
+    observe(searchMode) { inSearchMode ->
+      if (!inSearchMode) return@observe
+
       lifecycleScope.launchWhenCreated {
         delay(100)
         binding.etSearch.requestFocus()

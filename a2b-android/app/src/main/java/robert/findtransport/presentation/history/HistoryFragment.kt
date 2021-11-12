@@ -55,7 +55,9 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
     viewModel.loadHistory()
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
-      ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
+      if (activity?.isFinishing != true) {
+        ArrivedDialog.newInstance().show(parentFragmentManager, ArrivedDialog::class.java.simpleName)
+      }
     }
   }
 
@@ -156,7 +158,11 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
         noAction(history)
         dismiss()
       }
-    }.show(parentFragmentManager, DialogHistory::class.java.simpleName)
+    }.let { dialog ->
+      if (activity?.isFinishing != true) {
+        dialog.show(parentFragmentManager, DialogHistory::class.java.simpleName)
+      }
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

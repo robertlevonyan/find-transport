@@ -38,15 +38,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.9" />
 
-      <androidx.cardview.widget.CardView
+      <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvFromInput"
+        style="@style/CardView.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        app:cardBackgroundColor="@color/colorSecondary"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tvFromError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -71,7 +69,7 @@
             android:layout_marginEnd="@dimen/margin_7"
             android:layout_marginBottom="@dimen/margin_7"
             android:hint="@string/hint_from"
-            android:theme="@style/InputTextStyle"
+            android:theme="@style/Input.Regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnFromClear"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,17 +80,18 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/search_input_height"
               android:background="@null"
-              android:ellipsize="end"
+              android:ellipsize="none"
               android:focusableInTouchMode="false"
               android:gravity="center_vertical|start"
               android:imeOptions="actionNext"
               android:inputType="text"
               android:paddingTop="@dimen/margin_x_small"
+              android:scrollHorizontally="true"
               android:textColor="@color/colorOnPrimary"
               android:textColorHint="@color/colorHint"
               android:textCursorDrawable="@drawable/bg_cursor"
               android:textSize="@dimen/input_text_size"
-              android:theme="@style/EditTextStyle" />
+              android:theme="@style/EditText.Regular" />
           </com.google.android.material.textfield.TextInputLayout>
 
           <ImageButton
@@ -133,7 +132,7 @@
             app:srcCompat="@drawable/ic_close_black_24dp"
             tools:ignore="ContentDescription" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
+      </com.google.android.material.card.MaterialCardView>
 
       <TextView
         android:id="@+id/tvFromError"
@@ -149,16 +148,13 @@
 
       <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSwap"
+        style="@style/FloatingActionButton.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/fab_margin"
-        app:backgroundTint="@color/colorSecondary"
-        app:elevation="3dp"
-        app:fabSize="mini"
         app:layout_constraintBottom_toTopOf="@+id/tvToLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_swap"
-        app:tint="@color/colorOnPrimary"
         tools:ignore="ContentDescription" />
 
       <TextView
@@ -176,14 +172,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.9" />
 
-      <androidx.cardview.widget.CardView
+      <com.google.android.material.card.MaterialCardView
         android:id="@+id/toInputCard"
+        style="@style/CardView.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/fab_margin"
-        app:cardBackgroundColor="@color/colorSecondary"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tvToError"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -208,7 +202,7 @@
             android:layout_marginEnd="@dimen/margin_7"
             android:layout_marginBottom="@dimen/margin_7"
             android:hint="@string/hint_to"
-            android:theme="@style/InputTextStyle"
+            android:theme="@style/Input.Regular"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/btnToClear"
             app:layout_constraintStart_toStartOf="parent"
@@ -268,7 +262,7 @@
             app:srcCompat="@drawable/ic_close_black_24dp"
             tools:ignore="ContentDescription" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-      </androidx.cardview.widget.CardView>
+      </com.google.android.material.card.MaterialCardView>
 
       <TextView
         android:id="@+id/tvToError"
@@ -284,7 +278,7 @@
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSearch"
-        style="@style/SearchButtonStyle"
+        style="@style/Button.Search"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/button_size"
         android:text="@string/label_search"
@@ -292,12 +286,11 @@
         app:layout_constraintBottom_toTopOf="@+id/btnTransports"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:rippleColor="@color/colorPrimary" />
+        app:layout_constraintStart_toStartOf="parent" />
 
       <com.google.android.material.button.MaterialButton
         android:id="@+id/btnTransports"
-        style="@style/TransportsButtonStyle"
+        style="@style/Button.Transports"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_all_transports"
@@ -310,13 +303,11 @@
 
       <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvRate"
+        style="@style/CardView.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/colorSecondary"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -339,7 +330,7 @@
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRate"
-            style="@style/ButtonStyle"
+            style="@style/Button.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x_small"
@@ -349,7 +340,7 @@
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDismiss"
-            style="@style/ButtonStyle"
+            style="@style/Button.Regular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x_small"
@@ -364,6 +355,7 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/AppTheme.AppBarOverlay"
@@ -394,7 +386,7 @@
 
         <TextView
           android:id="@+id/tvTitle"
-          style="@style/ToolbarTitleText"
+          style="@style/Text.Toolbar"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"

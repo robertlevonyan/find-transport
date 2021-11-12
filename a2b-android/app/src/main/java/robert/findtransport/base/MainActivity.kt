@@ -164,7 +164,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
   }
 
   private fun showEmptyDatabaseDialog() {
-    noDataDialog?.show()
+    if (!isFinishing) {
+      noDataDialog?.show()
+    }
   }
 
   private fun showLoadingErrorDialog() {

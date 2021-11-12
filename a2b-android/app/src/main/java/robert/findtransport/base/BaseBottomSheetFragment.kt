@@ -15,7 +15,7 @@ abstract class BaseBottomSheetFragment<ViewModel : BaseViewModel, Binding : View
   abstract val binding: Binding
   abstract val viewModel: ViewModel
 
-  override fun getTheme(): Int = R.style.BottomSheetDialogThemeDark
+  override fun getTheme(): Int = R.style.BottomSheetTheme_Dark_Dialog
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog = BottomSheetDialog(requireContext(), theme)
 

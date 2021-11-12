@@ -38,7 +38,7 @@
         android:drawablePadding="@dimen/fab_margin"
         android:gravity="center_vertical"
         android:padding="@dimen/fab_margin"
-        android:textAppearance="@style/ToolbarTitleText"
+        android:textAppearance="@style/Text.Toolbar"
         android:textColor="@color/colorPrimary"
         app:drawableStartCompat="@drawable/ic_stop_sign_small"
         app:layout_constraintBottom_toBottomOf="parent"

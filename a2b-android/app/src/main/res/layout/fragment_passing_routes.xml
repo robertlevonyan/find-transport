@@ -18,7 +18,7 @@
     android:paddingBottom="@dimen/route_list_bottom_padding"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    tools:listitem="@layout/item_spinner" />
+    tools:listitem="@layout/item_stop" />
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
@@ -34,6 +34,7 @@
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
       <LinearLayout
+        style="@style/Background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -44,7 +45,6 @@
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
-          android:background="?attr/colorPrimary"
           android:stateListAnimator="@drawable/appbar_elevation"
           app:layout_collapseMode="pin"
           app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/title_details"
-            android:textAppearance="@style/ToolbarTitleText" />
+            android:textAppearance="@style/Text.Toolbar" />
         </androidx.appcompat.widget.Toolbar>
 
         <TextView

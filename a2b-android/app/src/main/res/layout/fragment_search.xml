@@ -28,7 +28,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabShowMap"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_marginEnd="@dimen/fab_margin"
@@ -39,7 +39,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabTrackRoute"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
@@ -54,12 +54,12 @@
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary">
+    android:theme="@style/AppTheme.AppBarOverlay">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+      style="@style/Background"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:contentScrim="@color/colorPrimary"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
       <LinearLayout
@@ -83,7 +83,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="@string/title_search"
-            android:textAppearance="@style/ToolbarTitleText" />
+            android:textAppearance="@style/Text.Toolbar" />
         </androidx.appcompat.widget.Toolbar>
 
         <androidx.constraintlayout.widget.ConstraintLayout

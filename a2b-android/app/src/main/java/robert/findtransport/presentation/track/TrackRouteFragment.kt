@@ -139,7 +139,11 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
       binding.progressLoading.visibility = View.GONE
     }
     observe(predestination) { }
-    observe(notifyNextStop) { NextStopDialog.newInstance().show(parentFragmentManager, NextStopDialog::class.java.simpleName) }
+    observe(notifyNextStop) {
+      if (activity?.isFinishing != true) {
+        NextStopDialog.newInstance().show(parentFragmentManager, NextStopDialog::class.java.simpleName)
+      }
+    }
     observe(notifyArrived) {
       parentFragmentManager.setFragmentResult(RESULT_ARRIVED, bundleOf())
       router.exit()

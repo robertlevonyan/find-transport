@@ -22,7 +22,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabMap"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
@@ -33,10 +33,10 @@
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
     android:theme="@style/AppTheme.AppBarOverlay">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+      style="@style/Background"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
@@ -66,7 +66,7 @@
               android:layout_height="wrap_content"
               android:layout_gravity="center"
               android:text="@string/title_details"
-              android:textAppearance="@style/ToolbarTitleText" />
+              android:textAppearance="@style/Text.Toolbar" />
 
             <ImageView
               android:id="@+id/ivFavorite"
@@ -162,15 +162,15 @@
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnPrimaryRoute"
-            style="@style/SelectorButtonStyle"
+            style="@style/Button.Selector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/label_primary_route"/>
+            android:text="@string/label_primary_route" />
 
           <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSecondaryRoute"
-            style="@style/SelectorButtonStyle"
+            style="@style/Button.Selector"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

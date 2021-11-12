@@ -44,7 +44,8 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
       v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
     }
     rvRoute.onWindowInsets { v, windowInsets ->
-      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin) * 2
+      val padding = getDimenInt(R.dimen.margin_xx_large)
+      v.bottomPadding = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin) + padding) * 2
     }
     fabMap.onWindowInsets { v, windowInsets ->
       v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)

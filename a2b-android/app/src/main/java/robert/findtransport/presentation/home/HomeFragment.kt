@@ -50,7 +50,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
     nsvSearchArea.onWindowInsets { v, windowInsets ->
       val padding = getDimenInt(R.dimen.margin_xx_large)
-      v.bottomMargin = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom * 2 + padding) * 2
+      v.bottomPadding = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom * 2 + padding) * 2
     }
   }
 
@@ -62,6 +62,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override fun FragmentHomeBinding.initViews() {
     inputFrom.setOnLongClickListener { true }
     inputTo.setOnLongClickListener { true }
+
+    inputFrom.isSelected = true
 
     btnRate.setOnClickListener { viewModel.openRate() }
     btnDismiss.setOnClickListener { viewModel.dismissRate() }

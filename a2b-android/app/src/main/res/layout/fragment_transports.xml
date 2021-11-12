@@ -22,11 +22,11 @@
     android:id="@+id/appBar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary"
     android:stateListAnimator="@drawable/appbar_elevation"
     android:theme="@style/AppTheme.AppBarOverlay">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
+      style="@style/Background"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
@@ -50,7 +50,7 @@
             android:layout_height="match_parent">
 
             <TextView
-              style="@style/ToolbarTitleText"
+              style="@style/Text.Toolbar"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_gravity="center"

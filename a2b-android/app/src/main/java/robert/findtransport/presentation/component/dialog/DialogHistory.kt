@@ -19,10 +19,6 @@ class DialogHistory : DialogFragment() {
   var onYesClick: (HistoryDialogType) -> Unit = {}
   var onNoClick: (HistoryDialogType) -> Unit = {}
 
-  companion object {
-    fun newInstance(args: Bundle): DialogHistory = DialogHistory().apply { arguments = args }
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
     return binding.root
@@ -47,5 +43,9 @@ class DialogHistory : DialogFragment() {
             btnNo.setOnClickListener { onNoClick(type).run { dismiss() } }
           }
         }
+  }
+
+  companion object {
+    fun newInstance(args: Bundle): DialogHistory = DialogHistory().apply { arguments = args }
   }
 }

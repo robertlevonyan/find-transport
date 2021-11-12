@@ -72,7 +72,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnArm"
-      style="@style/SelectorButtonStyle"
+      style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"
@@ -89,7 +89,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnEng"
-      style="@style/SelectorButtonStyle"
+      style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"
@@ -108,7 +108,7 @@
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/btnRus"
-      style="@style/SelectorButtonStyle"
+      style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
       android:layout_weight="1"

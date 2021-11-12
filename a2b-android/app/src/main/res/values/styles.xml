@@ -1,100 +1,42 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
-    <item name="colorAccent">@color/colorAccent500</item>
-    <item name="android:fontFamily">@font/app_font</item>
-    <item name="android:windowLightStatusBar">true</item>
-    <item name="android:progressTint">@color/colorAccent500</item>
-    <item name="thumbTint">@color/colorAccent500</item>
-    <item name="trackTint">@color/colorAccent100</item>
-  </style>
-
-  <style name="AppTheme.NoActionBar">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-    <item name="android:windowIsTranslucent">true</item>
-  </style>
-
-  <style name="AppTheme.AppBarOverlay" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
-    <item name="colorControlNormal">@color/colorOnPrimary</item>
-    <item name="android:textColorSecondary">@color/colorOnPrimary</item>
-  </style>
-
-  <style name="AppTheme.PopupOverlay" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
-    <item name="actionBarItemBackground">@color/colorPrimaryVariant23</item>
-    <item name="android:textColor">@color/colorOnPrimary</item>
-  </style>
-
-  <style name="ToolbarTitleText" parent="Base.TextAppearance.AppCompat.Title">
+  <!--  text-->
+  <style name="Text.Toolbar" parent="Base.TextAppearance.AppCompat.Title">
     <item name="android:textColor">@color/colorOnPrimary</item>
     <item name="android:textSize">@dimen/text_size_18</item>
     <item name="android:textStyle">bold</item>
     <item name="android:fontFamily">@font/app_font</item>
   </style>
 
-  <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-    <item name="android:textColor">@color/colorAccent500</item>
-    <item name="textAllCaps">false</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:background">?selectableItemBackground</item>
-    <item name="rippleColor">@color/colorOnPrimaryLightest</item>
-  </style>
-
-  <style name="BottomSheetDark" parent="@style/Widget.Design.BottomSheet.Modal">
-    <item name="android:background">@drawable/bg_bottom_sheet_dark</item>
-    <item name="android:layout_marginHorizontal" tools:targetApi="o">@dimen/margin_tablet</item>
-  </style>
-
-  <style name="BaseBottomSheetDialogDark" parent="@style/Theme.Design.Light.BottomSheetDialog">
-    <item name="android:windowIsFloating">false</item>
-    <item name="bottomSheetStyle">@style/BottomSheetDark</item>
-  </style>
-
-  <style name="BottomSheetDialogThemeDark" parent="BaseBottomSheetDialogDark">
-    <item name="android:statusBarColor">@android:color/transparent</item>
-  </style>
-
-  <style name="InputTextStyle" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+  <style name="Input.Regular" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     <item name="android:textColorHint">@color/colorOnPrimary</item>
     <item name="colorControlActivated">@color/colorOnPrimary</item>
     <item name="colorControlHighlight">@color/colorOnPrimary</item>
   </style>
 
-  <style name="EditTextStyle" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-    <item name="android:textColorHint">@color/colorOnPrimary</item>
-    <item name="colorControlActivated">@color/colorOnPrimaryLighter</item>
-    <item name="colorControlHighlight">@color/colorOnPrimaryLighter</item>
-    <item name="colorControlNormal">@color/colorOnPrimaryLighter</item>
-  </style>
-
-  <style name="FeedbackInputStyle" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+  <style name="Input.Feedback" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
     <item name="colorControlNormal">@color/colorAccent500</item>
     <item name="colorControlActivated">@color/colorAccent300</item>
     <item name="colorControlHighlight">@color/colorAccent500</item>
     <item name="android:textColorHighlight">@color/colorAccent500</item>
   </style>
 
-  <style name="AppSplash" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenBackground">@color/colorPrimary</item>
-    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
-    <item name="windowSplashScreenIconBackgroundColor">@color/colorPrimaryVariant</item>
-    <item name="windowSplashScreenAnimationDuration">1000</item>
-    <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
-
-    <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryVariant</item>
-    <item name="android:windowLightStatusBar">true</item>
+  <style name="EditText.Regular" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <item name="android:textColorHint">@color/colorOnPrimary</item>
+    <item name="colorControlActivated">@color/colorOnPrimaryLighter</item>
+    <item name="colorControlHighlight">@color/colorOnPrimaryLighter</item>
+    <item name="colorControlNormal">@color/colorOnPrimaryLighter</item>
   </style>
+  <!--  text-->
 
-  <style name="TransportsButtonStyle" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+  <!--button-->
+  <style name="Button.Transports" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
     <item name="android:layout_marginTop">@dimen/fab_margin</item>
     <item name="android:layout_marginBottom">@dimen/fab_margin</item>
     <item name="android:paddingStart">@dimen/fab_margin</item>
     <item name="android:paddingEnd">@dimen/fab_margin</item>
     <item name="android:paddingTop">@dimen/half_margin</item>
     <item name="android:paddingBottom">@dimen/half_margin</item>
+    <item name="android:textSize">@dimen/text_size_14</item>
     <item name="textAllCaps">false</item>
     <item name="android:textColor">@color/colorOnPrimary</item>
     <item name="backgroundTint">@android:color/transparent</item>
@@ -103,11 +45,12 @@
     <item name="rippleColor">@color/colorSecondary</item>
   </style>
 
-  <style name="SearchButtonStyle" parent="@style/Widget.MaterialComponents.Button.Icon">
+  <style name="Button.Search" parent="@style/Widget.MaterialComponents.Button.Icon">
     <item name="android:layout_marginTop">@dimen/fab_margin</item>
     <item name="android:layout_marginBottom">@dimen/fab_margin</item>
     <item name="textAllCaps">false</item>
     <item name="android:textStyle">bold</item>
+    <item name="android:textSize">@dimen/text_size_16</item>
     <item name="android:textColor">@color/colorOnPrimary</item>
     <item name="backgroundTint">@color/colorSecondary</item>
     <item name="cornerRadius">@dimen/card_radius</item>
@@ -116,7 +59,7 @@
     <item name="rippleColor">@color/colorSecondary</item>
   </style>
 
-  <style name="DialogPrimaryButtonStyle" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+  <style name="Button.Positive" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
     <item name="android:textColor">@color/colorOnPrimaryUntranslated</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">false</item>
@@ -124,7 +67,7 @@
     <item name="rippleColor">@color/colorSecondary</item>
   </style>
 
-  <style name="DialogSecondaryButtonStyle" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+  <style name="Button.Negative" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
     <item name="android:textColor">@color/colorOnPrimary</item>
     <item name="textAllCaps">false</item>
     <item name="android:textStyle">bold</item>
@@ -132,15 +75,15 @@
     <item name="rippleColor">@color/colorAccent500</item>
   </style>
 
-  <style name="FabStyle" parent="Widget.MaterialComponents.Button.Icon">
-    <item name="backgroundTint">@color/colorAccent300</item>
-    <item name="iconTint">@color/colorAccent100</item>
-    <item name="iconGravity">textStart|end</item>
-    <item name="iconTintMode">src_in</item>
-    <item name="cornerRadius">@dimen/card_radius</item>
+  <style name="Button.Regular" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="android:textColor">@color/colorAccent500</item>
+    <item name="textAllCaps">false</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:background">?selectableItemBackground</item>
+    <item name="rippleColor">@color/colorOnPrimaryLightest</item>
   </style>
 
-  <style name="SelectorButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
+  <style name="Button.Selector" parent="Widget.MaterialComponents.Button.OutlinedButton">
     <item name="strokeColor">@color/colorAccent500</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">false</item>
@@ -148,7 +91,59 @@
     <item name="backgroundTint">@color/color_state_selector_bg</item>
   </style>
 
-  <style name="TrackerBackgroundStyle">
+  <style name="FloatingActionButton.Regular" parent="Widget.MaterialComponents.Button.Icon">
+    <item name="backgroundTint">@color/colorAccent300</item>
+    <item name="iconTint">@color/colorAccent100</item>
+    <item name="iconGravity">textStart|end</item>
+    <item name="iconTintMode">src_in</item>
+    <item name="cornerRadius">@dimen/card_radius</item>
+  </style>
+
+  <style name="FloatingActionButton.Small" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="backgroundTint">@color/colorSecondary</item>
+    <item name="elevation">3dp</item>
+    <item name="fabSize">mini</item>
+    <item name="tint">@color/colorOnPrimary</item>
+  </style>
+  <!--button-->
+
+  <!--  card view-->
+  <style name="CardView.Regular" parent="Widget.MaterialComponents.CardView">
+    <item name="cardCornerRadius">@dimen/card_radius</item>
+    <item name="cardElevation">0dp</item>
+    <item name="cardBackgroundColor">@color/colorSecondary</item>
+  </style>
+
+  <style name="CardView.Section" parent="Widget.MaterialComponents.CardView">
+    <item name="cardCornerRadius">@dimen/card_radius</item>
+    <item name="cardElevation">0dp</item>
+    <item name="cardBackgroundColor">@color/colorPrimaryVariant</item>
+  </style>
+  <!--  card view-->
+
+  <!--  bottom sheet-->
+  <style name="BottomSheet.Dark" parent="@style/Widget.Design.BottomSheet.Modal">
+    <item name="android:background">@drawable/bg_bottom_sheet_dark</item>
+    <item name="android:layout_marginHorizontal" tools:targetApi="o">@dimen/margin_tablet</item>
+  </style>
+
+  <style name="BaseBottomSheet.Dark.Dialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+    <item name="android:windowIsFloating">false</item>
+    <item name="bottomSheetStyle">@style/BottomSheet.Dark</item>
+  </style>
+
+  <style name="BottomSheetTheme.Dark.Dialog" parent="BaseBottomSheet.Dark.Dialog">
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+  <!--  bottom sheet-->
+
+  <!--  backgrounds-->
+  <style name="TrackerBackground">
     <item name="android:background">@color/colorAccent500</item>
   </style>
+
+  <style name="Background">
+    <item name="android:background">@color/colorPrimary</item>
+  </style>
+  <!--  backgrounds-->
 </resources>

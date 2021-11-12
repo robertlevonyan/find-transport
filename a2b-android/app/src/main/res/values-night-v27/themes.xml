@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
+    <item name="colorAccent">@color/colorAccent500</item>
+    <item name="android:fontFamily">@font/app_font</item>
+    <item name="android:navigationBarColor">@color/colorPrimaryVariantTransparent</item>
+    <item name="android:progressTint">@color/colorAccent500</item>
+    <item name="thumbTint">@color/colorAccent500</item>
+    <item name="trackTint">@color/colorAccent100</item>
+  </style>
+</resources>

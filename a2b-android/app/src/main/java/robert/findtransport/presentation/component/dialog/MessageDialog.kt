@@ -21,10 +21,6 @@ class MessageDialog(context: Context, private val arguments: Bundle) : Dialog(co
       binding?.tvDescription?.text = field
     }
 
-  companion object {
-    fun newInstance(context: Context, args: Bundle): MessageDialog = MessageDialog(context, args)
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -58,5 +54,9 @@ class MessageDialog(context: Context, private val arguments: Bundle) : Dialog(co
   override fun dismiss() {
     binding = null
     super.dismiss()
+  }
+
+  companion object {
+    fun newInstance(context: Context, args: Bundle): MessageDialog = MessageDialog(context, args)
   }
 }

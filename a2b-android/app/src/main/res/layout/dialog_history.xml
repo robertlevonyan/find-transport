@@ -1,60 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:background="@drawable/bg_dialog"
   android:minWidth="300dp"
-  app:cardCornerRadius="@dimen/small_radius"
-  app:cardElevation="0dp">
+  android:padding="@dimen/fab_margin">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
+  <TextView
+    android:id="@+id/tvTitle"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/fab_margin"
-    android:minWidth="300dp">
+    android:padding="@dimen/margin_small"
+    android:text="@string/title_history"
+    android:textColor="@color/colorOnPrimary"
+    android:textSize="@dimen/text_size_20"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-      android:id="@+id/tvTitle"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/margin_small"
-      android:text="@string/title_history"
-      android:textColor="@color/colorOnPrimary"
-      android:textSize="@dimen/text_size_20"
-      android:textStyle="bold"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent" />
+  <TextView
+    android:id="@+id/tvDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_small"
+    android:textColor="@color/colorOnPrimary"
+    android:textSize="@dimen/text_size_16"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-    <TextView
-      android:id="@+id/tvDescription"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/margin_small"
-      android:textColor="@color/colorOnPrimary"
-      android:textSize="@dimen/text_size_16"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+  <Button
+    android:id="@+id/btnYes"
+    style="@style/Button.Positive"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/label_yes"
+    android:textAllCaps="false"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
-    <Button
-      android:id="@+id/btnYes"
-      style="@style/DialogPrimaryButtonStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/label_yes"
-      android:textAllCaps="false"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/tvDescription" />
-
-    <Button
-      android:id="@+id/btnNo"
-      style="@style/DialogSecondaryButtonStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/label_no"
-      app:layout_constraintBottom_toBottomOf="@id/btnYes"
-      app:layout_constraintEnd_toStartOf="@id/btnYes"
-      app:layout_constraintTop_toTopOf="@id/btnYes" />
-  </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+  <Button
+    android:id="@+id/btnNo"
+    style="@style/Button.Negative"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/label_no"
+    app:layout_constraintBottom_toBottomOf="@id/btnYes"
+    app:layout_constraintEnd_toStartOf="@id/btnYes"
+    app:layout_constraintTop_toTopOf="@id/btnYes" />
+</androidx.constraintlayout.widget.ConstraintLayout>

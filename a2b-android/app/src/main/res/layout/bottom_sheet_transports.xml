@@ -50,14 +50,13 @@
       android:textSize="@dimen/input_text_size" />
   </TextSwitcher>
 
-  <androidx.cardview.widget.CardView
+  <com.google.android.material.card.MaterialCardView
+    style="@style/CardView.Regular"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/margin_medium"
     android:layout_marginTop="@dimen/margin_x_small"
     android:layout_marginEnd="@dimen/margin_medium"
-    app:cardBackgroundColor="@color/colorSecondary"
-    app:cardCornerRadius="@dimen/card_radius"
     app:cardElevation="3dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -132,5 +131,5 @@
           tools:listitem="@layout/item_transport" />
       </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
-  </androidx.cardview.widget.CardView>
+  </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

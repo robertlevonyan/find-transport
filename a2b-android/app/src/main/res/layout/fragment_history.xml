@@ -27,7 +27,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabClear"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="bottom|end"
@@ -38,6 +38,7 @@
 
   <com.google.android.material.appbar.AppBarLayout
     android:id="@+id/appBar"
+    style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:stateListAnimator="@drawable/appbar_elevation"
@@ -47,7 +48,6 @@
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      android:background="?attr/colorPrimary"
       app:popupTheme="@style/AppTheme.PopupOverlay">
 
       <FrameLayout
@@ -55,7 +55,7 @@
         android:layout_height="match_parent">
 
         <TextView
-          style="@style/ToolbarTitleText"
+          style="@style/Text.Toolbar"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_gravity="center"

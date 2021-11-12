@@ -11,7 +11,7 @@ import robert.findtransport.databinding.DialogArrivedBinding
 import robert.findtransport.databinding.DialogNextStopBinding
 import robert.findtransport.utils.viewbinding.viewBinding
 
-class ArrivedDialog() : DialogFragment() {
+class ArrivedDialog : DialogFragment() {
   private val binding by viewBinding(DialogArrivedBinding::inflate)
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =

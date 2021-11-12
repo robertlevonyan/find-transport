@@ -18,7 +18,7 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabLocation"
-    style="@style/FabStyle"
+    style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
@@ -54,7 +54,7 @@
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="center"
-          android:textAppearance="@style/ToolbarTitleText" />
+          android:textAppearance="@style/Text.Toolbar" />
       </androidx.appcompat.widget.Toolbar>
     </LinearLayout>
   </com.google.android.material.appbar.AppBarLayout>
