@@ -4,7 +4,6 @@
   <!--keys-->
   <string name="map_style" translatable="false">mapbox://styles/robertlevonyan/cjq0wlwb21mij2rs51zr0qmvp</string>
   <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoicm9iZXJ0bGV2b255YW4iLCJhIjoiY2oxajVyajJ3MDFjZjJ5cGRnOXV5a2FpbyJ9.lsKprBvsy308ZzjQQJojLg</string>
-
   <!--titles-->
   <string name="title_oops" translatable="false">Oops!</string>
   <string name="title_search">Search</string>
@@ -31,14 +30,12 @@
   <string name="message_history_dialog_clear">Do you want to clear history?</string>
   <string name="message_history_dialog_delete">Do you want to delete entry from history?</string>
   <string name="message_rate">If you like our app, give us 5 stars on Google Play Store and write a review!</string>
-  <string name="message_loading_stops">Loading stops…</string>
   <string name="message_no_history">History is empty</string>
   <string name="message_loading_data">Loading data</string>
   <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>
   <string name="message_arrived">You have arrived to your destination</string>
 
   <!--labels-->
-  <string name="label_by" translatable="false">by </string>
   <string name="label_bus">Bus</string>
   <string name="label_microbus">Microbus</string>
   <string name="label_trolleybus">Trolleybus</string>
@@ -55,9 +52,7 @@
   <string name="label_route_start">Start of the route</string>
   <string name="label_route_end">End of the route</string>
   <string name="label_all_transports">See all transports</string>
-  <string name="label_collapse">Collapse</string>
   <string name="label_search">Search</string>
-  <string name="label_reset">Reset</string>
   <string name="label_rate">Rate</string>
   <string name="label_select_stop">Select Stop</string>
   <string name="label_primary_route">Main</string>
@@ -77,8 +72,6 @@
   <string name="label_stop_tracker">Stop tracking</string>
   <string name="label_tracker_transport">You have selected</string>
   <string name="label_current_stop">Current Stop</string>
-  <string name="label_previous_stop">Previous Stop</string>
-  <string name="label_next_stop">Next Stop</string>
   <string name="label_arriving">Arriving</string>
   <string name="label_arrived">You have arrived to destination</string>
   <string name="label_arrived_dialog">Arrived</string>
@@ -150,8 +143,6 @@
   <string name="action_privacy" translatable="false">Privacy Policy</string>
   <string name="action_history">History</string>
   <string name="action_clear_history">Remove</string>
-  <string name="action_favorites">Favorites</string>
-  <string name="action_map">Show on map</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Your message has been sent. Thank you! 🥰😊🥰🥰🥰🥰🥰</string>

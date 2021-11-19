@@ -36,5 +36,6 @@
   <style name="AppTheme.PopupOverlay" parent="@style/Widget.MaterialComponents.PopupMenu.Overflow">
     <item name="actionBarItemBackground">@color/colorPrimaryVariant23</item>
     <item name="android:textColor">@color/colorOnPrimary</item>
+    <item name="popupMenuBackground">@drawable/bg_dialog</item>
   </style>
 </resources>

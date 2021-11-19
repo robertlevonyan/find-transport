@@ -25,7 +25,6 @@
   <string name="message_history_dialog_clear">Ցանկանում ե՞ք մաքրել պատմությունը։</string>
   <string name="message_history_dialog_delete">Ցանկացնում ե՞ք հեռացնել գրանցումը պատմությունից։</string>
   <string name="message_rate">Եթե հավանել եք մեր հավելվածը, գնահատեք այն 5 աստղ Google Play Store-ում և  կիսվեք կարծիքով</string>
-  <string name="message_loading_stops">Կանգառների բեռնում…</string>
   <string name="message_no_history">Փնտրման պատմությունը դատարկ է</string>
   <string name="message_loading_data">Տվյալների բեռնում</string>
   <string name="message_next_stop">Դուք մոտենում եք նշված կանգառին։ Իջեք հաջորդ կանգառում։</string>
@@ -47,9 +46,7 @@
   <string name="label_route_start">Երթուղու սկիզբ</string>
   <string name="label_route_end">Երթուղու ավարտ</string>
   <string name="label_all_transports">Բոլոր երթուղիները</string>
-  <string name="label_collapse">Փակել</string>
   <string name="label_search">Փնտրել</string>
-  <string name="label_reset">Ջնջել</string>
   <string name="label_rate">Գնահատել</string>
   <string name="label_select_stop">Ընտրեք կանգառ</string>
   <string name="label_primary_route">Հիմնական</string>
@@ -69,8 +66,6 @@
   <string name="label_stop_tracker">Դադարեցնել հետևումը</string>
   <string name="label_tracker_transport">Դուք ընտրել եք</string>
   <string name="label_current_stop">Ներկայիս կանգառը</string>
-  <string name="label_previous_stop">Նախորդ կանգառ</string>
-  <string name="label_next_stop">Հաջորդ կանգառ</string>
   <string name="label_arriving">Հասնում ենք</string>
   <string name="label_arrived">Դուք հասել եք</string>
   <string name="label_arrived_dialog">Հասել եք</string>
@@ -135,8 +130,6 @@
   <string name="action_feedback">Հետադարձ կապ</string>
   <string name="action_history">Պատմություն</string>
   <string name="action_clear_history">Մաքրել պատմությունը</string>
-  <string name="action_favorites">Նախընտրելիներ</string>
-  <string name="action_map">Ցույց տալ քարտեզի վրա</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Ձեր հաղորդագրությունն ուղարկված է։ Շնորհակալություն 😊</string>

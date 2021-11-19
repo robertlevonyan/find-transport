@@ -47,7 +47,6 @@ class MapboxNavigationService {
   private fun createDirection(pair: Pair<Point, Point?>) = MapboxDirections.builder()
       .routeOptions(
           RouteOptions.builder()
-              .accessToken(BuildConfig.MAPBOX_TOKEN)
               .coordinates(
                   origin = pair.first,
                   waypoints = null,

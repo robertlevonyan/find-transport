@@ -17,6 +17,7 @@ import androidx.core.text.buildSpannedString
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
@@ -91,10 +92,15 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
       .also { intent ->
         context?.applicationContext?.run {
           startService(intent)
-          if (trackRouteService?.isBound == true) {
+          if (isBound && trackRouteService?.isBound == true) {
             unbindService(serviceConnection)
           }
-          bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+          try {
+            isBound = bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+          } catch (e: Exception) {
+            e.printStackTrace()
+            router.exit()
+          }
         }
       }
   }
@@ -156,7 +162,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
   private fun stopTracker() {
     try {
       trackRouteService?.run {
-        if (isBound) {
+        if (isBound && trackRouteService?.isBound == true) {
           this@TrackRouteFragment.context?.applicationContext?.unbindService(serviceConnection)
         }
         stopForeground(true)

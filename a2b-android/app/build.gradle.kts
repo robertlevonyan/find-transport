@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 249
-    versionName = "3.7.7"
+    versionCode = 251
+    versionName = "3.7.9"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -98,11 +98,11 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
   //google
-  implementation("com.google.android.material:material:1.5.0-alpha05")
+  implementation("com.google.android.material:material:1.5.0-beta01")
   implementation("com.google.android.play:core:1.10.2")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")
-  implementation("com.google.code.gson:gson:2.8.8")
+  implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.38.1")
   implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
@@ -113,7 +113,7 @@ dependencies {
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
   implementation("androidx.appcompat:appcompat:1.3.1")
-  implementation("androidx.browser:browser:1.3.0")
+  implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.1")
   implementation("androidx.core:core-ktx:1.7.0")
@@ -138,8 +138,8 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.0.0-rc.5")
-  implementation("com.mapbox.navigation:android:2.0.0-beta.20")
+  implementation("com.mapbox.maps:android:10.1.0")
+  implementation("com.mapbox.navigation:android:2.0.1")
 
   //other
   implementation("com.airbnb.android:lottie:4.1.0")

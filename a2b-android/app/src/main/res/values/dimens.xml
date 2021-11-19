@@ -4,7 +4,6 @@
   <dimen name="activity_horizontal_margin_big">32dp</dimen>
   <dimen name="margin_x_small">5dp</dimen>
   <dimen name="margin_small">10dp</dimen>
-  <dimen name="margin_medium">15dp</dimen>
   <dimen name="margin_large">20dp</dimen>
   <dimen name="margin_x_large">25dp</dimen>
   <dimen name="margin_xx_large">30dp</dimen>
@@ -15,21 +14,17 @@
   <dimen name="margin_85">85dp</dimen>
   <dimen name="route_list_bottom_padding">75dp</dimen>
   <dimen name="margin_tablet">0dp</dimen>
-  <dimen name="margin_fab_action_bar">72dp</dimen>
 
   <dimen name="splash_title_width">200dp</dimen>
   <dimen name="intro_lng_height">90dp</dimen>
   <dimen name="line_width">1dp</dimen>
   <dimen name="search_input_height">45dp</dimen>
   <dimen name="main_list_bottom_padding">50dp</dimen>
-  <dimen name="main_list_top_padding">90dp</dimen>
   <dimen name="icon_size">24dp</dimen>
   <dimen name="icon_size2">40dp</dimen>
-  <dimen name="bottom_sheet_size">56dp</dimen>
   <dimen name="setting_icon_size">36dp</dimen>
   <dimen name="transport_icon_size">45dp</dimen>
   <dimen name="fab_size">56dp</dimen>
-  <dimen name="splash_icon_size">100dp</dimen>
   <dimen name="button_size">66dp</dimen>
 
   <dimen name="card_radius">16dp</dimen>
@@ -49,5 +44,4 @@
   <dimen name="text_size_18">18sp</dimen>
   <dimen name="text_size_20">20sp</dimen>
   <dimen name="text_size_28">28sp</dimen>
-  <dimen name="text_switcher_size">32dp</dimen>
 </resources>

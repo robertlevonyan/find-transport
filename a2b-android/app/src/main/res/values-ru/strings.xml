@@ -25,7 +25,6 @@
   <string name="message_history_dialog_clear">Хотите очистить историю?</string>
   <string name="message_history_dialog_delete">Хотите удалить запись из истории?</string>
   <string name="message_rate">Если вам понравилось наше приложение, поставте ему 5 звезд в Google Play Store и напишите мнение!</string>
-  <string name="message_loading_stops">Загрузка остановок…</string>
   <string name="message_no_history">Нет истории</string>
   <string name="message_loading_data">Загрузка данных</string>
   <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>
@@ -47,9 +46,7 @@
   <string name="label_route_start">Начало пути</string>
   <string name="label_route_end">Конец пути</string>
   <string name="label_all_transports">Все маршруты</string>
-  <string name="label_collapse">Закрыть</string>
   <string name="label_search">Поиск</string>
-  <string name="label_reset">Сброс</string>
   <string name="label_rate">Понравилось</string>
   <string name="label_select_stop">Выберите остановку</string>
   <string name="label_primary_route">Основной</string>
@@ -69,8 +66,6 @@
   <string name="label_stop_tracker">Остановка трекера</string>
   <string name="label_tracker_transport">Вы выбрали</string>
   <string name="label_current_stop">Текущая остановка</string>
-  <string name="label_previous_stop">Предыдущая остановка</string>
-  <string name="label_next_stop">Следующая остановка</string>
   <string name="label_arriving">Прибытие</string>
   <string name="label_arrived">Вы доехали до пункта назначения</string>
   <string name="label_arrived_dialog">Доехали</string>
@@ -135,8 +130,6 @@
   <string name="action_feedback">Обратная связь</string>
   <string name="action_history">История</string>
   <string name="action_clear_history">Очистить историю</string>
-  <string name="action_favorites">Избранные</string>
-  <string name="action_map">Показать на карте</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Ваше сообщение отправлено. Спасибо! 😊</string>
