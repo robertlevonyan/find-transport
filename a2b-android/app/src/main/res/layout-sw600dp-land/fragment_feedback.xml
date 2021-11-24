@@ -35,14 +35,23 @@
       </FrameLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <TextView
-      android:id="@+id/tvFeedbackLabel"
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/fab_margin"
-      android:background="@drawable/bg_section_box"
-      android:gravity="center"
-      android:padding="@dimen/margin_large" />
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:id="@+id/tvFeedbackLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:background="@drawable/bg_section_box"
+        android:gravity="center"
+        android:padding="@dimen/margin_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.7" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
@@ -69,7 +78,8 @@
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.7">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/inputEmail"
@@ -95,7 +105,8 @@
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ilEmail">
+        app:layout_constraintTop_toBottomOf="@id/ilEmail"
+        app:layout_constraintWidth_percent="0.7">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/inputSubject"
@@ -121,7 +132,8 @@
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ilSubject">
+        app:layout_constraintTop_toBottomOf="@id/ilSubject"
+        app:layout_constraintWidth_percent="0.7">
 
         <com.google.android.material.textfield.TextInputEditText
           android:id="@+id/inputMessage"

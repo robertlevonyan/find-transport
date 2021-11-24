@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 251
-    versionName = "3.7.9"
+    versionCode = 252
+    versionName = "3.7.10"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -112,19 +112,19 @@ dependencies {
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
-  implementation("androidx.appcompat:appcompat:1.3.1")
+  implementation("androidx.appcompat:appcompat:1.4.0")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.1")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.2")
   implementation("androidx.core:core-ktx:1.7.0")
   implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
-  implementation("androidx.fragment:fragment-ktx:1.3.6")
+  implementation("androidx.fragment:fragment-ktx:1.4.0")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.paging:paging-runtime-ktx:3.0.1")
+  implementation("androidx.paging:paging-runtime-ktx:3.1.0")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
   implementation("androidx.room:room-runtime:2.3.0")
   implementation("androidx.room:room-ktx:2.3.0")

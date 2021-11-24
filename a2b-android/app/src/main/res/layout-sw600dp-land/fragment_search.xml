@@ -14,17 +14,27 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center" />
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rvTransportsList"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/margin_large"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    tools:listitem="@layout/item_transport" />
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvTransportsList"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:clipToPadding="false"
+      android:orientation="vertical"
+      android:overScrollMode="never"
+      android:paddingTop="@dimen/margin_large"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:listitem="@layout/item_transport" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/fabShowMap"
@@ -62,7 +72,7 @@
       android:layout_height="wrap_content"
       app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
 
-      <LinearLayout
+      <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -75,6 +85,9 @@
           android:layout_height="?actionBarSize"
           android:stateListAnimator="@drawable/appbar_elevation"
           app:layout_collapseMode="pin"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
           app:popupTheme="@style/AppTheme.PopupOverlay">
 
           <TextView
@@ -86,50 +99,53 @@
             android:textAppearance="@style/Text.Toolbar" />
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_margin="@dimen/half_margin"
+        <View
+          android:id="@+id/view"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
           android:background="@drawable/bg_section_box"
-          app:layout_collapseMode="pin">
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/toolbar"
+          app:layout_constraintWidth_percent="0.7" />
 
-          <TextView
-            android:id="@+id/tvFromLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/fab_margin"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/fab_margin"
-            android:paddingTop="@dimen/fab_margin"
-            android:paddingBottom="@dimen/margin_x_small"
-            android:textColor="@color/colorOnPrimary"
-            android:textSize="@dimen/text_size_16"
-            android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_start_point"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="From" />
+        <TextView
+          android:id="@+id/tvFromLabel"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:drawablePadding="@dimen/fab_margin"
+          android:gravity="center_vertical"
+          android:paddingHorizontal="@dimen/fab_margin"
+          android:paddingTop="@dimen/fab_margin"
+          android:paddingBottom="@dimen/margin_x_small"
+          android:textColor="@color/colorOnPrimary"
+          android:textSize="@dimen/text_size_16"
+          android:textStyle="bold"
+          app:drawableStartCompat="@drawable/ic_start_point"
+          app:layout_constraintEnd_toEndOf="@id/view"
+          app:layout_constraintStart_toStartOf="@id/view"
+          app:layout_constraintTop_toTopOf="@id/view"
+          tools:text="From" />
 
-          <TextView
-            android:id="@+id/tvToLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:drawablePadding="@dimen/fab_margin"
-            android:gravity="center_vertical"
-            android:paddingHorizontal="@dimen/fab_margin"
-            android:paddingTop="@dimen/margin_x_small"
-            android:paddingBottom="@dimen/fab_margin"
-            android:textColor="@color/colorOnPrimary"
-            android:textSize="@dimen/text_size_16"
-            app:drawableStartCompat="@drawable/ic_end_point"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvFromLabel"
-            tools:text="To" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-      </LinearLayout>
+        <TextView
+          android:id="@+id/tvToLabel"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:drawablePadding="@dimen/fab_margin"
+          android:gravity="center_vertical"
+          android:paddingHorizontal="@dimen/fab_margin"
+          android:paddingTop="@dimen/margin_x_small"
+          android:paddingBottom="@dimen/fab_margin"
+          android:textColor="@color/colorOnPrimary"
+          android:textSize="@dimen/text_size_16"
+          app:drawableStartCompat="@drawable/ic_end_point"
+          app:layout_constraintBottom_toBottomOf="@id/view"
+          app:layout_constraintEnd_toEndOf="@id/view"
+          app:layout_constraintStart_toStartOf="@id/view"
+          app:layout_constraintTop_toBottomOf="@id/tvFromLabel"
+          tools:text="To" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

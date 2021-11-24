@@ -3,30 +3,35 @@ package robert.findtransport.utils.viewbinding
 import android.os.Looper
 import android.view.LayoutInflater
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.LifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 class ActivityViewBindingDelegate<T : ViewBinding>(
-    private val activity: FragmentActivity,
-    private val initializer: (LayoutInflater) -> T,
+  private val activity: FragmentActivity,
+  private val initializer: (LayoutInflater) -> T,
 ) : ReadOnlyProperty<FragmentActivity, T>, LifecycleObserver {
   private var binding: T? = null
 
   init {
-    activity.lifecycle.addObserver(this)
-  }
+    activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+      override fun onCreate(owner: LifecycleOwner) {
+        super.onCreate(owner)
+        if (binding == null) {
+          binding = initializer(activity.layoutInflater)
+        }
+        binding?.root?.let { activity.setContentView(it) }
+      }
 
-  @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-  @Suppress("Unused")
-  fun onCreate() {
-    if (binding == null) {
-      binding = initializer(activity.layoutInflater)
-    }
-    binding?.root?.let { activity.setContentView(it) }
+      override fun onDestroy(owner: LifecycleOwner) {
+        super.onDestroy(owner)
+        binding = null
+        activity.lifecycle.removeObserver(this)
+      }
+    })
   }
 
   override fun getValue(thisRef: FragmentActivity, property: KProperty<*>): T {
@@ -40,14 +45,7 @@ class ActivityViewBindingDelegate<T : ViewBinding>(
     }
     return binding!!
   }
-
-  @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-  @Suppress("Unused")
-  fun onDestroy() {
-    binding = null
-    activity.lifecycle.removeObserver(this)
-  }
 }
 
 inline fun <reified T : ViewBinding> FragmentActivity.viewBinding(noinline initializer: (LayoutInflater) -> T) =
-    ActivityViewBindingDelegate(this, initializer)
+  ActivityViewBindingDelegate(this, initializer)

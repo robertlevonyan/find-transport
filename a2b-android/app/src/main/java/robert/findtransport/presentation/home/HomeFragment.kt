@@ -11,11 +11,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentHomeBinding
@@ -48,9 +46,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     appBar.onWindowInsets { v, windowInsets ->
       v.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
     }
-    nsvSearchArea.onWindowInsets { v, windowInsets ->
+    nsvSearchArea?.onWindowInsets { v, windowInsets ->
       val padding = getDimenInt(R.dimen.margin_xx_large)
       v.bottomPadding = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom * 2 + padding) * 2
+    } ?: clSearchArea.onWindowInsets { v, windowInsets ->
+      val padding = getDimenInt(R.dimen.margin_xx_large)
+      v.bottomPadding = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + padding
     }
   }
 

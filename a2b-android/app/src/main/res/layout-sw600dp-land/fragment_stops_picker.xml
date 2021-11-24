@@ -71,19 +71,28 @@
     </androidx.appcompat.widget.Toolbar>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rvStops"
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/fab_margin"
-    android:paddingBottom="@dimen/route_list_bottom_padding"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-    tools:listitem="@layout/item_stop" />
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvStops"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:descendantFocusability="blocksDescendants"
+      android:orientation="vertical"
+      android:overScrollMode="never"
+      android:paddingTop="@dimen/fab_margin"
+      android:paddingBottom="@dimen/route_list_bottom_padding"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:listitem="@layout/item_stop" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
   <TextView
     android:id="@+id/tvNoStops"

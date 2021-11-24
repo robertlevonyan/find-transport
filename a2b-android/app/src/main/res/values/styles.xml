@@ -113,7 +113,6 @@
     <item name="cardElevation">0dp</item>
     <item name="cardBackgroundColor">@color/colorSecondary</item>
   </style>
-
   <!--  card view-->
 
   <!--  bottom sheet-->
@@ -143,7 +142,7 @@
   <!--  backgrounds-->
 
   <!--  loading-->
-  <style name="Loading" parent="Widget.MaterialComponents.CircularProgressIndicator">
+  <style name="Loading">
     <item name="android:indeterminateTint">@color/colorAccent500</item>
   </style>
   <!--  loading-->

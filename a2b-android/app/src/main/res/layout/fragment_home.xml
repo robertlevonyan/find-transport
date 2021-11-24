@@ -14,7 +14,6 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
-    android:paddingHorizontal="@dimen/margin_tablet"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,14 +165,14 @@
         android:textColor="@color/colorOnPrimary"
         android:textSize="@dimen/text_size_20"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/toInputCard"
+        app:layout_constraintBottom_toTopOf="@+id/cvToInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.9" />
 
       <com.google.android.material.card.MaterialCardView
-        android:id="@+id/toInputCard"
+        android:id="@+id/cvToInput"
         style="@style/CardView.Regular"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

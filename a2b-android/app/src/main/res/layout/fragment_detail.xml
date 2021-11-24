@@ -14,7 +14,6 @@
     android:clipToPadding="false"
     android:orientation="vertical"
     android:overScrollMode="never"
-    android:paddingHorizontal="@dimen/margin_tablet"
     android:paddingTop="@dimen/fab_margin"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
@@ -84,7 +83,6 @@
           android:layout_height="wrap_content"
           android:layout_margin="@dimen/half_margin"
           android:background="@drawable/bg_section_box"
-          android:paddingHorizontal="@dimen/margin_tablet"
           app:layout_collapseMode="pin">
 
           <ImageView

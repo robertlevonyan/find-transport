@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/root"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".presentation.detail.DetailFragment">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvRoute"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:clipToPadding="false"
+      android:orientation="vertical"
+      android:overScrollMode="never"
+      android:paddingVertical="@dimen/fab_margin"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintWidth_percent="0.7"
+      tools:listitem="@layout/item_route_mid" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/fabMap"
+    style="@style/FloatingActionButton.Regular"
+    android:layout_width="@dimen/fab_size"
+    android:layout_height="@dimen/button_size"
+    android:layout_gravity="end|bottom"
+    android:layout_marginEnd="@dimen/fab_margin"
+    app:icon="@drawable/ic_map" />
+
+  <com.google.android.material.appbar.AppBarLayout
+    android:id="@+id/appBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+      style="@style/Background"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+        <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?actionBarSize"
+          android:stateListAnimator="@drawable/appbar_elevation"
+          app:layout_collapseMode="pin"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:popupTheme="@style/AppTheme.PopupOverlay">
+
+          <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+              android:id="@+id/tvTitle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:text="@string/title_details"
+              android:textAppearance="@style/Text.Toolbar" />
+
+            <ImageView
+              android:id="@+id/ivFavorite"
+              android:layout_width="?actionBarSize"
+              android:layout_height="?actionBarSize"
+              android:layout_gravity="end"
+              android:background="?selectableItemBackgroundBorderless"
+              android:scaleType="centerInside"
+              tools:ignore="ContentDescription"
+              tools:src="@drawable/ic_favorite_outline" />
+          </FrameLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <View
+          android:id="@+id/view"
+          android:layout_width="0dp"
+          android:layout_height="0dp"
+          android:background="@drawable/bg_section_box"
+          app:layout_constraintBottom_toTopOf="@id/btnGroupRoute"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/toolbar"
+          app:layout_constraintWidth_percent="0.7" />
+
+        <ImageView
+          android:id="@+id/ivTransportIcon"
+          android:layout_width="@dimen/transport_icon_size"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/fab_margin"
+          app:layout_constraintBottom_toBottomOf="@id/view"
+          app:layout_constraintStart_toStartOf="@id/view"
+          app:layout_constraintTop_toTopOf="@id/view"
+          tools:ignore="ContentDescription"
+          tools:src="@drawable/ic_bus" />
+
+        <TextView
+          android:id="@+id/tvTransportNumber"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/fab_margin"
+          android:layout_marginBottom="@dimen/margin_12"
+          android:textColor="@color/colorOnPrimary"
+          android:textSize="@dimen/number_text_size"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toBottomOf="@id/ivTransportIcon"
+          app:layout_constraintStart_toEndOf="@id/ivTransportIcon"
+          app:layout_constraintTop_toTopOf="@id/ivTransportIcon"
+          tools:text="1" />
+
+        <TextView
+          android:id="@+id/tvTransportType"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/fab_margin"
+          android:layout_marginTop="@dimen/margin_x_large"
+          android:layout_marginEnd="@dimen/fab_margin"
+          android:gravity="end"
+          android:textColor="@color/colorOnPrimary"
+          android:textSize="@dimen/type_text_size"
+          app:layout_constraintEnd_toEndOf="@id/view"
+          app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+          app:layout_constraintTop_toTopOf="@id/view"
+          tools:text="Bus" />
+
+        <TextView
+          android:id="@+id/tvFirstLastStops"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_margin="@dimen/fab_margin"
+          android:ellipsize="end"
+          android:gravity="end"
+          android:singleLine="true"
+          android:textColor="@color/colorOnPrimary"
+          android:textSize="@dimen/first_last_text_size"
+          android:textStyle="bold"
+          app:layout_constraintBottom_toBottomOf="@id/view"
+          app:layout_constraintEnd_toEndOf="@id/view"
+          app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+          app:layout_constraintTop_toBottomOf="@id/tvTransportType"
+          tools:text="Stop 1 - Stop N" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+          android:id="@+id/btnGroupRoute"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="@dimen/half_margin"
+          android:orientation="horizontal"
+          android:paddingHorizontal="@dimen/fab_margin"
+          app:checkedButton="@id/btnPrimaryRoute"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="@id/view"
+          app:layout_constraintStart_toStartOf="@id/view"
+          app:layout_constraintTop_toBottomOf="@id/view"
+          app:selectionRequired="true"
+          app:singleSelection="true">
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrimaryRoute"
+            style="@style/Button.Selector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/label_primary_route" />
+
+          <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSecondaryRoute"
+            style="@style/Button.Selector"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/label_secondary_route" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
