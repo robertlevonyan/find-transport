@@ -4,9 +4,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.location.Location
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.os.*
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -30,10 +28,13 @@ import javax.inject.Inject
 class TrackRouteService : Service() {
   @Inject
   lateinit var transportUseCase: TransportUseCase
+
   @Inject
   lateinit var stopsUseCase: StopsUseCase
+
   @Inject
   lateinit var locationUseCase: LocationUseCase
+
   @Inject
   lateinit var localeUseCase: LocaleUseCase
 
@@ -249,6 +250,25 @@ class TrackRouteService : Service() {
 
   inner class TrackRouteBinder : Binder() {
     fun getService(): TrackRouteService = this@TrackRouteService
+
+    override fun onTransact(code: Int, data: Parcel, reply: Parcel?, flags: Int): Boolean {
+      val res = try {
+        super.onTransact(code, data, reply, flags)
+      } catch (e: RemoteException) {
+        if ((flags and FLAG_ONEWAY) != 0) {
+          reply?.setDataPosition(0)
+          reply?.writeException(e)
+        }
+        true
+      } catch (e: RuntimeException) { // exhibit 1: RuntimeException is caught
+        if ((flags and FLAG_ONEWAY) == 0) {
+          reply?.setDataPosition(0)
+          reply?.writeException(e) // exhibit 2: exception propagated back to client
+        }
+        true
+      }
+      return res
+    }
   }
 
   companion object {

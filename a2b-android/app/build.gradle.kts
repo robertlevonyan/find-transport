@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 31
-    versionCode = 252
-    versionName = "3.7.10"
+    versionCode = 253
+    versionName = "3.7.11"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -103,12 +103,12 @@ dependencies {
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")
   implementation("com.google.code.gson:gson:2.8.9")
-  implementation("com.google.dagger:hilt-android:2.38.1")
+  implementation("com.google.dagger:hilt-android:2.40.2")
   implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.38.1")
+  kapt("com.google.dagger:hilt-android-compiler:2.40.2")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
@@ -135,14 +135,14 @@ dependencies {
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
   implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-  implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+  implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
   implementation("com.mapbox.maps:android:10.1.0")
   implementation("com.mapbox.navigation:android:2.0.1")
 
   //other
-  implementation("com.airbnb.android:lottie:4.1.0")
+  implementation("com.airbnb.android:lottie:4.2.2")
   implementation("com.github.terrakok:cicerone:7.1")
   implementation("com.github.ybq:Android-SpinKit:1.4.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
