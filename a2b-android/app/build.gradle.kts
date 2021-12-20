@@ -11,13 +11,13 @@ plugins {
 }
 
 android {
-  compileSdk = 31
+  compileSdk = 32
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
-    targetSdk = 31
-    versionCode = 253
-    versionName = "3.7.11"
+    targetSdk = 32
+    versionCode = 254
+    versionName = "3.7.12"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -98,7 +98,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
   //google
-  implementation("com.google.android.material:material:1.5.0-beta01")
+  implementation("com.google.android.material:material:1.6.0-alpha01")
   implementation("com.google.android.play:core:1.10.2")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:18.0.0")

@@ -3,6 +3,7 @@ package robert.findtransport.base
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.github.terrakok.cicerone.Command
@@ -29,6 +31,8 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
 import robert.findtransport.data.model.DataLoading
@@ -42,6 +46,7 @@ import robert.findtransport.presentation.intro.IntroFragment
 import robert.findtransport.utils.ARG_MESSAGE_DESCRIPTION
 import robert.findtransport.utils.ARG_MESSAGE_TITLE
 import robert.findtransport.utils.extensions.fitSystemWindows
+import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.isTablet
 import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -53,6 +58,8 @@ class MainActivity : AppCompatActivity(), ChainHolder {
   @Suppress("unused")
   private val binding by viewBinding(ActivityMainBinding::inflate)
   private val mainViewModel: MainViewModel by viewModels()
+
+  val resumedState = MutableStateFlow(false)
 
   @Inject
   lateinit var navigatorHolder: NavigatorHolder
@@ -108,7 +115,14 @@ class MainActivity : AppCompatActivity(), ChainHolder {
         ObjectAnimator.ofFloat(splashScreenViewProvider.view, View.ALPHA, 1f, 0f).apply {
           interpolator = AnticipateInterpolator()
           duration = 500L
-          doOnEnd { splashScreenViewProvider.remove() }
+          doOnEnd {
+            splashScreenViewProvider.remove()
+
+            if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
+              WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+              window.statusBarColor = getColorFromRes(R.color.colorPrimaryVariantTransparent)
+            }
+          }
         }.start()
       }
     }
@@ -129,10 +143,6 @@ class MainActivity : AppCompatActivity(), ChainHolder {
           .addOnFailureListener { openMain() }
       }
     }
-
-//    Thread.setDefaultUncaughtExceptionHandler { thread, throwable ->
-//      mainViewModel.sendErrorFeedback(thread, throwable)
-//    }
 
     mainViewModel.run {
       observe(theme) { theme -> delegate.localNightMode = theme }

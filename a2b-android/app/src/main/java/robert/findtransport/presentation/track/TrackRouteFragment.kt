@@ -18,9 +18,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
+import robert.findtransport.base.MainActivity
 import robert.findtransport.databinding.FragmentTrackRouteBinding
 import robert.findtransport.presentation.component.dialog.NextStopDialog
 import robert.findtransport.utils.*
@@ -79,6 +84,22 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
   }
 
   private fun initData() {
+    if (activity == null || activity !is MainActivity) {
+      return
+    }
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        (activity as? MainActivity)?.resumedState?.collect { resumed ->
+          if (!resumed) return@collect
+
+          startTrackerService()
+        }
+      }
+    }
+  }
+
+  private fun startTrackerService() {
     val transportId = arguments?.getInt(ARG_TRANSPORT_ID) ?: 0
     val fromId = arguments?.getInt(ARG_FROM_ID) ?: 0
     val toId = arguments?.getInt(ARG_TO_ID) ?: 0

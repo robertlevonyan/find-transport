@@ -8,26 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:568857098349:android:4aa0e7d8e985ce28",
+        "mobilesdk_app_id": "1:568857098349:android:e4abc83a4f3faa360d2764",
         "android_client_info": {
           "package_name": "robert.findtransport"
         }
       },
       "oauth_client": [
         {
-          "client_id": "568857098349-0becfg6bjkke7j53ubpnbt9v6kbl974p.apps.googleusercontent.com",
+          "client_id": "568857098349-i6q4116oi19girik1vbijdcflikurcoh.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "robert.findtransport",
             "certificate_hash": "b95be0bdece8c033aef811c2f001af49f169649b"
-          }
-        },
-        {
-          "client_id": "568857098349-oub7ph2bpptfsb5n0o91l44mfdcrmrrr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "robert.findtransport",
-            "certificate_hash": "c733f32611c5d132c74bbc8a8a2b1e7646eccecc"
           }
         },
         {

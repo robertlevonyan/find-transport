@@ -31,9 +31,9 @@ fun FragmentActivity.fullRecreate() {
 }
 
 fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
-  val drawable = ContextCompat.getDrawable(this, drawableId)
+  val drawable = ContextCompat.getDrawable(this, drawableId) ?: return null
   val bitmap = Bitmap.createBitmap(
-    drawable!!.intrinsicWidth,
+    drawable.intrinsicWidth,
     drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
   )
   val canvas = Canvas(bitmap)

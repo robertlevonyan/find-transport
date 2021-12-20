@@ -4,6 +4,7 @@
   <!--keys-->
   <string name="map_style" translatable="false">mapbox://styles/robertlevonyan/cjq0wlwb21mij2rs51zr0qmvp</string>
   <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoicm9iZXJ0bGV2b255YW4iLCJhIjoiY2oxajVyajJ3MDFjZjJ5cGRnOXV5a2FpbyJ9.lsKprBvsy308ZzjQQJojLg</string>
+
   <!--titles-->
   <string name="title_oops" translatable="false">Oops!</string>
   <string name="title_search">Search</string>
