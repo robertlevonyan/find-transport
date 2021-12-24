@@ -50,14 +50,14 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
   }
 
   override fun PassingRoutesViewModel.initObservers() {
-    observe(stopTransports) { transports ->
+    collectWithLifecycle(stopTransports) { transports ->
       val locale = viewModel.locale.value
       binding.rvTransportsList.adapter = TransportsListAdapter().apply {
         currentLocale = locale
         submitList(transports)
       }
     }
-    observe(stopReceived) { stop ->
+    collectWithLifecycle(stopReceived) { stop ->
       val locale = viewModel.locale.value
       binding.tvSelectedStop.setSelectedStopName(stop, locale)
     }

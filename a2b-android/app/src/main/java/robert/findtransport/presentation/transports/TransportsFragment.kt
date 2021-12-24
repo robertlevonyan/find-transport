@@ -65,13 +65,13 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
   }
 
   override fun TransportsViewModel.initObservers() {
-    observe(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
+    collectWithLifecycle(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
       adapter.currentLocale = data.second
       adapter.submitList(data.first)
       adapter.notifyDataSetChanged()
     }
-    observe(selectedTransport) { transport -> router.navigateTo(detailsScreen(transport.id, true)) }
-    observe(showOnlyFavorites) { binding.swListToggle.isChecked = it }
+    collectWithLifecycle(selectedTransport) { transport -> router.navigateTo(detailsScreen(transport.id, true)) }
+    collectWithLifecycle(showOnlyFavorites) { binding.swListToggle.isChecked = it }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

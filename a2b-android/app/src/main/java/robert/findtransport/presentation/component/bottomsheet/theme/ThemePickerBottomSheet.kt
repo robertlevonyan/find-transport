@@ -21,8 +21,8 @@ class ThemePickerBottomSheet : BaseBottomSheetFragment<ThemePickerViewModel, Bot
     super.onViewCreated(view, savedInstanceState)
 
     viewModel.run {
-      observe(themesList) { binding.rvThemes.adapter = ThemesAdapter(viewModel).apply { submitList(it) } }
-      observe(selectedTheme) { onThemeSelected(it).run { dismiss() } }
+      collectWithLifecycle(themesList) { binding.rvThemes.adapter = ThemesAdapter(viewModel).apply { submitList(it) } }
+      collectWithLifecycle(selectedTheme) { onThemeSelected(it).run { dismiss() } }
     }
   }
 }

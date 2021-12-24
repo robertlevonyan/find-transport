@@ -34,24 +34,24 @@ class StopOptionsBottomSheet : BaseBottomSheetFragment<StopOptionsViewModel, Bot
     }
 
     viewModel.run {
-      observe(fromStop) { stop ->
+      collectWithLifecycle(fromStop) { stop ->
         onFromSelected(stop)
         dismiss()
       }
-      observe(toStop) { stop ->
+      collectWithLifecycle(toStop) { stop ->
         onToSelected(stop)
         dismiss()
       }
-      observe(passingTransports) { stop ->
+      collectWithLifecycle(passingTransports) { stop ->
         onShowTransports(stop)
         dismiss()
       }
-      observe(emptyStop) {
+      collectWithLifecycle(emptyStop) {
         showToast(getString(R.string.error_stop_not_found))
         dismiss()
       }
-      observe(currentStop) { stop ->
-        val locale = viewModel.locale.value ?: return@observe
+      collectWithLifecycle(currentStop) { stop ->
+        val locale = viewModel.locale.value ?: return@collectWithLifecycle
         binding.tvTitle.setStopName(stop, locale)
       }
     }

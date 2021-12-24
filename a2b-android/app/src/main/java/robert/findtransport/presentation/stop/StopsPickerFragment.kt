@@ -39,7 +39,7 @@ class StopsPickerFragment : BaseFragment<StopsPickerViewModel, FragmentStopsPick
       ?.takeIf { it.containsKey(ARG_STOP_TYPE) }
       ?.run { OpenStopType.getByIndex(getInt(ARG_STOP_TYPE)) }
       ?.let { openStopType ->
-        observe(viewModel.selectedStop) { stop ->
+        collectWithLifecycle(viewModel.selectedStop) { stop ->
           when (openStopType) {
             OpenStopType.FROM -> setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to stop.id))
             OpenStopType.TO -> setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to stop.id))
@@ -70,18 +70,18 @@ class StopsPickerFragment : BaseFragment<StopsPickerViewModel, FragmentStopsPick
   }
 
   override fun StopsPickerViewModel.initObservers() {
-    observe(searchMode) { binding.flTitle.visibility = if (it) View.GONE else View.VISIBLE }
-    observe(searchMode) { binding.etSearch.visibility = if (it) View.VISIBLE else View.GONE }
-    observe(showNoData) { binding.tvNoStops.visibility = if (it) View.VISIBLE else View.GONE }
-    observe(autocompleteStops) { binding.rvStops.adapter = FoundStopsAdapter(viewModel).apply { submitList(it) } }
-    observe(allStops) { allStops ->
+    collectWithLifecycle(searchMode) { binding.flTitle.visibility = if (it) View.GONE else View.VISIBLE }
+    collectWithLifecycle(searchMode) { binding.etSearch.visibility = if (it) View.VISIBLE else View.GONE }
+    collectWithLifecycle(showNoData) { binding.tvNoStops.visibility = if (it) View.VISIBLE else View.GONE }
+    collectWithLifecycle(autocompleteStops) { binding.rvStops.adapter = FoundStopsAdapter(viewModel).apply { submitList(it) } }
+    collectWithLifecycle(allStops) { allStops ->
       binding.rvStops.adapter = StopsAdapter(
         locale = viewModel.locale.value,
         onItemClick = viewModel::onStopClicked
       ).apply { submitData(viewLifecycleOwner.lifecycle, allStops) }
     }
-    observe(searchMode) { inSearchMode ->
-      if (!inSearchMode) return@observe
+    collectWithLifecycle(searchMode) { inSearchMode ->
+      if (!inSearchMode) return@collectWithLifecycle
 
       lifecycleScope.launchWhenCreated {
         delay(100)

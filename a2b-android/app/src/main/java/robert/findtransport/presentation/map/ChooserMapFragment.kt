@@ -18,17 +18,19 @@ class ChooserMapFragment : MapFragment() {
   }
 
   override fun MapViewModel.initObservers() {
-    observe(currentLocation) { location ->
+    collectWithLifecycle(currentLocation) { location ->
       flyTo(location.latitude, location.longitude)
     }
 
-    observe(allStops) { stops ->
-      if (stops.isEmpty()) return@observe
+    collectWithLifecycle(allStops) { stops ->
+      if (stops.isEmpty()) return@collectWithLifecycle
+
       pointAnnotationManager.create(stops)
       hideLoading()
     }
-    observe(metroStops) { stops ->
-      if (stops.isEmpty()) return@observe
+    collectWithLifecycle(metroStops) { stops ->
+      if (stops.isEmpty()) return@collectWithLifecycle
+
       pointAnnotationManager.create(stops)
       hideLoading()
     }

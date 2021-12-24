@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 254
-    versionName = "3.7.12"
+    versionCode = 255
+    versionName = "3.7.13"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -101,7 +101,7 @@ dependencies {
   implementation("com.google.android.material:material:1.6.0-alpha01")
   implementation("com.google.android.play:core:1.10.2")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:18.0.0")
+  implementation("com.google.android.gms:play-services-location:19.0.0")
   implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.40.2")
   implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
@@ -126,11 +126,12 @@ dependencies {
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.0")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
-  implementation("androidx.room:room-runtime:2.3.0")
-  implementation("androidx.room:room-ktx:2.3.0")
+  implementation("androidx.room:room-runtime:2.4.0")
+  implementation("androidx.room:room-ktx:2.4.0")
+  implementation("androidx.room:room-paging:2.4.0")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.3.0")
+  kapt("androidx.room:room-compiler:2.4.0")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")

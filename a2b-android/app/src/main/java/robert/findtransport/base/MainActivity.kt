@@ -199,8 +199,12 @@ class MainActivity : AppCompatActivity(), ChainHolder {
   }
 
   override fun onResumeFragments() {
-    navigatorHolder.setNavigator(navigator)
-    super.onResumeFragments()
+    try {
+      navigatorHolder.setNavigator(navigator)
+      super.onResumeFragments()
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 
   override fun onPause() {

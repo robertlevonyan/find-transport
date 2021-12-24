@@ -56,22 +56,22 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
   }
 
   override fun SettingsViewModel.initObservers() {
-    observe(settingsList) { settings ->
+    collectWithLifecycle(settingsList) { settings ->
       if (binding.rvSettings.itemDecorationCount == 0) {
         binding.rvSettings.addItemDecoration(VerticalSpaceItemDecoration())
       }
       binding.rvSettings.adapter = SettingsAdapter(viewModel).apply { submitList(settings) }
     }
-    observe(languagePickerEvent) { openLanguagePicker() }
-    observe(themePickerEvent) { openThemePicker() }
-    observe(languageSave) { activity?.fullRecreate() }
-    observe(themeSave) { activity?.fullRecreate() }
-    observe(newVersion) { view?.showSnackbar(getString(R.string.message_update), getString(R.string.label_yes)) { downloadUpdate() } }
-    observe(noNewVersion) { view?.showSnackbar(R.string.message_no_update) }
-    observe(downloadStart) { downloadSnackbar = view?.showInfiniteSnackbar(R.string.message_downloading) }
-    observe(downloadDone) { activity?.fullRecreate() }
-    observe(downloadError) { downloadSnackbar?.dismiss() }
-    observe(openRate) { rate() }
+    collectWithLifecycle(languagePickerEvent) { openLanguagePicker() }
+    collectWithLifecycle(themePickerEvent) { openThemePicker() }
+    collectWithLifecycle(languageSave) { activity?.fullRecreate() }
+    collectWithLifecycle(themeSave) { activity?.fullRecreate() }
+    collectWithLifecycle(newVersion) { view?.showSnackbar(getString(R.string.message_update), getString(R.string.label_yes)) { downloadUpdate() } }
+    collectWithLifecycle(noNewVersion) { view?.showSnackbar(R.string.message_no_update) }
+    collectWithLifecycle(downloadStart) { downloadSnackbar = view?.showInfiniteSnackbar(R.string.message_downloading) }
+    collectWithLifecycle(downloadDone) { activity?.fullRecreate() }
+    collectWithLifecycle(downloadError) { downloadSnackbar?.dismiss() }
+    collectWithLifecycle(openRate) { rate() }
   }
 
   private fun openLanguagePicker() {

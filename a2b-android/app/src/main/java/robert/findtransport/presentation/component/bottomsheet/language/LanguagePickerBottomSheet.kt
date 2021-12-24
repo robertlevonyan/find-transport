@@ -21,8 +21,8 @@ class LanguagePickerBottomSheet : BaseBottomSheetFragment<LanguagePickerViewMode
     super.onViewCreated(view, savedInstanceState)
 
     viewModel.run {
-      observe(languagesList) { binding.rvLanguages.adapter = LanguagesAdapter(viewModel).apply { submitList(it) } }
-      observe(selectedLanguage) { onLanguageSelected(it).run { dismiss() } }
+      collectWithLifecycle(languagesList) { binding.rvLanguages.adapter = LanguagesAdapter(viewModel).apply { submitList(it) } }
+      collectWithLifecycle(selectedLanguage) { onLanguageSelected(it).run { dismiss() } }
     }
   }
 }

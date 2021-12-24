@@ -23,28 +23,28 @@ class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
   }
 
   override fun IntroViewModel.initObservers() = viewModel.run {
-    observe(languageChanged) { language ->
+    collectWithLifecycle(languageChanged) { language ->
       activity?.run {
         LocaleService(this).changeLocale(language)
         router.replaceScreen(introScreen())
       }
     }
-    observe(pickerArmValue) {
+    collectWithLifecycle(pickerArmValue) {
       if (it) {
         binding.pkLanguage.check(R.id.btnArm)
       }
     }
-    observe(pickerEngValue) {
+    collectWithLifecycle(pickerEngValue) {
       if (it) {
         binding.pkLanguage.check(R.id.btnEng)
       }
     }
-    observe(pickerRusValue) {
+    collectWithLifecycle(pickerRusValue) {
       if (it) {
         binding.pkLanguage.check(R.id.btnRus)
       }
     }
-    observe(introPassed) { router.replaceScreen(homeScreen()) }
+    collectWithLifecycle(introPassed) { router.replaceScreen(homeScreen()) }
   }
 
   companion object {

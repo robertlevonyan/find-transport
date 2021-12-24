@@ -53,11 +53,11 @@ class PreviewMapFragment : MapFragment() {
   }
 
   override fun MapViewModel.initObservers() {
-    observe(currentLocation) { location ->
+    collectWithLifecycle(currentLocation) { location ->
       flyTo(location.latitude, location.longitude)
     }
 
-    observe(routeSuccess) { routeResult ->
+    collectWithLifecycle(routeSuccess) { routeResult ->
       val coordinates = routeResult.transport.run {
         if (reverse) stops else stopsReversed
       }.flatMap { it.coordinates }
@@ -83,7 +83,7 @@ class PreviewMapFragment : MapFragment() {
         },
       )
 
-      val iconBitmap = context?.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign) ?: return@observe
+      val iconBitmap = context?.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign) ?: return@collectWithLifecycle
 
       val points = coordinates.map { location ->
         PointAnnotationOptions()
@@ -96,7 +96,7 @@ class PreviewMapFragment : MapFragment() {
       pointAnnotationManager.create(points)
     }
 
-    observe(routeError) { message ->
+    collectWithLifecycle(routeError) { message ->
       showToast(getString(message))
       router.exit()
     }

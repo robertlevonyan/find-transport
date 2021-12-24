@@ -87,11 +87,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
   }
 
   override fun SearchViewModel.initObservers() {
-    observe(searchEmpty) { showToast("NOTHING") }
-    observe(selectedTransport) { router.navigateTo(detailsScreen(it.id, false)) }
-    observe(emptyStop) { stopNotFound() }
-    observe(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
-    observe(
+    collectWithLifecycle(searchEmpty) { showToast("NOTHING") }
+    collectWithLifecycle(selectedTransport) { router.navigateTo(detailsScreen(it.id, false)) }
+    collectWithLifecycle(emptyStop) { stopNotFound() }
+    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+    collectWithLifecycle(
       searchTransports
         .combineTransform(fromStop) { transports, fromStop -> emit(transports to fromStop) }
         .combineTransform(toStop) { pair, toStop -> emit(Triple(pair.first, pair.second, toStop)) }
@@ -99,7 +99,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       val locale = viewModel.locale.value
       val fromId = it.second.id
       val toId = it.third.id
-      if (it.first.isEmpty()) return@observe
+      if (it.first.isEmpty()) return@collectWithLifecycle
 
       binding.rvTransportsList.adapter = TransportsListAdapter(viewModel::openTransport).apply {
         currentLocale = locale
@@ -117,13 +117,13 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         submitList(it.first)
       }
     }
-    observe(
+    collectWithLifecycle(
       searchMultiTransports.combineTransform(toStop) { transports, toStop -> emit(transports to toStop) }
     ) {
       val locale = viewModel.locale.value
       val multiRoots = it.first
       val toStop = it.second
-      if (multiRoots.isEmpty()) return@observe
+      if (multiRoots.isEmpty()) return@collectWithLifecycle
 
       binding.rvTransportsList.adapter = MultiRouteAdapter(locale, viewModel).apply {
         var fromId = 0
@@ -204,11 +204,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         submitList(multiRoots)
       }
     }
-    observe(fromStop) { stop ->
+    collectWithLifecycle(fromStop) { stop ->
       val locale = viewModel.locale.value
       binding.tvFromLabel.setStopName(stop, locale)
     }
-    observe(toStop) { stop ->
+    collectWithLifecycle(toStop) { stop ->
       val locale = viewModel.locale.value
       binding.tvToLabel.setStopName(stop, locale)
     }

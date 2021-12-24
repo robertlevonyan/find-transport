@@ -65,21 +65,21 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
   }
 
   override fun DetailViewModel.initObservers() {
-    observe(fromStop) { selectedStop ->
+    collectWithLifecycle(fromStop) { selectedStop ->
       viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
         setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to selectedStop.id))
         view?.showSnackbar(String.format(getString(R.string.action_set_from_route), it))
       }
     }
 
-    observe(toStop) { selectedStop ->
+    collectWithLifecycle(toStop) { selectedStop ->
       viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
         setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
         view?.showSnackbar(String.format(getString(R.string.action_set_to_route), it))
       }
     }
 
-    observe(openMap) { open ->
+    collectWithLifecycle(openMap) { open ->
       if (open) {
         router.navigateTo(
           mapPreviewScreen(
@@ -93,11 +93,11 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
       }
     }
 
-    observe(openPassingTransports) { selectedStop ->
+    collectWithLifecycle(openPassingTransports) { selectedStop ->
       router.navigateTo(passingRoutesScreen(selectedStop.id))
     }
 
-    observe(selectedTransport
+    collectWithLifecycle(selectedTransport
       .combineTransform(showPrimary) { transport, show ->
         val stops = if (show) {
           transport.stops

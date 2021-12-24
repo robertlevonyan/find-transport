@@ -31,9 +31,9 @@ class SearchMapFragment : MapFragment() {
     searchMapViewModel.getMultiRoute(fromId, toId)
 
     searchMapViewModel.run {
-      observe(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
-      observe(searchMultiTransports) { onDataLoaded(it.first, it.second, it.third) }
-      observe(searchEmpty) { router.exit() }
+      collectWithLifecycle(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
+      collectWithLifecycle(searchMultiTransports) { onDataLoaded(it.first, it.second, it.third) }
+      collectWithLifecycle(searchEmpty) { router.exit() }
     }
   }
 
@@ -73,26 +73,26 @@ class SearchMapFragment : MapFragment() {
             searchMapViewModel.getRouteSuccess(firstTransport.id)
           }
 
-          observe(searchMapViewModel.transportRouteSuccess) { routeSuccess ->
-            val routeResult = routeSuccess.first ?: return@observe
-            val routeReverse = routeSuccess.second ?: return@observe
+          collectWithLifecycle(searchMapViewModel.transportRouteSuccess) { routeSuccess ->
+            val routeResult = routeSuccess.first ?: return@collectWithLifecycle
+            val routeReverse = routeSuccess.second ?: return@collectWithLifecycle
 
-//            val transportMainCoordinates = routeResult.transport.stops.flatMap { it.coordinates }
-//            val transportReverseCoordinates = routeReverse.transport.stops.flatMap { it.coordinates }
-//
-//            var startIndex = transportMainCoordinates.indexOf(startCoordinates.firstOrNull() ?: return@observe)
-//            if (startIndex == -1) {
-//              startIndex = transportReverseCoordinates.indexOf(startCoordinates.firstOrNull() ?: return@observe)
-//            }
-//
-//            var endIndex = transportMainCoordinates.indexOf(interchangeCoordinates.firstOrNull() ?: return@observe)
-//            if (endIndex == -1) {
-//              endIndex = transportReverseCoordinates.indexOf(interchangeCoordinates.firstOrNull() ?: return@observe)
-//            }
-//
-//            val newRoute = transportMainCoordinates.subList(startIndex, endIndex)
+        //            val transportMainCoordinates = routeResult.transport.stops.flatMap { it.coordinates }
+        //            val transportReverseCoordinates = routeReverse.transport.stops.flatMap { it.coordinates }
+        //
+        //            var startIndex = transportMainCoordinates.indexOf(startCoordinates.firstOrNull() ?: return@observe)
+        //            if (startIndex == -1) {
+        //              startIndex = transportReverseCoordinates.indexOf(startCoordinates.firstOrNull() ?: return@observe)
+        //            }
+        //
+        //            var endIndex = transportMainCoordinates.indexOf(interchangeCoordinates.firstOrNull() ?: return@observe)
+        //            if (endIndex == -1) {
+        //              endIndex = transportReverseCoordinates.indexOf(interchangeCoordinates.firstOrNull() ?: return@observe)
+        //            }
+        //
+        //            val newRoute = transportMainCoordinates.subList(startIndex, endIndex)
 
-//            createRoute(routeResult, style, newRoute)
+        //            createRoute(routeResult, style, newRoute)
           }
         }
         MultiRouteCase.SINGLE_TO -> {

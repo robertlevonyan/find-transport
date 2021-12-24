@@ -12,18 +12,19 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.di.feedbackScreen
 import robert.findtransport.di.settingsScreen
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.showToast
-import robert.findtransport.utils.observeInLifecycle
 import javax.inject.Inject
 
 abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : Fragment() {
@@ -68,12 +69,12 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
 
   open fun ViewModel.initObservers() = Unit
 
-  protected fun <T> observe(liveData: LiveData<T>, action: (T) -> Unit) = view?.run {
-    liveData.observe(viewLifecycleOwner, Observer { action(it ?: return@Observer) })
-  } ?: Unit
-
-  protected inline fun <reified T> observe(flow: Flow<T>, crossinline action: (T) -> Unit) {
-    flow.onEach { action(it) }.observeInLifecycle(viewLifecycleOwner)
+  protected inline fun <reified T> collectWithLifecycle(flow: Flow<T>, crossinline collector: (T) -> Unit) {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        flow.collect { collector(it) }
+      }
+    }
   }
 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {

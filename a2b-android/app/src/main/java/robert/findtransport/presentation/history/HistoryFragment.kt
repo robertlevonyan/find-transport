@@ -67,15 +67,15 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
   }
 
   override fun HistoryViewModel.initObservers() {
-    observe(onClear) { createDialog(HistoryDialogType.CLEAR, yesAction = { viewModel.clearHistory() }) }
-    observe(itemClear) {
+    collectWithLifecycle(onClear) { createDialog(HistoryDialogType.CLEAR, yesAction = { viewModel.clearHistory() }) }
+    collectWithLifecycle(itemClear) {
       createDialog(
         type = HistoryDialogType.REMOVE,
         history = it,
         yesAction = { history -> viewModel.removeItem(history ?: return@createDialog) },
       )
     }
-    observe(itemClicked) {
+    collectWithLifecycle(itemClicked) {
       createDialog(
         type = HistoryDialogType.RESTORE,
         history = it,
@@ -94,24 +94,24 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
         },
       )
     }
-    observe(itemRemoved) {
+    collectWithLifecycle(itemRemoved) {
       binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
         val size = (adapter as HistoryAdapter).removeItem(it)
         if (size == 0) viewModel.setNoHistory()
       }
     }
-    observe(historyCleared) {
+    collectWithLifecycle(historyCleared) {
       binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
         (adapter as HistoryAdapter).clear()
         viewModel.setNoHistory()
       }
     }
 
-    observe(noHistory) {
+    collectWithLifecycle(noHistory) {
       binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
       binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
     }
-    observe(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
+    collectWithLifecycle(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
       val history = historyAndLocale.first
       val locale = historyAndLocale.second
 
@@ -133,7 +133,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
           itemTouchHelper.attachToRecyclerView(binding.rvHistory)
         }
     }
-    observe(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
   }
 
   private fun createDialog(

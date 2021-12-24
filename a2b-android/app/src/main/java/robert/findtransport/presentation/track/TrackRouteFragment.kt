@@ -138,7 +138,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     if (activity == null || activity?.hasWindowFocus() == false) {
       return@run
     }
-    observe(selectedTransport) { transport ->
+    collectWithLifecycle(selectedTransport) { transport ->
       binding.progressLoading.visibility = View.GONE
 
       val typeNameRes = transport.getTypeName()
@@ -154,28 +154,28 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
         }
       }
     }
-    observe(toStop) {
+    collectWithLifecycle(toStop) {
 
     }
-    observe(fromStop) {
+    collectWithLifecycle(fromStop) {
 
     }
-    observe(currentStop) {
+    collectWithLifecycle(currentStop) {
       binding.tvCurrentStop.isVisible = true
       binding.tvCurrentStopName.setStopName(it, currentLanguage)
       binding.progressLoading.visibility = View.GONE
     }
-    observe(predestination) { }
-    observe(notifyNextStop) {
+    collectWithLifecycle(predestination) { }
+    collectWithLifecycle(notifyNextStop) {
       if (activity?.isFinishing != true) {
         NextStopDialog.newInstance().show(parentFragmentManager, NextStopDialog::class.java.simpleName)
       }
     }
-    observe(notifyArrived) {
+    collectWithLifecycle(notifyArrived) {
       parentFragmentManager.setFragmentResult(RESULT_ARRIVED, bundleOf())
       router.exit()
     }
-    observe(notifyStop) {
+    collectWithLifecycle(notifyStop) {
       router.exit()
     }
   }

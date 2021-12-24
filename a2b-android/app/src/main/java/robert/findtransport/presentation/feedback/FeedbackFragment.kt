@@ -45,14 +45,14 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
   }
 
   override fun FeedbackViewModel.initObservers() {
-    observe(feedbackSent) {
+    collectWithLifecycle(feedbackSent) {
       showToast(getString(R.string.feedback_sent))
       onBackPressed()
     }
-    observe(showHideLoading) { binding.flLoading.visibility = if (it) View.VISIBLE else View.GONE }
-    observe(errorEmail) { binding.ilEmail.setCustomError(it) }
-    observe(errorSubject) { binding.ilSubject.setCustomError(it) }
-    observe(errorMessage) { binding.ilMessage.setCustomError(it) }
+    collectWithLifecycle(showHideLoading) { binding.flLoading.visibility = if (it) View.VISIBLE else View.GONE }
+    collectWithLifecycle(errorEmail) { binding.ilEmail.setCustomError(it) }
+    collectWithLifecycle(errorSubject) { binding.ilSubject.setCustomError(it) }
+    collectWithLifecycle(errorMessage) { binding.ilMessage.setCustomError(it) }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

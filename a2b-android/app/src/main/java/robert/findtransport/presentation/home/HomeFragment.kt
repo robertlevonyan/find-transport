@@ -82,12 +82,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   }
 
   override fun HomeViewModel.initObservers() {
-    observe(openMap) { router.navigateTo(mapChooserScreen()) }
-    observe(allTransportsError) { showToast("ERROR") }
-    observe(openStops) { type -> router.navigateTo(stopsPickerScreen(type)) }
-    observe(openRate) { rate() }
-    observe(openUpdate) { router.navigateTo(updateScreen()) }
-    observe(openSearch) { ids ->
+    collectWithLifecycle(openMap) { router.navigateTo(mapChooserScreen()) }
+    collectWithLifecycle(allTransportsError) { showToast("ERROR") }
+    collectWithLifecycle(openStops) { type -> router.navigateTo(stopsPickerScreen(type)) }
+    collectWithLifecycle(openRate) { rate() }
+    collectWithLifecycle(openUpdate) { router.navigateTo(updateScreen()) }
+    collectWithLifecycle(openSearch) { ids ->
       router.navigateTo(
         searchScreen(
           bundleOf(
@@ -98,22 +98,22 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         )
       )
     }
-    observe(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
-    observe(fromStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
+    collectWithLifecycle(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
+    collectWithLifecycle(fromStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
       binding.inputFrom.setStopName(stop, locale)
     }
-    observe(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
+    collectWithLifecycle(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
       binding.inputTo.setStopName(stop, locale)
     }
-    observe(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
-    observe(fromError) { error -> binding.tvFromError.setDisappearingError(error) }
-    observe(toError) { error -> binding.tvToError.setDisappearingError(error) }
+    collectWithLifecycle(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
+    collectWithLifecycle(fromError) { error -> binding.tvFromError.setDisappearingError(error) }
+    collectWithLifecycle(toError) { error -> binding.tvToError.setDisappearingError(error) }
   }
 
   private fun rate() = activity?.run {

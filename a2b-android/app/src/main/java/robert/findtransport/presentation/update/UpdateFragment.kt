@@ -13,7 +13,7 @@ class UpdateFragment : BaseFragment<UpdateViewModel, FragmentUpdateBinding>() {
   override val viewModel: UpdateViewModel by viewModels()
 
   override fun UpdateViewModel.initObservers() {
-    observe(onComplete) { router.navigateTo(homeScreen()) }
+    collectWithLifecycle(onComplete) { router.navigateTo(homeScreen()) }
   }
 
   companion object {

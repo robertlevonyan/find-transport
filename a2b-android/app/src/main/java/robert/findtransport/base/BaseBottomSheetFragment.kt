@@ -21,7 +21,7 @@ abstract class BaseBottomSheetFragment<ViewModel : BaseViewModel, Binding : View
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = binding.root
 
-  protected fun <T> observe(liveData: LiveData<T>, action: (T) -> Unit) {
+  protected fun <T> collectWithLifecycle(liveData: LiveData<T>, action: (T) -> Unit) {
     liveData.observe(viewLifecycleOwner, Observer { action(it ?: return@Observer) })
   }
 }
