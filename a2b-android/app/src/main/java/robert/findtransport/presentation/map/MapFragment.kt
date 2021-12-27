@@ -66,6 +66,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
   }
 
+  private val permissions = arrayOf(
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.READ_PHONE_STATE,
+  )
+
   private val permissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
     binding.fabLocation.visibility = if (permissions.all { it.value }) {
       locationEnabled = true
@@ -78,15 +83,36 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
   }
 
+  private val locationPermissionDialog by lazy {
+    LocationPermissionDialog().apply {
+      positiveClick = {
+        view?.post {
+          try {
+            permissionRequest.launch(permissions)
+          } catch (e: Exception) {
+            e.printStackTrace()
+            router.exit()
+          }
+        }
+      }
+      negativeClick = {
+        binding.fabLocation.visibility = View.GONE
+        if (!isDetached) {
+          initMap()
+        }
+      }
+    }
+  }
+  private var isDialogShowing = false
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_PHONE_STATE)
 
     activity?.run {
       if (ActivityCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED
         || ActivityCompat.checkSelfPermission(this, permissions[1]) != PackageManager.PERMISSION_GRANTED
       ) {
-        showDialogForPermissions(this, permissions)
+        showDialogForPermissions(this)
       } else {
         locationEnabled = true
         viewModel.getCurrentLocation()
@@ -117,28 +143,12 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     fabLocation.setOnClickListener { viewModel.getCurrentLocation() }
   }
 
-  private fun showDialogForPermissions(activity: FragmentActivity, permissions: Array<String>) =
-    LocationPermissionDialog().run {
-      positiveClick = {
-        view?.post {
-          try {
-            permissionRequest.launch(permissions)
-          } catch (e: Exception) {
-            e.printStackTrace()
-            router.exit()
-          }
-        }
-      }
-      negativeClick = {
-        binding.fabLocation.visibility = View.GONE
-        if (!isDetached) {
-          initMap()
-        }
-      }
-      if (!activity.isFinishing) {
-        show(activity.supportFragmentManager, "")
-      }
+  private fun showDialogForPermissions(activity: FragmentActivity) {
+    if (!activity.isFinishing && !isDialogShowing) {
+      isDialogShowing = true
+      locationPermissionDialog.show(activity.supportFragmentManager, "")
     }
+  }
 
   private fun initMap() = binding.run {
     mapView.compass.apply {

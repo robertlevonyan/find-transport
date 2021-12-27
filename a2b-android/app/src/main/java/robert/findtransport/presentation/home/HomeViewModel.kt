@@ -4,10 +4,8 @@ import android.Manifest
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
@@ -49,8 +47,8 @@ class HomeViewModel @Inject constructor(
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: Flow<String> get() = _locale
 
-  private val _openMap = MutableSharedFlow<Unit>()
-  val openMap: Flow<Unit> get() = _openMap
+  private val _openMap = Channel<Unit>()
+  val openMap: Flow<Unit> get() = _openMap.receiveAsFlow()
 
   private val _openStops = MutableSharedFlow<Int>()
   val openStops: Flow<Int> get() = _openStops
@@ -104,7 +102,7 @@ class HomeViewModel @Inject constructor(
 
   fun notifyOpenMap() {
     viewModelScope.launch {
-      _openMap.emit(Unit)
+      _openMap.send(Unit)
     }
   }
 

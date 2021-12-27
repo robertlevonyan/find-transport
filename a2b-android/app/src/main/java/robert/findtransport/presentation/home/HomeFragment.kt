@@ -82,7 +82,9 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   }
 
   override fun HomeViewModel.initObservers() {
-    collectWithLifecycle(openMap) { router.navigateTo(mapChooserScreen()) }
+    collectWithLifecycle(openMap) {
+      router.navigateTo(mapChooserScreen())
+    }
     collectWithLifecycle(allTransportsError) { showToast("ERROR") }
     collectWithLifecycle(openStops) { type -> router.navigateTo(stopsPickerScreen(type)) }
     collectWithLifecycle(openRate) { rate() }
