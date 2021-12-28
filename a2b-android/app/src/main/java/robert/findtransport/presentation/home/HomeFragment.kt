@@ -83,6 +83,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
   override fun HomeViewModel.initObservers() {
     collectWithLifecycle(openMap) {
+      println("MAP")
       router.navigateTo(mapChooserScreen())
     }
     collectWithLifecycle(allTransportsError) { showToast("ERROR") }

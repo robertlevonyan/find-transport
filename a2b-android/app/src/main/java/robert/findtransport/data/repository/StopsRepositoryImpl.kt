@@ -29,11 +29,13 @@ class StopsRepositoryImpl @Inject constructor(
   override suspend fun getStopLocationsFromApi(): Result<List<StopLocation>> =
     makeApiCall { apiService.getStopLocations() }
 
-  override suspend fun cacheStops(stops: List<Stop>) =
-    println("A2B Stop ${stopsDao.saveStop(stops).size}")
+  override suspend fun cacheStops(stops: List<Stop>) {
+    stopsDao.saveStop(stops)
+  }
 
-  override suspend fun cacheStopLocations(locations: List<StopLocation>) =
-    println("A2B Location ${stopsDao.saveStopLocations(locations).size}")
+  override suspend fun cacheStopLocations(locations: List<StopLocation>) {
+    stopsDao.saveStopLocations(locations)
+  }
 
   override suspend fun getStopsAutocomplete(word: String, field: String): List<Stop> =
     field.takeIf { it.isNotEmpty() }
