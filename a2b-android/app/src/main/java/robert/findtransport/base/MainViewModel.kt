@@ -69,6 +69,10 @@ class MainViewModel @Inject constructor(
   }
 
   fun checkData() {
+    if (_loaded.value == DataLoading.Loaded) {
+      return
+    }
+
     viewModelScope.launch(Dispatchers.IO) {
       if (checkInternetUseCase.isVpnConnected()) {
         notifyLoadingError("No Internet")

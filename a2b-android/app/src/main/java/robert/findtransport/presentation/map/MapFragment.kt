@@ -2,6 +2,7 @@ package robert.findtransport.presentation.map
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -14,23 +15,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapboxMap
 import com.mapbox.maps.Style
+import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
-import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.compass.compass
+import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.entity.Stop
@@ -49,22 +54,9 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   override val viewModel: MapViewModel by viewModels()
 
   private var locationEnabled = false
-  protected val mapboxMap by lazy { binding.mapView.getMapboxMap() }
-  protected val pointAnnotationManager by lazy {
-    binding.mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
-      addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
-        if (!isStateSaved) {
-          pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
-        }
-        true
-      })
-    }
-  }
-  protected val polylineAnnotationManager by lazy {
-    binding.mapView.annotations.createPolylineAnnotationManager(binding.mapView).apply {
-      lineCap = LineCap.ROUND
-    }
-  }
+  protected var mapboxMap: MapboxMap? = null
+  protected var pointAnnotationManager: PointAnnotationManager? = null
+  protected var polylineAnnotationManager: PolylineAnnotationManager? = null
 
   private val permissions = arrayOf(
     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -151,6 +143,8 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   }
 
   private fun initMap() = binding.run {
+    binding.flLoading.isVisible = true
+
     mapView.compass.apply {
       marginLeft = 0f
       marginTop = context?.getDimen(R.dimen.margin_85) ?: 200f
@@ -158,27 +152,58 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       marginBottom = 0f
     }
 
-    mapboxMap.loadStyleUri(getString(R.string.map_style)) { style ->
-      createMap(style)
-      if (locationEnabled) {
-        enableLocationComponent()
+    mapboxMap = mapView.getMapboxMap()
+    pointAnnotationManager = mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
+      addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+        if (!isStateSaved) {
+          pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
+        }
+        true
+      })
+    }
+    polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager(binding.mapView).apply {
+      lineCap = LineCap.ROUND
+    }
+
+    try {
+      val mapStyle = if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
+        BuildConfig.MAPBOX_STYLE_LIGHT
       } else {
-        flyTo(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+        BuildConfig.MAPBOX_STYLE_NIGHT
       }
+      mapboxMap?.loadStyleUri(mapStyle, { style ->
+        createMap(style)
+        if (locationEnabled) {
+          enableLocationComponent()
+        } else {
+          flyTo(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+        }
+      },
+        object : OnMapLoadErrorListener {
+          override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
+            println("Map error $eventData")
+          }
+        })
+    } catch (e: Exception) {
+      e.printStackTrace()
     }
   }
 
   protected fun flyTo(latitude: Double, longitude: Double) {
-    mapboxMap.flyTo(
-      cameraOptions = CameraOptions.Builder()
-        .center(Point.fromLngLat(longitude, latitude))
-        .zoom(15.0)
-        .build(),
-      animationOptions = MapAnimationOptions.mapAnimationOptions {
-        duration(200)
-        interpolator(FastOutSlowInInterpolator())
-      },
-    )
+    try {
+      mapboxMap?.flyTo(
+        cameraOptions = CameraOptions.Builder()
+          .center(Point.fromLngLat(longitude, latitude))
+          .zoom(15.0)
+          .build(),
+        animationOptions = MapAnimationOptions.mapAnimationOptions {
+          duration(duration = 200)
+          interpolator(interpolator = FastOutSlowInInterpolator())
+        },
+      )
+    } catch (e: Exception) {
+      e.printStackTrace()
+    }
   }
 
   abstract fun createMap(style: Style)
@@ -186,7 +211,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   open fun showStopOptions(stop: robert.findtransport.data.model.Stop) = Unit
 
   protected fun hideLoading() {
-    binding.flLoading.visibility = View.GONE
+    binding.flLoading.isVisible = false
   }
 
   private fun enableLocationComponent() {

@@ -362,7 +362,6 @@ class TransportUseCaseImpl @Inject constructor(
       }
     }
 
-
     if (nearby.isEmpty() || nearbyDestination.isEmpty()) {
       emit(Stop.EMPTY to Stop.EMPTY)
       return@flow

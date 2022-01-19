@@ -47,9 +47,5 @@
       android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService"
       android:exported="false"
       tools:ignore="MissingClass" />
-    <service
-      android:name=".presentation.track.TrackRouteService"
-      android:enabled="true"
-      android:exported="false" />
   </application>
 </manifest>

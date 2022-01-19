@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 257
-    versionName = "3.7.15"
+    versionCode = 259
+    versionName = "3.7.17"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -48,6 +48,12 @@ android {
 
       val keyPrefix = localProperties.getProperty("KEY_PREFIX")
       buildConfigField("String", "KEY_PREFIX", keyPrefix)
+
+      val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
+      buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
+
+      val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
+      buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
     }
 
     release {
@@ -69,6 +75,12 @@ android {
 
       val keyPrefix = localProperties.getProperty("KEY_PREFIX")
       buildConfigField("String", "KEY_PREFIX", keyPrefix)
+
+      val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
+      buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
+
+      val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
+      buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
     }
   }
   lint {
@@ -99,9 +111,9 @@ dependencies {
 
   //google
   implementation("com.google.android.material:material:1.6.0-alpha01")
-  implementation("com.google.android.play:core:1.10.2")
+  implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:19.0.0")
+  implementation("com.google.android.gms:play-services-location:19.0.1")
   implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.40.2")
   implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
@@ -112,12 +124,12 @@ dependencies {
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
-  implementation("androidx.appcompat:appcompat:1.4.0")
+  implementation("androidx.appcompat:appcompat:1.4.1")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.3")
   implementation("androidx.core:core-ktx:1.7.0")
-  implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
+  implementation("androidx.core:core-splashscreen:1.0.0-beta01")
   implementation("androidx.fragment:fragment-ktx:1.4.0")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
@@ -126,12 +138,12 @@ dependencies {
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.0")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
-  implementation("androidx.room:room-runtime:2.4.0")
-  implementation("androidx.room:room-ktx:2.4.0")
-  implementation("androidx.room:room-paging:2.4.0")
+  implementation("androidx.room:room-runtime:2.4.1")
+  implementation("androidx.room:room-ktx:2.4.1")
+  implementation("androidx.room:room-paging:2.4.1")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.4.0")
+  kapt("androidx.room:room-compiler:2.4.1")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")

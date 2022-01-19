@@ -71,7 +71,7 @@ class PreviewMapFragment : MapFragment() {
         ?.run { Point.fromLngLat(lng, lat) }
         ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
 
-      mapboxMap.easeTo(
+      mapboxMap?.easeTo(
         cameraOptions = CameraOptions.Builder()
           .zoom(11.0)
           .padding(EdgeInsets(padding, padding, padding, padding))
@@ -93,7 +93,7 @@ class PreviewMapFragment : MapFragment() {
           .withIconImage(iconBitmap)
       }
 
-      pointAnnotationManager.create(points)
+      pointAnnotationManager?.create(points)
     }
 
     collectWithLifecycle(routeError) { message ->
@@ -115,7 +115,7 @@ class PreviewMapFragment : MapFragment() {
       .withLineJoin(LineJoin.ROUND)
       .withGeometry(LineString.fromLngLats(points))
 
-    polylineAnnotationManager.create(options)
+    polylineAnnotationManager?.create(options)
   }
 
   override fun showStopOptions(stop: Stop) {

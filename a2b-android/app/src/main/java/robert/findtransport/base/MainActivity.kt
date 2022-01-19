@@ -3,7 +3,6 @@ package robert.findtransport.base
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -15,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.github.terrakok.cicerone.Command
@@ -31,7 +29,6 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
@@ -46,7 +43,6 @@ import robert.findtransport.presentation.intro.IntroFragment
 import robert.findtransport.utils.ARG_MESSAGE_DESCRIPTION
 import robert.findtransport.utils.ARG_MESSAGE_TITLE
 import robert.findtransport.utils.extensions.fitSystemWindows
-import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.isTablet
 import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
@@ -104,7 +100,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       } else {
         ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
       }
-    } else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    } else {
+      ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }
 
     if (DynamicColors.isDynamicColorAvailable()) {
       DynamicColors.applyIfAvailable(this)
@@ -115,14 +113,7 @@ class MainActivity : AppCompatActivity(), ChainHolder {
         ObjectAnimator.ofFloat(splashScreenViewProvider.view, View.ALPHA, 1f, 0f).apply {
           interpolator = AnticipateInterpolator()
           duration = 500L
-          doOnEnd {
-            splashScreenViewProvider.remove()
-
-            if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
-              WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
-              window.statusBarColor = getColorFromRes(R.color.colorPrimaryVariantTransparent)
-            }
-          }
+          doOnEnd { splashScreenViewProvider.remove() }
         }.start()
       }
     }
@@ -148,7 +139,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       observe(theme) { theme -> delegate.localNightMode = theme }
       observe(currentLanguage) { LocaleService(this@MainActivity).changeLocale(it) }
       observe(nextIntro) { openIntro() }
-      observe(nextMain) { openMain() }
+      observe(nextMain) {
+        openMain()
+      }
       observe(emptyDatabase) { showEmptyDatabaseDialog() }
       observe(loadingError) { showLoadingErrorDialog() }
       observe(loadingDiskFull) { showLoadingErrorDiskFullDialog() }

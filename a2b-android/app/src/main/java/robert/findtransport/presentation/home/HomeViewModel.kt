@@ -4,7 +4,6 @@ import android.Manifest
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
@@ -46,12 +45,6 @@ class HomeViewModel @Inject constructor(
 
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: Flow<String> get() = _locale
-
-  private val _openMap = Channel<Unit>()
-  val openMap: Flow<Unit> get() = _openMap.receiveAsFlow()
-
-  private val _openStops = MutableSharedFlow<Int>()
-  val openStops: Flow<Int> get() = _openStops
 
   private val _openSearch = MutableSharedFlow<Pair<Int, Int>>()
   val openSearch: Flow<Pair<Int, Int>> get() = _openSearch
@@ -97,18 +90,6 @@ class HomeViewModel @Inject constructor(
         _fromStop.emit(nearbyStop)
         _hasLocationPermission.emit(LocationPermission.HAS_PERMISSION)
       }
-    }
-  }
-
-  fun notifyOpenMap() {
-    viewModelScope.launch {
-      _openMap.send(Unit)
-    }
-  }
-
-  fun notifyOpenStops(type: Int) {
-    viewModelScope.launch {
-      _openStops.emit(type)
     }
   }
 

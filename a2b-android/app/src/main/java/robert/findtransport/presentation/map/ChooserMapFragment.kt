@@ -25,13 +25,13 @@ class ChooserMapFragment : MapFragment() {
     collectWithLifecycle(allStops) { stops ->
       if (stops.isEmpty()) return@collectWithLifecycle
 
-      pointAnnotationManager.create(stops)
+      pointAnnotationManager?.create(stops)
       hideLoading()
     }
     collectWithLifecycle(metroStops) { stops ->
       if (stops.isEmpty()) return@collectWithLifecycle
 
-      pointAnnotationManager.create(stops)
+      pointAnnotationManager?.create(stops)
       hideLoading()
     }
   }

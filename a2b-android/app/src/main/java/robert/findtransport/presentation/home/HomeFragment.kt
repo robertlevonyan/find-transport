@@ -68,26 +68,21 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     btnRate.setOnClickListener { viewModel.openRate() }
     btnDismiss.setOnClickListener { viewModel.dismissRate() }
-    clFromInput.setOnClickListener { viewModel.notifyOpenStops(0) }
-    inputFrom.setOnClickListener { viewModel.notifyOpenStops(0) }
-    btnFromList.setOnClickListener { viewModel.notifyOpenStops(0) }
-    clToInput.setOnClickListener { viewModel.notifyOpenStops(1) }
-    inputTo.setOnClickListener { viewModel.notifyOpenStops(1) }
-    btnToList.setOnClickListener { viewModel.notifyOpenStops(1) }
-    btnFromMap.setOnClickListener { viewModel.notifyOpenMap() }
-    btnToMap.setOnClickListener { viewModel.notifyOpenMap() }
+    clFromInput.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+    inputFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+    btnFromList.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+    clToInput.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+    inputTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+    btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+    btnFromMap.setOnClickListener { router.navigateTo(mapChooserScreen()) }
+    btnToMap.setOnClickListener { router.navigateTo(mapChooserScreen()) }
     btnSearch.setOnClickListener { viewModel.search() }
     fabSwap.setOnClickListener { viewModel.swapStops() }
     btnTransports.setOnClickListener { router.navigateTo(transportsScreen()) }
   }
 
   override fun HomeViewModel.initObservers() {
-    collectWithLifecycle(openMap) {
-      println("MAP")
-      router.navigateTo(mapChooserScreen())
-    }
     collectWithLifecycle(allTransportsError) { showToast("ERROR") }
-    collectWithLifecycle(openStops) { type -> router.navigateTo(stopsPickerScreen(type)) }
     collectWithLifecycle(openRate) { rate() }
     collectWithLifecycle(openUpdate) { router.navigateTo(updateScreen()) }
     collectWithLifecycle(openSearch) { ids ->

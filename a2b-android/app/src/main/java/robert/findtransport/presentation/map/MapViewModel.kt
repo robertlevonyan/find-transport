@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -33,11 +34,11 @@ open class MapViewModel @Inject constructor(
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: Flow<String> get() = _locale
 
-  private val _allStops = MutableStateFlow<List<PointAnnotationOptions>>(emptyList())
-  val allStops: Flow<List<PointAnnotationOptions>> get() = _allStops
+  private val _allStops = Channel<List<PointAnnotationOptions>>()
+  val allStops: Flow<List<PointAnnotationOptions>> get() = _allStops.receiveAsFlow()
 
-  private val _metroStops = MutableStateFlow<List<PointAnnotationOptions>>(emptyList())
-  val metroStops: Flow<List<PointAnnotationOptions>> get() = _metroStops
+  private val _metroStops = Channel<List<PointAnnotationOptions>>()
+  val metroStops: Flow<List<PointAnnotationOptions>> get() = _metroStops.receiveAsFlow()
 
   private val _routeSuccess = MutableSharedFlow<RouteResult>()
   val routeSuccess: Flow<RouteResult> get() = _routeSuccess
@@ -61,9 +62,9 @@ open class MapViewModel @Inject constructor(
       try {
         if (!coroutineContext.isActive) return@launch
         val stops = stopsUseCase.getStopsLocations()
-        _allStops.value = stops
+        _allStops.send(stops)
         val metroStops = stopsUseCase.getMetroStopsLocations()
-        _metroStops.value = metroStops
+        _metroStops.send(metroStops)
       } catch (e: Exception) {
         e.printStackTrace()
       }
