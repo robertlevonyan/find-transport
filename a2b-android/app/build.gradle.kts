@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 259
-    versionName = "3.7.17"
+    versionCode = 260
+    versionName = "3.7.18"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -84,8 +84,8 @@ android {
     }
   }
   lint {
-    isCheckReleaseBuilds = false
-    isAbortOnError = false
+    checkReleaseBuilds = false
+    abortOnError = false
   }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -96,6 +96,7 @@ android {
   }
   kotlinOptions {
     jvmTarget = "11"
+    freeCompilerArgs = freeCompilerArgs.toMutableList().apply { add("-opt-in=kotlin.RequiresOptIn") }
   }
   bundle {
     language { enableSplit = false }
@@ -106,21 +107,21 @@ android {
 dependencies {
   //kotlin
   kotlin("stdlib")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
 
   //google
-  implementation("com.google.android.material:material:1.6.0-alpha01")
+  implementation("com.google.android.material:material:1.6.0-alpha02")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:19.0.1")
   implementation("com.google.code.gson:gson:2.8.9")
-  implementation("com.google.dagger:hilt-android:2.40.2")
-  implementation(platform("com.google.firebase:firebase-bom:29.0.0"))
+  implementation("com.google.dagger:hilt-android:2.40.5")
+  implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.40.2")
+  kapt("com.google.dagger:hilt-android-compiler:2.40.5")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")

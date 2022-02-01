@@ -127,9 +127,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     val appUpdateManager = AppUpdateManagerFactory.create(this)
     appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
       if (appUpdateInfo?.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+        && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
       ) {
-        appUpdateManager.startUpdateFlow(appUpdateInfo, this, AppUpdateOptions.defaultOptions(AppUpdateType.IMMEDIATE))
+        appUpdateManager.startUpdateFlow(appUpdateInfo, this, AppUpdateOptions.defaultOptions(AppUpdateType.FLEXIBLE))
           .addOnSuccessListener { recreate() }
           .addOnFailureListener { openMain() }
       }

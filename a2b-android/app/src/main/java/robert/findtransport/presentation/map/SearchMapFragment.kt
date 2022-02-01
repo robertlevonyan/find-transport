@@ -32,13 +32,13 @@ class SearchMapFragment : MapFragment() {
 
     searchMapViewModel.run {
       collectWithLifecycle(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
-      collectWithLifecycle(searchMultiTransports) { onDataLoaded(it.first, it.second, it.third) }
+      collectWithLifecycle(searchMultiTransports) { onDataLoaded(it.first/*, it.second, it.third*/) }
       collectWithLifecycle(searchEmpty) { router.exit() }
     }
   }
 
-  private fun onDataLoaded(multiRouteData: List<MultiRoute>, from: Stop, to: Stop) {
-    val style = mapStyle ?: return
+  private fun onDataLoaded(multiRouteData: List<MultiRoute>/*, from: Stop, to: Stop*/) {
+//    val style = mapStyle ?: return
     val startCoordinates = mutableListOf<StopLocation>()
     val endCoordinates = mutableListOf<StopLocation>()
     val interchangeCoordinates = mutableListOf<StopLocation>()
@@ -73,9 +73,9 @@ class SearchMapFragment : MapFragment() {
             searchMapViewModel.getRouteSuccess(firstTransport.id)
           }
 
-          collectWithLifecycle(searchMapViewModel.transportRouteSuccess) { routeSuccess ->
-            val routeResult = routeSuccess.first ?: return@collectWithLifecycle
-            val routeReverse = routeSuccess.second ?: return@collectWithLifecycle
+          collectWithLifecycle(searchMapViewModel.transportRouteSuccess) { _ ->
+//            val routeResult = routeSuccess.first ?: return@collectWithLifecycle
+//            val routeReverse = routeSuccess.second ?: return@collectWithLifecycle
 
         //            val transportMainCoordinates = routeResult.transport.stops.flatMap { it.coordinates }
         //            val transportReverseCoordinates = routeReverse.transport.stops.flatMap { it.coordinates }
@@ -133,7 +133,7 @@ class SearchMapFragment : MapFragment() {
       }
     }
 
-    val boundsCoordinates = startCoordinates + endCoordinates
+//    val boundsCoordinates = startCoordinates + endCoordinates
 //    val latLngBounds = createLatLngBounds(boundsCoordinates)
 
     hideLoading()
@@ -191,7 +191,7 @@ class SearchMapFragment : MapFragment() {
 //    )
 //  }
 
-  private fun createRoute(routeResult: RouteResult, style: Style, coordinates: List<StopLocation>) {
+//  private fun createRoute(routeResult: RouteResult, style: Style, coordinates: List<StopLocation>) {
 //    routeResult.route?.run {
 //      geometry()?.let { geometry ->
 //        style.addSource(GeoJsonSource(ROUTE_SOURCE))
@@ -201,7 +201,7 @@ class SearchMapFragment : MapFragment() {
 //          ?.setGeoJson(LineString.fromPolyline(geometry, Constants.PRECISION_6))
 //      }
 //    } ?: style.addSource(createGeoJsonSource(coordinates))
-  }
+//  }
 
 //  private fun createGeoJsonSource(coordinates: List<StopLocation>): Source = GeoJsonSource(
 //    ROUTE_SOURCE,

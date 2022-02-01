@@ -67,7 +67,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     }
 
     lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         (activity as? MainActivity)?.resumedState?.collect { resumed ->
           if (!resumed) return@collect
 
@@ -125,6 +125,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
       binding.tvCurrentStopName.setStopName(it, currentLanguage)
       binding.progressLoading.visibility = View.GONE
     }
+    collectWithLifecycle(previousStop) { }
     collectWithLifecycle(predestination) { }
     collectWithLifecycle(notifyNextStop) { stop ->
       if (activity?.isFinishing != true && stop != Stop.EMPTY) {

@@ -46,6 +46,7 @@ class CheckInternetUseCaseImpl @Inject constructor(private val connectivityManag
     return@withContext false
   }
 
+  @Suppress("DEPRECATION")
   override suspend fun isVpnConnected(): Boolean {
     val networks: Array<Network> = connectivityManager.allNetworks
 

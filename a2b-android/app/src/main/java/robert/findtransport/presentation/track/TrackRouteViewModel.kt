@@ -86,7 +86,6 @@ class TrackRouteViewModel @Inject constructor(
         if (current == Stop.EMPTY) return@collect
 
         val currentStopValue = _currentStop.value
-        val previousStopValue = _previousStop.value
 
         if (currentStopValue != Stop.EMPTY) {
           _previousStop.emit(currentStopValue)

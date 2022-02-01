@@ -33,7 +33,7 @@ class SettingsAdapter(private val settingsViewModel: SettingsViewModel) :
         val colorsBg = itemView.context.resources.getIntArray(R.array.colors_bg)
 
         ivSettingIcon.setImageResource(item.icon)
-        ivSettingIcon.backgroundTintList = ColorStateList.valueOf(colorsBg[adapterPosition])
+        ivSettingIcon.backgroundTintList = ColorStateList.valueOf(colorsBg[absoluteAdapterPosition])
         tvSettingLabel.setText(item.label)
         tvSettingDetails.setText(item.detail)
 

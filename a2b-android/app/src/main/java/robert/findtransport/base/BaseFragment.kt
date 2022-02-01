@@ -71,7 +71,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
 
   protected inline fun <reified T> collectWithLifecycle(flow: Flow<T>, crossinline collector: suspend (T) -> Unit) {
     lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
+      viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
         flow.collect { collector(it) }
       }
     }
