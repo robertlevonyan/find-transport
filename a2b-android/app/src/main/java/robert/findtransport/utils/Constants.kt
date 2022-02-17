@@ -1,9 +1,6 @@
 package robert.findtransport.utils
 
 const val BASE_URL = "https://a2b2.robertlevonyan.com"
-
-//const val BASE_URL = "https://18.157.108.235/"
-const val BACK_STACK = "a2bBackStack"
 const val DATABASE_NAME = "a2bDB"
 
 const val PREFERENCES = "sPref"
@@ -31,7 +28,6 @@ const val ARG_HISTORY_DIALOG_TYPE = "argHistoryDialogType"
 const val ARG_FROM_ID = "argFromId"
 const val ARG_TO_ID = "argToId"
 const val ARG_ADD_TO_HISTORY = "argAddToHistory"
-const val ARG_MAP_TYPE = "argMapType"
 const val ARG_TRANSPORT_ID = "argTransportId"
 const val ARG_ROUTE_REVERSE = "argRouteReverse"
 const val ARG_UNDERGROUND = "argUnderground"
@@ -39,6 +35,8 @@ const val ARG_MESSAGE_TITLE = "argMessageTitle"
 const val ARG_MESSAGE_DESCRIPTION = "argMessageDescription"
 const val ARG_STOP_TYPE = "argStopType"
 const val ARG_HAS_OPTIONS = "argHasOptions"
+const val ARG_LATITUDE = "argLatitude"
+const val ARG_LONGITUDE = "argLongitude"
 
 const val MEM_CACHE_STOP = "memCacheStop"
 
@@ -51,7 +49,3 @@ const val RESULT_TO = "resTo"
 const val RESULT_LOCATION_PERMISSION = "resLocationPermission"
 const val RESULT_FAVORITE = "resFavorite"
 const val RESULT_ARRIVED = "resArrived"
-
-const val EXTRA_TRANSPORT_ID = "exTransportId"
-const val EXTRA_FROM = "exFrom"
-const val EXTRA_TO = "exTo"

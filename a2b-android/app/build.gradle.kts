@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 260
-    versionName = "3.7.18"
+    versionCode = 261
+    versionName = "3.7.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -117,7 +117,7 @@ dependencies {
   implementation("com.google.android.gms:play-services-location:19.0.1")
   implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.40.5")
-  implementation(platform("com.google.firebase:firebase-bom:29.0.4"))
+  implementation(platform("com.google.firebase:firebase-bom:29.1.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
@@ -131,11 +131,11 @@ dependencies {
   implementation("androidx.constraintlayout:constraintlayout:2.1.3")
   implementation("androidx.core:core-ktx:1.7.0")
   implementation("androidx.core:core-splashscreen:1.0.0-beta01")
-  implementation("androidx.fragment:fragment-ktx:1.4.0")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
-  implementation("androidx.lifecycle:lifecycle-common-java8:2.4.0")
+  implementation("androidx.fragment:fragment-ktx:1.4.1")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
+  implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.0")
   implementation("androidx.recyclerview:recyclerview:1.2.1")

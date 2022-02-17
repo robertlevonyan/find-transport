@@ -3,8 +3,13 @@ package robert.findtransport.presentation.home
 import android.Manifest
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
@@ -15,6 +20,7 @@ import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import robert.findtransport.utils.extensions.asPair
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,13 +35,13 @@ class HomeViewModel @Inject constructor(
   val allTransportsError: Flow<Unit> get() = _allTransportsError
 
   private val _fromStop = MutableStateFlow(Stop.EMPTY)
-  val fromStop: Flow<Stop> get() = _fromStop
+  val fromStop: StateFlow<Stop> get() = _fromStop
 
   private val _fromError = MutableSharedFlow<Int>()
   val fromError: Flow<Int> get() = _fromError
 
   private val _toStop = MutableStateFlow(Stop.EMPTY)
-  val toStop: Flow<Stop> get() = _toStop
+  val toStop: StateFlow<Stop> get() = _toStop
 
   private val _toError = MutableSharedFlow<Int>()
   val toError: Flow<Int> get() = _toError
@@ -73,12 +79,21 @@ class HomeViewModel @Inject constructor(
 
   fun startFindNearbyLocation(hasPermission: Boolean) {
     viewModelScope.launch {
-      _hasLocationPermission.emit(if (hasPermission) LocationPermission.LOADING else LocationPermission.NO_PERMISSION)
+      _hasLocationPermission.emit(
+        if (hasPermission) {
+          LocationPermission.LOADING
+        } else {
+          LocationPermission.NO_PERMISSION
+        }
+      )
       findNearbyLocation(hasPermission, stopsUseCase.getStops())
     }
   }
 
-  private suspend fun findNearbyLocation(hasPermission: Boolean, stops: List<Stop>) = withContext(Dispatchers.IO) {
+  private suspend fun findNearbyLocation(
+    hasPermission: Boolean,
+    stops: List<Stop>,
+  ) = withContext(Dispatchers.IO) {
     if (hasPermission) {
       stopsUseCase.getNearbyStop(stops, this).collect { nearbyStop ->
         if (nearbyStop == Stop.EMPTY) {
@@ -87,7 +102,7 @@ class HomeViewModel @Inject constructor(
           }
           return@collect
         }
-        _fromStop.emit(nearbyStop)
+        _fromStop.value = nearbyStop
         _hasLocationPermission.emit(LocationPermission.HAS_PERMISSION)
       }
     }
@@ -96,14 +111,14 @@ class HomeViewModel @Inject constructor(
   fun setFromStop(stopId: Int) {
     viewModelScope.launch {
       val stop = stopsUseCase.getStop(stopId)
-      _fromStop.emit(stop)
+      _fromStop.value = stop
     }
   }
 
   fun setToStop(stopId: Int) {
     viewModelScope.launch {
       val stop = stopsUseCase.getStop(stopId)
-      _toStop.emit(stop)
+      _toStop.value = stop
     }
   }
 
@@ -112,8 +127,8 @@ class HomeViewModel @Inject constructor(
     val to = _toStop.value
 
     viewModelScope.launch {
-      _fromStop.emit(to)
-      _toStop.emit(from)
+      _fromStop.value = to
+      _toStop.value = from
     }
   }
 
@@ -147,4 +162,7 @@ class HomeViewModel @Inject constructor(
       }
     }
   }
+
+  suspend fun getCoordinates(stop: Stop): Pair<Double, Double>? =
+    stopsUseCase.getStopCoordinates(stop).firstOrNull()?.asPair()
 }

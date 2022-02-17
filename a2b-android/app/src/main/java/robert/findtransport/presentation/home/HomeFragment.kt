@@ -11,11 +11,14 @@ import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
+import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.model.Stop
 import robert.findtransport.databinding.FragmentHomeBinding
 import robert.findtransport.di.*
 import robert.findtransport.utils.*
@@ -74,8 +77,28 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     clToInput.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     inputTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
-    btnFromMap.setOnClickListener { router.navigateTo(mapChooserScreen()) }
-    btnToMap.setOnClickListener { router.navigateTo(mapChooserScreen()) }
+    btnFromMap.setOnClickListener {
+      lifecycleScope.launchWhenCreated {
+        val stop = viewModel.toStop.value
+        val coordinates = if (stop != Stop.EMPTY) {
+          viewModel.getCoordinates(stop)
+        } else {
+          null
+        }
+        router.navigateTo(mapChooserScreen(coordinates))
+      }
+    }
+    btnToMap.setOnClickListener {
+      lifecycleScope.launchWhenCreated {
+        val stop = viewModel.fromStop.value
+        val coordinates = if (stop != Stop.EMPTY) {
+          viewModel.getCoordinates(stop)
+        } else {
+          null
+        }
+        router.navigateTo(mapChooserScreen(coordinates))
+      }
+    }
     btnSearch.setOnClickListener { viewModel.search() }
     fabSwap.setOnClickListener { viewModel.swapStops() }
     btnTransports.setOnClickListener { router.navigateTo(transportsScreen()) }

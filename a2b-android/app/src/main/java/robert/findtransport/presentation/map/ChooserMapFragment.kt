@@ -1,17 +1,24 @@
 package robert.findtransport.presentation.map
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.mapbox.maps.Style
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.bottomsheet.map.StopOptionsBottomSheet
-import robert.findtransport.utils.ARG_STOP
-import robert.findtransport.utils.RESULT_FROM
-import robert.findtransport.utils.RESULT_TO
+import robert.findtransport.utils.*
 
 @AndroidEntryPoint
 class ChooserMapFragment : MapFragment() {
+  private var selectedLatitude: Double? = null
+  private var selectedLongitude: Double? = null
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    selectedLatitude = arguments?.getDouble(ARG_LATITUDE)
+    selectedLongitude = arguments?.getDouble(ARG_LONGITUDE)
+  }
 
   override fun createMap(style: Style) {
     viewModel.getStops()
@@ -19,7 +26,10 @@ class ChooserMapFragment : MapFragment() {
 
   override fun MapViewModel.initObservers() {
     collectWithLifecycle(currentLocation) { location ->
-      flyTo(location.latitude, location.longitude)
+      val latitude = selectedLatitude ?: location.latitude
+      val longitude = selectedLongitude ?: location.longitude
+
+      flyTo(latitude, longitude)
     }
 
     collectWithLifecycle(allStops) { stops ->
@@ -57,6 +67,13 @@ class ChooserMapFragment : MapFragment() {
   }
 
   companion object {
-    fun newInstance() = ChooserMapFragment()
+    fun newInstance(coordinates: Pair<Double, Double>?) = ChooserMapFragment().apply {
+      if (coordinates == null) return@apply
+
+      arguments = bundleOf(
+        ARG_LATITUDE to coordinates.first,
+        ARG_LONGITUDE to coordinates.second
+      )
+    }
   }
 }

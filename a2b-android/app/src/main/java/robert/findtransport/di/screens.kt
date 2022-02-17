@@ -46,8 +46,8 @@ fun detailsScreen(id: Int, hasOption: Boolean) = FragmentScreen {
   DetailFragment.newInstance(id, hasOption)
 }
 
-fun mapChooserScreen() = FragmentScreen {
-  ChooserMapFragment.newInstance()
+fun mapChooserScreen(coordinates: Pair<Double, Double>? = null) = FragmentScreen {
+  ChooserMapFragment.newInstance(coordinates)
 }
 
 fun mapSearchScreen(args: Bundle) = FragmentScreen {

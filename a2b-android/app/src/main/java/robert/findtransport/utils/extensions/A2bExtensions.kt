@@ -247,6 +247,7 @@ fun Transport.correctStops(start: Stop, destination: Stop): List<Stop> {
   return if (which == 2) stopsReversed else stops
 }
 
+fun StopLocation.asPair(): Pair<Double, Double> = lat to lng
 
 fun md5(vararg values: Any): String {
   var input = ""

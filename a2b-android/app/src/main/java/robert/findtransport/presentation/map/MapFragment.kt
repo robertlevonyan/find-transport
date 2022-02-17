@@ -172,12 +172,12 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         BuildConfig.MAPBOX_STYLE_NIGHT
       }
       mapboxMap?.loadStyleUri(mapStyle, { style ->
-        createMap(style)
         if (locationEnabled) {
           enableLocationComponent()
         } else {
           flyTo(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
         }
+        createMap(style)
       },
         object : OnMapLoadErrorListener {
           override fun onMapLoadError(eventData: MapLoadingErrorEventData) {
