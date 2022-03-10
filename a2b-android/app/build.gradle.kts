@@ -111,7 +111,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
 
   //google
-  implementation("com.google.android.material:material:1.6.0-alpha02")
+  implementation("com.google.android.material:material:1.6.0-alpha03")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:19.0.1")
@@ -139,12 +139,12 @@ dependencies {
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.0")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
-  implementation("androidx.room:room-runtime:2.4.1")
-  implementation("androidx.room:room-ktx:2.4.1")
-  implementation("androidx.room:room-paging:2.4.1")
+  implementation("androidx.room:room-runtime:2.4.2")
+  implementation("androidx.room:room-ktx:2.4.2")
+  implementation("androidx.room:room-paging:2.4.2")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.4.1")
+  kapt("androidx.room:room-compiler:2.4.2")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
