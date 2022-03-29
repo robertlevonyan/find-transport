@@ -63,37 +63,15 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
 
   override fun FragmentHistoryBinding.initViews() {
     rvHistory.layoutManager = GridLayoutManager(context, if (isTablet()) 2 else 1, GridLayoutManager.VERTICAL, false)
-    fabClear.setOnClickListener { viewModel.onClearClicked() }
+    fabClear.setOnClickListener {
+      createDialog(
+        type = HistoryDialogType.CLEAR,
+        yesAction = { viewModel.clearHistory() },
+      )
+    }
   }
 
   override fun HistoryViewModel.initObservers() {
-    collectWithLifecycle(onClear) { createDialog(HistoryDialogType.CLEAR, yesAction = { viewModel.clearHistory() }) }
-    collectWithLifecycle(itemClear) {
-      createDialog(
-        type = HistoryDialogType.REMOVE,
-        history = it,
-        yesAction = { history -> viewModel.removeItem(history ?: return@createDialog) },
-      )
-    }
-    collectWithLifecycle(itemClicked) {
-      createDialog(
-        type = HistoryDialogType.RESTORE,
-        history = it,
-        yesAction = { history ->
-          history?.run {
-            router.navigateTo(
-              searchScreen(
-                bundleOf(
-                  ARG_FROM_ID to history.fromStop.id,
-                  ARG_TO_ID to history.toStop.id,
-                  ARG_ADD_TO_HISTORY to false
-                )
-              )
-            )
-          }
-        },
-      )
-    }
     collectWithLifecycle(itemRemoved) {
       binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
         val size = (adapter as HistoryAdapter).removeItem(it)
@@ -112,21 +90,25 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
       binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
     }
     collectWithLifecycle(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
-      val history = historyAndLocale.first
+      val historyItems = historyAndLocale.first
       val locale = historyAndLocale.second
 
-      binding.rvHistory.adapter = HistoryAdapter(locale, viewModel)
+      binding.rvHistory.adapter = HistoryAdapter(
+        currentLocale = locale,
+        onItemClickAction = ::onHistoryItemClick,
+        onMenuClickAction = ::onHistoryMenuClick
+      )
         .apply {
           setHasStableIds(false)
-          submitList(history)
+          submitList(historyItems)
         }
         .also { adapter ->
           val ctx = context ?: return@also
           val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(ctx) { position ->
+            val history = historyItems[position]
             createDialog(
               type = HistoryDialogType.REMOVE,
-              history = history[position],
-              yesAction = { history -> viewModel.removeItem(history ?: return@createDialog) },
+              yesAction = { viewModel.removeItem(history) },
               noAction = { adapter.notifyItemChanged(position) },
             )
           })
@@ -136,11 +118,35 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
     collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
   }
 
+  private fun onHistoryMenuClick(history: History) {
+    createDialog(
+      type = HistoryDialogType.REMOVE,
+      yesAction = { viewModel.removeItem(history) },
+    )
+  }
+
+  private fun onHistoryItemClick(history: History) {
+    createDialog(
+      type = HistoryDialogType.RESTORE,
+      yesAction = {
+        router.navigateTo(
+          searchScreen(
+            bundleOf(
+              ARG_FROM_ID to history.fromStop.id,
+              ARG_TO_ID to history.toStop.id,
+              ARG_ADD_TO_HISTORY to false
+            )
+          )
+        )
+      },
+    )
+  }
+
   private fun createDialog(
     type: HistoryDialogType,
-    history: History? = null,
-    yesAction: (History?) -> Unit,
-    noAction: (History?) -> Unit = {}
+//    history: History? = null,
+    yesAction: () -> Unit,
+    noAction: () -> Unit = {}
   ) {
     DialogHistory.newInstance(
       bundleOf(
@@ -153,9 +159,9 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
         ARG_HISTORY_DIALOG_TYPE to type.ordinal
       )
     ).apply {
-      onYesClick = { yesAction(history) }
+      onYesClick = { yesAction() }
       onNoClick = {
-        noAction(history)
+        noAction()
         dismiss()
       }
     }.let { dialog ->

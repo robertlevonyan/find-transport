@@ -16,6 +16,9 @@ import androidx.core.os.bundleOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.terrakok.cicerone.Command
 import com.github.terrakok.cicerone.Navigator
 import com.github.terrakok.cicerone.NavigatorHolder
@@ -30,7 +33,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.service.LocaleService
@@ -44,7 +47,6 @@ import robert.findtransport.utils.ARG_MESSAGE_DESCRIPTION
 import robert.findtransport.utils.ARG_MESSAGE_TITLE
 import robert.findtransport.utils.extensions.fitSystemWindows
 import robert.findtransport.utils.extensions.isTablet
-import robert.findtransport.utils.observeInLifecycle
 import robert.findtransport.utils.viewbinding.viewBinding
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -135,16 +137,14 @@ class MainActivity : AppCompatActivity(), ChainHolder {
       }
     }
 
-    mainViewModel.run {
-      observe(theme) { theme -> delegate.localNightMode = theme }
-      observe(currentLanguage) { LocaleService(this@MainActivity).changeLocale(it) }
-      observe(nextIntro) { openIntro() }
-      observe(nextMain) {
-        openMain()
-      }
-      observe(emptyDatabase) { showEmptyDatabaseDialog() }
-      observe(loadingError) { showLoadingErrorDialog() }
-      observe(loadingDiskFull) { showLoadingErrorDiskFullDialog() }
+    with(mainViewModel) {
+      collectWithLifecycle(theme) { theme -> delegate.localNightMode = theme }
+      collectWithLifecycle(currentLanguage) { LocaleService(this@MainActivity).changeLocale(it) }
+      collectWithLifecycle(nextIntro) { openIntro() }
+      collectWithLifecycle(nextMain) { openMain() }
+      collectWithLifecycle(emptyDatabase) { showEmptyDatabaseDialog() }
+      collectWithLifecycle(loadingError) { showLoadingErrorDialog() }
+      collectWithLifecycle(loadingDiskFull) { showLoadingErrorDiskFullDialog() }
     }
   }
 
@@ -205,8 +205,12 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     super.onPause()
   }
 
-  private inline fun <reified T> observe(flow: Flow<T>, crossinline action: (T) -> Unit) {
-    flow.onEach { action(it) }.observeInLifecycle(this)
+  private inline fun <reified T> collectWithLifecycle(flow: Flow<T>, crossinline collector: (T) -> Unit) {
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        flow.collect { collector(it) }
+      }
+    }
   }
 
   private fun openIntro() {

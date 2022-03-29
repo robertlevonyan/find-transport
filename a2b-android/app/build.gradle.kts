@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 261
-    versionName = "3.7.2"
+    versionCode = 262
+    versionName = "3.7.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -137,7 +137,7 @@ dependencies {
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
   implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.paging:paging-runtime-ktx:3.1.0")
+  implementation("androidx.paging:paging-runtime-ktx:3.1.1")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
   implementation("androidx.room:room-runtime:2.4.2")
   implementation("androidx.room:room-ktx:2.4.2")

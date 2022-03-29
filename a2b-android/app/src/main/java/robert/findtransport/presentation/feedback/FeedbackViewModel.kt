@@ -20,12 +20,16 @@ class FeedbackViewModel @Inject constructor(private val feedbackUseCase: Feedbac
 
   private val _feedbackSent = MutableSharedFlow<Unit>()
   val feedbackSent: Flow<Unit> get() = _feedbackSent
+
   private val _errorEmail = MutableSharedFlow<Int>()
   val errorEmail: Flow<Int> get() = _errorEmail
+
   private val _errorSubject = MutableSharedFlow<Int>()
   val errorSubject: Flow<Int> get() = _errorSubject
+
   private val _errorMessage = MutableSharedFlow<Int>()
   val errorMessage: Flow<Int> get() = _errorMessage
+
   private val _showHideLoading = MutableSharedFlow<Boolean>()
   val showHideLoading: Flow<Boolean> get() = _showHideLoading
 

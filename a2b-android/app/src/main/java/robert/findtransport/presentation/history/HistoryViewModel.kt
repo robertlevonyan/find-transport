@@ -31,15 +31,6 @@ class HistoryViewModel @Inject constructor(
   private val _allHistory = MutableSharedFlow<List<History>>()
   val allHistory: Flow<List<History>> get() = _allHistory
 
-  private val _onClear = MutableSharedFlow<Unit>()
-  val onClear: Flow<Unit> get() = _onClear
-
-  private val _itemClear = MutableSharedFlow<History>()
-  val itemClear: Flow<History> get() = _itemClear
-
-  private val _itemClicked = MutableSharedFlow<History>()
-  val itemClicked: Flow<History> get() = _itemClicked
-
   private val _itemRemoved = MutableSharedFlow<History>()
   val itemRemoved: Flow<History> get() = _itemRemoved
 
@@ -52,24 +43,6 @@ class HistoryViewModel @Inject constructor(
       _allHistory.emit(history)
       _noHistory.emit(history.isEmpty())
       _loading.value = false
-    }
-  }
-
-  fun onClearClicked() {
-    viewModelScope.launch {
-      _onClear.emit(Unit)
-    }
-  }
-
-  fun onRemoveItemClicked(history: History) {
-    viewModelScope.launch {
-      _itemClear.emit(history)
-    }
-  }
-
-  fun onItemClicked(history: History) {
-    viewModelScope.launch {
-      _itemClicked.emit(history)
     }
   }
 

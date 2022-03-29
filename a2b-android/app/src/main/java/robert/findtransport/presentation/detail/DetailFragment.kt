@@ -59,9 +59,21 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
   }
 
   override fun FragmentDetailBinding.initViews() {
-    fabMap.setOnClickListener { viewModel.openMapClick() }
+    fabMap.setOnClickListener { openMap() }
     btnPrimaryRoute.setOnClickListener { viewModel.togglePrimary(true) }
     btnSecondaryRoute.setOnClickListener { viewModel.togglePrimary(false) }
+  }
+
+  private fun openMap() {
+    router.navigateTo(
+      mapPreviewScreen(
+        bundleOf(
+          ARG_TRANSPORT_ID to transportId,
+          ARG_ROUTE_REVERSE to viewModel.showPrimary.value,
+          ARG_UNDERGROUND to (viewModel.selectedTransport.value.type == TransportType.METRO)
+        )
+      )
+    )
   }
 
   override fun DetailViewModel.initObservers() {
@@ -76,20 +88,6 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
       viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
         setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
         view?.showSnackbar(String.format(getString(R.string.action_set_to_route), it))
-      }
-    }
-
-    collectWithLifecycle(openMap) { open ->
-      if (open) {
-        router.navigateTo(
-          mapPreviewScreen(
-            bundleOf(
-              ARG_TRANSPORT_ID to transportId,
-              ARG_ROUTE_REVERSE to viewModel.showPrimary.value,
-              ARG_UNDERGROUND to (selectedTransport.value.type == TransportType.METRO)
-            )
-          )
-        )
       }
     }
 

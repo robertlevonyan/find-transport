@@ -166,13 +166,13 @@ fun View.setStopOptionsMenu(viewModel: DetailViewModel?, stop: Stop) {
     .run { setOnClickListener { show() } }
 }
 
-fun View.setHistoryOptionsMenu(viewModel: HistoryViewModel?, history: History) {
+fun View.setHistoryOptionsMenu(onClearAction: () -> Unit) {
   PopupMenu(context, this)
     .apply {
       menuInflater.inflate(R.menu.menu_history, menu)
       setOnMenuItemClickListener {
         when (it.itemId) {
-          R.id.action_clear -> viewModel?.onRemoveItemClicked(history)
+          R.id.action_clear -> onClearAction.invoke()
         }
         true
       }

@@ -41,9 +41,6 @@ class DetailViewModel @Inject constructor(
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: StateFlow<String> get() = _locale
 
-  private val _openMap = MutableSharedFlow<Boolean>()
-  val openMap: Flow<Boolean> get() = _openMap
-
   fun getTransport(id: Int) {
     viewModelScope.launch(Dispatchers.IO) {
       transportUseCase.getTransportById(id).collect { transport ->
@@ -74,12 +71,6 @@ class DetailViewModel @Inject constructor(
       LNG_RU -> stop.nameRu
       else -> stop.nameAm
     }
-
-  fun openMapClick() {
-    viewModelScope.launch {
-      _openMap.emit(true)
-    }
-  }
 
   fun onShowTransportsClicked(stop: Stop) {
     viewModelScope.launch {
