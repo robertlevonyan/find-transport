@@ -8,15 +8,16 @@
   tools:context=".presentation.settings.SettingsFragment">
 
   <ImageView
-    android:id="@+id/ivInnfinity"
+    android:id="@+id/iv_innfinity"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center_horizontal"
+    android:contentDescription="@null"
     android:gravity="center_vertical"
     android:src="@drawable/ic_inn_logo" />
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/app_bar"
     style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rvSettings"
+      android:id="@+id/rv_settings"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:clipToPadding="false"

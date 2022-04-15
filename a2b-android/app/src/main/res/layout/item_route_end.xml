@@ -32,22 +32,22 @@
     app:layout_constraintGuide_percent="0.5" />
 
   <View
-    android:id="@+id/routeLine1"
+    android:id="@+id/route_line1"
     android:layout_width="3dp"
     android:layout_height="0dp"
     android:background="@color/colorSecondary"
     app:layout_constraintBottom_toBottomOf="@id/guide_center_horizontal"
     app:layout_constraintEnd_toEndOf="@id/guide_start"
-    app:layout_constraintStart_toStartOf="@id/routeDotEnd"
+    app:layout_constraintStart_toStartOf="@id/route_dot_end"
     app:layout_constraintTop_toTopOf="parent" />
 
   <View
-    android:id="@+id/routeLine2"
+    android:id="@+id/route_line2"
     android:layout_width="3dp"
     android:layout_height="0dp"
     android:background="@color/colorSecondary"
     app:layout_constraintBottom_toBottomOf="@id/guide_center_horizontal"
-    app:layout_constraintEnd_toEndOf="@id/routeDotEnd"
+    app:layout_constraintEnd_toEndOf="@id/route_dot_end"
     app:layout_constraintStart_toStartOf="@id/guide_start"
     app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,10 +65,10 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/stopNameEnd" />
+    app:layout_constraintTop_toBottomOf="@id/stop_name_end" />
 
   <ImageView
-    android:id="@+id/routeDotEnd"
+    android:id="@+id/route_dot_end"
     android:layout_width="20dp"
     android:layout_height="20dp"
     app:layout_constraintBottom_toBottomOf="parent"
@@ -79,27 +79,27 @@
     tools:ignore="ContentDescription" />
 
   <TextView
-    android:id="@+id/stopNameEnd"
+    android:id="@+id/stop_name_end"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
     android:textColor="@color/colorSecondary"
     android:textSize="@dimen/route_item_text_size"
-    app:layout_constraintBottom_toBottomOf="@id/routeDotEnd"
-    app:layout_constraintEnd_toStartOf="@id/optionsEnd"
-    app:layout_constraintStart_toEndOf="@id/routeDotEnd"
-    app:layout_constraintTop_toTopOf="@id/routeDotEnd" />
+    app:layout_constraintBottom_toBottomOf="@id/route_dot_end"
+    app:layout_constraintEnd_toStartOf="@id/options_end"
+    app:layout_constraintStart_toEndOf="@id/route_dot_end"
+    app:layout_constraintTop_toTopOf="@id/route_dot_end" />
 
   <ImageView
-    android:id="@+id/optionsEnd"
+    android:id="@+id/options_end"
     android:layout_width="@dimen/icon_size2"
     android:layout_height="@dimen/icon_size2"
     android:layout_marginEnd="@dimen/margin_small"
     android:background="?selectableItemBackgroundBorderless"
     android:contentDescription="@string/cd_options"
     android:scaleType="centerInside"
-    app:layout_constraintBottom_toBottomOf="@id/routeDotEnd"
+    app:layout_constraintBottom_toBottomOf="@id/route_dot_end"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@id/routeDotEnd"
+    app:layout_constraintTop_toTopOf="@id/route_dot_end"
     app:srcCompat="@drawable/ic_more_white" />
 </androidx.constraintlayout.widget.ConstraintLayout>

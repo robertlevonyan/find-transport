@@ -18,7 +18,7 @@
     app:layout_constraintEnd_toEndOf="parent" />
 
   <TextView
-    android:id="@+id/tvStopName"
+    android:id="@+id/tv_stop_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:drawablePadding="@dimen/margin_small"

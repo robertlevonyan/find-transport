@@ -31,17 +31,17 @@ class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
     }
     collectWithLifecycle(pickerArmValue) {
       if (it) {
-        binding.pkLanguage.check(R.id.btnArm)
+        binding.pkLanguage.check(R.id.btn_arm)
       }
     }
     collectWithLifecycle(pickerEngValue) {
       if (it) {
-        binding.pkLanguage.check(R.id.btnEng)
+        binding.pkLanguage.check(R.id.btn_eng)
       }
     }
     collectWithLifecycle(pickerRusValue) {
       if (it) {
-        binding.pkLanguage.check(R.id.btnRus)
+        binding.pkLanguage.check(R.id.btn_rus)
       }
     }
     collectWithLifecycle(introPassed) { router.replaceScreen(homeScreen()) }

@@ -10,7 +10,7 @@
   tools:ignore="Overdraw">
 
   <ImageView
-    android:id="@+id/ivSettingIcon"
+    android:id="@+id/iv_setting_icon"
     android:layout_width="@dimen/setting_icon_size"
     android:layout_height="@dimen/setting_icon_size"
     android:layout_marginStart="@dimen/fab_margin"
@@ -24,7 +24,7 @@
     tools:srcCompat="@drawable/ic_theme" />
 
   <TextView
-    android:id="@+id/tvSettingLabel"
+    android:id="@+id/tv_setting_label"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -34,13 +34,13 @@
     android:singleLine="true"
     android:textColor="@color/colorOnPrimary"
     android:textSize="@dimen/setting_text_size"
-    app:layout_constraintEnd_toStartOf="@id/tvAdditionalText"
-    app:layout_constraintStart_toEndOf="@id/ivSettingIcon"
+    app:layout_constraintEnd_toStartOf="@id/tv_additional_text"
+    app:layout_constraintStart_toEndOf="@id/iv_setting_icon"
     app:layout_constraintTop_toTopOf="parent"
     tools:text="@string/settings_theme" />
 
   <TextView
-    android:id="@+id/tvSettingDetails"
+    android:id="@+id/tv_setting_details"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -52,13 +52,13 @@
     android:textColor="@color/colorOnPrimaryLight"
     android:textSize="@dimen/text_size_12"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/tvAdditionalText"
-    app:layout_constraintStart_toEndOf="@id/ivSettingIcon"
-    app:layout_constraintTop_toBottomOf="@id/tvSettingLabel"
+    app:layout_constraintEnd_toStartOf="@id/tv_additional_text"
+    app:layout_constraintStart_toEndOf="@id/iv_setting_icon"
+    app:layout_constraintTop_toBottomOf="@id/tv_setting_label"
     tools:text="@string/settings_theme_details" />
 
   <TextView
-    android:id="@+id/tvAdditionalText"
+    android:id="@+id/tv_additional_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/fab_margin"

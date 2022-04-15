@@ -8,7 +8,7 @@
   android:padding="@dimen/fab_margin">
 
   <TextView
-    android:id="@+id/tvTitle"
+    android:id="@+id/tv_title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_small"
@@ -20,7 +20,7 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
-    android:id="@+id/tvDescription"
+    android:id="@+id/tv_description"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_small"
@@ -28,24 +28,24 @@
     android:textSize="@dimen/text_size_16"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+    app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
   <Button
-    android:id="@+id/btnYes"
+    android:id="@+id/btn_yes"
     style="@style/Button.Positive"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/label_ok"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvDescription" />
+    app:layout_constraintTop_toBottomOf="@id/tv_description" />
 
   <Button
-    android:id="@+id/btnNo"
+    android:id="@+id/btn_no"
     style="@style/Button.Negative"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/label_cancel"
-    app:layout_constraintBottom_toBottomOf="@id/btnYes"
-    app:layout_constraintEnd_toStartOf="@id/btnYes"
-    app:layout_constraintTop_toTopOf="@id/btnYes" />
+    app:layout_constraintBottom_toBottomOf="@id/btn_yes"
+    app:layout_constraintEnd_toStartOf="@id/btn_yes"
+    app:layout_constraintTop_toTopOf="@id/btn_yes" />
 </androidx.constraintlayout.widget.ConstraintLayout>

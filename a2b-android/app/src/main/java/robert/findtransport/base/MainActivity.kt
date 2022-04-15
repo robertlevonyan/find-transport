@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     }
   }
 
-  private val navigator: Navigator = object : AppNavigator(this, R.id.frContainer) {
+  private val navigator: Navigator = object : AppNavigator(this, R.id.fr_container) {
     override fun setupFragmentTransaction(
       screen: FragmentScreen,
       fragmentTransaction: FragmentTransaction,
@@ -115,7 +115,9 @@ class MainActivity : AppCompatActivity(), ChainHolder {
         ObjectAnimator.ofFloat(splashScreenViewProvider.view, View.ALPHA, 1f, 0f).apply {
           interpolator = AnticipateInterpolator()
           duration = 500L
-          doOnEnd { splashScreenViewProvider.remove() }
+          doOnEnd {
+            splashScreenViewProvider.remove()
+          }
         }.start()
       }
     }

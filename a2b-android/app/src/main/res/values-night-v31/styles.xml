@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="Button.Search" parent="@style/Widget.MaterialComponents.Button.Icon">
+  <style name="Button.Search" parent="Widget.Material3.Button.Icon">
     <item name="android:layout_marginTop">@dimen/fab_margin</item>
     <item name="android:layout_marginBottom">@dimen/fab_margin</item>
     <item name="textAllCaps">false</item>
@@ -15,7 +15,7 @@
     <item name="rippleColor">@color/colorSecondary</item>
   </style>
 
-  <style name="FloatingActionButton.Small" parent="Widget.MaterialComponents.FloatingActionButton">
+  <style name="FloatingActionButton.Small" parent="Widget.Material3.FloatingActionButton.Secondary">
     <item name="backgroundTint">@android:color/system_neutral2_800</item>
     <item name="elevation">3dp</item>
     <item name="fabSize">mini</item>
@@ -30,7 +30,7 @@
     <item name="android:background">@android:color/system_neutral1_900</item>
   </style>
 
-  <style name="CardView.Regular" parent="Widget.MaterialComponents.CardView">
+  <style name="CardView.Regular" parent="Widget.Material3.CardView.Filled">
     <item name="cardCornerRadius">@dimen/card_radius</item>
     <item name="cardElevation">0dp</item>
     <item name="cardBackgroundColor">@android:color/system_neutral1_800</item>

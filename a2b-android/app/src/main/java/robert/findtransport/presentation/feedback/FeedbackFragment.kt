@@ -36,9 +36,9 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
 
   override fun FragmentFeedbackBinding.initViews() {
     tvFeedbackLabel.setFeedbackMessage()
-    inputEmail.doAfterTextChanged { viewModel.onEmailInput(it) }
-    inputSubject.doAfterTextChanged { viewModel.onSubjectInput(it) }
-    inputMessage.doAfterTextChanged { viewModel.onMessageInput(it) }
+    etEmail.doAfterTextChanged { viewModel.onEmailInput(it) }
+    etSubject.doAfterTextChanged { viewModel.onSubjectInput(it) }
+    etMessage.doAfterTextChanged { viewModel.onMessageInput(it) }
     fabSend.setOnClickListener {
       viewModel.sendFeedback()
     }

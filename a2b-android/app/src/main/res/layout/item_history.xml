@@ -7,7 +7,7 @@
   android:layout_margin="@dimen/margin_small">
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/clHistory"
+    android:id="@+id/cl_history"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -15,7 +15,7 @@
     android:focusable="true">
 
     <TextView
-      android:id="@+id/tvLabelFrom"
+      android:id="@+id/tv_label_from"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="@dimen/fab_margin"
@@ -25,39 +25,39 @@
       app:layout_constraintWidth_percent="0.3" />
 
     <TextView
-      android:id="@+id/tvFrom"
+      android:id="@+id/tv_from"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="@dimen/fab_margin"
       android:textStyle="bold"
-      app:layout_constraintEnd_toStartOf="@id/ivOptions"
-      app:layout_constraintStart_toEndOf="@id/tvLabelFrom"
+      app:layout_constraintEnd_toStartOf="@id/iv_options"
+      app:layout_constraintStart_toEndOf="@id/tv_label_from"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintWidth_percent="0.6" />
 
     <TextView
-      android:id="@+id/tvLabelTo"
+      android:id="@+id/tv_label_to"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="@dimen/fab_margin"
       android:text="@string/label_to"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/tvFrom"
+      app:layout_constraintTop_toBottomOf="@id/tv_from"
       app:layout_constraintWidth_percent="0.3" />
 
     <TextView
-      android:id="@+id/tvTo"
+      android:id="@+id/tv_to"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:padding="@dimen/fab_margin"
       android:textStyle="bold"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/tvLabelTo"
-      app:layout_constraintTop_toTopOf="@id/tvLabelTo"
+      app:layout_constraintStart_toEndOf="@id/tv_label_to"
+      app:layout_constraintTop_toTopOf="@id/tv_label_to"
       app:layout_constraintWidth_percent="0.7" />
 
     <ImageView
-      android:id="@+id/ivOptions"
+      android:id="@+id/iv_options"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:background="?selectableItemBackgroundBorderless"
@@ -71,7 +71,7 @@
       app:layout_constraintWidth_percent="0.1" />
 
     <TextView
-      android:id="@+id/tvDate"
+      android:id="@+id/tv_date"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:paddingHorizontal="@dimen/fab_margin"
@@ -79,6 +79,6 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/tvTo" />
+      app:layout_constraintTop_toBottomOf="@id/tv_to" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

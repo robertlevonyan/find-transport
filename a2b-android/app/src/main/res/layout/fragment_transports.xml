@@ -7,7 +7,7 @@
   tools:context=".presentation.feedback.FeedbackFragment">
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rvTransportsList"
+    android:id="@+id/rv_transports_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clipToPadding="false"
@@ -19,7 +19,7 @@
     tools:listitem="@layout/item_transport" />
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:stateListAnimator="@drawable/appbar_elevation"
@@ -68,7 +68,7 @@
           app:layout_collapseMode="pin">
 
           <TextView
-            android:id="@+id/tvLabelShow"
+            android:id="@+id/tv_label_show"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_small"
@@ -78,37 +78,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-          <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swListToggle"
+          <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/sw_list_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/half_margin"
+            app:checkedButton="@id/btn_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvLabelShow" />
+            app:layout_constraintTop_toBottomOf="@id/tv_label_show"
+            app:selectionRequired="true"
+            app:singleSelection="true">
 
-          <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical|end"
-            android:padding="@dimen/margin_small"
-            android:text="@string/label_see_all"
-            android:textColor="@color/colorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="@id/swListToggle"
-            app:layout_constraintEnd_toStartOf="@id/swListToggle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/swListToggle" />
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btn_all"
+              style="@style/Button.Selector"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="@string/label_see_all" />
 
-          <TextView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:padding="@dimen/margin_small"
-            android:text="@string/label_see_favorites"
-            android:textColor="@color/colorOnPrimary"
-            app:layout_constraintBottom_toBottomOf="@id/swListToggle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/swListToggle"
-            app:layout_constraintTop_toTopOf="@id/swListToggle" />
+            <com.google.android.material.button.MaterialButton
+              android:id="@+id/btn_favorites"
+              style="@style/Button.Selector"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              android:text="@string/label_see_favorites" />
+          </com.google.android.material.button.MaterialButtonToggleGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
       </LinearLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>

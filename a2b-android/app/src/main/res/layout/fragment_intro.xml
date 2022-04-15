@@ -11,14 +11,14 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    app:layout_constraintBottom_toTopOf="@id/tvWelcome"
+    app:layout_constraintBottom_toTopOf="@id/tv_welcome"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:ignore="UseCompoundDrawables">
 
     <ImageView
-      android:id="@+id/ivLogo"
+      android:id="@+id/iv_logo"
       android:layout_width="?actionBarSize"
       android:layout_height="?actionBarSize"
       android:layout_gravity="center"
@@ -26,7 +26,7 @@
       tools:ignore="ContentDescription" />
 
     <TextView
-      android:id="@+id/tvTitle"
+      android:id="@+id/tv_title"
       android:layout_width="@dimen/splash_title_width"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
@@ -37,13 +37,13 @@
   </LinearLayout>
 
   <TextView
-    android:id="@+id/tvWelcome"
+    android:id="@+id/tv_welcome"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_xx_large"
     android:text="@string/message_slider_welcome"
     android:textSize="@dimen/splash_text_size"
-    app:layout_constraintBottom_toTopOf="@id/pkLanguage"
+    app:layout_constraintBottom_toTopOf="@id/pk_language"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent" />
 
@@ -57,7 +57,7 @@
     tools:ignore="ContentDescription" />
 
   <com.google.android.material.button.MaterialButtonToggleGroup
-    android:id="@+id/pkLanguage"
+    android:id="@+id/pk_language"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/fab_margin"
@@ -71,7 +71,7 @@
     app:singleSelection="true">
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/btnArm"
+      android:id="@+id/btn_arm"
       style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
@@ -88,7 +88,7 @@
       app:iconTint="@null" />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/btnEng"
+      android:id="@+id/btn_eng"
       style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
@@ -107,7 +107,7 @@
       app:iconTint="@null" />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/btnRus"
+      android:id="@+id/btn_rus"
       style="@style/Button.Selector"
       android:layout_width="match_parent"
       android:layout_height="@dimen/intro_lng_height"
@@ -127,7 +127,7 @@
   </com.google.android.material.button.MaterialButtonToggleGroup>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fabNext"
+    android:id="@+id/fab_next"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_xx_large"
@@ -140,7 +140,7 @@
     app:backgroundTint="@color/colorPrimary"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/pkLanguage"
+    app:layout_constraintTop_toBottomOf="@id/pk_language"
     app:rippleColor="@color/colorOnPrimary"
     app:tint="@color/colorOnPrimary" />
 </androidx.constraintlayout.widget.ConstraintLayout>

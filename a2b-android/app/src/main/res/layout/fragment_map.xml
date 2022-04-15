@@ -9,26 +9,27 @@
   tools:context=".presentation.map.MapFragment">
 
   <com.mapbox.maps.MapView
-    android:id="@+id/mapView"
+    android:id="@+id/map_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:mapbox_cameraTargetLat="40.180982"
     app:mapbox_cameraTargetLng="44.5114422"
     app:mapbox_cameraZoom="15.0" />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/fabLocation"
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/fab_location"
     style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/fab_margin"
     android:layout_marginBottom="@dimen/fab_margin"
-    android:text="@null"
-    app:icon="@drawable/ic_current_location_black" />
+    android:contentDescription="@string/cd_current_location"
+    android:src="@drawable/ic_current_location_black"
+    android:text="@null" />
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
@@ -50,7 +51,7 @@
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <TextView
-          android:id="@+id/tvTitle"
+          android:id="@+id/tv_title"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
           android:gravity="center"
@@ -60,7 +61,7 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <FrameLayout
-    android:id="@+id/flLoading"
+    android:id="@+id/fl_loading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOnPrimaryTransparentUntranslated"

@@ -19,6 +19,7 @@ import androidx.viewbinding.ViewBinding
 import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.di.feedbackScreen
@@ -72,7 +73,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
   protected inline fun <reified T> collectWithLifecycle(flow: Flow<T>, crossinline collector: suspend (T) -> Unit) {
     lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        flow.collect { collector(it) }
+        flow.collectLatest { collector(it) }
       }
     }
   }

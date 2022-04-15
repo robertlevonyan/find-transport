@@ -84,7 +84,7 @@ class MainViewModel @Inject constructor(
           if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
             notifyLoaded()
           } else {
-            if (databaseUseCase.isDatabaseEmpty()) {
+            if (!databaseUseCase.isDatabaseEmpty()) {
               databaseUseCase.clearDb()
             }
             getTransports()

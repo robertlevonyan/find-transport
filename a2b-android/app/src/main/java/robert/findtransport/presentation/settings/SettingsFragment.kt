@@ -1,8 +1,10 @@
 package robert.findtransport.presentation.settings
 
+import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.viewModels
@@ -11,6 +13,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.model.SettingData
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.databinding.FragmentSettingsBinding
 import robert.findtransport.presentation.component.adapter.SettingsAdapter
@@ -26,6 +29,19 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
   override val viewModel: SettingsViewModel by viewModels()
 
   private var downloadSnackbar: Snackbar? = null
+  private val settingsAdapter by lazy {
+    SettingsAdapter { settingData ->
+      when (settingData.type) {
+        SettingData.SettingType.LANGUAGE -> openLanguagePicker()
+        SettingData.SettingType.THEME -> openThemePicker()
+        SettingData.SettingType.UPDATE_CELLULAR -> viewModel.updateCellular()
+        SettingData.SettingType.PUSH -> viewModel.updatePush()
+        SettingData.SettingType.CHECK_UPDATE -> viewModel.checkForUpdate()
+        SettingData.SettingType.RATE -> rate()
+        SettingData.SettingType.VERSION -> return@SettingsAdapter
+      }
+    }
+  }
 
   override fun FragmentSettingsBinding.initInsets() {
     appBar.onWindowInsets { v, windowInsets ->
@@ -45,6 +61,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
     setHasOptionsMenu(true)
   }
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+
+    binding.rvSettings.adapter = settingsAdapter
+
+  }
+
   override fun FragmentSettingsBinding.initViews() {
     val horizontalPadding = if (isTablet()) getDimenInt(R.dimen.activity_horizontal_margin_big) else 0
     rvSettings.setPaddingRelative(
@@ -60,18 +83,20 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
       if (binding.rvSettings.itemDecorationCount == 0) {
         binding.rvSettings.addItemDecoration(VerticalSpaceItemDecoration())
       }
-      binding.rvSettings.adapter = SettingsAdapter(viewModel).apply { submitList(settings) }
+      settingsAdapter.submitList(settings)
     }
-    collectWithLifecycle(languagePickerEvent) { openLanguagePicker() }
-    collectWithLifecycle(themePickerEvent) { openThemePicker() }
     collectWithLifecycle(languageSave) { activity?.fullRecreate() }
     collectWithLifecycle(themeSave) { activity?.fullRecreate() }
-    collectWithLifecycle(newVersion) { view?.showSnackbar(getString(R.string.message_update), getString(R.string.label_yes)) { downloadUpdate() } }
+    collectWithLifecycle(newVersion) {
+      view?.showSnackbar(
+        getString(R.string.message_update),
+        getString(R.string.label_yes)
+      ) { downloadUpdate() }
+    }
     collectWithLifecycle(noNewVersion) { view?.showSnackbar(R.string.message_no_update) }
     collectWithLifecycle(downloadStart) { downloadSnackbar = view?.showInfiniteSnackbar(R.string.message_downloading) }
     collectWithLifecycle(downloadDone) { activity?.fullRecreate() }
     collectWithLifecycle(downloadError) { downloadSnackbar?.dismiss() }
-    collectWithLifecycle(openRate) { rate() }
   }
 
   private fun openLanguagePicker() {
@@ -92,23 +117,22 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
   }
 
   private fun rate() {
-    activity?.run {
-      val reviewManager = ReviewManagerFactory.create(this)
-      val requestReviewFlow = reviewManager.requestReviewFlow()
-      requestReviewFlow.addOnCompleteListener { request ->
-        if (request.isSuccessful) {
-          val reviewInfo = request.result
-          val flow = reviewManager.launchReviewFlow(this, reviewInfo)
-          flow.addOnCompleteListener {
-            if (it.isSuccessful) {
-              Log.d("Rate: ", request.result.toString())
-            } else {
-              Log.e("Error: ", it.exception.toString())
-            }
+    val currentActivity = activity ?: return
+    val reviewManager = ReviewManagerFactory.create(currentActivity)
+    val requestReviewFlow = reviewManager.requestReviewFlow()
+    requestReviewFlow.addOnCompleteListener { request ->
+      if (request.isSuccessful) {
+        val reviewInfo = request.result
+        val flow = reviewManager.launchReviewFlow(currentActivity, reviewInfo)
+        flow.addOnCompleteListener {
+          if (it.isSuccessful) {
+            Log.d("Rate: ", request.result.toString())
+          } else {
+            Log.e("Error: ", it.exception.toString())
           }
-        } else {
-          Log.e("Error: ", request.exception.toString())
         }
+      } else {
+        Log.e("Error: ", request.exception.toString())
       }
     }
   }

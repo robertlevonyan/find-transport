@@ -5,7 +5,7 @@
   android:layout_height="wrap_content">
 
   <TextView
-    android:id="@+id/tvTitle"
+    android:id="@+id/tv_title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:padding="@dimen/fab_margin"
@@ -15,7 +15,7 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <LinearLayout
-    android:id="@+id/llSetFrom"
+    android:id="@+id/ll_set_from"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -24,7 +24,7 @@
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvTitle">
+    app:layout_constraintTop_toBottomOf="@id/tv_title">
 
     <ImageView
       android:layout_width="?actionBarSize"
@@ -44,7 +44,7 @@
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/llSetTo"
+    android:id="@+id/ll_set_to"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -53,7 +53,7 @@
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/llSetFrom">
+    app:layout_constraintTop_toBottomOf="@id/ll_set_from">
 
     <ImageView
       android:layout_width="?actionBarSize"
@@ -73,7 +73,7 @@
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/llRoute"
+    android:id="@+id/ll_route"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
@@ -82,7 +82,7 @@
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/llSetTo">
+    app:layout_constraintTop_toBottomOf="@id/ll_set_to">
 
     <ImageView
       android:layout_width="?actionBarSize"

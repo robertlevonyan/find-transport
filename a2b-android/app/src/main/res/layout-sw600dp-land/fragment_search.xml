@@ -8,7 +8,7 @@
   tools:context=".presentation.search.SearchFragment">
 
   <ProgressBar
-    android:id="@+id/progressLoading"
+    android:id="@+id/progress_loading"
     style="@style/Loading"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
     app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/rvTransportsList"
+      android:id="@+id/rv_transports_list"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:clipToPadding="false"
@@ -37,18 +37,18 @@
   </androidx.constraintlayout.widget.ConstraintLayout>
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/fabShowMap"
+    android:id="@+id/fab_show_map"
     style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
     android:layout_marginEnd="@dimen/fab_margin"
     android:visibility="invisible"
     app:icon="@drawable/ic_map"
-    app:layout_anchor="@id/appBar"
+    app:layout_anchor="@id/app_bar"
     app:layout_anchorGravity="end|bottom" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/fabTrackRoute"
+    android:id="@+id/fab_track_route"
     style="@style/FloatingActionButton.Regular"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/button_size"
@@ -61,7 +61,7 @@
     tools:visibility="visible" />
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/app_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/AppTheme.AppBarOverlay">
@@ -91,7 +91,7 @@
           app:popupTheme="@style/AppTheme.PopupOverlay">
 
           <TextView
-            android:id="@+id/tvTitle"
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -111,7 +111,7 @@
           app:layout_constraintWidth_percent="0.7" />
 
         <TextView
-          android:id="@+id/tvFromLabel"
+          android:id="@+id/tv_from_label"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:drawablePadding="@dimen/fab_margin"
@@ -129,7 +129,7 @@
           tools:text="From" />
 
         <TextView
-          android:id="@+id/tvToLabel"
+          android:id="@+id/tv_to_label"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:drawablePadding="@dimen/fab_margin"
@@ -143,7 +143,7 @@
           app:layout_constraintBottom_toBottomOf="@id/view"
           app:layout_constraintEnd_toEndOf="@id/view"
           app:layout_constraintStart_toStartOf="@id/view"
-          app:layout_constraintTop_toBottomOf="@id/tvFromLabel"
+          app:layout_constraintTop_toBottomOf="@id/tv_from_label"
           tools:text="To" />
       </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.CollapsingToolbarLayout>

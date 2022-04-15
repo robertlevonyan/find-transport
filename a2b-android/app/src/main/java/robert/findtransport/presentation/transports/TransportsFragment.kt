@@ -56,10 +56,13 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
   }
 
   override fun FragmentTransportsBinding.initViews() {
-    swListToggle.setOnCheckedChangeListener { _, isChecked ->
-      viewModel.getTransports(isChecked)
-      viewModel.setShowFavoritesToggle(isChecked)
-      adapter.notifyDataSetChanged()
+    btnAll.setOnClickListener {
+      viewModel.getTransports(false)
+      viewModel.setShowFavoritesToggle(false)
+    }
+    btnFavorites.setOnClickListener {
+      viewModel.getTransports(true)
+      viewModel.setShowFavoritesToggle(true)
     }
     rvTransportsList.adapter = adapter.also { it.setOnTransportFavoriteToggle(viewModel::toggleTransportFavorite) }
   }
@@ -68,10 +71,12 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
     collectWithLifecycle(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
       adapter.currentLocale = data.second
       adapter.submitList(data.first)
-      adapter.notifyDataSetChanged()
     }
     collectWithLifecycle(selectedTransport) { transport -> router.navigateTo(detailsScreen(transport.id, true)) }
-    collectWithLifecycle(showOnlyFavorites) { binding.swListToggle.isChecked = it }
+    collectWithLifecycle(showOnlyFavorites) { onlyFavorites ->
+      val checkedButtonId = if (onlyFavorites) R.id.btn_favorites else R.id.btn_all
+      binding.swListToggle.check(checkedButtonId)
+    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

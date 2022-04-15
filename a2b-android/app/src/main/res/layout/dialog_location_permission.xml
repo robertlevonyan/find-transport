@@ -8,7 +8,7 @@
   android:minWidth="300dp">
 
   <TextView
-    android:id="@+id/tvTitle"
+    android:id="@+id/tv_title"
     style="@style/Text.Toolbar"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
     tools:text="Title" />
 
   <ImageView
-    android:id="@+id/ivIllustration"
+    android:id="@+id/iv_illustration"
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:contentDescription="@string/permission_title"
@@ -31,10 +31,10 @@
     app:layout_constraintDimensionRatio="1:1"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+    app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
   <TextView
-    android:id="@+id/tvMessage"
+    android:id="@+id/tv_message"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -42,20 +42,20 @@
     android:text="@string/permission_message"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/ivIllustration" />
+    app:layout_constraintTop_toBottomOf="@id/iv_illustration" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/btnYes"
+    android:id="@+id/btn_yes"
     style="@style/Button.Regular"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="@string/permission_yes"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+    app:layout_constraintTop_toBottomOf="@id/tv_message" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/btnNo"
+    android:id="@+id/btn_no"
     style="@style/Button.Regular"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
@@ -64,5 +64,5 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/btnYes" />
+    app:layout_constraintTop_toBottomOf="@id/btn_yes" />
 </androidx.constraintlayout.widget.ConstraintLayout>

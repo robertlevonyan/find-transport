@@ -7,7 +7,7 @@
   tools:context=".presentation.feedback.FeedbackFragment">
 
   <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBar"
+    android:id="@+id/app_bar"
     style="@style/Background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-      android:id="@+id/tvFeedbackLabel"
+      android:id="@+id/tv_feedback_label"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/fab_margin"
@@ -46,7 +46,7 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
-    android:id="@+id/scrollRoot"
+    android:id="@+id/scroll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -59,7 +59,7 @@
       android:layout_height="match_parent">
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ilEmail"
+        android:id="@+id/il_email"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inputEmail"
+          android:id="@+id/et_email"
           style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ilSubject"
+        android:id="@+id/il_subject"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -95,10 +95,10 @@
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ilEmail">
+        app:layout_constraintTop_toBottomOf="@id/il_email">
 
         <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inputSubject"
+          android:id="@+id/et_subject"
           style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
       </com.google.android.material.textfield.TextInputLayout>
 
       <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ilMessage"
+        android:id="@+id/il_message"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -121,10 +121,10 @@
         app:hintTextColor="@color/colorOnPrimaryTransparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ilSubject">
+        app:layout_constraintTop_toBottomOf="@id/il_subject">
 
         <com.google.android.material.textfield.TextInputEditText
-          android:id="@+id/inputMessage"
+          android:id="@+id/et_message"
           style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/fabSend"
+    android:id="@+id/fab_send"
     style="@style/FloatingActionButton.Regular"
     android:layout_width="@dimen/fab_size"
     android:layout_height="@dimen/button_size"
@@ -148,7 +148,7 @@
     app:icon="@drawable/ic_send" />
 
   <FrameLayout
-    android:id="@+id/flLoading"
+    android:id="@+id/fl_loading"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorOnPrimaryTransparentUntranslated"

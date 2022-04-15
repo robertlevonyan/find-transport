@@ -14,19 +14,19 @@ import robert.findtransport.databinding.ItemSettingBinding
 import robert.findtransport.databinding.ItemSettingProgressBinding
 import robert.findtransport.databinding.ItemSettingSwitchBinding
 import robert.findtransport.presentation.component.rv.SettingsDiffCallback
-import robert.findtransport.presentation.settings.SettingsViewModel
 import robert.findtransport.utils.extensions.set
 import robert.findtransport.utils.extensions.setEndView
 
-class SettingsAdapter(private val settingsViewModel: SettingsViewModel) :
-    BaseRecyclerViewAdapter<ItemSettingBinding, SettingData, SettingsAdapter.SettingsViewHolder>(
-        AsyncDifferConfig.Builder(SettingsDiffCallback())) {
+class SettingsAdapter(private val onItemClick: (SettingData) -> Unit) :
+  BaseRecyclerViewAdapter<ItemSettingBinding, SettingData, SettingsAdapter.SettingsViewHolder>(
+    AsyncDifferConfig.Builder(SettingsDiffCallback())
+  ) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-      SettingsViewHolder(ItemSettingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    SettingsViewHolder(ItemSettingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
   inner class SettingsViewHolder(private val binding: ItemSettingBinding) :
-      BaseViewHolder<ItemSettingBinding, SettingData>(binding) {
+    BaseViewHolder<ItemSettingBinding, SettingData>(binding) {
 
     override fun bind(item: SettingData) {
       binding.run {
@@ -38,7 +38,7 @@ class SettingsAdapter(private val settingsViewModel: SettingsViewModel) :
         tvSettingDetails.setText(item.detail)
 
         val additionalViewBinding = flAdditionalView.setEndView(item.endViewType)
-        clRoot.setOnClickListener { settingsViewModel.onItemClick(item) }
+        clRoot.setOnClickListener { onItemClick(item) }
 
         item.additionalInfo?.let { additionalInfo ->
           when (item.endViewType) {

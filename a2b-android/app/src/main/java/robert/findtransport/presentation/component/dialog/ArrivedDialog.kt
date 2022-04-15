@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import robert.findtransport.databinding.DialogArrivedBinding
-import robert.findtransport.databinding.DialogNextStopBinding
 import robert.findtransport.utils.viewbinding.viewBinding
 
 class ArrivedDialog : DialogFragment() {

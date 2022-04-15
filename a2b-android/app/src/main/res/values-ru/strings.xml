@@ -138,4 +138,6 @@
   <string name="cd_next">Слдеующая страница</string>
   <string name="cd_options">Дополнительно</string>
   <string name="cd_dropwdown">Выпадающее меню</string>
+  <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
+  <string name="cd_show_on_map">Показать путь на карте</string>
 </resources>

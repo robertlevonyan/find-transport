@@ -30,7 +30,6 @@ class TransportsListAdapter(private val onItemClick: (Transport) -> Unit = {}) :
       BaseViewHolder<ItemTransportBinding, Transport>(binding) {
 
     override fun bind(item: Transport) {
-      println(item)
       binding.run {
         ivTransportIcon.setTransportIcon(item)
         tvTransportType.setTransportType(item)

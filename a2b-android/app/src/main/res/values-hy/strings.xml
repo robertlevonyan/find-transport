@@ -138,4 +138,6 @@
   <string name="cd_next">Հաջորդ էջը</string>
   <string name="cd_options">Բացել տարբերակներ</string>
   <string name="cd_dropwdown">Ներքև թափվող մենյու</string>
+  <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
+  <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
 </resources>

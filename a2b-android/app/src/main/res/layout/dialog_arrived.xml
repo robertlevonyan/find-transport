@@ -7,7 +7,7 @@
   android:minWidth="300dp">
 
   <TextView
-    android:id="@+id/tvTitle"
+    android:id="@+id/tv_title"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -21,33 +21,34 @@
     app:layout_constraintTop_toTopOf="parent" />
 
   <TextView
-    android:id="@+id/tvMessage"
+    android:id="@+id/tv_message"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="@dimen/fab_margin"
     android:text="@string/message_arrived"
     android:textColor="@color/colorOnPrimary"
-    app:layout_constraintBottom_toTopOf="@id/ivIllustration"
+    app:layout_constraintBottom_toTopOf="@id/iv_illustration"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+    app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
   <ImageView
-    android:id="@+id/ivIllustration"
+    android:id="@+id/iv_illustration"
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:layout_marginBottom="@dimen/fab_margin"
+    android:contentDescription="@null"
     android:padding="@dimen/margin_xx_large"
-    android:src="@drawable/ic_tranport_arriving"
-    app:layout_constraintBottom_toBottomOf="@id/btnClose"
+    android:src="@drawable/ic_transport_arriving"
+    app:layout_constraintBottom_toBottomOf="@id/btn_close"
     app:layout_constraintDimensionRatio="2:1"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+    app:layout_constraintTop_toBottomOf="@id/tv_message" />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/btnClose"
+    android:id="@+id/btn_close"
     style="@style/Button.Positive"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -56,5 +57,5 @@
     android:text="@string/label_ok"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/ivIllustration" />
+    app:layout_constraintTop_toBottomOf="@id/iv_illustration" />
 </androidx.constraintlayout.widget.ConstraintLayout>

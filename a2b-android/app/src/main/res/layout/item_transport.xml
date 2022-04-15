@@ -9,7 +9,7 @@
   tools:ignore="Overdraw">
 
   <ImageView
-    android:id="@+id/ivTransportIcon"
+    android:id="@+id/iv_transport_icon"
     android:layout_width="@dimen/transport_icon_size"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -22,7 +22,7 @@
     tools:src="@drawable/ic_bus" />
 
   <TextView
-    android:id="@+id/tvTransportNumber"
+    android:id="@+id/tv_transport_number"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -32,12 +32,12 @@
     android:textSize="@dimen/number_text_size"
     android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toEndOf="@id/ivTransportIcon"
+    app:layout_constraintStart_toEndOf="@id/iv_transport_icon"
     app:layout_constraintTop_toTopOf="parent"
     tools:text="1" />
 
   <TextView
-    android:id="@+id/tvTransportType"
+    android:id="@+id/tv_transport_type"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -46,13 +46,13 @@
     android:gravity="end"
     android:textColor="@color/colorOnPrimary"
     android:textSize="@dimen/type_text_size"
-    app:layout_constraintEnd_toStartOf="@id/ivFavorite"
-    app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+    app:layout_constraintEnd_toStartOf="@id/iv_favorite"
+    app:layout_constraintStart_toEndOf="@id/tv_transport_number"
     app:layout_constraintTop_toTopOf="parent"
     tools:text="Bus" />
 
   <TextView
-    android:id="@+id/tvFirstLastStops"
+    android:id="@+id/tv_first_last_stops"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/fab_margin"
@@ -65,15 +65,16 @@
     android:textSize="@dimen/first_last_text_size"
     android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/ivFavorite"
-    app:layout_constraintStart_toEndOf="@id/tvTransportNumber"
+    app:layout_constraintEnd_toStartOf="@id/iv_favorite"
+    app:layout_constraintStart_toEndOf="@id/tv_transport_number"
     tools:text="Stop 1 - Stop N" />
 
   <ImageView
-    android:id="@+id/ivFavorite"
+    android:id="@+id/iv_favorite"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@null"
     android:padding="@dimen/fab_margin"
     app:layout_constraintBottom_toBottomOf="@id/divider"
     app:layout_constraintEnd_toEndOf="parent"
@@ -81,10 +82,11 @@
     tools:src="@drawable/ic_favorite_outline" />
 
   <ImageView
-    android:id="@+id/ivTrack"
+    android:id="@+id/iv_track"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackgroundBorderless"
+    android:contentDescription="@null"
     android:padding="@dimen/fab_margin"
     android:src="@drawable/ic_track_route"
     app:layout_constraintBottom_toBottomOf="@id/divider"

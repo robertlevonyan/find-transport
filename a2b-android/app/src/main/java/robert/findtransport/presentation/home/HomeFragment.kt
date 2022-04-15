@@ -64,18 +64,18 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   }
 
   override fun FragmentHomeBinding.initViews() {
-    inputFrom.setOnLongClickListener { true }
-    inputTo.setOnLongClickListener { true }
+    etFrom.setOnLongClickListener { true }
+    etTo.setOnLongClickListener { true }
 
-    inputFrom.isSelected = true
+    etFrom.isSelected = true
 
     btnRate.setOnClickListener { viewModel.openRate() }
     btnDismiss.setOnClickListener { viewModel.dismissRate() }
     clFromInput.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
-    inputFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+    etFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
     btnFromList.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
     clToInput.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
-    inputTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+    etTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     btnFromMap.setOnClickListener {
       lifecycleScope.launchWhenCreated {
@@ -124,13 +124,13 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
-      binding.inputFrom.setStopName(stop, locale)
+      binding.etFrom.setStopName(stop, locale)
     }
     collectWithLifecycle(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
-      binding.inputTo.setStopName(stop, locale)
+      binding.etTo.setStopName(stop, locale)
     }
     collectWithLifecycle(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
     collectWithLifecycle(fromError) { error -> binding.tvFromError.setDisappearingError(error) }

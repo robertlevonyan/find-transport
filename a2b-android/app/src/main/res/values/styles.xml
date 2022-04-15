@@ -91,11 +91,9 @@
     <item name="backgroundTint">@color/color_state_selector_bg</item>
   </style>
 
-  <style name="FloatingActionButton.Regular" parent="Widget.MaterialComponents.Button.Icon">
+  <style name="FloatingActionButton.Regular" parent="Widget.MaterialComponents.FloatingActionButton">
     <item name="backgroundTint">@color/colorAccent300</item>
-    <item name="iconTint">@color/colorAccent100</item>
-    <item name="iconGravity">textStart|end</item>
-    <item name="iconTintMode">src_in</item>
+    <item name="tint">@color/colorAccent100</item>
     <item name="cornerRadius">@dimen/card_radius</item>
   </style>
 
@@ -146,4 +144,11 @@
     <item name="android:indeterminateTint">@color/colorAccent500</item>
   </style>
   <!--  loading-->
+
+  <!--  switch-->
+  <style name="Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+    <item name="thumbTint">@color/colorAccent500</item>
+    <item name="trackTint">@color/colorAccent100</item>
+  </style>
+  <!--  switch-->
 </resources>
