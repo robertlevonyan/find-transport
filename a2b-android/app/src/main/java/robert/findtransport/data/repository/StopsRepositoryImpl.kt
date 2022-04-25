@@ -59,8 +59,8 @@ class StopsRepositoryImpl @Inject constructor(
   override suspend fun getStopById(id: Int): Stop? =
     stopsDao.getStopById(id)
 
-  override suspend fun getStopLocations(stopId: Int): List<StopLocation> =
-    stopsDao.getStopLocations(stopId)
+  override suspend fun getStopLocations(stopId: Int?): List<StopLocation> =
+    stopId?.let { id -> stopsDao.getStopLocations(id) } ?: emptyList()
 
   override suspend fun getStopLocationsFromCache(): List<StopLocation> =
     stopsDao.getAllStopLocation()

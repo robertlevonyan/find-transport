@@ -6,7 +6,9 @@ import com.mapbox.api.matching.v5.models.MapMatchingResponse
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,11 +63,11 @@ class TransportsRepositoryImpl @Inject constructor(
   override suspend fun getTransportsForStop(id: Int): List<Transport> =
     transportsDao.getTransportsForStop(id)
 
-  override fun getTransportStops(transportId: Int): List<Stop> =
-    transportsDao.getTransportStops(transportId)
+  override fun getTransportStops(transportId: Int?): List<Stop> =
+    transportId?.let { id -> transportsDao.getTransportStops(id) } ?: emptyList()
 
-  override fun getTransportStopsReversed(transportId: Int): List<Stop> =
-    transportsDao.getTransportStopsReversed(transportId)
+  override fun getTransportStopsReversed(transportId: Int?): List<Stop> =
+    transportId?.let { id -> transportsDao.getTransportStopsReversed(id) } ?: emptyList()
 
   @OptIn(ExperimentalCoroutinesApi::class)
   override suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>> = channelFlow {

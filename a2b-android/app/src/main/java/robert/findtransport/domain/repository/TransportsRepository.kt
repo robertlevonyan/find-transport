@@ -24,9 +24,9 @@ interface TransportsRepository {
 
   suspend fun getTransportsForStop(id: Int): List<Transport>
 
-  fun getTransportStops(transportId: Int): List<Stop>
+  fun getTransportStops(transportId: Int?): List<Stop>
 
-  fun getTransportStopsReversed(transportId: Int): List<Stop>
+  fun getTransportStopsReversed(transportId: Int?): List<Stop>
 
   suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>>
 

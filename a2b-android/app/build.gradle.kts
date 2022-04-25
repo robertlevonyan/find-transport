@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 265
-    versionName = "3.7.6"
+    versionCode = 266
+    versionName = "3.7.7"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -111,12 +111,12 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
 
   //google
-  implementation("com.google.android.material:material:1.6.0-beta01")
+  implementation("com.google.android.material:material:1.7.0-alpha01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:19.0.1")
   implementation("com.google.code.gson:gson:2.8.9")
-  implementation("com.google.dagger:hilt-android:2.40.5")
+  implementation("com.google.dagger:hilt-android:2.41")
   implementation(platform("com.google.firebase:firebase-bom:29.1.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
@@ -152,7 +152,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.1.0")
+  implementation("com.mapbox.maps:android:10.4.0")
   implementation("com.mapbox.navigation:android:2.0.1")
 
   //other

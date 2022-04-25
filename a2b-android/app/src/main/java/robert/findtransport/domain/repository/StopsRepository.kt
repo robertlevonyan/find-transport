@@ -26,7 +26,7 @@ interface StopsRepository {
 
   suspend fun getStopById(id: Int): Stop?
 
-  suspend fun getStopLocations(stopId: Int): List<StopLocation>
+  suspend fun getStopLocations(stopId: Int?): List<StopLocation>
 
   suspend fun getStopLocationsFromCache(): List<StopLocation>
 

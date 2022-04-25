@@ -1,10 +1,12 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
-import androidx.paging.*
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import robert.findtransport.R
 import robert.findtransport.data.model.*
 import robert.findtransport.data.model.enums.ExceptionType
@@ -25,25 +27,25 @@ class TransportUseCaseImpl @Inject constructor(
 ) : TransportUseCase {
   override fun getTransportsPaged(checked: Boolean): List<Transport> =
     transportsRepository.getAllTransports(checked).map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id ?: 0)
+      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
         .map { it.toStop() })
     }
 
   override fun getTransportById(id: Int): Flow<Transport> =
     transportsRepository.run {
       getTransportById(id).map { apiTransport ->
-        val stops = getTransportStops(apiTransport.id ?: 0).map { apiStop ->
+        val stops = getTransportStops(apiTransport.id).map { apiStop ->
           apiStop.toStop(
             runBlocking {
-              stopsRepository.getStopLocations(apiStop.id ?: 0)
+              stopsRepository.getStopLocations(apiStop.id)
                 .map { it.toStopLocation(apiStop) }
             }
           )
         }
-        val stopsReversed = getTransportStopsReversed(apiTransport.id ?: 0).map { apiStop ->
+        val stopsReversed = getTransportStopsReversed(apiTransport.id).map { apiStop ->
           apiStop.toStop(
             runBlocking {
-              stopsRepository.getStopLocations(apiStop.id ?: 0)
+              stopsRepository.getStopLocations(apiStop.id)
                 .map { it.toStopLocation(apiStop) }
                 .reversed()
             }
@@ -56,7 +58,7 @@ class TransportUseCaseImpl @Inject constructor(
   override suspend fun getTransportsForStop(id: Int): List<Transport> =
     transportsRepository.getTransportsForStop(id).map { apiTransport ->
       apiTransport
-        .toTransport(transportsRepository.getTransportStops(apiTransport.id ?: 0)
+        .toTransport(transportsRepository.getTransportStops(apiTransport.id)
           .map { it.toStop() })
     }
 
