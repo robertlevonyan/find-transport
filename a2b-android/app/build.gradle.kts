@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 266
-    versionName = "3.7.7"
+    versionCode = 267
+    versionName = "3.7.8"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -121,7 +121,7 @@ dependencies {
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.40.5")
+  kapt("com.google.dagger:hilt-android-compiler:2.41")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
@@ -142,6 +142,7 @@ dependencies {
   implementation("androidx.room:room-runtime:2.4.2")
   implementation("androidx.room:room-ktx:2.4.2")
   implementation("androidx.room:room-paging:2.4.2")
+//  implementation("androidx.startup:startup-runtime:1.1.1")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
   kapt("androidx.room:room-compiler:2.4.2")
@@ -152,7 +153,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.4.0")
+  implementation("com.mapbox.maps:android:10.1.0")
   implementation("com.mapbox.navigation:android:2.0.1")
 
   //other

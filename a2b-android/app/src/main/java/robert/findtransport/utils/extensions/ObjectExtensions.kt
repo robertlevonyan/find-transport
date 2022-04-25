@@ -1,6 +1,8 @@
 package robert.findtransport.utils.extensions
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.Log
 import android.util.Patterns
@@ -30,6 +32,9 @@ fun isTablet(): Boolean {
   val diagonalInches = sqrt((xInches * xInches + yInches * yInches).toDouble())
   return diagonalInches >= 6.8
 }
+
+fun Context.isNightMode(): Boolean =
+  (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 
 fun <T> List<T>.asPairs(): List<Pair<T, T?>> {
   val pairs = mutableListOf<Pair<T, T?>>()

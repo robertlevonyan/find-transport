@@ -63,7 +63,9 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     Manifest.permission.READ_PHONE_STATE,
   )
 
-  private val permissionRequest = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+  private val permissionRequest = registerForActivityResult(
+    ActivityResultContracts.RequestMultiplePermissions()
+  ) { permissions ->
     binding.fabLocation.visibility = if (permissions.all { it.value }) {
       locationEnabled = true
       setFragmentResult(RESULT_LOCATION_PERMISSION, bundleOf())
@@ -121,7 +123,8 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       view.topMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).top
     }
     fabLocation.onWindowInsets { view, windowInsets ->
-      view.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
+      view.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom +
+          getDimenInt(R.dimen.fab_margin)
     }
   }
 
@@ -166,10 +169,11 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
 
     try {
-      val mapStyle = if ((resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_NO) {
-        BuildConfig.MAPBOX_STYLE_LIGHT
-      } else {
+
+      val mapStyle = if (context?.isNightMode() == true) {
         BuildConfig.MAPBOX_STYLE_NIGHT
+      } else {
+        BuildConfig.MAPBOX_STYLE_LIGHT
       }
       mapboxMap?.loadStyleUri(mapStyle, { style ->
         if (locationEnabled) {
