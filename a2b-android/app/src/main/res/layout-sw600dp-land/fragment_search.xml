@@ -36,24 +36,26 @@
       tools:listitem="@layout/item_transport" />
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-  <com.google.android.material.button.MaterialButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab_show_map"
     style="@style/FloatingActionButton.Regular"
-    android:layout_width="@dimen/fab_size"
-    android:layout_height="@dimen/button_size"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/fab_margin"
+    android:contentDescription="@null"
     android:visibility="invisible"
     app:icon="@drawable/ic_map"
     app:layout_anchor="@id/app_bar"
     app:layout_anchorGravity="end|bottom" />
 
-  <com.google.android.material.button.MaterialButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/fab_track_route"
     style="@style/FloatingActionButton.Regular"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/button_size"
+    android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_margin="@dimen/fab_margin"
+    android:contentDescription="@null"
     android:text="@string/label_track"
     android:visibility="gone"
     app:cornerRadius="@dimen/card_radius"

@@ -3,6 +3,7 @@ package robert.findtransport.presentation.search
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -29,17 +30,17 @@ class SearchViewModel @Inject constructor(
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val locale: StateFlow<String> get() = _locale
 
-  private val _fromStop = MutableSharedFlow<Stop>()
-  val fromStop: Flow<Stop> get() = _fromStop
+  private val _fromStop = MutableStateFlow(Stop.EMPTY)
+  val fromStop: StateFlow<Stop> get() = _fromStop
 
-  private val _toStop = MutableSharedFlow<Stop>()
-  val toStop: Flow<Stop> get() = _toStop
+  private val _toStop = MutableStateFlow(Stop.EMPTY)
+  val toStop: StateFlow<Stop> get() = _toStop
 
-  private val _searchTransports = MutableStateFlow<List<Transport>>(emptyList())
+  private val _searchTransports = MutableSharedFlow<List<Transport>>()
   val searchTransports: Flow<List<Transport>> get() = _searchTransports
 
-  private val _searchMultiTransports = MutableStateFlow<List<MultiRoute>>(emptyList())
-  val searchMultiTransports: Flow<List<MultiRoute>> get() = _searchMultiTransports
+  private val _searchMultiTransports = Channel<List<MultiRoute>>()
+  val searchMultiTransports: Flow<List<MultiRoute>> get() = _searchMultiTransports.consumeAsFlow()
 
   private val _searchEmpty = MutableSharedFlow<Unit>()
   val searchEmpty: Flow<Unit> get() = _searchEmpty
@@ -55,25 +56,29 @@ class SearchViewModel @Inject constructor(
       _loading.emit(true)
       val from = stopsUseCase.getStop(fromId)
       val to = stopsUseCase.getStop(toId)
+      println("##1 from=$from to=$to")
 
       if (from == Stop.EMPTY || to == Stop.EMPTY) {
         _emptyStop.emit(Unit)
+        println("##2 empty")
         return@launch
       }
-      _fromStop.emit(from)
-      _toStop.emit(to)
+      _fromStop.value = from
+      _toStop.value = to
 
       when (val search = transportUseCase.search(from, to)) {
         is Result.Success -> when (search.data) {
           is SearchResult.Single -> {
             delay(100)
-            _searchTransports.value = search.data.result
+            _searchTransports.emit(search.data.result)
             _loading.emit(false)
+            println("##3 single")
           }
           is SearchResult.Multi -> {
             delay(100)
-            _searchMultiTransports.value = search.data.result
+            _searchMultiTransports.send(search.data.result)
             _loading.emit(false)
+            println("##3 single")
           }
         }.run {
           if (addToHistory) {
@@ -89,6 +94,7 @@ class SearchViewModel @Inject constructor(
         is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
           _searchEmpty.emit(Unit)
           _loading.emit(false)
+          println("##3 error")
         }
       }
     }

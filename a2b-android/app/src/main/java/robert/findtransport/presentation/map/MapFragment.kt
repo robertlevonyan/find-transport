@@ -169,7 +169,6 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
 
     try {
-
       val mapStyle = if (context?.isNightMode() == true) {
         BuildConfig.MAPBOX_STYLE_NIGHT
       } else {

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
+import robert.findtransport.data.model.MultiRoute
 import robert.findtransport.data.model.MultiRouteCase
 import robert.findtransport.data.model.MultiType
 import robert.findtransport.databinding.FragmentSearchBinding
@@ -36,9 +37,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    arguments?.takeIf { it.containsKey(ARG_FROM_ID) && it.containsKey(ARG_TO_ID) }?.run {
-      viewModel.getData(getInt(ARG_FROM_ID), getInt(ARG_TO_ID), getBoolean(ARG_ADD_TO_HISTORY))
-    }
+    val from = arguments?.getInt(ARG_FROM_ID) ?: return
+    val to = arguments?.getInt(ARG_TO_ID) ?: return
+    val fromHistory = arguments?.getBoolean(ARG_ADD_TO_HISTORY) ?: return
+
+    viewModel.getData(from, to, fromHistory)
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
       if (activity?.isFinishing != true) {
@@ -91,15 +94,10 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     collectWithLifecycle(selectedTransport) { router.navigateTo(detailsScreen(it.id, false)) }
     collectWithLifecycle(emptyStop) { stopNotFound() }
     collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
-    collectWithLifecycle(
-      searchTransports
-        .combineTransform(fromStop) { transports, fromStop -> emit(transports to fromStop) }
-        .combineTransform(toStop) { pair, toStop -> emit(Triple(pair.first, pair.second, toStop)) }
-    ) {
+    collectWithLifecycle(searchTransports) { transports ->
       val locale = viewModel.locale.value
-      val fromId = it.second.id
-      val toId = it.third.id
-      if (it.first.isEmpty()) return@collectWithLifecycle
+      val fromId = viewModel.fromStop.value
+      val toId = viewModel.toStop.value
 
       binding.rvTransportsList.adapter = TransportsListAdapter(viewModel::openTransport).apply {
         currentLocale = locale
@@ -114,23 +112,19 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             )
           )
         }
-        submitList(it.first)
+        submitList(transports)
       }
     }
-    collectWithLifecycle(
-      searchMultiTransports.combineTransform(toStop) { transports, toStop -> emit(transports to toStop) }
-    ) {
+    collectWithLifecycle(searchMultiTransports) { transports ->
       val locale = viewModel.locale.value
-      val multiRoots = it.first
-      val toStop = it.second
-      if (multiRoots.isEmpty()) return@collectWithLifecycle
+      val toStop = viewModel.toStop.value
 
       binding.rvTransportsList.adapter = MultiRouteAdapter(locale, viewModel).apply {
         var fromId = 0
         var toId = 0
         var selectedTransportPosition = -1
         setOnTransportTrackClickListener { transport ->
-          multiRoots.groupBy { it.case }.entries.forEach { entry ->
+          transports.groupBy { it.case }.entries.forEach { entry ->
             when (entry.key) {
               MultiRouteCase.SINGLE_FROM -> {
                 entry.value.forEach { multiRoot ->
@@ -201,7 +195,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             )
           )
         }
-        submitList(multiRoots)
+        submitList(transports)
       }
     }
     collectWithLifecycle(fromStop) { stop ->
