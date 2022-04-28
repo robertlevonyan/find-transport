@@ -32,27 +32,25 @@ class TransportUseCaseImpl @Inject constructor(
     }
 
   override fun getTransportById(id: Int): Flow<Transport> =
-    transportsRepository.run {
-      getTransportById(id).map { apiTransport ->
-        val stops = getTransportStops(apiTransport.id).map { apiStop ->
-          apiStop.toStop(
-            runBlocking {
-              stopsRepository.getStopLocations(apiStop.id)
-                .map { it.toStopLocation(apiStop) }
-            }
-          )
-        }
-        val stopsReversed = getTransportStopsReversed(apiTransport.id).map { apiStop ->
-          apiStop.toStop(
-            runBlocking {
-              stopsRepository.getStopLocations(apiStop.id)
-                .map { it.toStopLocation(apiStop) }
-                .reversed()
-            }
-          )
-        }
-        apiTransport.toTransport(stops, stopsReversed)
+    transportsRepository.getTransportById(id).map { apiTransport ->
+      val stops = transportsRepository.getTransportStops(apiTransport.id).map { apiStop ->
+        apiStop.toStop(
+          runBlocking {
+            stopsRepository.getStopLocations(apiStop.id)
+              .map { it.toStopLocation(apiStop) }
+          }
+        )
       }
+      val stopsReversed = transportsRepository.getTransportStopsReversed(apiTransport.id).map { apiStop ->
+        apiStop.toStop(
+          runBlocking {
+            stopsRepository.getStopLocations(apiStop.id)
+              .map { it.toStopLocation(apiStop) }
+              .reversed()
+          }
+        )
+      }
+      apiTransport.toTransport(stops, stopsReversed)
     }
 
   override suspend fun getTransportsForStop(id: Int): List<Transport> =

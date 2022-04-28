@@ -39,8 +39,8 @@ class SearchViewModel @Inject constructor(
   private val _searchTransports = MutableSharedFlow<List<Transport>>()
   val searchTransports: Flow<List<Transport>> get() = _searchTransports
 
-  private val _searchMultiTransports = Channel<List<MultiRoute>>()
-  val searchMultiTransports: Flow<List<MultiRoute>> get() = _searchMultiTransports.consumeAsFlow()
+  private val _searchMultiTransports = MutableSharedFlow<List<MultiRoute>>()
+  val searchMultiTransports: Flow<List<MultiRoute>> get() = _searchMultiTransports
 
   private val _searchEmpty = MutableSharedFlow<Unit>()
   val searchEmpty: Flow<Unit> get() = _searchEmpty
@@ -76,7 +76,7 @@ class SearchViewModel @Inject constructor(
           }
           is SearchResult.Multi -> {
             delay(100)
-            _searchMultiTransports.send(search.data.result)
+            _searchMultiTransports.emit(search.data.result)
             _loading.emit(false)
             println("##3 single")
           }
