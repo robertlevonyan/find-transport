@@ -70,7 +70,9 @@ class RetrofitClient private constructor() {
         )
       )
       addInterceptor(Interceptor { chain ->
-        val date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date())
+        val date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).apply {
+          timeZone = TimeZone.getTimeZone("UTC")
+        }.format(Date())
         val header = md5(BuildConfig.KEY_PREFIX, date)
 
         val newRequest: Request = chain.request().newBuilder()

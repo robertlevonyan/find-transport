@@ -69,7 +69,7 @@ class MainViewModel @Inject constructor(
   }
 
   fun checkData() {
-    if (_loaded.value == DataLoading.Loaded) {
+    if (_loaded.value == DataLoading.Loaded || _loaded.value == DataLoading.Loading) {
       return
     }
 

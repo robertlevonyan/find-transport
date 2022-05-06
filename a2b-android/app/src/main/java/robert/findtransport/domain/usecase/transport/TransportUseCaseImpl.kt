@@ -3,10 +3,7 @@ package robert.findtransport.domain.usecase.transport
 import android.location.Location
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import robert.findtransport.R
 import robert.findtransport.data.model.*
 import robert.findtransport.data.model.enums.ExceptionType
@@ -51,14 +48,15 @@ class TransportUseCaseImpl @Inject constructor(
         )
       }
       apiTransport.toTransport(stops, stopsReversed)
-    }
+    }.flowOn(Dispatchers.IO)
 
-  override suspend fun getTransportsForStop(id: Int): List<Transport> =
+  override suspend fun getTransportsForStop(id: Int): List<Transport> = withContext(Dispatchers.IO) {
     transportsRepository.getTransportsForStop(id).map { apiTransport ->
       apiTransport
         .toTransport(transportsRepository.getTransportStops(apiTransport.id)
           .map { it.toStop() })
     }
+  }
 
   override suspend fun downloadTransports(): Result<Unit> = withContext(Dispatchers.IO) {
     when (val transportsFromApiResult = transportsRepository.getTransportsFromApi()) {
@@ -94,15 +92,15 @@ class TransportUseCaseImpl @Inject constructor(
 
   override fun areJoinsCached(): Boolean = transportsRepository.areJoinsCached
 
-  override suspend fun searchCheck(from: Stop?, to: Stop?): Result<Unit> {
+  override suspend fun searchCheck(from: Stop?, to: Stop?): Result<Unit> = withContext(Dispatchers.IO) {
     if (from == null || from == Stop.EMPTY)
-      return Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_FROM, R.string.error_no_from, Exception("")))
+      return@withContext Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_FROM, R.string.error_no_from, Exception("")))
     if (to == null || to == Stop.EMPTY)
-      return Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_TO, R.string.error_no_to, Exception("")))
+      return@withContext Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_TO, R.string.error_no_to, Exception("")))
     if (from.id == to.id)
-      return Result.Error(A2bException(ExceptionType.SAME_STOPS, R.string.error_same_stops, Exception("")))
+      return@withContext Result.Error(A2bException(ExceptionType.SAME_STOPS, R.string.error_same_stops, Exception("")))
 
-    return Result.Success(Unit)
+    return@withContext Result.Success(Unit)
   }
 
   override suspend fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<Result<RouteResult>> =
@@ -120,15 +118,15 @@ class TransportUseCaseImpl @Inject constructor(
             }
           }
         }
-    }
+    }.flowOn(Dispatchers.IO)
 
   // search block
-  override suspend fun search(from: Stop?, to: Stop?): Result<SearchResult> {
+  override suspend fun search(from: Stop?, to: Stop?): Result<SearchResult> = withContext(Dispatchers.IO) {
     when {
       from == null || from == Stop.EMPTY ->
-        return Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_FROM, R.string.error_no_from, Exception("")))
+        return@withContext Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_FROM, R.string.error_no_from, Exception("")))
       to == null || to == Stop.EMPTY ->
-        return Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_TO, R.string.error_no_to, Exception("")))
+        return@withContext Result.Error(A2bException(ExceptionType.EMPTY_OR_WRONG_TO, R.string.error_no_to, Exception("")))
       else -> {
         val fromTransports = transportsRepository.getTransportsForStop(from.id)
         val toTransports = transportsRepository.getTransportsForStop(to.id)
@@ -150,14 +148,14 @@ class TransportUseCaseImpl @Inject constructor(
           val (multiDataTo, interchangeStopTo) = tryFindRoutes(toNearby, fromTransports)
           multiResult.addAll(createToResult(multiDataTo, interchangeStopTo, from, to))
           if (multiResult.isNotEmpty()) {
-            return Result.Success(SearchResult.Multi(multiResult))
+            return@withContext Result.Success(SearchResult.Multi(multiResult))
           }
 
           // get routes from a nearby point of origin to the destination
           val (multiDataFrom, interchangeStopFrom) = tryFindRoutes(fromNearby, toTransports)
           multiResult.addAll(createFromResult(multiDataFrom, interchangeStopFrom, from))
           if (multiResult.isNotEmpty()) {
-            return Result.Success(SearchResult.Multi(multiResult))
+            return@withContext Result.Success(SearchResult.Multi(multiResult))
           }
 
           // get routes from a nearby point of origin to a nearby point of destination
@@ -192,10 +190,10 @@ class TransportUseCaseImpl @Inject constructor(
               }
             }
           }
-          return Result.Success(SearchResult.Multi(multiResult))
+          return@withContext Result.Success(SearchResult.Multi(multiResult))
         } else {
           //return routes found
-          return Result.Success(SearchResult.Single(foundTransports))
+          return@withContext Result.Success(SearchResult.Single(foundTransports))
         }
       }
     }
@@ -217,34 +215,34 @@ class TransportUseCaseImpl @Inject constructor(
     return data.sortedBy { it.id }
   }
 
-  private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> {
+  private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = withContext(Dispatchers.IO) {
     val nearby = mutableListOf<Stop>()
     val fromLocation = if (stop.coordinates.isEmpty()) {
       val locations = stopsRepository.getStopLocations(stop.id)
-      if (locations.isEmpty()) return emptyList()
+      if (locations.isEmpty()) return@withContext emptyList()
       locations.first().toStopLocation(stop.toApiStop())
     } else {
       val coordinates = stop.coordinates
-      if (coordinates.isEmpty()) return emptyList()
+      if (coordinates.isEmpty()) return@withContext emptyList()
       coordinates.first()
     }
     nearby.addAll(getNearbyStops(fromLocation, stops))
-    return nearby
+    return@withContext nearby
   }
 
-  private suspend fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> {
+  private suspend fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> = withContext(Dispatchers.IO) {
     val nearby = mutableListOf<Stop>()
     val fromLocation = if (stop.coordinates.isEmpty()) {
       val locations = stopsRepository.getStopLocations(stop.id)
-      if (locations.isEmpty()) return emptyList()
+      if (locations.isEmpty()) return@withContext emptyList()
       locations.first().toStopLocation(stop.toApiStop())
     } else {
       val coordinates = stop.coordinates
-      if (coordinates.isEmpty()) return emptyList()
+      if (coordinates.isEmpty()) return@withContext emptyList()
       coordinates.first()
     }
     nearby.addAll(getNearbyStops(fromLocation, stops).take(5))
-    return nearby
+    return@withContext nearby
   }
 
   private fun getNearbyStops(currentStop: StopLocation, stops: List<Stop>): Sequence<Stop> {
@@ -269,7 +267,10 @@ class TransportUseCaseImpl @Inject constructor(
       .map { runBlocking { stopsRepository.getStopById(it.stopId)?.toStop() ?: Stop.EMPTY } }
   }
 
-  private suspend fun tryFindRoutes(nearby: List<Stop>, transports: List<ApiTransport>): Pair<Set<Transport>, Stop?> {
+  private suspend fun tryFindRoutes(
+    nearby: List<Stop>,
+    transports: List<ApiTransport>,
+  ): Pair<Set<Transport>, Stop?> = withContext(Dispatchers.IO) {
     val multiData = mutableSetOf<Transport>()
     var interchangeStop: Stop? = null
 
@@ -281,7 +282,7 @@ class TransportUseCaseImpl @Inject constructor(
       }
     }
 
-    return multiData to interchangeStop
+    return@withContext multiData to interchangeStop
   }
 
   private fun createToResult(
@@ -320,7 +321,7 @@ class TransportUseCaseImpl @Inject constructor(
     return multiResult
   }
 
-  override suspend fun toggleFavorite(transport: Transport) {
+  override suspend fun toggleFavorite(transport: Transport) = withContext(Dispatchers.IO) {
     transportsRepository.changeFavorite(transport.id, !transport.isFavorite)
   }
 
@@ -374,7 +375,7 @@ class TransportUseCaseImpl @Inject constructor(
     val preDestination = stops.findLast { stop -> stop.id == nearbyDestination[1].stopId } ?: Stop.EMPTY
 
     emit(nearbyStop to preDestination)
-  }
+  }.flowOn(Dispatchers.IO)
 
   override var showOnlyFavorites: Boolean = transportsRepository.showOnlyFavorites
 }
