@@ -96,8 +96,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
     collectWithLifecycle(searchTransports) { transports ->
       val locale = viewModel.locale.value
-      val fromId = viewModel.fromStop.value
-      val toId = viewModel.toStop.value
+      val fromId = viewModel.fromStop.value.id
+      val toId = viewModel.toStop.value.id
 
       binding.rvTransportsList.adapter = TransportsListAdapter(viewModel::openTransport).apply {
         currentLocale = locale
