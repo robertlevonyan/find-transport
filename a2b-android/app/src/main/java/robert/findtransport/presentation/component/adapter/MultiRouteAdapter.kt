@@ -8,15 +8,19 @@ import robert.findtransport.base.BaseRecyclerViewAdapter
 import robert.findtransport.base.BaseViewHolder
 import robert.findtransport.data.model.MultiRoute
 import robert.findtransport.data.model.MultiType
+import robert.findtransport.data.model.Transport
 import robert.findtransport.databinding.*
 import robert.findtransport.presentation.component.rv.MultiRouteDiffCallback
 import robert.findtransport.presentation.search.SearchViewModel
+import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.extensions.*
 
-class MultiRouteAdapter(private val currentLocale: String, private val searchViewModel: SearchViewModel) :
-    BaseRecyclerViewAdapter<ViewBinding, MultiRoute, BaseViewHolder<ViewBinding, MultiRoute>>(
+class MultiRouteAdapter(
+  private val onItemClick: (Transport) -> Unit,
+) : BaseRecyclerViewAdapter<ViewBinding, MultiRoute, BaseViewHolder<ViewBinding, MultiRoute>>(
         AsyncDifferConfig.Builder(MultiRouteDiffCallback())) {
 
+  var currentLocale: String = LNG_EN
   private var onTransportTrackClick: TransportsListAdapter.OnTransportTrackClickListener? = null
 
   @Suppress("UNCHECKED_CAST")
@@ -67,7 +71,7 @@ class MultiRouteAdapter(private val currentLocale: String, private val searchVie
         tvFirstLastStops.setFirstLastStop(transport, currentLocale)
         tvTransportNumber.text = transport.number
         ivTrack.setOnClickListener { onTransportTrackClick?.onTransportTrackClick(transport) }
-        clRoot.setOnClickListener { searchViewModel.openTransport(transport) }
+        clRoot.setOnClickListener { onItemClick.invoke(transport) }
       }
     }
   }

@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentPassingRoutesBinding
+import robert.findtransport.di.detailsScreen
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
 import robert.findtransport.utils.ARG_STOP
 import robert.findtransport.utils.extensions.*
@@ -21,6 +22,10 @@ import robert.findtransport.utils.viewbinding.viewBinding
 class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassingRoutesBinding>() {
   override val binding: FragmentPassingRoutesBinding by viewBinding(FragmentPassingRoutesBinding::inflate)
   override val viewModel: PassingRoutesViewModel by viewModels()
+
+  private val transportsListAdapter = TransportsListAdapter { transport ->
+    router.navigateTo(detailsScreen(transport.id, false))
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -49,13 +54,14 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
     setHasOptionsMenu(true)
   }
 
+  override fun FragmentPassingRoutesBinding.initViews() {
+    rvTransportsList.adapter = transportsListAdapter
+  }
+
   override fun PassingRoutesViewModel.initObservers() {
     collectWithLifecycle(stopTransports) { transports ->
-      val locale = viewModel.locale.value
-      binding.rvTransportsList.adapter = TransportsListAdapter().apply {
-        currentLocale = locale
-        submitList(transports)
-      }
+      transportsListAdapter.currentLocale = viewModel.locale.value
+      transportsListAdapter.submitList(transports)
     }
     collectWithLifecycle(stopReceived) { stop ->
       val locale = viewModel.locale.value

@@ -34,7 +34,9 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.plugin.compass.compass
 import com.mapbox.maps.plugin.delegates.listeners.OnMapLoadErrorListener
+import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.plugin.scalebar.scalebar
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
@@ -154,6 +156,8 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       marginRight = context?.getDimen(R.dimen.fab_margin) ?: 50f
       marginBottom = 0f
     }
+    mapView.scalebar.enabled = false
+    mapView.gestures.rotateEnabled = false
 
     mapboxMap = mapView.getMapboxMap()
     pointAnnotationManager = mapView.annotations.createPointAnnotationManager(binding.mapView).apply {

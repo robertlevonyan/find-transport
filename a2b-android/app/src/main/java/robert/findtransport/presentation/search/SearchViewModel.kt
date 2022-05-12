@@ -3,9 +3,11 @@ package robert.findtransport.presentation.search
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.*
@@ -45,9 +47,6 @@ class SearchViewModel @Inject constructor(
   private val _searchEmpty = MutableSharedFlow<Unit>()
   val searchEmpty: Flow<Unit> get() = _searchEmpty
 
-  private val _selectedTransport = MutableSharedFlow<Transport>()
-  val selectedTransport: Flow<Transport> get() = _selectedTransport
-
   private val _emptyStop = MutableSharedFlow<Unit>()
   val emptyStop: Flow<Unit> get() = _emptyStop
 
@@ -56,11 +55,9 @@ class SearchViewModel @Inject constructor(
       _loading.emit(true)
       val from = stopsUseCase.getStop(fromId)
       val to = stopsUseCase.getStop(toId)
-      println("##1 from=$from to=$to")
 
       if (from == Stop.EMPTY || to == Stop.EMPTY) {
         _emptyStop.emit(Unit)
-        println("##2 empty")
         return@launch
       }
       _fromStop.value = from
@@ -72,13 +69,11 @@ class SearchViewModel @Inject constructor(
             delay(100)
             _searchTransports.emit(search.data.result)
             _loading.emit(false)
-            println("##3 single")
           }
           is SearchResult.Multi -> {
             delay(100)
             _searchMultiTransports.emit(search.data.result)
             _loading.emit(false)
-            println("##3 single")
           }
         }.run {
           if (addToHistory) {
@@ -94,15 +89,8 @@ class SearchViewModel @Inject constructor(
         is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
           _searchEmpty.emit(Unit)
           _loading.emit(false)
-          println("##3 error")
         }
       }
-    }
-  }
-
-  fun openTransport(transport: Transport?) {
-    viewModelScope.launch {
-      _selectedTransport.emit(transport ?: return@launch)
     }
   }
 

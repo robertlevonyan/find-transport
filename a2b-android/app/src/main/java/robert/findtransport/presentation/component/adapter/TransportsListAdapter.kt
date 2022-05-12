@@ -3,6 +3,7 @@ package robert.findtransport.presentation.component.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncDifferConfig
 import robert.findtransport.R
 import robert.findtransport.base.BaseRecyclerViewAdapter
@@ -36,7 +37,7 @@ class TransportsListAdapter(private val onItemClick: (Transport) -> Unit = {}) :
         tvFirstLastStops.setFirstLastStop(item, currentLocale)
         tvTransportNumber.text = item.number
         ivFavorite.run {
-          visibility = if (onTransportFavoriteToggle != null) View.VISIBLE else View.INVISIBLE
+          isVisible = onTransportFavoriteToggle != null
           setImageResource(if (item.isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_outline)
           setOnClickListener { onTransportFavoriteToggle?.onToggle(item) }
         }

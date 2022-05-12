@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 32
-    versionCode = 271
-    versionName = "3.7.11"
+    versionCode = 272
+    versionName = "3.7.12"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -107,8 +107,8 @@ android {
 dependencies {
   //kotlin
   kotlin("stdlib")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
   //google
   implementation("com.google.android.material:material:1.7.0-alpha01")

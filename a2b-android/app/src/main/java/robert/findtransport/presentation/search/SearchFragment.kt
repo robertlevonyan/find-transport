@@ -11,12 +11,10 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.combineTransform
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
-import robert.findtransport.data.model.MultiRoute
 import robert.findtransport.data.model.MultiRouteCase
 import robert.findtransport.data.model.MultiType
 import robert.findtransport.databinding.FragmentSearchBinding
@@ -91,7 +89,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
   override fun SearchViewModel.initObservers() {
     collectWithLifecycle(searchEmpty) { showToast("NOTHING") }
-    collectWithLifecycle(selectedTransport) { router.navigateTo(detailsScreen(it.id, false)) }
     collectWithLifecycle(emptyStop) { stopNotFound() }
     collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
     collectWithLifecycle(searchTransports) { transports ->
@@ -99,8 +96,11 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       val fromId = viewModel.fromStop.value.id
       val toId = viewModel.toStop.value.id
 
-      binding.rvTransportsList.adapter = TransportsListAdapter(viewModel::openTransport).apply {
+      binding.rvTransportsList.adapter = TransportsListAdapter { transport ->
+        router.navigateTo(detailsScreen(transport.id, false))
+      }.apply {
         currentLocale = locale
+        submitList(transports)
         setOnTransportTrackClickListener { transport ->
           router.navigateTo(
             trackRouteScreen(
@@ -112,17 +112,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             )
           )
         }
-        submitList(transports)
       }
     }
     collectWithLifecycle(searchMultiTransports) { transports ->
       val locale = viewModel.locale.value
       val toStop = viewModel.toStop.value
+      var fromId = 0
+      var toId = 0
+      var selectedTransportPosition = -1
 
-      binding.rvTransportsList.adapter = MultiRouteAdapter(locale, viewModel).apply {
-        var fromId = 0
-        var toId = 0
-        var selectedTransportPosition = -1
+      binding.rvTransportsList.adapter = MultiRouteAdapter { transport ->
+        router.navigateTo(detailsScreen(transport.id, false))
+      }.apply {
+        currentLocale = locale
+        submitList(transports)
         setOnTransportTrackClickListener { transport ->
           transports.groupBy { it.case }.entries.forEach { entry ->
             when (entry.key) {
@@ -195,7 +198,6 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             )
           )
         }
-        submitList(transports)
       }
     }
     collectWithLifecycle(fromStop) { stop ->
