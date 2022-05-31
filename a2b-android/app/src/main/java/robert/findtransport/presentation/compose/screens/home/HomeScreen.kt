@@ -89,13 +89,13 @@ fun OptionsMenu(overflowMenuState: Boolean, onMenuDismiss: () -> Unit) {
     offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
     onDismissRequest = { onMenuDismiss.invoke() }) {
 
-    DropdownMenuItem(onClick = { }) {
+    DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
       Text(text = stringResource(id = R.string.action_settings))
     }
-    DropdownMenuItem(onClick = { }) {
+    DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
       Text(text = stringResource(id = R.string.action_feedback))
     }
-    DropdownMenuItem(onClick = { }) {
+    DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
       Text(text = stringResource(id = R.string.action_privacy))
     }
   }
