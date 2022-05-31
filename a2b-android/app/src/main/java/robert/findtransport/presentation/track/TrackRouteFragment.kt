@@ -62,17 +62,17 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
   }
 
   private fun initData() {
-    if (activity == null || activity !is MainActivity) {
-      return
-    }
+//    if (activity == null || activity !is MainActivity) {
+//      return
+//    }
 
     lifecycleScope.launch {
       viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-        (activity as? MainActivity)?.resumedState?.collect { resumed ->
-          if (!resumed) return@collect
-
-          startTrackerService()
-        }
+//        (activity as? MainActivity)?.resumedState?.collect { resumed ->
+//          if (!resumed) return@collect
+//
+//          startTrackerService()
+//        }
       }
     }
     initCollectors()

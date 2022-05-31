@@ -93,6 +93,7 @@ android {
   }
   buildFeatures {
     viewBinding = true
+    compose = true
   }
   kotlinOptions {
     jvmTarget = "11"
@@ -101,6 +102,12 @@ android {
   bundle {
     language { enableSplit = false }
     abi { enableSplit = false }
+  }
+  composeOptions {
+    kotlinCompilerExtensionVersion = "1.2.0-beta02"
+  }
+  kapt {
+    correctErrorTypes = true
   }
 }
 
@@ -128,9 +135,9 @@ dependencies {
   implementation("androidx.appcompat:appcompat:1.4.1")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.7.0")
-  implementation("androidx.core:core-splashscreen:1.0.0-beta02")
+  implementation("androidx.core:core-splashscreen:1.0.0-rc01")
   implementation("androidx.fragment:fragment-ktx:1.4.1")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
@@ -146,6 +153,19 @@ dependencies {
 
   kapt("androidx.room:room-compiler:2.4.2")
 
+  //compose
+  implementation("com.google.accompanist:accompanist-insets:0.23.0")
+  implementation("androidx.activity:activity-compose:1.6.0-alpha03")
+  implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+  implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+  implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
+  implementation("androidx.compose.compiler:compiler:1.2.0-beta02")
+  implementation("androidx.compose.ui:ui:1.2.0-beta02")
+  implementation("androidx.compose.material:material:1.2.0-beta02")
+  implementation("androidx.compose.ui:ui-tooling:1.2.0-beta02")
+
+  implementation("io.coil-kt:coil-compose:2.0.0")
+
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
   implementation("com.squareup.retrofit2:converter-gson:2.9.0")
@@ -157,6 +177,7 @@ dependencies {
 
   //other
   implementation("com.airbnb.android:lottie:4.2.2")
+  implementation("com.airbnb.android:lottie-compose:4.1.0")
   implementation("com.github.terrakok:cicerone:7.1")
   implementation("com.github.ybq:Android-SpinKit:1.4.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")

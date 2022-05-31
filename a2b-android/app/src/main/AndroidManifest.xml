@@ -46,10 +46,5 @@
       android:name="com.mapbox.mapboxsdk.telemetry.TelemetryService"
       android:exported="false"
       tools:ignore="MissingClass" />
-
-<!--    <provider-->
-<!--      android:name="androidx.startup.InitializationProvider"-->
-<!--      android:authorities="robert.findtransport.androidx-startup"-->
-<!--      tools:node="remove" />-->
   </application>
 </manifest>

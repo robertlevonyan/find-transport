@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.multidex.MultiDexApplication
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import dagger.hilt.android.HiltAndroidApp
-import kotlinx.coroutines.runBlocking
 import robert.findtransport.R
 
 @HiltAndroidApp
@@ -31,13 +30,13 @@ class A2BApp : MultiDexApplication(), Application.ActivityLifecycleCallbacks {
 
   override fun onActivityResumed(activity: Activity) {
     if (activity is MainActivity) {
-      activity.resumedState.value = true
+//      activity.resumedState.value = true
     }
   }
 
   override fun onActivityPaused(activity: Activity) {
     if (activity is MainActivity) {
-      activity.resumedState.value = true
+//      activity.resumedState.value = true
     }
   }
 
