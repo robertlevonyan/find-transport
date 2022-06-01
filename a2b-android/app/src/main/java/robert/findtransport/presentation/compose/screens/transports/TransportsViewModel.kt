@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.transports
+package robert.findtransport.presentation.compose.screens.transports
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Transport
@@ -22,10 +23,7 @@ class TransportsViewModel @Inject constructor(
   val allTransports: Flow<List<Transport>> get() = _allTransports
 
   private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val locale: Flow<String> get() = _locale
-
-  private val _selectedTransport = MutableSharedFlow<Transport>()
-  val selectedTransport: Flow<Transport> get() = _selectedTransport
+  val locale: StateFlow<String> get() = _locale
 
   private val _showOnlyFavorites = MutableStateFlow(transportUseCase.showOnlyFavorites)
   val showOnlyFavorites: Flow<Boolean> get() = _showOnlyFavorites
@@ -39,12 +37,6 @@ class TransportsViewModel @Inject constructor(
       val transports = transportUseCase.getTransportsPaged(checked)
 
       _allTransports.emit(transports)
-    }
-  }
-
-  fun selectTransport(transport: Transport) {
-    viewModelScope.launch(Dispatchers.IO) {
-      _selectedTransport.emit(transport)
     }
   }
 

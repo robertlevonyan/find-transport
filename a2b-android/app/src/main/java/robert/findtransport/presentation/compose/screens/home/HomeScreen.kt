@@ -27,39 +27,43 @@ import robert.findtransport.presentation.compose.reusables.backgroundColorVarian
 
 @Composable
 fun HomeScreen(navController: NavController) {
-  var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-
-  Scaffold(
-    topBar = {
-      TopAppBar(
-        modifier = Modifier.statusBarsPadding(),
-        title = { A2bTitle() },
-        actions = {
-          IconButton(onClick = { }) {
-            Icon(
-              painter = painterResource(id = R.drawable.ic_history),
-              contentDescription = stringResource(id = R.string.action_history),
-              tint = Color.Unspecified,
-            )
-          }
-          IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
-            Icon(
-              painter = painterResource(id = R.drawable.ic_more_vertical),
-              contentDescription = stringResource(id = R.string.action_settings),
-              tint = Color.Unspecified,
-            )
-          }
-          OptionsMenu(overflowMenuState) { overflowMenuState = false }
-        },
-        backgroundColor = backgroundColor(),
-        elevation = 0.dp,
+  Scaffold(topBar = { HomeAppBar() }) { contentPadding ->
+    Box(Modifier.padding(contentPadding)) {
+      SearchScreen(
+        modifier = Modifier.fillMaxSize(),
+        navController = navController,
       )
     }
-  ) { contentPadding ->
-    Box(Modifier.padding(contentPadding)) {
-      SearchScreen(modifier = Modifier.fillMaxSize())
-    }
   }
+}
+
+@Composable
+fun HomeAppBar() {
+  var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+
+  TopAppBar(
+    modifier = Modifier.statusBarsPadding(),
+    title = { A2bTitle() },
+    actions = {
+      IconButton(onClick = { }) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_history),
+          contentDescription = stringResource(id = R.string.action_history),
+          tint = Color.Unspecified,
+        )
+      }
+      IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_more_vertical),
+          contentDescription = stringResource(id = R.string.action_settings),
+          tint = Color.Unspecified,
+        )
+      }
+      OptionsMenu(overflowMenuState) { overflowMenuState = false }
+    },
+    backgroundColor = backgroundColor(),
+    elevation = 0.dp,
+  )
 }
 
 @Composable
@@ -87,8 +91,8 @@ fun OptionsMenu(overflowMenuState: Boolean, onMenuDismiss: () -> Unit) {
     modifier = Modifier.background(backgroundColorVariant()),
     expanded = overflowMenuState,
     offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
-    onDismissRequest = { onMenuDismiss.invoke() }) {
-
+    onDismissRequest = { onMenuDismiss.invoke() },
+  ) {
     DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
       Text(text = stringResource(id = R.string.action_settings))
     }

@@ -24,3 +24,7 @@ fun backgroundColorVariant() = if (isSystemInDarkTheme()) BlackVariant else Whit
 
 @Composable
 fun backgroundColorVariantInvert() = if (isSystemInDarkTheme()) WhiteVariant else BlackVariant
+
+@Composable
+fun backgroundColorVariantInvertTransparent() = (if (isSystemInDarkTheme()) WhiteVariant else BlackVariant)
+  .copy(alpha = 0.5f)

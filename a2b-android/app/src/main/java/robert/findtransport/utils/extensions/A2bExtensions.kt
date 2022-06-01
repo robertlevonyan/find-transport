@@ -14,15 +14,16 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.textfield.TextInputLayout
 import robert.findtransport.R
-import robert.findtransport.data.model.*
+import robert.findtransport.data.model.SettingData
+import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.LocationPermission
 import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.databinding.ItemSettingDropdownBinding
 import robert.findtransport.databinding.ItemSettingProgressBinding
 import robert.findtransport.databinding.ItemSettingSwitchBinding
-import robert.findtransport.presentation.component.adapter.*
 import robert.findtransport.presentation.detail.DetailViewModel
-import robert.findtransport.presentation.history.HistoryViewModel
 import robert.findtransport.utils.CustomTypefaceSpan
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
@@ -256,4 +257,20 @@ fun md5(vararg values: Any): String {
   }
   val md = MessageDigest.getInstance("MD5")
   return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
+}
+
+fun Transport.getIcon(): Int = when (type) {
+  BUS -> if (isNew) {
+    R.drawable.ic_new_bus
+  } else {
+    R.drawable.ic_bus
+  }
+  MICROBUS -> if (isNew) {
+    R.drawable.ic_new_microbus
+  } else {
+    R.drawable.ic_microbus
+  }
+  TROLLEYBUS -> R.drawable.ic_trolleybus
+  METRO -> R.drawable.ic_metro
+  UNDEFINED -> R.drawable.ic_bus
 }

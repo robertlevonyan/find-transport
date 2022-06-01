@@ -25,11 +25,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.navigation.NavController
 import robert.findtransport.R
+import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 
 @Composable
-fun SearchScreen(modifier: Modifier) {
+fun SearchScreen(
+  modifier: Modifier,
+  navController: NavController,
+) {
   var fromInput by rememberSaveable { mutableStateOf("") }
   var toInput by rememberSaveable { mutableStateOf("") }
   val focusManager = LocalFocusManager.current
@@ -99,7 +104,7 @@ fun SearchScreen(modifier: Modifier) {
       ),
     )
 
-    ExtendedFloatingActionButton(
+    SearchButton(
       modifier = Modifier
         .height(SearchElementSize)
         .constrainAs(search) {
@@ -109,20 +114,6 @@ fun SearchScreen(modifier: Modifier) {
           start.linkTo(parent.start)
           bottom.linkTo(allTransports.top)
         },
-      icon = {
-        Image(
-          painter = painterResource(id = R.drawable.ic_search_colored),
-          contentDescription = stringResource(id = R.string.label_search),
-        )
-      },
-      text = {
-        Text(
-          text = stringResource(id = R.string.label_search),
-          fontWeight = FontWeight.W400,
-        )
-      },
-      shape = Shapes.medium,
-      backgroundColor = backgroundColorVariant(),
       onClick = { },
     )
 
@@ -136,7 +127,7 @@ fun SearchScreen(modifier: Modifier) {
           bottom.linkTo(parent.bottom)
         }
         .padding(all = DoublePadding),
-      onClick = { },
+      onClick = { navController.navigate(NavigationScreens.TransportsScreen.name) },
     )
   }
 }
@@ -210,6 +201,31 @@ fun SearchInput(
       }
     }
   }
+}
+
+@Composable
+fun SearchButton(
+  modifier: Modifier,
+  onClick: () -> Unit,
+) {
+  ExtendedFloatingActionButton(
+    modifier = modifier,
+    icon = {
+      Image(
+        painter = painterResource(id = R.drawable.ic_search_colored),
+        contentDescription = stringResource(id = R.string.label_search),
+      )
+    },
+    text = {
+      Text(
+        text = stringResource(id = R.string.label_search),
+        fontWeight = FontWeight.W400,
+      )
+    },
+    shape = Shapes.medium,
+    backgroundColor = backgroundColorVariant(),
+    onClick = { onClick.invoke() },
+  )
 }
 
 @Composable

@@ -28,3 +28,4 @@ val Text14 = 14.sp
 val Text16 = 16.sp
 val Text20 = 20.sp
 val Text50 = 50.sp
+val TextTransportNumber = 42.sp

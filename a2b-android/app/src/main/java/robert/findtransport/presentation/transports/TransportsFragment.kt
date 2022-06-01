@@ -15,6 +15,7 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentTransportsBinding
 import robert.findtransport.di.detailsScreen
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
+import robert.findtransport.presentation.compose.screens.transports.TransportsViewModel
 import robert.findtransport.utils.RESULT_FAVORITE
 import robert.findtransport.utils.extensions.bottomPadding
 import robert.findtransport.utils.extensions.getDimenInt
@@ -27,7 +28,11 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
   override val binding: FragmentTransportsBinding by viewBinding(FragmentTransportsBinding::inflate)
   override val viewModel: TransportsViewModel by viewModels()
 
-  private val adapter by lazy { TransportsListAdapter(viewModel::selectTransport) }
+  private val adapter by lazy {
+    TransportsListAdapter { transport ->
+      router.navigateTo(detailsScreen(transport.id, true))
+    }
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -72,7 +77,6 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
       adapter.currentLocale = data.second
       adapter.submitList(data.first)
     }
-    collectWithLifecycle(selectedTransport) { transport -> router.navigateTo(detailsScreen(transport.id, true)) }
     collectWithLifecycle(showOnlyFavorites) { onlyFavorites ->
       val checkedButtonId = if (onlyFavorites) R.id.btn_favorites else R.id.btn_all
       binding.swListToggle.check(checkedButtonId)
