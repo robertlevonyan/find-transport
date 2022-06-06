@@ -21,6 +21,7 @@ import robert.findtransport.data.model.enums.OpenStopType
 import robert.findtransport.databinding.FragmentStopsPickerBinding
 import robert.findtransport.presentation.component.adapter.FoundStopsAdapter
 import robert.findtransport.presentation.component.adapter.StopsAdapter
+import robert.findtransport.presentation.compose.screens.stops.StopsPickerViewModel
 import robert.findtransport.utils.ARG_STOP_TYPE
 import robert.findtransport.utils.RESULT_FROM
 import robert.findtransport.utils.RESULT_TO

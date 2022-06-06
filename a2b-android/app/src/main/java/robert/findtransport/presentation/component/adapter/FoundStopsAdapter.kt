@@ -8,7 +8,7 @@ import robert.findtransport.base.BaseViewHolder
 import robert.findtransport.data.model.Stop
 import robert.findtransport.databinding.ItemStopBinding
 import robert.findtransport.presentation.component.rv.StopsDiffCallback
-import robert.findtransport.presentation.stop.StopsPickerViewModel
+import robert.findtransport.presentation.compose.screens.stops.StopsPickerViewModel
 import robert.findtransport.utils.extensions.setStopName
 
 class FoundStopsAdapter(private val stopsPickerViewModel: StopsPickerViewModel) :

@@ -57,7 +57,7 @@ fun SearchScreen(
       label = R.string.label_from_long,
       hint = R.string.hint_from,
       trailingIcon = R.drawable.ic_current_location_black,
-      onDropdownClick = {},
+      onDropdownClick = { navController.navigate(NavigationScreens.StopsPickerScreen.name) },
       onInputChange = { input -> fromInput = input },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
       keyboardActions = KeyboardActions(
@@ -96,7 +96,7 @@ fun SearchScreen(
       label = R.string.label_to_long,
       hint = R.string.hint_to,
       trailingIcon = R.drawable.ic_map,
-      onDropdownClick = {},
+      onDropdownClick = { navController.navigate(NavigationScreens.StopsPickerScreen.name) },
       onInputChange = { input -> toInput = input },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
       keyboardActions = KeyboardActions(
@@ -188,6 +188,7 @@ fun SearchInput(
           ),
           keyboardOptions = keyboardOptions,
           keyboardActions = keyboardActions,
+          readOnly = true,
         )
 
         IconButton(

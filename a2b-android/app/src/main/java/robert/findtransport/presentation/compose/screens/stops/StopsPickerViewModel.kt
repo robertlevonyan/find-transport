@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.stop
+ package robert.findtransport.presentation.compose.screens.stops
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
