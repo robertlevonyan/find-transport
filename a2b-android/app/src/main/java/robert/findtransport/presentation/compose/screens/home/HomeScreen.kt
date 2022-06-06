@@ -24,11 +24,16 @@ import robert.findtransport.presentation.compose.reusables.BarIconSize
 import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
 import robert.findtransport.presentation.compose.reusables.backgroundColor
 import robert.findtransport.presentation.compose.reusables.backgroundColorVariant
+import robert.findtransport.presentation.compose.screens.data.CheckDataScreen
 
 @Composable
 fun HomeScreen(navController: NavController) {
   Scaffold(topBar = { HomeAppBar() }) { contentPadding ->
     Box(Modifier.padding(contentPadding)) {
+      CheckDataScreen(modifier = Modifier.align(Alignment.TopCenter)) {
+        // vpn
+      }
+
       SearchScreen(
         modifier = Modifier.fillMaxSize(),
         navController = navController,

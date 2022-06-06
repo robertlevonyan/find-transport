@@ -24,7 +24,7 @@ fun TransportsScreen(
   navController: NavController,
   transportsViewModel: TransportsViewModel = hiltViewModel(),
 ) {
-  transportsViewModel.getTransports(checked = true)
+  transportsViewModel.getTransports(checked = false)
   val locale by transportsViewModel.locale.collectAsState()
   val transports by transportsViewModel.allTransports.collectAsState(initial = emptyList())
 
@@ -41,8 +41,8 @@ fun TransportsScreen(
     LazyColumn(modifier = Modifier.padding(contentPadding)) {
       item {
         TransportTypeChooser(
-          onAllButtonClicked = { transportsViewModel.getTransports(checked = true) },
-          onFavoritesButtonClicked = { transportsViewModel.getTransports(checked = false) },
+          onAllButtonClicked = { transportsViewModel.getTransports(checked = false) },
+          onFavoritesButtonClicked = { transportsViewModel.getTransports(checked = true) },
         )
       }
       itemsIndexed(
@@ -59,7 +59,7 @@ fun TransportsScreen(
           )
 
           if (index < transports.lastIndex) {
-            Divider(color = backgroundColorVariantInvertTransparent())
+            Divider(color = backgroundColorVariantInvertTransparent(), thickness = 0.5.dp)
           }
         },
       )

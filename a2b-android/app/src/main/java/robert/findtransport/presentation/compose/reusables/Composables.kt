@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,6 +24,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
@@ -43,7 +46,7 @@ fun A2bAppBar(
   TopAppBar(
     modifier = Modifier.statusBarsPadding(),
     navigationIcon = {
-      IconButton(onClick = { onNavigationIconClick.invoke() }) {
+      IconButton(onClick = onNavigationIconClick) {
         Icon(painter = painterResource(id = navigationIcon), contentDescription = null)
       }
     },
@@ -108,7 +111,7 @@ fun TransportListElement(
     ) {
       val (transportIcon, transportNumber, transportType, firstLast, star) = createRefs()
 
-      Image(
+      AsyncImage(
         modifier = Modifier
           .size(BarIconSize)
           .constrainAs(transportIcon) {
@@ -116,7 +119,7 @@ fun TransportListElement(
             top.linkTo(parent.top)
             bottom.linkTo(parent.bottom)
           },
-        painter = painterResource(id = icon),
+        model = ImageRequest.Builder(context = LocalContext.current).data(icon).build(),
         contentDescription = null,
       )
 
@@ -166,9 +169,10 @@ fun TransportListElement(
           },
         text = "${first.getCurrentName(locale)} - ${last.getCurrentName(locale)}",
         color = backgroundColorVariantInvert(),
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.End,
+        fontWeight = FontWeight.Normal,
+        textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
+        fontSize = Text13,
         maxLines = 1,
       )
 
@@ -193,5 +197,55 @@ fun TransportListElement(
         }
       }
     }
+  }
+}
+
+@Composable
+fun TextTitle(
+  modifier: Modifier = Modifier,
+  text: String,
+) {
+  Text(
+    modifier = modifier.padding(HalfPadding),
+    text = text,
+    fontSize = TextTitle,
+    fontWeight = FontWeight.Bold,
+    color = backgroundColorVariantInvert(),
+  )
+}
+
+@Composable
+fun TextMessage(
+  modifier: Modifier = Modifier,
+  text: String,
+) {
+  Text(
+    modifier = modifier.padding(HalfPadding),
+    text = text,
+    fontSize = TextMessage,
+    fontWeight = FontWeight.Normal,
+    color = backgroundColorVariantInvert(),
+  )
+}
+
+@Composable
+fun RegularButton(
+  modifier: Modifier = Modifier,
+  text: String,
+  onClick: () -> Unit,
+) {
+  Button(
+    modifier = modifier,
+    onClick = onClick,
+    shape = Shapes.small,
+    colors = ButtonDefaults.buttonColors(
+      backgroundColor = Accent,
+      contentColor = Black,
+    )
+  ) {
+    Text(
+      text = text,
+      fontWeight = FontWeight.Bold,
+    )
   }
 }

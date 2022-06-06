@@ -153,4 +153,10 @@
   <string name="cd_dropwdown">Drop down menu</string>
   <string name="cd_current_location">Go to current location</string>
   <string name="cd_show_on_map">Show route on map</string>
+  <string name="message_check_download">Checking for update</string>
+  <string name="error_no_internet">Seems there\'s no Internet connection</string>
+  <string name="label_open_settings">Open settings</string>
+  <string name="error_not_downloaded">Content not donloaded</string>
+  <string name="label_retry">Retry</string>
+  <string name="error_storage">Not enaught space on disk, please free some space and try again.</string>
 </resources>
