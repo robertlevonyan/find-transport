@@ -23,7 +23,7 @@ import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.databinding.ItemSettingDropdownBinding
 import robert.findtransport.databinding.ItemSettingProgressBinding
 import robert.findtransport.databinding.ItemSettingSwitchBinding
-import robert.findtransport.presentation.detail.DetailViewModel
+import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
 import robert.findtransport.utils.CustomTypefaceSpan
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
@@ -149,7 +149,7 @@ fun ImageView.setLocationIcon(permission: LocationPermission) {
   }
 }
 
-fun View.setStopOptionsMenu(viewModel: DetailViewModel?, stop: Stop) {
+fun View.setStopOptionsMenu(viewModel: TransportViewModel?, stop: Stop) {
   PopupMenu(context, this)
     .apply {
       menuInflater.inflate(R.menu.menu_route, menu)

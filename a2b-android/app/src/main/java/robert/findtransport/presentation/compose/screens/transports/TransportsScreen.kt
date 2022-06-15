@@ -25,7 +25,6 @@ fun TransportsScreen(
   navController: NavController,
   transportsViewModel: TransportsViewModel = hiltViewModel(),
 ) {
-  transportsViewModel.getTransports(checked = false)
   val locale by transportsViewModel.locale.collectAsState()
   val transports = transportsViewModel.allTransports.collectAsLazyPagingItems()
 
@@ -70,6 +69,7 @@ fun TransportsScreen(
         },
       )
     }
+    transportsViewModel.getTransports(checked = false)
   }
 }
 

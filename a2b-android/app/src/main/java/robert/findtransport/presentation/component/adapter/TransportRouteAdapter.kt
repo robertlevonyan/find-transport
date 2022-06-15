@@ -12,14 +12,14 @@ import robert.findtransport.databinding.ItemRouteEndBinding
 import robert.findtransport.databinding.ItemRouteMidBinding
 import robert.findtransport.databinding.ItemRouteStartBinding
 import robert.findtransport.presentation.component.rv.StopsDiffCallback
-import robert.findtransport.presentation.detail.DetailViewModel
+import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
 import robert.findtransport.utils.extensions.setStopName
 import robert.findtransport.utils.extensions.setStopOptionsMenu
 
 @Suppress("UNCHECKED_CAST")
 class TransportRouteAdapter(
-    private val detailViewModel: DetailViewModel,
-    private val currentLocale: String
+  private val transportViewModel: TransportViewModel,
+  private val currentLocale: String
 ) : BaseRecyclerViewAdapter<ViewBinding, Stop, BaseViewHolder<ViewBinding, Stop>>(AsyncDifferConfig.Builder(StopsDiffCallback())) {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<ViewBinding, Stop> =
@@ -40,8 +40,8 @@ class TransportRouteAdapter(
     override fun bind(item: Stop) {
       binding.run {
         stopNameStart.setStopName(item, currentLocale)
-        optionsStart.setStopOptionsMenu(detailViewModel, item)
-        optionsStart.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
+        optionsStart.setStopOptionsMenu(transportViewModel, item)
+        optionsStart.visibility = if (transportViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }
@@ -50,8 +50,8 @@ class TransportRouteAdapter(
     override fun bind(item: Stop) {
       binding.run {
         stopNameMid.setStopName(item, currentLocale)
-        optionsMid.setStopOptionsMenu(detailViewModel, item)
-        optionsMid.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
+        optionsMid.setStopOptionsMenu(transportViewModel, item)
+        optionsMid.visibility = if (transportViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }
@@ -60,8 +60,8 @@ class TransportRouteAdapter(
     override fun bind(item: Stop) {
       binding.run {
         stopNameEnd.setStopName(item, currentLocale)
-        optionsEnd.setStopOptionsMenu(detailViewModel, item)
-        optionsEnd.visibility = if (detailViewModel.hasOptions.value) View.VISIBLE else View.GONE
+        optionsEnd.setStopOptionsMenu(transportViewModel, item)
+        optionsEnd.visibility = if (transportViewModel.hasOptions.value) View.VISIBLE else View.GONE
       }
     }
   }

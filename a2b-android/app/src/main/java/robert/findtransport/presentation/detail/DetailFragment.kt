@@ -18,14 +18,15 @@ import robert.findtransport.databinding.FragmentDetailBinding
 import robert.findtransport.di.mapPreviewScreen
 import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.adapter.TransportRouteAdapter
+import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
+class DetailFragment : BaseFragment<TransportViewModel, FragmentDetailBinding>() {
   override val binding: FragmentDetailBinding by viewBinding(FragmentDetailBinding::inflate)
-  override val viewModel: DetailViewModel by viewModels()
+  override val viewModel: TransportViewModel by viewModels()
 
   private var transportId = -1
 
@@ -76,7 +77,7 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
     )
   }
 
-  override fun DetailViewModel.initObservers() {
+  override fun TransportViewModel.initObservers() {
     collectWithLifecycle(fromStop) { selectedStop ->
       viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
         setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to selectedStop.id))

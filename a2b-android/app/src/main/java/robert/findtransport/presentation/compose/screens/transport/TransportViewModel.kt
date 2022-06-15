@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.detail
+package robert.findtransport.presentation.compose.screens.transport
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import robert.findtransport.utils.LNG_RU
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(
+class TransportViewModel @Inject constructor(
   private val localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {

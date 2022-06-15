@@ -10,7 +10,9 @@ import androidx.navigation.navArgument
 import robert.findtransport.presentation.compose.screens.home.HomeScreen
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.presentation.compose.screens.stops.StopsPickerScreen
+import robert.findtransport.presentation.compose.screens.transport.TransportScreen
 import robert.findtransport.presentation.compose.screens.transports.TransportsScreen
+import robert.findtransport.utils.EMPTY_TRANSPORT_ID
 
 @Composable
 fun Navigation() {
@@ -28,6 +30,15 @@ fun Navigation() {
       TransportsScreen(navController = navController)
     }
     composable(
+      route = "${NavigationScreens.TransportScreen.name}/{transport_id}",
+      arguments = listOf(navArgument("is_from") { type = NavType.IntType }),
+    ) { backStackEntry ->
+      TransportScreen(
+        navController = navController,
+        transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_TRANSPORT_ID,
+      )
+    }
+    composable(
       route = "${NavigationScreens.StopsPickerScreen.name}/{is_from}",
       arguments = listOf(navArgument("is_from") { type = NavType.BoolType }),
     ) { backStackEntry ->
@@ -43,5 +54,6 @@ fun Navigation() {
 sealed class NavigationScreens(val name: String) {
   object HomeScreen : NavigationScreens("home_screen")
   object TransportsScreen : NavigationScreens("transports_screen")
+  object TransportScreen : NavigationScreens("transport_screen")
   object StopsPickerScreen : NavigationScreens("stops_picker_screen")
 }
