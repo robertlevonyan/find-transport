@@ -3,7 +3,6 @@ package robert.findtransport.presentation.compose.screens.transports
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -15,6 +14,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemsIndexed
 import robert.findtransport.R
 import robert.findtransport.presentation.compose.reusables.*
 
@@ -26,7 +27,7 @@ fun TransportsScreen(
 ) {
   transportsViewModel.getTransports(checked = false)
   val locale by transportsViewModel.locale.collectAsState()
-  val transports by transportsViewModel.allTransports.collectAsState(initial = emptyList())
+  val transports = transportsViewModel.allTransports.collectAsLazyPagingItems()
 
   Scaffold(
     modifier = modifier,
@@ -48,6 +49,8 @@ fun TransportsScreen(
       itemsIndexed(
         items = transports,
         itemContent = { index, item ->
+          item ?: return@itemsIndexed
+
           TransportListElement(
             transport = item,
             locale = locale,
@@ -58,8 +61,11 @@ fun TransportsScreen(
             onStarCheckedChange = { transportsViewModel.toggleTransportFavorite(item) },
           )
 
-          if (index < transports.lastIndex) {
-            Divider(color = backgroundColorVariantInvertTransparent(), thickness = 0.5.dp)
+          if (index < transports.itemCount - 1) {
+            Divider(
+              color = backgroundColorVariantInvertTransparent(),
+              thickness = 0.5.dp,
+            )
           }
         },
       )

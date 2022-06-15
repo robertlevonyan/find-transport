@@ -27,7 +27,10 @@ import robert.findtransport.presentation.compose.reusables.backgroundColorVarian
 import robert.findtransport.presentation.compose.screens.data.CheckDataScreen
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+  navController: NavController,
+  homeViewModel: HomeViewModel,
+) {
   Scaffold(topBar = { HomeAppBar() }) { contentPadding ->
     Box(Modifier.padding(contentPadding)) {
       CheckDataScreen(modifier = Modifier.align(Alignment.TopCenter)) {
@@ -37,6 +40,7 @@ fun HomeScreen(navController: NavController) {
       SearchScreen(
         modifier = Modifier.fillMaxSize(),
         navController = navController,
+        homeViewModel = homeViewModel
       )
     }
   }

@@ -1,9 +1,9 @@
 package robert.findtransport.domain.repository
 
+import androidx.paging.PagingSource
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.entity.TransportStopJoin
@@ -18,7 +18,7 @@ interface TransportsRepository {
 
   suspend fun cacheJoins(joins: List<TransportStopJoin>)
 
-  fun getAllTransports(favorite: Boolean): List<Transport>
+  fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
 
   fun getTransportById(id: Int): Flow<Transport>
 

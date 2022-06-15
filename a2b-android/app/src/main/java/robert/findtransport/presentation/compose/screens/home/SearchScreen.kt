@@ -4,22 +4,23 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -29,15 +30,21 @@ import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
 fun SearchScreen(
   modifier: Modifier,
   navController: NavController,
+  homeViewModel: HomeViewModel,
 ) {
-  var fromInput by rememberSaveable { mutableStateOf("") }
-  var toInput by rememberSaveable { mutableStateOf("") }
   val focusManager = LocalFocusManager.current
+
+  val locale by homeViewModel.locale.collectAsState()
+  val selectedFromStop by homeViewModel.fromStop.collectAsState()
+  val selectedToStop by homeViewModel.toStop.collectAsState()
+  val fromInput = selectedFromStop.getCurrentName(locale)
+  val toInput = selectedToStop.getCurrentName(locale)
 
   ConstraintLayout(modifier = modifier) {
     val (fromCard, swap, toCard, search, allTransports) = createRefs()
@@ -57,8 +64,12 @@ fun SearchScreen(
       label = R.string.label_from_long,
       hint = R.string.hint_from,
       trailingIcon = R.drawable.ic_current_location_black,
-      onDropdownClick = { navController.navigate(NavigationScreens.StopsPickerScreen.name) },
-      onInputChange = { input -> fromInput = input },
+      text = fromInput,
+      onDropdownClick = {
+        navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
+          launchSingleTop = true
+        }
+      },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
       keyboardActions = KeyboardActions(
         onNext = { focusManager.moveFocus(FocusDirection.Down) }
@@ -76,7 +87,7 @@ fun SearchScreen(
         },
       backgroundColor = backgroundColorVariant(),
       shape = Shapes.medium,
-      onClick = {},
+      onClick = { homeViewModel.swap() },
     ) {
       Icon(painter = painterResource(id = R.drawable.ic_swap), contentDescription = null)
     }
@@ -96,8 +107,12 @@ fun SearchScreen(
       label = R.string.label_to_long,
       hint = R.string.hint_to,
       trailingIcon = R.drawable.ic_map,
-      onDropdownClick = { navController.navigate(NavigationScreens.StopsPickerScreen.name) },
-      onInputChange = { input -> toInput = input },
+      text = toInput,
+      onDropdownClick = {
+        navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/false") {
+          launchSingleTop = true
+        }
+      },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
       keyboardActions = KeyboardActions(
         onDone = { focusManager.clearFocus() }
@@ -138,13 +153,11 @@ fun SearchInput(
   @StringRes label: Int,
   @StringRes hint: Int,
   @DrawableRes trailingIcon: Int,
+  text: String = "",
   keyboardOptions: KeyboardOptions,
   keyboardActions: KeyboardActions,
   onDropdownClick: () -> Unit,
-  onInputChange: (String) -> Unit,
 ) {
-  var textInput by rememberSaveable { mutableStateOf("") }
-
   Column(modifier = modifier) {
     Text(
       modifier = Modifier.padding(HalfPadding),
@@ -158,19 +171,19 @@ fun SearchInput(
       elevation = 0.dp,
       backgroundColor = backgroundColorVariant(),
     ) {
-      Box {
+      Box(
+        modifier = Modifier.clickable { onDropdownClick.invoke() },
+      ) {
         TextField(
           modifier = Modifier
             .fillMaxWidth()
             .padding(end = BarIconSize)
+            .padding(start = SmallPadding)
             .padding(vertical = SmallPadding)
-            .background(Color.Transparent),
-          value = textInput,
-          onValueChange = {
-            textInput = it
-            onInputChange.invoke(it)
-          },
-          placeholder = { Text(text = stringResource(id = hint)) },
+            .background(color = searchInputBackgroundColor(), shape = SearchInputShape),
+          value = text,
+          onValueChange = {},
+          label = { Text(text = stringResource(id = hint)) },
           trailingIcon = {
             IconButton(onClick = { onDropdownClick.invoke() }) {
               Icon(painter = painterResource(id = R.drawable.ic_arrow_drop_down), contentDescription = null)
@@ -179,7 +192,7 @@ fun SearchInput(
           singleLine = true,
           shape = Shapes.medium,
           colors = TextFieldDefaults.outlinedTextFieldColors(
-            backgroundColor = backgroundColorVariant(),
+            backgroundColor = searchInputBackgroundColor(),
             focusedBorderColor = backgroundColorVariant(),
             unfocusedBorderColor = backgroundColorVariant(),
             disabledBorderColor = backgroundColorVariant(),
@@ -189,6 +202,11 @@ fun SearchInput(
           keyboardOptions = keyboardOptions,
           keyboardActions = keyboardActions,
           readOnly = true,
+          enabled = false,
+          textStyle = TextStyle(
+            color = backgroundColorVariantInvert(),
+            fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+          )
         )
 
         IconButton(

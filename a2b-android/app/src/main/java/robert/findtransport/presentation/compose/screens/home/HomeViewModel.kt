@@ -1,0 +1,41 @@
+package robert.findtransport.presentation.compose.screens.home
+
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import robert.findtransport.base.BaseViewModel
+import robert.findtransport.data.model.Stop
+import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import javax.inject.Inject
+
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+  localeUseCase: LocaleUseCase,
+  ) : BaseViewModel() {
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+
+  private val fromStopFlow = MutableStateFlow(Stop.EMPTY)
+  val fromStop get() = fromStopFlow.asStateFlow()
+
+  private val toStopFlow = MutableStateFlow(Stop.EMPTY)
+  val toStop get() = toStopFlow.asStateFlow()
+
+  fun setFromStop(stop: Stop) {
+    println("from $stop")
+    viewModelScope.launch { fromStopFlow.emit(stop) }
+  }
+
+  fun setToStop(stop: Stop) {
+    viewModelScope.launch { toStopFlow.emit(stop) }
+  }
+
+  fun swap() {
+    val fromValue = fromStopFlow.value
+    fromStopFlow.value = toStopFlow.value
+    toStopFlow.value = fromValue
+  }
+}

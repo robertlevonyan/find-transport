@@ -23,8 +23,11 @@ fun backgroundColor() = if (isSystemInDarkTheme()) Black else White
 fun backgroundColorVariant() = if (isSystemInDarkTheme()) BlackVariant else WhiteVariant
 
 @Composable
+fun searchInputBackgroundColor() = if (isSystemInDarkTheme())
+  backgroundColor().copy(alpha = 0.05f) else White.copy(alpha = 0.1f)
+
+@Composable
 fun backgroundColorVariantInvert() = if (isSystemInDarkTheme()) WhiteVariant else BlackVariant
 
 @Composable
-fun backgroundColorVariantInvertTransparent() = (if (isSystemInDarkTheme()) WhiteVariant else BlackVariant)
-  .copy(alpha = 0.5f)
+fun backgroundColorVariantInvertTransparent() = backgroundColorVariantInvert().copy(alpha = 0.5f)

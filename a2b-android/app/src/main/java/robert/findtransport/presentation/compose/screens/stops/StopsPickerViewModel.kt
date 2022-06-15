@@ -1,14 +1,11 @@
- package robert.findtransport.presentation.compose.screens.stops
+package robert.findtransport.presentation.compose.screens.stops
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
@@ -21,28 +18,29 @@ import javax.inject.Inject
 @HiltViewModel
 class StopsPickerViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
-  private val localeUseCase: LocaleUseCase
+  localeUseCase: LocaleUseCase,
 ) : BaseViewModel() {
-  val allStops: Flow<PagingData<Stop>> = stopsUseCase.getStopsPaged().cachedIn(viewModelScope + Dispatchers.IO)
+  val allStops: Flow<PagingData<Stop>> = stopsUseCase.getStopsPaged()
+    .cachedIn(viewModelScope + Dispatchers.IO)
 
   private val _autocompleteStops = MutableSharedFlow<List<Stop>>()
-  val autocompleteStops: Flow<List<Stop>> get() = _autocompleteStops
+  val autocompleteStops get() = _autocompleteStops.asSharedFlow()
 
   private val _selectedStop = MutableSharedFlow<Stop>()
-  val selectedStop: Flow<Stop> get() = _selectedStop
+  val selectedStop get() = _selectedStop.asSharedFlow()
 
   private val _searchMode = MutableStateFlow(false)
-  val searchMode: Flow<Boolean> get() = _searchMode
+  val searchMode get() = _searchMode.asStateFlow()
 
   private val _showNoData = MutableStateFlow(false)
-  val showNoData: Flow<Boolean> get() = _showNoData
+  val showNoData get() = _showNoData.asStateFlow()
 
-  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val locale: StateFlow<String> get() = _locale
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+    .asStateFlow()
 
   fun findStops(word: String) {
     viewModelScope.launch(Dispatchers.IO) {
-      val locale = localeUseCase.getCurrentLanguage()
+      val locale = locale.value
       val stops = stopsUseCase.getStopsAutocomplete(word, locale)
       withContext(Dispatchers.Main) {
         if (stops.isEmpty() && word.isEmpty()) {

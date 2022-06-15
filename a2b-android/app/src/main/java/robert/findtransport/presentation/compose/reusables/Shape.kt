@@ -8,3 +8,5 @@ val Shapes = Shapes(
   medium = RoundedCornerShape(CornerRadius),
   large = RoundedCornerShape(LargeCornerRadius)
 )
+
+val SearchInputShape = RoundedCornerShape(SearchInputCornerRadius)

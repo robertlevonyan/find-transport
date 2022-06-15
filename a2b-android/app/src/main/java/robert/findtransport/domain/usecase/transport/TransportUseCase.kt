@@ -1,12 +1,13 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
+import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.*
 
 interface TransportUseCase {
-  fun getTransportsPaged(checked: Boolean): List<Transport>
+  fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>>
 
   fun getTransportById(id: Int): Flow<Transport>
 

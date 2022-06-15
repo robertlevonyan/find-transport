@@ -1,28 +1,41 @@
 package robert.findtransport.presentation.compose.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import robert.findtransport.presentation.compose.screens.home.HomeScreen
+import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.presentation.compose.screens.stops.StopsPickerScreen
 import robert.findtransport.presentation.compose.screens.transports.TransportsScreen
 
 @Composable
 fun Navigation() {
   val navController = rememberNavController()
+  val homeViewModel = hiltViewModel<HomeViewModel>()
+
   NavHost(
     navController = navController,
     startDestination = NavigationScreens.HomeScreen.name,
   ) {
     composable(route = NavigationScreens.HomeScreen.name) {
-      HomeScreen(navController = navController)
+      HomeScreen(navController = navController, homeViewModel = homeViewModel)
     }
     composable(route = NavigationScreens.TransportsScreen.name) {
       TransportsScreen(navController = navController)
     }
-    composable(route = NavigationScreens.StopsPickerScreen.name) {
-      StopsPickerScreen(navController = navController)
+    composable(
+      route = "${NavigationScreens.StopsPickerScreen.name}/{is_from}",
+      arguments = listOf(navArgument("is_from") { type = NavType.BoolType }),
+    ) { backStackEntry ->
+      StopsPickerScreen(
+        navController = navController,
+        homeViewModel = homeViewModel,
+        isFrom = backStackEntry.arguments?.getBoolean("is_from") ?: true,
+      )
     }
   }
 }

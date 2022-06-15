@@ -5,7 +5,6 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
             authentication {
@@ -16,8 +15,8 @@ dependencyResolutionManagement {
                 // This should always be `mapbox` (not your username).
                 username = "mapbox"
                 // Use the secret token you stored in gradle.properties as the password
-                password = System.getenv('MAPBOX_DOWNLOADS_TOKEN') ?: ""
+                password = MAPBOX_DOWNLOADS_TOKEN
             }
         }
     }
-} 
+}

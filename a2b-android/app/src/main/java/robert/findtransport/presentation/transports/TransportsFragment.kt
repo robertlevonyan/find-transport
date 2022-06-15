@@ -39,7 +39,7 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
 
     setFragmentResultListener(RESULT_FAVORITE) { _, bundle: Bundle ->
       if (bundle.getBoolean(RESULT_FAVORITE)) {
-        viewModel.getTransports()
+        viewModel.getTransports(false)
       }
     }
   }
@@ -73,14 +73,14 @@ class TransportsFragment : BaseFragment<TransportsViewModel, FragmentTransportsB
   }
 
   override fun TransportsViewModel.initObservers() {
-    collectWithLifecycle(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
-      adapter.currentLocale = data.second
-      adapter.submitList(data.first)
-    }
-    collectWithLifecycle(showOnlyFavorites) { onlyFavorites ->
-      val checkedButtonId = if (onlyFavorites) R.id.btn_favorites else R.id.btn_all
-      binding.swListToggle.check(checkedButtonId)
-    }
+//    collectWithLifecycle(allTransports.combineTransform(locale) { transports, locale -> emit(transports to locale) }) { data ->
+//      adapter.currentLocale = data.second
+//      adapter.submitList(data.first)
+//    }
+//    collectWithLifecycle(showOnlyFavorites) { onlyFavorites ->
+//      val checkedButtonId = if (onlyFavorites) R.id.btn_favorites else R.id.btn_all
+//      binding.swListToggle.check(checkedButtonId)
+//    }
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

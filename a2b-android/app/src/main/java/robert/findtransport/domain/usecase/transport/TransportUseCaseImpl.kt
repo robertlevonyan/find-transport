@@ -1,6 +1,10 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -22,10 +26,14 @@ class TransportUseCaseImpl @Inject constructor(
   private val transportsRepository: TransportsRepository,
   private val stopsRepository: StopsRepository,
 ) : TransportUseCase {
-  override fun getTransportsPaged(checked: Boolean): List<Transport> =
-    transportsRepository.getAllTransports(checked).map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-        .map { it.toStop() })
+  override fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>> =
+    Pager(config = PagingConfig(pageSize = 10)) {
+      transportsRepository.getTransportsPaged(checked)
+    }.flow.map { value ->
+      value.map { apiTransport ->
+        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+          .map { it.toStop() })
+      }
     }
 
   override fun getTransportById(id: Int): Flow<Transport> =

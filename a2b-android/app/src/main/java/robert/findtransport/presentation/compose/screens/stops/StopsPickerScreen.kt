@@ -22,10 +22,8 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import robert.findtransport.R
-import robert.findtransport.presentation.compose.reusables.A2bAppBar
-import robert.findtransport.presentation.compose.reusables.HalfPadding
-import robert.findtransport.presentation.compose.reusables.TextMessage
-import robert.findtransport.presentation.compose.reusables.backgroundColorVariantInvertTransparent
+import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
@@ -33,6 +31,8 @@ fun StopsPickerScreen(
   modifier: Modifier = Modifier,
   navController: NavController,
   stopsPickerViewModel: StopsPickerViewModel = hiltViewModel(),
+  homeViewModel: HomeViewModel,
+  isFrom: Boolean,
 ) {
   val locale by stopsPickerViewModel.locale.collectAsState()
   val stops = stopsPickerViewModel.allStops.collectAsLazyPagingItems()
@@ -58,16 +58,29 @@ fun StopsPickerScreen(
   ) { contentPadding ->
     LazyColumn(modifier = Modifier.padding(contentPadding)) {
       items(stops) { stop ->
+        stop ?: return@items
+
         Column {
           TextMessage(
             modifier = Modifier
               .fillMaxWidth()
-              .clickable { }
+              .clickable {
+                if (isFrom) {
+                  homeViewModel.setFromStop(stop)
+                } else {
+                  homeViewModel.setToStop(stop)
+                }
+                navController.popBackStack()
+              }
               .padding(HalfPadding),
-            text = stop?.getCurrentName(locale) ?: "",
+            text = stop.getCurrentName(locale),
           )
 
-          Divider(color = backgroundColorVariantInvertTransparent(), thickness = 0.5.dp)
+          Divider(
+            color = backgroundColorVariantInvertTransparent(),
+            thickness = 0.5.dp,
+            startIndent = FabPadding,
+          )
         }
       }
     }

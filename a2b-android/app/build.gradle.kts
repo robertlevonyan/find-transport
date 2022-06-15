@@ -104,7 +104,7 @@ android {
     abi { enableSplit = false }
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.2.0-beta02"
+    kotlinCompilerExtensionVersion = "1.2.0-beta03"
   }
   kapt {
     correctErrorTypes = true
@@ -121,7 +121,7 @@ dependencies {
   implementation("com.google.android.material:material:1.7.0-alpha02")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:19.0.1")
+  implementation("com.google.android.gms:play-services-location:20.0.0")
   implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.41")
   implementation(platform("com.google.firebase:firebase-bom:29.1.0"))
@@ -132,11 +132,11 @@ dependencies {
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.4.0")
-  implementation("androidx.appcompat:appcompat:1.4.1")
+  implementation("androidx.appcompat:appcompat:1.4.2")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-  implementation("androidx.core:core-ktx:1.7.0")
+  implementation("androidx.core:core-ktx:1.8.0")
   implementation("androidx.core:core-splashscreen:1.0.0-rc01")
   implementation("androidx.fragment:fragment-ktx:1.4.1")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
@@ -160,10 +160,10 @@ dependencies {
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
   implementation("androidx.paging:paging-compose:1.0.0-alpha15")
-  implementation("androidx.compose.compiler:compiler:1.2.0-beta02")
-  implementation("androidx.compose.ui:ui:1.2.0-beta02")
-  implementation("androidx.compose.material:material:1.2.0-beta02")
-  implementation("androidx.compose.ui:ui-tooling:1.2.0-beta02")
+  implementation("androidx.compose.compiler:compiler:1.2.0-beta03")
+  implementation("androidx.compose.ui:ui:1.2.0-beta03")
+  implementation("androidx.compose.material:material:1.2.0-beta03")
+  implementation("androidx.compose.ui:ui-tooling:1.2.0-beta03")
 
   implementation("io.coil-kt:coil-compose:2.0.0")
 
@@ -173,14 +173,13 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.4.2")
+  implementation("com.mapbox.maps:android:10.5.0")
   implementation("com.mapbox.navigation:android:2.4.0")
 
   //other
   implementation("com.airbnb.android:lottie:4.2.2")
   implementation("com.airbnb.android:lottie-compose:4.1.0")
   implementation("com.github.terrakok:cicerone:7.1")
-  implementation("com.github.ybq:Android-SpinKit:1.4.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }

@@ -1,6 +1,7 @@
 package robert.findtransport.data.repository
 
 import android.util.Log
+import androidx.paging.PagingSource
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.matching.v5.models.MapMatchingResponse
 import com.mapbox.geojson.Point
@@ -53,8 +54,8 @@ class TransportsRepositoryImpl @Inject constructor(
     Log.d("A2B Join", "${saved.size}")
   }
 
-  override fun getAllTransports(favorite: Boolean): List<Transport> =
-    transportsDao.getAllTransports(favorite)
+  override fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport> =
+    transportsDao.getTransportsPaged(favorite)
 
   override fun getTransportById(id: Int): Flow<Transport> =
     transportsDao.getTransportById(id)
