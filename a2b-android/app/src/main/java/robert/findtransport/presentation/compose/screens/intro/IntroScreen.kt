@@ -126,6 +126,7 @@ fun IntroScreen(
           bottom.linkTo(parent.bottom)
         },
         onClick = {
+          introViewModel.setIntroPassed()
           navController.navigate(NavigationScreens.HomeScreen.name) {
             popUpTo(navController.graph.id)
           }
