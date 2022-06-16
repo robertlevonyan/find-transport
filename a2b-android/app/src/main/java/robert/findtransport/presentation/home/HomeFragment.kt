@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.play.core.review.ReviewManagerFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
-import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.Stop
@@ -101,7 +100,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
     btnSearch.setOnClickListener { viewModel.search() }
     fabSwap.setOnClickListener { viewModel.swapStops() }
-    btnTransports.setOnClickListener { router.navigateTo(transportsScreen()) }
   }
 
   override fun HomeViewModel.initObservers() {

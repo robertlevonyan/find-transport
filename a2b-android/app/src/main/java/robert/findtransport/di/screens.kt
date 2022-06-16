@@ -6,7 +6,6 @@ import robert.findtransport.presentation.detail.DetailFragment
 import robert.findtransport.presentation.feedback.FeedbackFragment
 import robert.findtransport.presentation.history.HistoryFragment
 import robert.findtransport.presentation.home.HomeFragment
-import robert.findtransport.presentation.intro.IntroFragment
 import robert.findtransport.presentation.map.ChooserMapFragment
 import robert.findtransport.presentation.map.PreviewMapFragment
 import robert.findtransport.presentation.map.SearchMapFragment
@@ -15,12 +14,7 @@ import robert.findtransport.presentation.search.SearchFragment
 import robert.findtransport.presentation.settings.SettingsFragment
 import robert.findtransport.presentation.stop.StopsPickerFragment
 import robert.findtransport.presentation.track.TrackRouteFragment
-import robert.findtransport.presentation.transports.TransportsFragment
 import robert.findtransport.presentation.update.UpdateFragment
-
-fun introScreen() = FragmentScreen {
-  IntroFragment.newInstance()
-}
 
 fun homeScreen() = FragmentScreen {
   HomeFragment.newInstance()
@@ -36,10 +30,6 @@ fun searchScreen(args: Bundle) = FragmentScreen {
 
 fun trackRouteScreen(args: Bundle) = FragmentScreen {
   TrackRouteFragment.newInstance(args)
-}
-
-fun transportsScreen() = FragmentScreen {
-  TransportsFragment.newInstance()
 }
 
 fun detailsScreen(id: Int, hasOption: Boolean) = FragmentScreen {

@@ -7,7 +7,7 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.databinding.FragmentIntroBinding
 import robert.findtransport.di.homeScreen
-import robert.findtransport.di.introScreen
+import robert.findtransport.presentation.compose.screens.intro.IntroViewModel
 import robert.findtransport.utils.viewbinding.viewBinding
 
 @AndroidEntryPoint
@@ -26,24 +26,24 @@ class IntroFragment : BaseFragment<IntroViewModel, FragmentIntroBinding>() {
     collectWithLifecycle(languageChanged) { language ->
       activity?.run {
         LocaleService(this).changeLocale(language)
-        router.replaceScreen(introScreen())
+//        router.replaceScreen(introScreen())
       }
     }
-    collectWithLifecycle(pickerArmValue) {
-      if (it) {
-        binding.pkLanguage.check(R.id.btn_arm)
-      }
-    }
-    collectWithLifecycle(pickerEngValue) {
-      if (it) {
-        binding.pkLanguage.check(R.id.btn_eng)
-      }
-    }
-    collectWithLifecycle(pickerRusValue) {
-      if (it) {
-        binding.pkLanguage.check(R.id.btn_rus)
-      }
-    }
+//    collectWithLifecycle(pickerArmValue) {
+//      if (it) {
+//        binding.pkLanguage.check(R.id.btn_arm)
+//      }
+//    }
+//    collectWithLifecycle(pickerEngValue) {
+//      if (it) {
+//        binding.pkLanguage.check(R.id.btn_eng)
+//      }
+//    }
+//    collectWithLifecycle(pickerRusValue) {
+//      if (it) {
+//        binding.pkLanguage.check(R.id.btn_rus)
+//      }
+//    }
     collectWithLifecycle(introPassed) { router.replaceScreen(homeScreen()) }
   }
 

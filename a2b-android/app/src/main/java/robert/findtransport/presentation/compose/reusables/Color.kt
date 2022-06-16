@@ -20,14 +20,14 @@ val WhitePure = Color(0xFFFFFFFF)
 fun backgroundColor() = if (isSystemInDarkTheme()) Black else White
 
 @Composable
-fun backgroundColorVariant() = if (isSystemInDarkTheme()) BlackVariant else WhiteVariant
+fun colorVariant() = if (isSystemInDarkTheme()) BlackVariant else WhiteVariant
+
+@Composable
+fun colorVariantInvert() = if (isSystemInDarkTheme()) WhiteVariant else BlackVariant
+
+@Composable
+fun colorVariantInvertTransparent() = colorVariantInvert().copy(alpha = 0.5f)
 
 @Composable
 fun searchInputBackgroundColor() = if (isSystemInDarkTheme())
   backgroundColor().copy(alpha = 0.05f) else White.copy(alpha = 0.1f)
-
-@Composable
-fun backgroundColorVariantInvert() = if (isSystemInDarkTheme()) WhiteVariant else BlackVariant
-
-@Composable
-fun backgroundColorVariantInvertTransparent() = backgroundColorVariantInvert().copy(alpha = 0.5f)

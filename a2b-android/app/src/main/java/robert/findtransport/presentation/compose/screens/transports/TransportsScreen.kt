@@ -14,9 +14,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
 import robert.findtransport.R
+import robert.findtransport.data.model.Transport
+import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 
 @Composable
@@ -26,7 +29,9 @@ fun TransportsScreen(
   transportsViewModel: TransportsViewModel = hiltViewModel(),
 ) {
   val locale by transportsViewModel.locale.collectAsState()
-  val transports = transportsViewModel.allTransports.collectAsLazyPagingItems()
+  val allTransports = transportsViewModel.allTransports.collectAsLazyPagingItems()
+  val favoriteTransports = transportsViewModel.favoriteTransports.collectAsLazyPagingItems()
+  var showAll by rememberSaveable { mutableStateOf(true) }
 
   Scaffold(
     modifier = modifier,
@@ -38,55 +43,80 @@ fun TransportsScreen(
       )
     }
   ) { contentPadding ->
-    LazyColumn(modifier = Modifier.padding(contentPadding)) {
-      item {
-        TransportTypeChooser(
-          onAllButtonClicked = { transportsViewModel.getTransports(checked = false) },
-          onFavoritesButtonClicked = { transportsViewModel.getTransports(checked = true) },
-        )
+    val transports = if (showAll) allTransports else favoriteTransports
+
+    TransportsList(
+      contentPadding = contentPadding,
+      transports = transports,
+      locale = locale,
+      showAll = showAll,
+      onToggleClick = { showAll = it },
+      onStarCheckedChange = transportsViewModel::toggleTransportFavorite,
+      onTransportClick = { transport ->
+        navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}")
       }
-      itemsIndexed(
-        items = transports,
-        itemContent = { index, item ->
-          item ?: return@itemsIndexed
-
-          TransportListElement(
-            transport = item,
-            locale = locale,
-            onElementClick = { transport ->
-
-            },
-            hasStar = true,
-            onStarCheckedChange = { transportsViewModel.toggleTransportFavorite(item) },
-          )
-
-          if (index < transports.itemCount - 1) {
-            Divider(
-              color = backgroundColorVariantInvertTransparent(),
-              thickness = 0.5.dp,
-            )
-          }
-        },
-      )
-    }
-    transportsViewModel.getTransports(checked = false)
+    )
   }
 }
 
 @Composable
-fun TransportTypeChooser(
+private fun TransportsList(
+  contentPadding: PaddingValues,
+  transports: LazyPagingItems<Transport>,
+  locale: String,
+  showAll: Boolean,
+  onToggleClick: (Boolean) -> Unit,
+  onStarCheckedChange: (Transport) -> Unit,
+  onTransportClick: (Transport) -> Unit,
+) {
+  LazyColumn(
+    modifier = Modifier.padding(contentPadding),
+    contentPadding = contentPadding,
+  ) {
+    item {
+      TransportTypeChooser(
+        showAll = showAll,
+        onAllButtonClicked = { onToggleClick.invoke(true) },
+        onFavoritesButtonClicked = { onToggleClick.invoke(false) },
+      )
+    }
+    itemsIndexed(
+      items = transports,
+      itemContent = { index, item ->
+        item ?: return@itemsIndexed
+
+        TransportListElement(
+          transport = item,
+          locale = locale,
+          onElementClick = onTransportClick,
+          hasStar = true,
+          onStarCheckedChange = { onStarCheckedChange.invoke(item) },
+        )
+
+        if (index < transports.itemCount - 1) {
+          Divider(
+            color = colorVariantInvertTransparent(),
+            thickness = 0.5.dp,
+          )
+        }
+      },
+    )
+  }
+}
+
+@Composable
+private fun TransportTypeChooser(
+  showAll: Boolean,
   onAllButtonClicked: () -> Unit,
   onFavoritesButtonClicked: () -> Unit,
 ) {
-  var showAllSelected by rememberSaveable { mutableStateOf(true) }
-
   Box(modifier = Modifier.fillMaxWidth()) {
     Card(
       modifier = Modifier
         .fillMaxWidth(fraction = 0.9f)
         .align(Alignment.Center)
         .wrapContentHeight(),
-      backgroundColor = backgroundColorVariant(),
+      backgroundColor = colorVariant(),
       shape = Shapes.medium,
     ) {
       Column(modifier = Modifier.padding(HalfPadding)) {
@@ -101,15 +131,14 @@ fun TransportTypeChooser(
             .align(Alignment.CenterHorizontally),
         ) {
           val squareCorner = CornerSize(0.dp)
-          val allButtonColor = if (showAllSelected) Accent else Color.Transparent
-          val favoritesButtonColor = if (!showAllSelected) Accent else Color.Transparent
+          val allButtonColor = if (showAll) Accent else Color.Transparent
+          val favoritesButtonColor = if (!showAll) Accent else Color.Transparent
 
           OutlinedButton(
             shape = Shapes.large.copy(topEnd = squareCorner, bottomEnd = squareCorner),
             border = BorderStroke(1.dp, Accent),
             onClick = {
-              if (!showAllSelected) {
-                showAllSelected = true
+              if (!showAll) {
                 onAllButtonClicked.invoke()
               }
             },
@@ -117,15 +146,14 @@ fun TransportTypeChooser(
           ) {
             Text(
               text = stringResource(id = R.string.label_see_all),
-              color = if (showAllSelected) BlackVariant else backgroundColorVariantInvert(),
+              color = if (showAll) BlackVariant else colorVariantInvert(),
             )
           }
           OutlinedButton(
             shape = Shapes.large.copy(topStart = squareCorner, bottomStart = squareCorner),
             border = BorderStroke(1.dp, Accent),
             onClick = {
-              if (showAllSelected) {
-                showAllSelected = false
+              if (showAll) {
                 onFavoritesButtonClicked.invoke()
               }
             },
@@ -133,7 +161,7 @@ fun TransportTypeChooser(
           ) {
             Text(
               text = stringResource(id = R.string.label_see_favorites),
-              color = if (!showAllSelected) BlackVariant else backgroundColorVariantInvert(),
+              color = if (!showAll) BlackVariant else colorVariantInvert(),
             )
           }
         }

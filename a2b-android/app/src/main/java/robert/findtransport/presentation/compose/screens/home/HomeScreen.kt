@@ -23,7 +23,7 @@ import robert.findtransport.R
 import robert.findtransport.presentation.compose.reusables.BarIconSize
 import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
 import robert.findtransport.presentation.compose.reusables.backgroundColor
-import robert.findtransport.presentation.compose.reusables.backgroundColorVariant
+import robert.findtransport.presentation.compose.reusables.colorVariant
 import robert.findtransport.presentation.compose.screens.data.CheckDataScreen
 
 @Composable
@@ -97,7 +97,7 @@ fun A2bTitle() {
 @Composable
 fun OptionsMenu(overflowMenuState: Boolean, onMenuDismiss: () -> Unit) {
   DropdownMenu(
-    modifier = Modifier.background(backgroundColorVariant()),
+    modifier = Modifier.background(colorVariant()),
     expanded = overflowMenuState,
     offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
     onDismissRequest = { onMenuDismiss.invoke() },

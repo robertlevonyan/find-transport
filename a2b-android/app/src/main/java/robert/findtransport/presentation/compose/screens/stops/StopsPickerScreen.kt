@@ -77,7 +77,7 @@ fun StopsPickerScreen(
           )
 
           Divider(
-            color = backgroundColorVariantInvertTransparent(),
+            color = colorVariantInvertTransparent(),
             thickness = 0.5.dp,
             startIndent = FabPadding,
           )

@@ -20,18 +20,24 @@ class TransportsViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
-  private val _allTransports = MutableSharedFlow<PagingData<Transport>>()
-  val allTransports get() = _allTransports.asSharedFlow()
+//  private val _allTransports = transportUseCase.getTransportsPaged(false)
+//    .cachedIn(scope = viewModelScope + Dispatchers.IO)
+  val allTransports = transportUseCase.getTransportsPaged(false)
+    .cachedIn(scope = viewModelScope + Dispatchers.IO)
+  val favoriteTransports = transportUseCase.getTransportsPaged(true)
+    .cachedIn(scope = viewModelScope + Dispatchers.IO)
 
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
-  fun getTransports(checked: Boolean) {
-    viewModelScope.launch {
-      transportUseCase.getTransportsPaged(checked)
-        .cachedIn(this + Dispatchers.IO)
-        .collectLatest(_allTransports::emit)
-    }
-  }
+//  fun getTransports(checked: Boolean) {
+//    viewModelScope.launch {
+//      transportUseCase.getTransportsPaged(checked)
+//        .cachedIn(viewModelScope + Dispatchers.IO)
+//        .collectLatest {
+//
+//        }
+//    }
+//  }
 
   override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
     viewModelScope.launch(Dispatchers.IO) {

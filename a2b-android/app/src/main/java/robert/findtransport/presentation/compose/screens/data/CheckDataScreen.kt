@@ -45,7 +45,7 @@ fun CheckDataScreen(
       .padding(HalfPadding),
     elevation = 0.dp,
     shape = Shapes.medium,
-    backgroundColor = backgroundColorVariant(),
+    backgroundColor = colorVariant(),
   ) {
 
     when (loadingState) {
