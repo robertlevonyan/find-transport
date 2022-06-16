@@ -81,9 +81,11 @@ class RetrofitClient private constructor() {
 
         chain.proceed(newRequest)
       })
-      addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply {
-        this.level = HttpLoggingInterceptor.Level.HEADERS
-      })
+      if (BuildConfig.DEBUG) {
+        addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply {
+          level = HttpLoggingInterceptor.Level.BODY
+        })
+      }
       build()
     }
   }

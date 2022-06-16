@@ -60,10 +60,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   protected var pointAnnotationManager: PointAnnotationManager? = null
   protected var polylineAnnotationManager: PolylineAnnotationManager? = null
 
-  private val permissions = arrayOf(
-    Manifest.permission.ACCESS_FINE_LOCATION,
-    Manifest.permission.READ_PHONE_STATE,
-  )
+  private val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
   private val permissionRequest = registerForActivityResult(
     ActivityResultContracts.RequestMultiplePermissions()
