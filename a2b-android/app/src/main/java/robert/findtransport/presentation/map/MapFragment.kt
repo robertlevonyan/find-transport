@@ -102,9 +102,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     super.onViewCreated(view, savedInstanceState)
 
     activity?.run {
-      if (ActivityCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED
-        || ActivityCompat.checkSelfPermission(this, permissions[1]) != PackageManager.PERMISSION_GRANTED
-      ) {
+      if (ActivityCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED) {
         showDialogForPermissions(this)
       } else {
         locationEnabled = true
