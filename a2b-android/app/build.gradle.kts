@@ -104,7 +104,7 @@ android {
     abi { enableSplit = false }
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.2.0-beta03"
+    kotlinCompilerExtensionVersion = "1.2.0-rc01"
   }
   kapt {
     correctErrorTypes = true
@@ -155,15 +155,15 @@ dependencies {
 
   //compose
   implementation("com.google.accompanist:accompanist-insets:0.23.0")
-  implementation("androidx.activity:activity-compose:1.6.0-alpha03")
+  implementation("androidx.activity:activity-compose:1.6.0-alpha05")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-  implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
+  implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
   implementation("androidx.paging:paging-compose:1.0.0-alpha15")
-  implementation("androidx.compose.compiler:compiler:1.2.0-beta03")
-  implementation("androidx.compose.ui:ui:1.2.0-beta03")
-  implementation("androidx.compose.material:material:1.2.0-beta03")
-  implementation("androidx.compose.ui:ui-tooling:1.2.0-beta03")
+  implementation("androidx.compose.compiler:compiler:1.2.0-rc01")
+  implementation("androidx.compose.ui:ui:1.2.0-rc01")
+  implementation("androidx.compose.material:material:1.2.0-rc01")
+  implementation("androidx.compose.ui:ui-tooling:1.2.0-rc01")
 
   implementation("io.coil-kt:coil-compose:2.0.0")
 
@@ -177,9 +177,8 @@ dependencies {
   implementation("com.mapbox.navigation:android:2.4.0")
 
   //other
-  implementation("com.airbnb.android:lottie:4.2.2")
   implementation("com.airbnb.android:lottie-compose:4.1.0")
-  implementation("com.github.terrakok:cicerone:7.1")
+  implementation("com.robertlevonyan.compose:buttontogglegroup:1.0.3")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }

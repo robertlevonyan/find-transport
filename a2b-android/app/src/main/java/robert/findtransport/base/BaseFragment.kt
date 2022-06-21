@@ -16,24 +16,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
-import com.github.terrakok.cicerone.Router
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.R
-import robert.findtransport.di.feedbackScreen
-import robert.findtransport.di.settingsScreen
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.showToast
-import javax.inject.Inject
 
 abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : Fragment() {
   abstract val binding: Binding
   abstract val viewModel: ViewModel
-
-  @Inject
-  protected lateinit var router: Router
 
   override fun onAttach(context: Context) {
     super.onAttach(context)
@@ -81,15 +73,15 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
       android.R.id.home -> onBackPressed()
-      R.id.action_settings -> router.navigateTo(settingsScreen())
-      R.id.action_feedback -> router.navigateTo(feedbackScreen())
+//      R.id.action_settings -> router.navigateTo(settingsScreen())
+//      R.id.action_feedback -> router.navigateTo(feedbackScreen())
       R.id.action_privacy -> openPrivacyPolicy()
     }
     return true
   }
 
   open fun onBackPressed() {
-    router.exit()
+//    router.exit()
   }
 
   private fun openPrivacyPolicy() {

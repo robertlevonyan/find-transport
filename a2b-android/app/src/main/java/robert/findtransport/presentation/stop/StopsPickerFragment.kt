@@ -44,12 +44,14 @@ class StopsPickerFragment : BaseFragment<StopsPickerViewModel, FragmentStopsPick
           when (openStopType) {
             OpenStopType.FROM -> setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to stop.id))
             OpenStopType.TO -> setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to stop.id))
-            OpenStopType.UNDEFINED -> router.exit()
+            OpenStopType.UNDEFINED -> {
+//              router.exit()
+            }
           }
-          router.exit()
+//          router.exit()
         }
       }
-      ?: router.exit()
+//      ?: router.exit()
   }
 
   override fun FragmentStopsPickerBinding.initInsets() {

@@ -12,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.databinding.FragmentPassingRoutesBinding
-import robert.findtransport.di.detailsScreen
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
 import robert.findtransport.utils.ARG_STOP
 import robert.findtransport.utils.extensions.*
@@ -24,7 +23,7 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
   override val viewModel: PassingRoutesViewModel by viewModels()
 
   private val transportsListAdapter = TransportsListAdapter { transport ->
-    router.navigateTo(detailsScreen(transport.id, false))
+//    router.navigateTo(detailsScreen(transport.id, false))
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +35,7 @@ class PassingRoutesFragment : BaseFragment<PassingRoutesViewModel, FragmentPassi
         viewModel.getStop(it)
         viewModel.getTransports(it)
       }
-      ?: router.exit()
+//      ?: router.exit()
   }
 
   override fun FragmentPassingRoutesBinding.initInsets() {

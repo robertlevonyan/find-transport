@@ -87,15 +87,15 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
             permissionRequest.launch(permissions)
           } catch (e: Exception) {
             e.printStackTrace()
-            router.exit()
+//            router.exit()
           }
         }
       }
       negativeClick = {
         binding.fabLocation.visibility = View.GONE
-        if (!isDetached) {
-          initMap()
-        }
+//        if (!isDetached) {
+//          initMap()
+//        }
       }
     }
   }
@@ -108,16 +108,17 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
       if (ActivityCompat.checkSelfPermission(this, permissions[0]) != PackageManager.PERMISSION_GRANTED
         || ActivityCompat.checkSelfPermission(this, permissions[1]) != PackageManager.PERMISSION_GRANTED
       ) {
-        showDialogForPermissions(this)
+//        showDialogForPermissions(this)
       } else {
         locationEnabled = true
         viewModel.getCurrentLocation()
       }
 
-      if (!isDetached) {
-        initMap()
-      }
-    } ?: router.exit()
+//      if (!isDetached) {
+//        initMap()
+//      }
+//    } ?: router.exit()
+    }
   }
 
   override fun FragmentMapBinding.initInsets() {

@@ -6,7 +6,10 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
@@ -18,8 +21,6 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.utils.DEFAULT_LATITUDE
-import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import javax.inject.Inject

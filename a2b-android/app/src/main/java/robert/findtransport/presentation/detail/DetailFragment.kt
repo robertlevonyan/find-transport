@@ -13,10 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combineTransform
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
-import robert.findtransport.data.model.enums.TransportType
 import robert.findtransport.databinding.FragmentDetailBinding
-import robert.findtransport.di.mapPreviewScreen
-import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.adapter.TransportRouteAdapter
 import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
 import robert.findtransport.utils.*
@@ -35,7 +32,7 @@ class DetailFragment : BaseFragment<TransportViewModel, FragmentDetailBinding>()
     arguments
       ?.takeIf { it.containsKey(ARG_TRANSPORT_ID) }
       ?.run { viewModel.getTransport(getInt(ARG_TRANSPORT_ID).also { transportId = it }) }
-      ?: router.exit()
+//      ?: router.exit()
     viewModel.setHasOptions(arguments?.getBoolean(ARG_HAS_OPTIONS) == true)
 
   }
@@ -46,7 +43,8 @@ class DetailFragment : BaseFragment<TransportViewModel, FragmentDetailBinding>()
     }
     rvRoute.onWindowInsets { v, windowInsets ->
       val padding = getDimenInt(R.dimen.margin_xx_large)
-      v.bottomPadding = (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin) + padding) * 2
+      v.bottomPadding =
+        (windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin) + padding) * 2
     }
     fabMap.onWindowInsets { v, windowInsets ->
       v.bottomMargin = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom + getDimenInt(R.dimen.fab_margin)
@@ -66,15 +64,15 @@ class DetailFragment : BaseFragment<TransportViewModel, FragmentDetailBinding>()
   }
 
   private fun openMap() {
-    router.navigateTo(
-      mapPreviewScreen(
-        bundleOf(
-          ARG_TRANSPORT_ID to transportId,
-          ARG_ROUTE_REVERSE to viewModel.showPrimary.value,
-          ARG_UNDERGROUND to (viewModel.selectedTransport.value.type == TransportType.METRO)
-        )
-      )
-    )
+//    router.navigateTo(
+//      mapPreviewScreen(
+//        bundleOf(
+//          ARG_TRANSPORT_ID to transportId,
+//          ARG_ROUTE_REVERSE to viewModel.showPrimary.value,
+//          ARG_UNDERGROUND to (viewModel.selectedTransport.value.type == TransportType.METRO)
+//        )
+//      )
+//    )
   }
 
   override fun TransportViewModel.initObservers() {
@@ -93,7 +91,7 @@ class DetailFragment : BaseFragment<TransportViewModel, FragmentDetailBinding>()
     }
 
     collectWithLifecycle(openPassingTransports) { selectedStop ->
-      router.navigateTo(passingRoutesScreen(selectedStop.id))
+//      router.navigateTo(passingRoutesScreen(selectedStop.id))
     }
 
     collectWithLifecycle(selectedTransport

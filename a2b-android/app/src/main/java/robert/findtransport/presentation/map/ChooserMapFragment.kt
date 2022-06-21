@@ -5,7 +5,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.mapbox.maps.Style
 import dagger.hilt.android.AndroidEntryPoint
-import robert.findtransport.di.passingRoutesScreen
 import robert.findtransport.presentation.component.bottomsheet.map.StopOptionsBottomSheet
 import robert.findtransport.utils.*
 
@@ -51,17 +50,17 @@ class ChooserMapFragment : MapFragment() {
       onFromSelected = { selectedStop ->
         this@ChooserMapFragment.viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
           setFragmentResult(RESULT_FROM, bundleOf(RESULT_FROM to selectedStop.id))
-          router.exit()
+//          router.exit()
         }
       }
       onToSelected = { selectedStop ->
         this@ChooserMapFragment.viewModel.getStopName(selectedStop).takeIf { it != "" }?.let {
           setFragmentResult(RESULT_TO, bundleOf(RESULT_TO to selectedStop.id))
-          router.exit()
+//          router.exit()
         }
       }
       onShowTransports = { selectedStop ->
-        router.navigateTo(passingRoutesScreen(selectedStop.id))
+//        router.navigateTo(passingRoutesScreen(selectedStop.id))
       }
     }.show(parentFragmentManager, StopOptionsBottomSheet::class.java.simpleName)
   }

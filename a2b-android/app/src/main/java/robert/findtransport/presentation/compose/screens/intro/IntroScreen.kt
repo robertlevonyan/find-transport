@@ -11,6 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -19,6 +20,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.robertlevonyan.compose.buttontogglegroup.ColumnToggleButtonGroup
 import kotlinx.coroutines.flow.collectLatest
 import robert.findtransport.R
 import robert.findtransport.data.service.LocaleService
@@ -105,13 +107,21 @@ fun IntroScreen(
         buttonCount = 3,
         primarySelection = currentLanguageIndex,
         selectedColor = Accent.copy(alpha = 0.2f),
-        selectedTextColor = colorVariantInvert(),
+        selectedContentColor = colorVariantInvert(),
+        unselectedContentColor = colorVariantInvert(),
         borderColor = Accent.copy(alpha = 0.5f),
         buttonTexts = arrayOf(
           stringResource(id = R.string.settings_language_am),
           stringResource(id = R.string.settings_language_en),
           stringResource(id = R.string.settings_language_ru),
         ),
+        buttonIcons = arrayOf(
+          painterResource(id = R.drawable.ic_lng_arm),
+          painterResource(id = R.drawable.ic_lng_eng),
+          painterResource(id = R.drawable.ic_lng_rus),
+        ),
+        buttonIconTint = Color.Transparent,
+        unselectedButtonIconTint = Color.Transparent,
       ) { index ->
         introViewModel.setLanguage(index)
       }

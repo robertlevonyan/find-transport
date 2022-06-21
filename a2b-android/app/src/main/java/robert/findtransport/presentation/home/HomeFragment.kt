@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -19,8 +18,9 @@ import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.Stop
 import robert.findtransport.databinding.FragmentHomeBinding
-import robert.findtransport.di.*
-import robert.findtransport.utils.*
+import robert.findtransport.utils.RESULT_FROM
+import robert.findtransport.utils.RESULT_LOCATION_PERMISSION
+import robert.findtransport.utils.RESULT_TO
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
@@ -70,12 +70,12 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     btnRate.setOnClickListener { viewModel.openRate() }
     btnDismiss.setOnClickListener { viewModel.dismissRate() }
-    clFromInput.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
-    etFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
-    btnFromList.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
-    clToInput.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
-    etTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
-    btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+//    clFromInput.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+//    etFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+//    btnFromList.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
+//    clToInput.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+//    etTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
+//    btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     btnFromMap.setOnClickListener {
       lifecycleScope.launchWhenCreated {
         val stop = viewModel.toStop.value
@@ -84,7 +84,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         } else {
           null
         }
-        router.navigateTo(mapChooserScreen(coordinates))
+//        router.navigateTo(mapChooserScreen(coordinates))
       }
     }
     btnToMap.setOnClickListener {
@@ -95,7 +95,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
         } else {
           null
         }
-        router.navigateTo(mapChooserScreen(coordinates))
+//        router.navigateTo(mapChooserScreen(coordinates))
       }
     }
     btnSearch.setOnClickListener { viewModel.search() }
@@ -105,17 +105,17 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override fun HomeViewModel.initObservers() {
     collectWithLifecycle(allTransportsError) { showToast("ERROR") }
     collectWithLifecycle(openRate) { rate() }
-    collectWithLifecycle(openUpdate) { router.navigateTo(updateScreen()) }
+//    collectWithLifecycle(openUpdate) { router.navigateTo(updateScreen()) }
     collectWithLifecycle(openSearch) { ids ->
-      router.navigateTo(
-        searchScreen(
-          bundleOf(
-            ARG_FROM_ID to ids.first,
-            ARG_TO_ID to ids.second,
-            ARG_ADD_TO_HISTORY to true
-          )
-        )
-      )
+//      router.navigateTo(
+//        searchScreen(
+//          bundleOf(
+//            ARG_FROM_ID to ids.first,
+//            ARG_TO_ID to ids.second,
+//            ARG_ADD_TO_HISTORY to true
+//          )
+//        )
+//      )
     }
     collectWithLifecycle(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
     collectWithLifecycle(fromStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
@@ -161,7 +161,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override fun onOptionsItemSelected(item: MenuItem): Boolean {
     return when (item.itemId) {
       R.id.action_history -> {
-        router.navigateTo(historyScreen())
+//        router.navigateTo(historyScreen())
         true
       }
       else -> super.onOptionsItemSelected(item)

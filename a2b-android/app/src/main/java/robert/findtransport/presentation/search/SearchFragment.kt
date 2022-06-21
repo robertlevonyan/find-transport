@@ -5,7 +5,6 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -18,13 +17,13 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.MultiRouteCase
 import robert.findtransport.data.model.MultiType
 import robert.findtransport.databinding.FragmentSearchBinding
-import robert.findtransport.di.detailsScreen
-import robert.findtransport.di.mapSearchScreen
-import robert.findtransport.di.trackRouteScreen
 import robert.findtransport.presentation.component.adapter.MultiRouteAdapter
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
-import robert.findtransport.utils.*
+import robert.findtransport.utils.ARG_ADD_TO_HISTORY
+import robert.findtransport.utils.ARG_FROM_ID
+import robert.findtransport.utils.ARG_TO_ID
+import robert.findtransport.utils.RESULT_ARRIVED
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
@@ -73,14 +72,14 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
         val fromId = viewModel.fromStop.firstOrNull()?.id ?: 0
         val toId = viewModel.toStop.firstOrNull()?.id ?: 0
 
-        router.navigateTo(
-          mapSearchScreen(
-            bundleOf(
-              ARG_FROM_ID to fromId,
-              ARG_TO_ID to toId,
-            )
-          )
-        )
+//        router.navigateTo(
+//          mapSearchScreen(
+//            bundleOf(
+//              ARG_FROM_ID to fromId,
+//              ARG_TO_ID to toId,
+//            )
+//          )
+//        )
       }
     }
 
@@ -97,20 +96,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       val toId = viewModel.toStop.value.id
 
       binding.rvTransportsList.adapter = TransportsListAdapter { transport ->
-        router.navigateTo(detailsScreen(transport.id, false))
+//        router.navigateTo(detailsScreen(transport.id, false))
       }.apply {
         currentLocale = locale
         submitList(transports)
         setOnTransportTrackClickListener { transport ->
-          router.navigateTo(
-            trackRouteScreen(
-              bundleOf(
-                ARG_TRANSPORT_ID to transport.id,
-                ARG_FROM_ID to fromId,
-                ARG_TO_ID to toId,
-              )
-            )
-          )
+//          router.navigateTo(
+//            trackRouteScreen(
+//              bundleOf(
+//                ARG_TRANSPORT_ID to transport.id,
+//                ARG_FROM_ID to fromId,
+//                ARG_TO_ID to toId,
+//              )
+//            )
+//          )
         }
       }
     }
@@ -122,7 +121,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       var selectedTransportPosition = -1
 
       binding.rvTransportsList.adapter = MultiRouteAdapter { transport ->
-        router.navigateTo(detailsScreen(transport.id, false))
+//        router.navigateTo(detailsScreen(transport.id, false))
       }.apply {
         currentLocale = locale
         submitList(transports)
@@ -188,15 +187,15 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
             }
           }
 
-          router.navigateTo(
-            trackRouteScreen(
-              bundleOf(
-                ARG_TRANSPORT_ID to transport.id,
-                ARG_FROM_ID to fromId,
-                ARG_TO_ID to toId,
-              )
-            )
-          )
+//          router.navigateTo(
+//            trackRouteScreen(
+//              bundleOf(
+//                ARG_TRANSPORT_ID to transport.id,
+//                ARG_FROM_ID to fromId,
+//                ARG_TO_ID to toId,
+//              )
+//            )
+//          )
         }
       }
     }
@@ -212,7 +211,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 
   private fun stopNotFound() {
     showToast(getString(R.string.error_stop_not_found))
-    router.exit()
+//    router.exit()
   }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

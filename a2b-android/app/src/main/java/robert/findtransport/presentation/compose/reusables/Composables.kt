@@ -1,12 +1,9 @@
 package robert.findtransport.presentation.compose.reusables
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CornerBasedShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +19,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -250,60 +246,5 @@ fun RegularButton(
       text = text,
       fontWeight = FontWeight.Bold,
     )
-  }
-}
-
-@Composable
-fun ColumnToggleButtonGroup(
-  modifier: Modifier = Modifier,
-  buttonCount: Int,
-  primarySelection: Int = -1,
-  selectedColor: Color = Accent,
-  unselectedColor: Color = Color.Transparent,
-  selectedTextColor: Color = BlackVariant,
-  unselectedTextColor: Color = colorVariantInvert(),
-  borderColor: Color = selectedColor,
-  buttonTexts: Array<String> = Array(buttonCount) { "" },
-  shape: CornerBasedShape = Shapes.large,
-  borderSize: Dp = 1.dp,
-  border: BorderStroke? = BorderStroke(borderSize, borderColor),
-  onButtonClick: (index: Int) -> Unit,
-) {
-  Column(
-    modifier = modifier,
-  ) {
-    val squareCorner = CornerSize(0.dp)
-    var selectionIndex by rememberSaveable { mutableStateOf(primarySelection) }
-
-    repeat(buttonCount) { index ->
-      val buttonShape = when (index) {
-        0 -> shape.copy(bottomStart = squareCorner, bottomEnd = squareCorner)
-        buttonCount - 1 -> shape.copy(topStart = squareCorner, topEnd = squareCorner)
-        else -> shape.copy(all = squareCorner)
-      }
-      val isButtonSelected = selectionIndex == index
-      val backgroundColor = if (isButtonSelected) selectedColor else unselectedColor
-      val textColor = if (isButtonSelected) selectedTextColor else unselectedTextColor
-
-      OutlinedButton(
-        modifier = Modifier
-          .offset(y = borderSize * -index)
-          .height(60.dp)
-          .fillMaxWidth(),
-        contentPadding = PaddingValues(),
-        shape = buttonShape,
-        border = border,
-        onClick = {
-          selectionIndex = index
-          onButtonClick.invoke(index)
-        },
-        colors = ButtonDefaults.outlinedButtonColors(backgroundColor = backgroundColor),
-      ) {
-        Text(
-          text = buttonTexts[index],
-          color = textColor
-        )
-      }
-    }
   }
 }

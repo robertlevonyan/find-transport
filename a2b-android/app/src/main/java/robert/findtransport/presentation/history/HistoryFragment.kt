@@ -18,12 +18,13 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.History
 import robert.findtransport.data.model.enums.HistoryDialogType
 import robert.findtransport.databinding.FragmentHistoryBinding
-import robert.findtransport.di.searchScreen
 import robert.findtransport.presentation.component.adapter.HistoryAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
 import robert.findtransport.presentation.component.dialog.DialogHistory
 import robert.findtransport.presentation.component.rv.SwipeToDeleteCallback
-import robert.findtransport.utils.*
+import robert.findtransport.utils.ARG_HISTORY_DESCRIPTION
+import robert.findtransport.utils.ARG_HISTORY_DIALOG_TYPE
+import robert.findtransport.utils.RESULT_ARRIVED
 import robert.findtransport.utils.extensions.*
 import robert.findtransport.utils.viewbinding.viewBinding
 
@@ -129,15 +130,15 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
     createDialog(
       type = HistoryDialogType.RESTORE,
       yesAction = {
-        router.navigateTo(
-          searchScreen(
-            bundleOf(
-              ARG_FROM_ID to history.fromStop.id,
-              ARG_TO_ID to history.toStop.id,
-              ARG_ADD_TO_HISTORY to false
-            )
-          )
-        )
+//        router.navigateTo(
+//          searchScreen(
+//            bundleOf(
+//              ARG_FROM_ID to history.fromStop.id,
+//              ARG_TO_ID to history.toStop.id,
+//              ARG_ADD_TO_HISTORY to false
+//            )
+//          )
+//        )
       },
     )
   }

@@ -16,11 +16,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.base.BaseFragment
-import robert.findtransport.base.MainActivity
 import robert.findtransport.data.model.Stop
 import robert.findtransport.databinding.FragmentTrackRouteBinding
 import robert.findtransport.presentation.component.dialog.NextStopDialog
@@ -38,7 +36,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     if (granted) {
       initData()
     } else {
-      router.exit()
+//      router.exit()
       context?.showToast(getString(R.string.error_location))
     }
   }
@@ -134,7 +132,7 @@ class TrackRouteFragment : BaseFragment<TrackRouteViewModel, FragmentTrackRouteB
     }
     collectWithLifecycle(notifyArrived) {
       parentFragmentManager.setFragmentResult(RESULT_ARRIVED, bundleOf())
-      router.exit()
+//      router.exit()
     }
   }
 
