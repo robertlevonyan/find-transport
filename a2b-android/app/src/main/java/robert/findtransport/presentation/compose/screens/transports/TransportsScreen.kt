@@ -17,10 +17,13 @@ import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
 
 @Composable
 fun TransportsScreen(
@@ -53,7 +56,15 @@ fun TransportsScreen(
       onToggleClick = { showAll = it },
       onStarCheckedChange = transportsViewModel::toggleTransportFavorite,
       onTransportClick = { transport ->
-        navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}")
+        navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}") {
+          navController.graph.route?.let { route ->
+            popUpTo(route) {
+              saveState = true
+            }
+          }
+          launchSingleTop = true
+          restoreState = true
+        }
       }
     )
   }
@@ -74,11 +85,28 @@ private fun TransportsList(
     contentPadding = contentPadding,
   ) {
     item {
-      TransportTypeChooser(
-        showAll = showAll,
-        onAllButtonClicked = { onToggleClick.invoke(true) },
-        onFavoritesButtonClicked = { onToggleClick.invoke(false) },
-      )
+      Box(modifier = Modifier.fillMaxWidth()) {
+        RowToggleButtonGroup(
+          modifier = Modifier
+            .fillMaxWidth(0.9f)
+            .padding(vertical = FabPadding)
+            .align(Alignment.Center),
+          buttonCount = 2,
+          buttonTexts = arrayOf(
+            stringResource(id = R.string.label_see_all),
+            stringResource(id = R.string.label_see_favorites),
+          ),
+          selectedColor = Accent,
+          shape = Shapes.large,
+          primarySelection = if (showAll) 0 else 1,
+          buttonHeight = ToggleButtonSize,
+        ) { index ->
+          when (index) {
+            0 -> onToggleClick.invoke(true)
+            1 -> onToggleClick.invoke(false)
+          }
+        }
+      }
     }
     itemsIndexed(
       items = transports,

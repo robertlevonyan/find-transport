@@ -17,6 +17,9 @@ val WhiteVariant = Color(0xFFE4E4E4)
 val WhitePure = Color(0xFFFFFFFF)
 
 @Composable
+fun primaryColor() = if (isSystemInDarkTheme()) White else Black
+
+@Composable
 fun backgroundColor() = if (isSystemInDarkTheme()) Black else White
 
 @Composable

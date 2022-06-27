@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.migration.CustomInjection.inject
 import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.service.LocaleService
+import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.presentation.compose.navigation.Navigation
 import robert.findtransport.presentation.compose.reusables.A2bTheme
 import robert.findtransport.presentation.compose.reusables.backgroundColor
 import robert.findtransport.utils.extensions.isTablet
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -53,6 +57,7 @@ class MainActivity : ComponentActivity() {
       A2bTheme {
         ProvideWindowInsets {
           Surface(modifier = Modifier.background(color = backgroundColor())) {
+            LocaleService(this).changeLocale(mainViewModel.currentLanguage.value)
             Navigation()
           }
         }

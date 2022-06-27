@@ -22,7 +22,11 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import robert.findtransport.R
-import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.reusables.FabPadding
+import robert.findtransport.presentation.compose.reusables.HalfPadding
+import robert.findtransport.presentation.compose.reusables.colorVariantInvertTransparent
+import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.compose.reusables.composables.TextMessage
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.getCurrentName
 

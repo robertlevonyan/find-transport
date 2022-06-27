@@ -1,90 +1,30 @@
-package robert.findtransport.presentation.compose.reusables
+package robert.findtransport.presentation.compose.reusables.composables
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconToggleButton
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
+import robert.findtransport.data.model.enums.TransportType
+import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
 import robert.findtransport.utils.extensions.getTypeName
-
-@Composable
-fun A2bAppBar(
-  title: String,
-  @DrawableRes navigationIcon: Int,
-  onNavigationIconClick: () -> Unit,
-  additionalActions: @Composable RowScope.() -> Unit = {},
-) {
-  var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-
-  TopAppBar(
-    modifier = Modifier.statusBarsPadding(),
-    navigationIcon = {
-      IconButton(onClick = onNavigationIconClick) {
-        Icon(painter = painterResource(id = navigationIcon), contentDescription = null)
-      }
-    },
-    title = {
-      Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = SmallPadding)
-          .systemBarsPadding(false),
-        text = title,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center
-      )
-    },
-    actions = {
-      additionalActions.invoke(this)
-
-      IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_more_vertical),
-          contentDescription = stringResource(id = R.string.action_settings),
-          tint = Color.Unspecified,
-        )
-      }
-      DropdownMenu(
-        modifier = Modifier.background(colorVariant()),
-        expanded = overflowMenuState,
-        offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
-        onDismissRequest = { overflowMenuState = false },
-      ) {
-        DropdownMenuItem(onClick = { overflowMenuState = false }) {
-          Text(text = stringResource(id = R.string.action_privacy))
-        }
-      }
-    },
-    backgroundColor = backgroundColor(),
-    elevation = 0.dp,
-  )
-}
 
 @Composable
 fun TransportListElement(
@@ -95,6 +35,8 @@ fun TransportListElement(
   onStarCheckedChange: (Boolean) -> Unit = {},
 ) {
   val icon = transport.getIcon()
+  if (transport.type == TransportType.UNDEFINED) return
+
   val type = transport.getTypeName()
 
   Box(modifier = Modifier
@@ -196,55 +138,5 @@ fun TransportListElement(
         }
       }
     }
-  }
-}
-
-@Composable
-fun TextTitle(
-  modifier: Modifier = Modifier,
-  text: String,
-) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = TextTitle,
-    fontWeight = FontWeight.Bold,
-    color = colorVariantInvert(),
-  )
-}
-
-@Composable
-fun TextMessage(
-  modifier: Modifier = Modifier,
-  text: String,
-) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = TextMessage,
-    fontWeight = FontWeight.Normal,
-    color = colorVariantInvert(),
-  )
-}
-
-@Composable
-fun RegularButton(
-  modifier: Modifier = Modifier,
-  text: String,
-  onClick: () -> Unit,
-) {
-  Button(
-    modifier = modifier,
-    onClick = onClick,
-    shape = Shapes.small,
-    colors = ButtonDefaults.buttonColors(
-      backgroundColor = Accent,
-      contentColor = Black,
-    )
-  ) {
-    Text(
-      text = text,
-      fontWeight = FontWeight.Bold,
-    )
   }
 }

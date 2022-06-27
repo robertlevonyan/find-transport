@@ -3,10 +3,7 @@ package robert.findtransport.base
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import robert.findtransport.BuildConfig
@@ -22,8 +19,6 @@ import robert.findtransport.domain.usecase.preference.VersionUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import java.io.EOFException
-import java.io.PrintWriter
-import java.io.StringWriter
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,7 +37,7 @@ class MainViewModel @Inject constructor(
   val theme: Flow<Int> get() = _theme
 
   private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val currentLanguage: Flow<String> get() = _currentLanguage
+  val currentLanguage get() = _currentLanguage.asStateFlow()
 
   private val _loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
   val loaded: StateFlow<DataLoading> get() = _loaded

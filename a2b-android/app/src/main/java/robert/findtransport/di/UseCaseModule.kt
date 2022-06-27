@@ -3,6 +3,7 @@ package robert.findtransport.di
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.components.ViewModelComponent
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
@@ -28,7 +29,7 @@ import robert.findtransport.domain.usecase.transport.TransportUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCaseImpl
 
 @Module
-@InstallIn(ViewModelComponent::class, ServiceComponent::class)
+@InstallIn(ViewModelComponent::class, ActivityComponent::class)
 abstract class UseCaseModule {
   @Binds
   abstract fun bindCheckInternetUseCase(checkInternetUseCaseImpl: CheckInternetUseCaseImpl): CheckInternetUseCase
