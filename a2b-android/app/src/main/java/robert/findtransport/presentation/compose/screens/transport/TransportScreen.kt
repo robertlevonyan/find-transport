@@ -18,6 +18,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
@@ -57,7 +58,7 @@ fun TransportScreen(
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = { navController.popBackStack() },
         additionalActions = {
-          IconButton(onClick = { }) {
+          IconButton(onClick = { transportViewModel.toggleTransportFavorite(transport) }) {
             val icon = if (transport.isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_outline
             Icon(
               painter = painterResource(id = icon),
@@ -104,7 +105,6 @@ private fun StopList(
             locale = locale,
             onElementClick = {},
             hasStar = false,
-            onStarCheckedChange = {},
           )
         }
       }

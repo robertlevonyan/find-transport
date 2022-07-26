@@ -16,7 +16,6 @@ import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
 import robert.findtransport.domain.usecase.network.CheckInternetUseCase
-import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import robert.findtransport.domain.usecase.preference.VersionUseCase
@@ -27,11 +26,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
+  themeUseCase: ThemeUseCase,
+  localeUseCase: LocaleUseCase,
   private val checkInternetUseCase: CheckInternetUseCase,
-  private val themeUseCase: ThemeUseCase,
-  private val localeUseCase: LocaleUseCase,
   private val versionUseCase: VersionUseCase,
-  private val introUseCase: IntroUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   private val databaseUseCase: DatabaseUseCase,
@@ -45,18 +43,6 @@ class DataViewModel @Inject constructor(
 
   private val _loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
   val loaded: StateFlow<DataLoading> get() = _loaded
-
-//  private val _nextIntro = MutableSharedFlow<Unit>()
-//  val nextIntro: Flow<Unit> get() = _nextIntro
-//
-//  private val _nextMain = MutableSharedFlow<Unit>()
-//  val nextMain: Flow<Unit> get() = _nextMain
-
-//  private val _loadingError = MutableSharedFlow<String>()
-//  val loadingError: Flow<String> get() = _loadingError
-
-//  private val _loadingDiskFull = MutableSharedFlow<Unit>()
-//  val loadingDiskFull: Flow<Unit> get() = _loadingDiskFull
 
   private var downloaded = false
 
