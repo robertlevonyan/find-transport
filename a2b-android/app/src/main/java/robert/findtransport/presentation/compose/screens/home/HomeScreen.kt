@@ -20,6 +20,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
+import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.BarIconSize
 import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
 import robert.findtransport.presentation.compose.reusables.backgroundColor
@@ -31,7 +32,7 @@ fun HomeScreen(
   navController: NavController,
   homeViewModel: HomeViewModel,
 ) {
-  Scaffold(topBar = { HomeAppBar() }) { contentPadding ->
+  Scaffold(topBar = { HomeAppBar(navController = navController) }) { contentPadding ->
     Box(Modifier.padding(contentPadding)) {
       CheckDataScreen(modifier = Modifier.align(Alignment.TopCenter)) {
         // vpn
@@ -47,7 +48,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeAppBar() {
+fun HomeAppBar(navController: NavController) {
   var overflowMenuState by rememberSaveable { mutableStateOf(false) }
 
   TopAppBar(
@@ -68,7 +69,10 @@ fun HomeAppBar() {
           tint = Color.Unspecified,
         )
       }
-      OptionsMenu(overflowMenuState) { overflowMenuState = false }
+      OptionsMenu(overflowMenuState) {
+        navController.navigate(NavigationScreens.SettingsScreen.name)
+        overflowMenuState = false
+      }
     },
     backgroundColor = backgroundColor(),
     elevation = 0.dp,

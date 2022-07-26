@@ -11,11 +11,11 @@ plugins {
 }
 
 android {
-  compileSdk = 32
+  compileSdk = 33
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
-    targetSdk = 32
+    targetSdk = 33
     versionCode = 272
     versionName = "3.7.12"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -118,7 +118,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
 
   //google
-  implementation("com.google.android.material:material:1.7.0-alpha02")
+  implementation("com.google.android.material:material:1.7.0-alpha03")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:20.0.0")
@@ -131,18 +131,18 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.41")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.4.0")
+  implementation("androidx.activity:activity-ktx:1.5.0")
   implementation("androidx.appcompat:appcompat:1.4.2")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.8.0")
   implementation("androidx.core:core-splashscreen:1.0.0-rc01")
-  implementation("androidx.fragment:fragment-ktx:1.4.1")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-  implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
+  implementation("androidx.fragment:fragment-ktx:1.5.0")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.0")
+  implementation("androidx.lifecycle:lifecycle-common-java8:2.5.0")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.1")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
@@ -158,12 +158,12 @@ dependencies {
   implementation("androidx.activity:activity-compose:1.6.0-alpha05")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-  implementation("androidx.navigation:navigation-compose:2.5.0-rc02")
+  implementation("androidx.navigation:navigation-compose:2.5.0")
   implementation("androidx.paging:paging-compose:1.0.0-alpha15")
-  implementation("androidx.compose.compiler:compiler:1.2.0-rc01")
-  implementation("androidx.compose.ui:ui:1.2.0-rc01")
-  implementation("androidx.compose.material:material:1.2.0-rc01")
-  implementation("androidx.compose.ui:ui-tooling:1.2.0-rc01")
+  implementation("androidx.compose.compiler:compiler:1.3.0-beta01")
+  implementation("androidx.compose.ui:ui:1.3.0-alpha01")
+  implementation("androidx.compose.material:material:1.3.0-alpha01")
+  implementation("androidx.compose.ui:ui-tooling:1.3.0-alpha01")
 
   implementation("io.coil-kt:coil-compose:2.0.0")
 
@@ -178,7 +178,7 @@ dependencies {
 
   //other
   implementation("com.airbnb.android:lottie-compose:4.1.0")
-  implementation("com.robertlevonyan.compose:buttontogglegroup:1.0.3")
+  implementation("com.robertlevonyan.compose:buttontogglegroup:1.0.5")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }

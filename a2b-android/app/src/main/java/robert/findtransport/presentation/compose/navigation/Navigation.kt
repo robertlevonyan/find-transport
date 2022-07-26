@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import robert.findtransport.presentation.compose.screens.home.HomeScreen
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.presentation.compose.screens.intro.IntroScreen
+import robert.findtransport.presentation.compose.screens.settings.SettingsScreen
 import robert.findtransport.presentation.compose.screens.stops.StopsPickerScreen
 import robert.findtransport.presentation.compose.screens.transport.TransportScreen
 import robert.findtransport.presentation.compose.screens.transports.TransportsScreen
@@ -61,6 +62,9 @@ fun Navigation() {
         isFrom = backStackEntry.arguments?.getBoolean("is_from") ?: true,
       )
     }
+    composable(route = NavigationScreens.SettingsScreen.name) {
+      SettingsScreen(navController = navController)
+    }
   }
 }
 
@@ -70,4 +74,5 @@ sealed class NavigationScreens(val name: String) {
   object TransportsScreen : NavigationScreens("transports_screen")
   object TransportScreen : NavigationScreens("transport_screen")
   object StopsPickerScreen : NavigationScreens("stops_picker_screen")
+  object SettingsScreen : NavigationScreens("settings_screen")
 }

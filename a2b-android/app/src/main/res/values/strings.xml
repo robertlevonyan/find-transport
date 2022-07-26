@@ -156,7 +156,8 @@
   <string name="message_check_download">Checking for update</string>
   <string name="error_no_internet">Seems there\'s no Internet connection</string>
   <string name="label_open_settings">Open settings</string>
-  <string name="error_not_downloaded">Content not donloaded</string>
+  <string name="error_not_downloaded">Content not downloaded</string>
   <string name="label_retry">Retry</string>
-  <string name="error_storage">Not enaught space on disk, please free some space and try again.</string>
+  <string name="error_storage">Not enough space on disk, please free some space and try again.</string>
+  <string name="settings_general">General</string>
 </resources>
