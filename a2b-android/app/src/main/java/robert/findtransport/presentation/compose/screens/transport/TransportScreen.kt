@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -26,6 +27,7 @@ import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
+import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.EMPTY_TRANSPORT_ID
 import robert.findtransport.utils.extensions.getCurrentName
 
@@ -34,6 +36,7 @@ fun TransportScreen(
   modifier: Modifier = Modifier,
   navController: NavController,
   transportId: Int,
+  homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel = hiltViewModel(),
 ) {
   if (transportId == EMPTY_TRANSPORT_ID) {
@@ -75,6 +78,7 @@ fun TransportScreen(
       onPrimaryRouteClicked = { if (!showPrimary) showPrimary = true },
       onSecondaryRouteClicked = { if (showPrimary) showPrimary = false },
       stops = stops,
+      homeViewModel = homeViewModel,
     )
   }
 }
@@ -87,6 +91,7 @@ private fun StopList(
   onPrimaryRouteClicked: () -> Unit,
   onSecondaryRouteClicked: () -> Unit,
   stops: List<Stop>,
+  homeViewModel: HomeViewModel,
 ) {
   if (stops.isEmpty()) return
 
@@ -116,18 +121,21 @@ private fun StopList(
         FirstStopCard(
           stop = firstStop,
           locale = locale,
+          homeViewModel = homeViewModel,
         )
       }
       items(restOfStops) { stop ->
         StopCard(
           stop = stop,
           locale = locale,
+          homeViewModel = homeViewModel,
         )
       }
       item {
         LastStopCard(
           stop = lastStop,
           locale = locale,
+          homeViewModel = homeViewModel,
         )
       }
     }
@@ -143,7 +151,6 @@ private fun StopList(
         painter = painterResource(id = R.drawable.ic_map),
         contentDescription = stringResource(id = R.string.cd_show_on_map),
       )
-
     }
   }
 }
@@ -168,6 +175,7 @@ private fun Toggles(
       shape = Shapes.large,
       primarySelection = 0,
       buttonHeight = ToggleButtonSize,
+      unselectedColor = MaterialTheme.colors.background,
     ) { index ->
       when (index) {
         0 -> onPrimaryRouteClicked.invoke()
@@ -178,7 +186,7 @@ private fun Toggles(
 }
 
 @Composable
-private fun FirstStopCard(stop: Stop, locale: String) {
+private fun FirstStopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
   Box(modifier = Modifier.fillMaxWidth()) {
     Card(
       modifier = Modifier
@@ -186,7 +194,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
         .fillMaxWidth()
         .wrapContentSize(),
       shape = Shapes.medium,
-      backgroundColor = MaterialTheme.colors.surface,
+      backgroundColor = WhiteVariant,
     ) {
       ConstraintLayout(
         modifier = Modifier
@@ -206,7 +214,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
               bottom.linkTo(parent.bottom)
             }
-            .background(MaterialTheme.colors.primary),
+            .background(BlackVariant),
         )
 
         Box(
@@ -218,7 +226,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
               bottom.linkTo(parent.bottom)
             }
-            .background(MaterialTheme.colors.primary),
+            .background(BlackVariant),
         )
 
         Image(
@@ -232,10 +240,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
               bottom.linkTo(parent.bottom)
             },
           painter = rememberAsyncImagePainter(
-            ContextCompat.getDrawable(
-              LocalContext.current,
-              R.drawable.ic_route_dot_start
-            )
+            ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_route_dot_start)
           ),
           contentDescription = null,
         )
@@ -255,6 +260,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
             },
           text = stop.getCurrentName(locale),
           fontSize = Text13,
+          color = BlackVariant,
         )
 
         IconButton(
@@ -272,7 +278,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
           }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_vertical),
-            tint = MaterialTheme.colors.primary,
+            tint = BlackVariant,
             contentDescription = null,
           )
         }
@@ -282,7 +288,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
 }
 
 @Composable
-private fun StopCard(stop: Stop, locale: String) {
+private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
   ConstraintLayout(
     modifier = Modifier
       .padding(horizontal = FabPadding)
@@ -301,7 +307,7 @@ private fun StopCard(stop: Stop, locale: String) {
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         }
-        .background(MaterialTheme.colors.primary),
+        .background(MaterialTheme.colors.onPrimary),
     )
 
     Box(
@@ -313,7 +319,7 @@ private fun StopCard(stop: Stop, locale: String) {
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         }
-        .background(MaterialTheme.colors.primary),
+        .background(MaterialTheme.colors.onPrimary),
     )
 
     Image(
@@ -327,12 +333,10 @@ private fun StopCard(stop: Stop, locale: String) {
           bottom.linkTo(parent.bottom)
         },
       painter = rememberAsyncImagePainter(
-        ContextCompat.getDrawable(
-          LocalContext.current,
-          R.drawable.ic_route_dot_end
-        )
+        ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_route_dot_normal)
       ),
-      contentDescription = null,
+      colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
+      contentDescription = null
     )
 
     Text(
@@ -367,7 +371,7 @@ private fun StopCard(stop: Stop, locale: String) {
       }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_more_white),
-        tint = MaterialTheme.colors.primary,
+        tint = MaterialTheme.colors.onPrimary,
         contentDescription = null,
       )
     }
@@ -375,7 +379,7 @@ private fun StopCard(stop: Stop, locale: String) {
 }
 
 @Composable
-private fun LastStopCard(stop: Stop, locale: String) {
+private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -387,7 +391,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
         .fillMaxWidth()
         .wrapContentSize(),
       shape = Shapes.medium,
-      backgroundColor = MaterialTheme.colors.primary,
+      backgroundColor = BlackVariant,
     ) {
       ConstraintLayout(
         modifier = Modifier
@@ -407,7 +411,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               bottom.linkTo(centerGuide)
               top.linkTo(parent.top)
             }
-            .background(MaterialTheme.colors.background),
+            .background(WhiteVariant),
         )
 
         Box(
@@ -419,7 +423,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               bottom.linkTo(centerGuide)
               top.linkTo(parent.top)
             }
-            .background(MaterialTheme.colors.background),
+            .background(WhiteVariant),
         )
 
         Image(
@@ -455,7 +459,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
             },
           text = stop.getCurrentName(locale),
-          color = MaterialTheme.colors.background,
+          color = WhiteVariant,
           fontSize = Text13,
         )
 
@@ -474,7 +478,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
           }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_white),
-            tint = MaterialTheme.colors.background,
+            tint = WhiteVariant,
             contentDescription = null,
           )
         }

@@ -15,10 +15,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.navigation.Navigation
 import robert.findtransport.presentation.compose.reusables.A2bTheme
+import robert.findtransport.presentation.compose.reusables.isAppInDarkMode
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.isTablet
 

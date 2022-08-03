@@ -50,6 +50,7 @@ fun Navigation() {
       TransportScreen(
         navController = navController,
         transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_TRANSPORT_ID,
+        homeViewModel = homeViewModel,
       )
     }
     composable(
