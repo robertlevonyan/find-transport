@@ -2,10 +2,7 @@ package robert.findtransport.presentation.compose.screens.intro
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -91,7 +88,7 @@ fun IntroScreen(
         text = stringResource(id = welcomeMessage),
         fontWeight = FontWeight.SemiBold,
         fontSize = Text24,
-        color = colorVariantInvert().copy(alpha = 0.8f)
+        color = MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
       )
 
       ColumnToggleButtonGroup(
@@ -107,8 +104,8 @@ fun IntroScreen(
         buttonCount = 3,
         primarySelection = currentLanguageIndex,
         selectedColor = Accent.copy(alpha = 0.2f),
-        selectedContentColor = colorVariantInvert(),
-        unselectedContentColor = colorVariantInvert(),
+        selectedContentColor = MaterialTheme.colors.onSurface,
+        unselectedContentColor = MaterialTheme.colors.onSurface,
         borderColor = Accent.copy(alpha = 0.5f),
         buttonTexts = arrayOf(
           stringResource(id = R.string.settings_language_am),
@@ -164,7 +161,7 @@ private fun TitleAndLogo(
         .padding(HalfPadding)
         .align(CenterVertically),
       text = stringResource(id = R.string.app_name),
-      color = colorVariantInvert(),
+      color = MaterialTheme.colors.onSurface,
       fontSize = TextIntroLabel,
       fontWeight = FontWeight.Bold,
     )

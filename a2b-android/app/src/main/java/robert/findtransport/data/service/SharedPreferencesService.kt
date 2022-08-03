@@ -1,17 +1,21 @@
 package robert.findtransport.data.service
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import robert.findtransport.utils.PREFERENCES
 
 class SharedPreferencesService private constructor(context: Context) {
   private val preferences = context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)
-  
-  companion object {
-    fun getPreferences(context: Context): SharedPreferencesService {
-      return SharedPreferencesService(context)
+
+  init {
+    preferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
+      sharedPreferences.all
+        .getOrDefault(key, null)
+        .let { value -> preferencesChangeFlow.value = key to value }
     }
   }
-  
+
   fun putBoolean(key: String, value: Boolean) {
     preferences.edit().putBoolean(key, value).apply()
   }
@@ -34,5 +38,26 @@ class SharedPreferencesService private constructor(context: Context) {
 
   fun getString(key: String, defValue: String): String? {
     return preferences.getString(key, defValue)
+  }
+
+  companion object {
+    val preferencesChangeFlow = MutableStateFlow<Pair<String, Any?>>("" to null)
+
+    inline fun <reified T : Any> getPreferenceChangedValue(key: String): Flow<T> = preferencesChangeFlow.map { pair ->
+      val nextKey = pair.first
+      val value = pair.second
+
+      if (value != null && key.isNotEmpty() && nextKey == key) {
+        value as T
+      } else {
+        null
+      }
+    }
+      .filterNotNull()
+      .flowOn(Dispatchers.IO)
+
+    fun getPreferences(context: Context): SharedPreferencesService {
+      return SharedPreferencesService(context)
+    }
   }
 }

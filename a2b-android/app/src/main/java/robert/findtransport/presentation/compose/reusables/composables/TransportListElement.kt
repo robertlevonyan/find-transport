@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -73,7 +74,7 @@ fun TransportListElement(
             bottom.linkTo(parent.bottom)
           },
         text = transport.number,
-        color = colorVariantInvert(),
+        color = MaterialTheme.colors.onSurface,
         fontWeight = FontWeight.Black,
         fontSize = TextTransportNumber,
       )
@@ -89,7 +90,7 @@ fun TransportListElement(
             bottom.linkTo(firstLast.top)
           },
         text = stringResource(id = type),
-        color = colorVariantInvert(),
+        color = MaterialTheme.colors.onSurface,
         fontSize = Text20,
         textAlign = TextAlign.Start,
       )
@@ -109,7 +110,7 @@ fun TransportListElement(
             bottom.linkTo(parent.bottom)
           },
         text = "${first.getCurrentName(locale)} - ${last.getCurrentName(locale)}",
-        color = colorVariantInvert(),
+        color = MaterialTheme.colors.onSurface,
         fontWeight = FontWeight.Normal,
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,

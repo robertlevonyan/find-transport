@@ -3,42 +3,29 @@ package robert.findtransport.base
 import android.content.pm.ActivityInfo
 import android.os.Build
 import android.os.Bundle
-import android.view.View
-import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.migration.CustomInjection.inject
-import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.service.LocaleService
-import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.presentation.compose.navigation.Navigation
 import robert.findtransport.presentation.compose.reusables.A2bTheme
-import robert.findtransport.presentation.compose.reusables.backgroundColor
+import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.isTablet
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   private val mainViewModel: MainViewModel by viewModels()
-
-//  private val noDataDialog: MessageDialog? by lazy {
-//    MessageDialog.newInstance(
-//      this, bundleOf(
-//        ARG_MESSAGE_TITLE to R.string.title_oops,
-//        ARG_MESSAGE_DESCRIPTION to R.string.message_no_data
-//      )
-//    ).apply {
-//      onYesClick = { startActivity(Intent(Settings.ACTION_WIFI_SETTINGS)) }
-//      onNoClick = { finishAffinity() }
-//    }
-//  }
+  private val homeViewModel: HomeViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -54,9 +41,10 @@ class MainActivity : ComponentActivity() {
 
     installSplashScreen()
     setContent {
-      A2bTheme {
+      val theme by homeViewModel.theme.collectAsState()
+      A2bTheme(theme) {
         ProvideWindowInsets {
-          Surface(modifier = Modifier.background(color = backgroundColor())) {
+          Surface(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
             LocaleService(this).changeLocale(mainViewModel.currentLanguage.value)
             Navigation()
           }
@@ -64,42 +52,4 @@ class MainActivity : ComponentActivity() {
       }
     }
   }
-
-  private fun addInitialDataListener() {
-    val content: View = findViewById(android.R.id.content)
-
-    content.viewTreeObserver.addOnPreDrawListener(
-      object : ViewTreeObserver.OnPreDrawListener {
-        override fun onPreDraw(): Boolean {
-          return when (mainViewModel.loaded.value) {
-            is DataLoading.Failed, DataLoading.Loaded -> {
-              content.viewTreeObserver.removeOnPreDrawListener(this)
-              true
-            }
-            DataLoading.Loading, DataLoading.NotStarted -> false
-          }
-        }
-      }
-    )
-  }
-
-//  private fun showEmptyDatabaseDialog() {
-//    if (!isFinishing) {
-//      noDataDialog?.show()
-//    }
-//  }
-//
-//  private fun showLoadingErrorDialog() {
-//    noDataDialog?.run {
-//      message = getString(R.string.message_error_download)
-//      show()
-//    }
-//  }
-//
-//  private fun showLoadingErrorDiskFullDialog() {
-//    noDataDialog?.run {
-//      message = getString(R.string.message_error_download_disk_full)
-//      show()
-//    }
-//  }
 }

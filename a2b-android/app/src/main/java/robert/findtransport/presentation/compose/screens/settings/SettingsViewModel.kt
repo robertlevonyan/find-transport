@@ -4,16 +4,14 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.LanguageData
 import robert.findtransport.data.model.Result
-import robert.findtransport.data.model.ThemeData
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import robert.findtransport.domain.usecase.settings.SettingsUseCase
@@ -29,26 +27,20 @@ class SettingsViewModel @Inject constructor(
   private val transportUseCase: TransportUseCase,
   private val databaseUseCase: DatabaseUseCase
 ) : BaseViewModel() {
-  private val _themeSave = MutableSharedFlow<Unit>()
-  val themeSave: Flow<Unit> get() = _themeSave
-
-  private val _languageSave = MutableSharedFlow<Unit>()
-  val languageSave: Flow<Unit> get() = _languageSave
-
   private val _checkingVersion = MutableStateFlow<DownloadStatus>(DownloadStatus.NotDownloading)
   val checkingVersion: StateFlow<DownloadStatus> get() = _checkingVersion
+
+  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
 
   fun changeLanguage(languageData: LanguageData) {
     viewModelScope.launch {
       settingsUseCase.saveLanguage(languageData.languageShortSetting)
-      _languageSave.emit(Unit)
     }
   }
 
-  fun changeTheme(themeData: ThemeData) {
+  fun changeTheme(theme: Int) {
     viewModelScope.launch {
-      themeUseCase.saveTheme(themeData.theme)
-      _themeSave.emit(Unit)
+      themeUseCase.saveTheme(theme)
     }
   }
 

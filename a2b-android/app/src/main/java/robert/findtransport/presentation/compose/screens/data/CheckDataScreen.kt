@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.LinearProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,7 @@ fun CheckDataScreen(
       .padding(HalfPadding),
     elevation = 0.dp,
     shape = Shapes.medium,
-    backgroundColor = colorVariant(),
+    backgroundColor = MaterialTheme.colors.surface,
   ) {
 
     when (loadingState) {

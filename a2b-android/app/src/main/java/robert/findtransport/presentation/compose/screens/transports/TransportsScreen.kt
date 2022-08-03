@@ -1,15 +1,17 @@
 package robert.findtransport.presentation.compose.screens.transports
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -100,6 +102,7 @@ private fun TransportsList(
           shape = Shapes.large,
           primarySelection = if (showAll) 0 else 1,
           buttonHeight = ToggleButtonSize,
+          unselectedColor = MaterialTheme.colors.background,
         ) { index ->
           when (index) {
             0 -> onToggleClick.invoke(true)
@@ -129,71 +132,5 @@ private fun TransportsList(
         }
       },
     )
-  }
-}
-
-@Composable
-private fun TransportTypeChooser(
-  showAll: Boolean,
-  onAllButtonClicked: () -> Unit,
-  onFavoritesButtonClicked: () -> Unit,
-) {
-  Box(modifier = Modifier.fillMaxWidth()) {
-    Card(
-      modifier = Modifier
-        .fillMaxWidth(fraction = 0.9f)
-        .align(Alignment.Center)
-        .wrapContentHeight(),
-      backgroundColor = colorVariant(),
-      shape = Shapes.medium,
-    ) {
-      Column(modifier = Modifier.padding(HalfPadding)) {
-        Text(
-          modifier = Modifier
-            .align(Alignment.CenterHorizontally)
-            .padding(SmallPadding),
-          text = stringResource(id = R.string.label_show),
-        )
-        Row(
-          modifier = Modifier
-            .align(Alignment.CenterHorizontally),
-        ) {
-          val squareCorner = CornerSize(0.dp)
-          val allButtonColor = if (showAll) Accent else Color.Transparent
-          val favoritesButtonColor = if (!showAll) Accent else Color.Transparent
-
-          OutlinedButton(
-            shape = Shapes.large.copy(topEnd = squareCorner, bottomEnd = squareCorner),
-            border = BorderStroke(1.dp, Accent),
-            onClick = {
-              if (!showAll) {
-                onAllButtonClicked.invoke()
-              }
-            },
-            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = allButtonColor)
-          ) {
-            Text(
-              text = stringResource(id = R.string.label_see_all),
-              color = if (showAll) BlackVariant else colorVariantInvert(),
-            )
-          }
-          OutlinedButton(
-            shape = Shapes.large.copy(topStart = squareCorner, bottomStart = squareCorner),
-            border = BorderStroke(1.dp, Accent),
-            onClick = {
-              if (showAll) {
-                onFavoritesButtonClicked.invoke()
-              }
-            },
-            colors = ButtonDefaults.outlinedButtonColors(backgroundColor = favoritesButtonColor),
-          ) {
-            Text(
-              text = stringResource(id = R.string.label_see_favorites),
-              color = if (!showAll) BlackVariant else colorVariantInvert(),
-            )
-          }
-        }
-      }
-    }
   }
 }

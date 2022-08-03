@@ -1,6 +1,6 @@
 package robert.findtransport.presentation.compose.reusables
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -17,20 +17,8 @@ val WhiteVariant = Color(0xFFE4E4E4)
 val WhitePure = Color(0xFFFFFFFF)
 
 @Composable
-fun primaryColor() = if (isSystemInDarkTheme()) White else Black
+fun colorVariantInvertTransparent() = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
 
 @Composable
-fun backgroundColor() = if (isSystemInDarkTheme()) Black else White
-
-@Composable
-fun colorVariant() = if (isSystemInDarkTheme()) BlackVariant else WhiteVariant
-
-@Composable
-fun colorVariantInvert() = if (isSystemInDarkTheme()) WhiteVariant else BlackVariant
-
-@Composable
-fun colorVariantInvertTransparent() = colorVariantInvert().copy(alpha = 0.5f)
-
-@Composable
-fun searchInputBackgroundColor() = if (isSystemInDarkTheme())
-  backgroundColor().copy(alpha = 0.05f) else White.copy(alpha = 0.1f)
+fun searchInputBackgroundColor() = if (isAppInDarkMode())
+  MaterialTheme.colors.background.copy(alpha = 0.05f) else White.copy(alpha = 0.1f)

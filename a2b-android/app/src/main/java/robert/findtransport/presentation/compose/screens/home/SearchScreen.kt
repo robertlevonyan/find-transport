@@ -85,7 +85,7 @@ fun SearchScreen(
           end.linkTo(parent.end)
           bottom.linkTo(toCard.top)
         },
-      backgroundColor = colorVariant(),
+      backgroundColor = MaterialTheme.colors.surface,
       shape = Shapes.medium,
       onClick = { homeViewModel.swap() },
     ) {
@@ -169,7 +169,7 @@ fun SearchInput(
     Card(
       shape = Shapes.medium,
       elevation = 0.dp,
-      backgroundColor = colorVariant(),
+      backgroundColor = MaterialTheme.colors.surface,
     ) {
       Box(
         modifier = Modifier.clickable { onDropdownClick.invoke() },
@@ -193,18 +193,18 @@ fun SearchInput(
           shape = Shapes.medium,
           colors = TextFieldDefaults.outlinedTextFieldColors(
             backgroundColor = searchInputBackgroundColor(),
-            focusedBorderColor = colorVariant(),
-            unfocusedBorderColor = colorVariant(),
-            disabledBorderColor = colorVariant(),
-            errorBorderColor = colorVariant(),
-            cursorColor = colorVariantInvert(),
+            focusedBorderColor = MaterialTheme.colors.surface,
+            unfocusedBorderColor = MaterialTheme.colors.surface,
+            disabledBorderColor = MaterialTheme.colors.surface,
+            errorBorderColor = MaterialTheme.colors.surface,
+            cursorColor = MaterialTheme.colors.onSurface,
           ),
           keyboardOptions = keyboardOptions,
           keyboardActions = keyboardActions,
           readOnly = true,
           enabled = false,
           textStyle = TextStyle(
-            color = colorVariantInvert(),
+            color = MaterialTheme.colors.onSurface,
             fontFamily = FontFamily(Font(R.font.google_sans_regular)),
           )
         )
@@ -242,7 +242,7 @@ fun SearchButton(
       )
     },
     shape = Shapes.medium,
-    backgroundColor = colorVariant(),
+    backgroundColor = MaterialTheme.colors.surface,
     onClick = { onClick.invoke() },
   )
 }

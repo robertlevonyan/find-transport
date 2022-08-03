@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -18,7 +17,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
@@ -63,7 +61,7 @@ fun TransportScreen(
             Icon(
               painter = painterResource(id = icon),
               contentDescription = stringResource(id = R.string.hint_search),
-              tint = Color.Unspecified,
+              tint = MaterialTheme.colors.onSurface,
             )
           }
         }
@@ -188,7 +186,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
         .fillMaxWidth()
         .wrapContentSize(),
       shape = Shapes.medium,
-      backgroundColor = colorVariant(),
+      backgroundColor = MaterialTheme.colors.surface,
     ) {
       ConstraintLayout(
         modifier = Modifier
@@ -208,7 +206,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
               bottom.linkTo(parent.bottom)
             }
-            .background(primaryColor()),
+            .background(MaterialTheme.colors.primary),
         )
 
         Box(
@@ -220,7 +218,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
               bottom.linkTo(parent.bottom)
             }
-            .background(primaryColor()),
+            .background(MaterialTheme.colors.primary),
         )
 
         Image(
@@ -274,7 +272,7 @@ private fun FirstStopCard(stop: Stop, locale: String) {
           }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_vertical),
-            tint = primaryColor(),
+            tint = MaterialTheme.colors.primary,
             contentDescription = null,
           )
         }
@@ -303,7 +301,7 @@ private fun StopCard(stop: Stop, locale: String) {
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         }
-        .background(primaryColor()),
+        .background(MaterialTheme.colors.primary),
     )
 
     Box(
@@ -315,7 +313,7 @@ private fun StopCard(stop: Stop, locale: String) {
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         }
-        .background(primaryColor()),
+        .background(MaterialTheme.colors.primary),
     )
 
     Image(
@@ -369,7 +367,7 @@ private fun StopCard(stop: Stop, locale: String) {
       }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_more_white),
-        tint = primaryColor(),
+        tint = MaterialTheme.colors.primary,
         contentDescription = null,
       )
     }
@@ -381,14 +379,15 @@ private fun LastStopCard(stop: Stop, locale: String) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
-      .padding(bottom = BottomPaddingWithFab)) {
+      .padding(bottom = BottomPaddingWithFab)
+  ) {
     Card(
       modifier = Modifier
         .padding(horizontal = FabPadding)
         .fillMaxWidth()
         .wrapContentSize(),
       shape = Shapes.medium,
-      backgroundColor = primaryColor(),
+      backgroundColor = MaterialTheme.colors.primary,
     ) {
       ConstraintLayout(
         modifier = Modifier
@@ -408,7 +407,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               bottom.linkTo(centerGuide)
               top.linkTo(parent.top)
             }
-            .background(backgroundColor()),
+            .background(MaterialTheme.colors.background),
         )
 
         Box(
@@ -420,7 +419,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               bottom.linkTo(centerGuide)
               top.linkTo(parent.top)
             }
-            .background(backgroundColor()),
+            .background(MaterialTheme.colors.background),
         )
 
         Image(
@@ -456,7 +455,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
               top.linkTo(centerGuide)
             },
           text = stop.getCurrentName(locale),
-          color = backgroundColor(),
+          color = MaterialTheme.colors.background,
           fontSize = Text13,
         )
 
@@ -475,7 +474,7 @@ private fun LastStopCard(stop: Stop, locale: String) {
           }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_white),
-            tint = backgroundColor(),
+            tint = MaterialTheme.colors.background,
             contentDescription = null,
           )
         }

@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
   android:shape="oval">
   
-  <solid android:color="@color/colorOnPrimary" />
+  <solid android:color="@color/colorOnPrimaryUntranslated" />
   <stroke
     android:width="3dp"
-    android:color="@color/colorSecondary" />
+    android:color="@color/colorSecondaryUntranslated" />
 </shape>

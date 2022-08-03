@@ -22,10 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
-import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
-import robert.findtransport.presentation.compose.reusables.SmallPadding
-import robert.findtransport.presentation.compose.reusables.backgroundColor
-import robert.findtransport.presentation.compose.reusables.colorVariant
+import robert.findtransport.presentation.compose.reusables.*
 
 @Composable
 fun A2bAppBar(
@@ -61,11 +58,11 @@ fun A2bAppBar(
         Icon(
           painter = painterResource(id = R.drawable.ic_more_vertical),
           contentDescription = stringResource(id = R.string.action_settings),
-          tint = Color.Unspecified,
+          tint = MaterialTheme.colors.onSurface,
         )
       }
       DropdownMenu(
-        modifier = Modifier.background(colorVariant()),
+        modifier = Modifier.background(MaterialTheme.colors.surface),
         expanded = overflowMenuState,
         offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
         onDismissRequest = { overflowMenuState = false },
@@ -75,7 +72,7 @@ fun A2bAppBar(
         }
       }
     },
-    backgroundColor = backgroundColor(),
+    backgroundColor = MaterialTheme.colors.background,
     elevation = 0.dp,
   )
 }

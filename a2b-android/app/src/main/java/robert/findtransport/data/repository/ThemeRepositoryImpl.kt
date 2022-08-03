@@ -7,7 +7,6 @@ import robert.findtransport.utils.PREF_THEME
 import javax.inject.Inject
 
 class ThemeRepositoryImpl @Inject constructor(private val sharedPreferencesService: SharedPreferencesService) : ThemeRepository {
-
   override fun saveTheme(theme: Int) {
     sharedPreferencesService.putInt(PREF_THEME, theme)
   }

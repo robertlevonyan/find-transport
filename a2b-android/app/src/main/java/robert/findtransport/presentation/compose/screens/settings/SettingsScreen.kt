@@ -1,13 +1,11 @@
 package robert.findtransport.presentation.compose.screens.settings
 
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.robertlevonyan.compose.buttontogglegroup.IconPosition
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
@@ -35,9 +34,6 @@ fun SettingsScreen(
   navController: NavController,
   settingsViewModel: SettingsViewModel = hiltViewModel(),
 ) {
-
-  settingsViewModel.languageSave
-
   Scaffold(
     modifier = modifier,
     topBar = {
@@ -71,7 +67,7 @@ private fun SettingsList(modifier: Modifier, settingsViewModel: SettingsViewMode
           .fillMaxWidth()
           .padding(top = FabPadding)
       ) {
-        ThemeSetting(modifier = Modifier.align(Alignment.Center))
+        ThemeSetting(modifier = Modifier.align(Alignment.Center), settingsViewModel = settingsViewModel)
       }
     }
     item {
@@ -131,12 +127,21 @@ private fun LanguageSetting(modifier: Modifier) {
       unselectedButtonIconTint = Color.Transparent,
       primarySelection = 0,
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
+      iconPosition = IconPosition.Top,
+      unselectedColor = MaterialTheme.colors.background,
     )
   }
 }
 
 @Composable
-private fun ThemeSetting(modifier: Modifier) {
+private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
+  val theme by settingsViewModel.theme.collectAsState()
+  val themeSelection = when (theme) {
+    AppCompatDelegate.MODE_NIGHT_NO -> 0
+    AppCompatDelegate.MODE_NIGHT_YES -> 1
+    else -> 2
+  }
+
   Column(
     modifier = modifier
       .fillMaxWidth(fraction = 0.9f)
@@ -152,9 +157,9 @@ private fun ThemeSetting(modifier: Modifier) {
       buttonCount = 3,
       onButtonClick = { position ->
         when (position) {
-          0 -> {}
-          1 -> {}
-          2 -> {}
+          0 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_NO)
+          1 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_YES)
+          2 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         }
       },
       buttonTexts = arrayOf(
@@ -162,11 +167,16 @@ private fun ThemeSetting(modifier: Modifier) {
         stringResource(id = R.string.settings_theme_dark),
         stringResource(id = R.string.settings_theme_system_short),
       ),
-      buttonIconTint = Color.Transparent,
-      unselectedButtonIconTint = Color.Transparent,
-      primarySelection = 0,
-      buttonHeight = ToggleButtonSize,
+      buttonIcons = arrayOf(
+        painterResource(id = R.drawable.ic_theme_day),
+        painterResource(id = R.drawable.ic_theme_night),
+        painterResource(id = R.drawable.ic_theme_system),
+      ),
+      unselectedButtonIconTint = MaterialTheme.colors.onSurface,
+      primarySelection = themeSelection,
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
+      iconPosition = IconPosition.Top,
+      unselectedColor = MaterialTheme.colors.background,
     )
   }
 }
