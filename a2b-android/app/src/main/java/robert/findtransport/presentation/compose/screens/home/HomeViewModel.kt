@@ -12,7 +12,6 @@ import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
-import robert.findtransport.utils.PREF_INTRO
 import robert.findtransport.utils.PREF_THEME
 import javax.inject.Inject
 
@@ -22,18 +21,10 @@ class HomeViewModel @Inject constructor(
   introUseCase: IntroUseCase,
   themeUseCase: ThemeUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
-  val theme = MutableStateFlow(themeUseCase.getTheme())
+  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
-  init {
-    viewModelScope.launch {
-      SharedPreferencesService.getPreferenceChangedValue<Int>(PREF_THEME).collectLatest { value ->
-        println(value)
-        theme.value = value
-      }
-    }
-  }
 
   private val fromStopFlow = MutableStateFlow(Stop.EMPTY)
   val fromStop get() = fromStopFlow.asStateFlow()

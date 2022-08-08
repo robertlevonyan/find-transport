@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import robert.findtransport.BuildConfig
 import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.model.Result
+import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
 import robert.findtransport.domain.usecase.network.CheckInternetUseCase
@@ -18,14 +19,16 @@ import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import robert.findtransport.domain.usecase.preference.VersionUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import robert.findtransport.utils.PREF_LANGUAGE
+import robert.findtransport.utils.PREF_THEME
 import java.io.EOFException
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
   private val checkInternetUseCase: CheckInternetUseCase,
-  private val themeUseCase: ThemeUseCase,
-  private val localeUseCase: LocaleUseCase,
+  themeUseCase: ThemeUseCase,
+  localeUseCase: LocaleUseCase,
   private val versionUseCase: VersionUseCase,
   private val introUseCase: IntroUseCase,
   private val stopsUseCase: StopsUseCase,
@@ -33,14 +36,10 @@ class MainViewModel @Inject constructor(
   private val databaseUseCase: DatabaseUseCase,
   private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
-  private val _theme = MutableStateFlow(themeUseCase.getTheme())
-  val theme: Flow<Int> get() = _theme
-
-  private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val currentLanguage get() = _currentLanguage.asStateFlow()
+  val theme = MutableStateFlow(themeUseCase.getTheme())
+  val currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
 
   private val _loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
-  val loaded: StateFlow<DataLoading> get() = _loaded
 
   private val _emptyDatabase = MutableSharedFlow<Unit>()
   val emptyDatabase: Flow<Unit> get() = _emptyDatabase
@@ -60,10 +59,22 @@ class MainViewModel @Inject constructor(
   private var downloaded = false
 
   init {
+    viewModelScope.launch {
+      launch {
+        SharedPreferencesService.getPreferenceChangedValue<Int>(PREF_THEME).collectLatest { value ->
+          theme.value = value
+        }
+      }
+      launch {
+        SharedPreferencesService.getPreferenceChangedValue<String>(PREF_LANGUAGE).collectLatest { value ->
+          currentLanguage.value = value
+        }
+      }
+    }
     checkData()
   }
 
-  fun checkData() {
+  private fun checkData() {
     if (_loaded.value == DataLoading.Loaded || _loaded.value == DataLoading.Loading) {
       return
     }

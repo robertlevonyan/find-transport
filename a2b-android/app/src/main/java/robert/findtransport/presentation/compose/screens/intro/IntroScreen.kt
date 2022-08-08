@@ -37,7 +37,6 @@ fun IntroScreen(
 
   LaunchedEffect(key1 = null) {
     introViewModel.currentLanguage.collectLatest { language ->
-      println(language)
       LocaleService(context).changeLocale(language)
       welcomeMessage = 0
       welcomeMessage = R.string.message_slider_welcome

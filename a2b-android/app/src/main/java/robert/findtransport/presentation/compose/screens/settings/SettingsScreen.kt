@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.compose.screens.settings
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.integerArrayResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,9 +26,13 @@ import com.robertlevonyan.compose.buttontogglegroup.IconPosition
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
+import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.utils.LNG_AM
+import robert.findtransport.utils.LNG_EN
+import robert.findtransport.utils.LNG_RU
 
 @Composable
 fun SettingsScreen(
@@ -58,7 +64,7 @@ private fun SettingsList(modifier: Modifier, settingsViewModel: SettingsViewMode
   LazyColumn(modifier = modifier) {
     item {
       Box(modifier = Modifier.fillMaxWidth()) {
-        LanguageSetting(modifier = Modifier.align(Alignment.Center))
+        LanguageSetting(modifier = Modifier.align(Alignment.Center), settingsViewModel = settingsViewModel)
       }
     }
     item {
@@ -92,7 +98,15 @@ private fun SettingsList(modifier: Modifier, settingsViewModel: SettingsViewMode
 }
 
 @Composable
-private fun LanguageSetting(modifier: Modifier) {
+private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
+  val currentContext = LocalContext.current
+  val currentLanguage by settingsViewModel.currentLanguage.collectAsState()
+  val selectionIndex = when (currentLanguage) {
+    LNG_AM -> 0
+    LNG_EN -> 1
+    else -> 2
+  }
+
   Column(
     modifier = modifier
       .fillMaxWidth(fraction = 0.9f)
@@ -108,9 +122,12 @@ private fun LanguageSetting(modifier: Modifier) {
       buttonCount = 3,
       onButtonClick = { position ->
         when (position) {
-          0 -> {}
-          1 -> {}
-          2 -> {}
+          0 -> settingsViewModel.changeLanguage(LNG_AM)
+          1 -> settingsViewModel.changeLanguage(LNG_EN)
+          2 -> settingsViewModel.changeLanguage(LNG_RU)
+        }
+        if (currentContext is Activity) {
+          currentContext.recreate()
         }
       },
       buttonTexts = arrayOf(
@@ -125,7 +142,7 @@ private fun LanguageSetting(modifier: Modifier) {
       ),
       buttonIconTint = Color.Transparent,
       unselectedButtonIconTint = Color.Transparent,
-      primarySelection = 0,
+      primarySelection = selectionIndex,
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,
@@ -136,7 +153,7 @@ private fun LanguageSetting(modifier: Modifier) {
 @Composable
 private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
   val theme by settingsViewModel.theme.collectAsState()
-  val themeSelection = when (theme) {
+  val selectionIndex = when (theme) {
     AppCompatDelegate.MODE_NIGHT_NO -> 0
     AppCompatDelegate.MODE_NIGHT_YES -> 1
     else -> 2
@@ -173,7 +190,7 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
         painterResource(id = R.drawable.ic_theme_system),
       ),
       unselectedButtonIconTint = MaterialTheme.colors.onSurface,
-      primarySelection = themeSelection,
+      primarySelection = selectionIndex,
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,

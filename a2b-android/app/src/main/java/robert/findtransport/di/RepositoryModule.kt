@@ -34,9 +34,6 @@ abstract class RepositoryModule {
   abstract fun bindIntroRepository(introRepositoryImpl: IntroRepositoryImpl): IntroRepository
 
   @Binds
-  abstract fun bindSettingsRepository(settingsRepositoryImpl: SettingsRepositoryImpl): SettingsRepository
-
-  @Binds
   abstract fun bindFeedbackRepository(feedbackRepositoryImpl: FeedbackRepositoryImpl): FeedbackRepository
 
   @Binds

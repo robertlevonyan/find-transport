@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
@@ -263,6 +265,7 @@ private fun FirstStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMod
           color = BlackVariant,
         )
 
+        var overflowMenuState by rememberSaveable { mutableStateOf(false) }
         IconButton(
           modifier = Modifier
             .padding(HalfPadding)
@@ -273,15 +276,14 @@ private fun FirstStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMod
               bottom.linkTo(parent.bottom)
               end.linkTo(parent.end)
             },
-          onClick = {
-
-          }) {
+          onClick = { overflowMenuState = !overflowMenuState }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_vertical),
             tint = BlackVariant,
             contentDescription = null,
           )
         }
+        PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
       }
     }
   }
@@ -336,7 +338,7 @@ private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
         ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_route_dot_normal)
       ),
       colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary),
-      contentDescription = null
+      contentDescription = null,
     )
 
     Text(
@@ -356,6 +358,7 @@ private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
       fontSize = Text13,
     )
 
+    var overflowMenuState by rememberSaveable { mutableStateOf(false) }
     IconButton(
       modifier = Modifier
         .padding(HalfPadding)
@@ -366,14 +369,13 @@ private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
           bottom.linkTo(parent.bottom)
           end.linkTo(parent.end)
         },
-      onClick = {
-
-      }) {
+      onClick = { overflowMenuState = !overflowMenuState }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_more_white),
         tint = MaterialTheme.colors.onPrimary,
         contentDescription = null,
       )
+      PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
     }
   }
 }
@@ -463,6 +465,7 @@ private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMode
           fontSize = Text13,
         )
 
+        var overflowMenuState by rememberSaveable { mutableStateOf(false) }
         IconButton(
           modifier = Modifier
             .padding(HalfPadding)
@@ -473,16 +476,41 @@ private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMode
               bottom.linkTo(parent.bottom)
               end.linkTo(parent.end)
             },
-          onClick = {
-
-          }) {
+          onClick = { overflowMenuState = !overflowMenuState }) {
           Icon(
             painter = painterResource(id = R.drawable.ic_more_white),
             tint = WhiteVariant,
             contentDescription = null,
           )
+          PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
         }
       }
+    }
+  }
+}
+
+@Composable
+private fun PopupMenu(showMenu: Boolean, homeViewModel: HomeViewModel, stop: Stop, onMenuDismiss: () -> Unit) {
+  DropdownMenu(
+    modifier = Modifier.background(MaterialTheme.colors.surface),
+    expanded = showMenu,
+    offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
+    onDismissRequest = { onMenuDismiss.invoke() },
+  ) {
+    DropdownMenuItem(onClick = {
+      onMenuDismiss.invoke()
+      homeViewModel.setFromStop(stop)
+    }) {
+      Text(text = stringResource(id = R.string.action_set_from))
+    }
+    DropdownMenuItem(onClick = {
+      onMenuDismiss.invoke()
+      homeViewModel.setToStop(stop)
+    }) {
+      Text(text = stringResource(id = R.string.action_set_to))
+    }
+    DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
+      Text(text = stringResource(id = R.string.action_show))
     }
   }
 }

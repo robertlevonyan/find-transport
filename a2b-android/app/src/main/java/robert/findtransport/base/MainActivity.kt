@@ -1,33 +1,32 @@
 package robert.findtransport.base
 
+import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.navigation.Navigation
 import robert.findtransport.presentation.compose.reusables.A2bTheme
-import robert.findtransport.presentation.compose.reusables.isAppInDarkMode
-import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.isTablet
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   private val mainViewModel: MainViewModel by viewModels()
-  private val homeViewModel: HomeViewModel by viewModels()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -43,15 +42,26 @@ class MainActivity : ComponentActivity() {
 
     installSplashScreen()
     setContent {
-      val theme by homeViewModel.theme.collectAsState()
+      val theme by mainViewModel.theme.collectAsState()
+      val currentLanguage by mainViewModel.currentLanguage.collectAsState()
+      LocaleService(this).changeLocale(currentLanguage)
       A2bTheme(theme) {
         ProvideWindowInsets {
           Surface(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
-            LocaleService(this).changeLocale(mainViewModel.currentLanguage.value)
             Navigation()
           }
         }
       }
     }
   }
+
+  override fun onConfigurationChanged(newConfig: Configuration) {
+    super.onConfigurationChanged(newConfig)
+
+    println("Conf $newConfig")
+  }
+}
+
+private val LocalMutableContext = staticCompositionLocalOf<MutableState<Context>> {
+  error("LocalMutableContext not provided")
 }
