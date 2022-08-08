@@ -2,6 +2,7 @@ package robert.findtransport.presentation.compose.screens.data
 
 import android.content.Intent
 import android.provider.Settings
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -36,48 +37,51 @@ fun CheckDataScreen(
 
   OnLifecycleEvent { event ->
     when (event) {
-      Lifecycle.Event.ON_RESUME -> {
-        dataViewModel.checkData()
-      }
+      Lifecycle.Event.ON_RESUME -> dataViewModel.checkData()
       else -> return@OnLifecycleEvent
     }
   }
 
-  Card(
-    modifier = modifier
-      .fillMaxWidth(fraction = 0.9f)
+  AnimatedVisibility(
+    modifier = Modifier
+      .fillMaxWidth()
       .padding(HalfPadding),
-    elevation = 0.dp,
-    shape = Shapes.medium,
-    backgroundColor = MaterialTheme.colors.surface,
+    visible = loadingState != DataLoading.Loaded,
   ) {
+    Card(
+      modifier = modifier.fillMaxWidth(),
+      elevation = 0.dp,
+      shape = Shapes.medium,
+      backgroundColor = MaterialTheme.colors.surface,
+    ) {
 
-    when (loadingState) {
-      DataLoading.NotStarted, DataLoading.Loading -> {
-        Column {
-          TextTitle(text = stringResource(id = R.string.message_check_download))
+      when (loadingState) {
+        DataLoading.NotStarted, DataLoading.Loading -> {
+          Column {
+            TextTitle(text = stringResource(id = R.string.message_check_download))
 
-          LinearProgressIndicator(
-            modifier = Modifier
-              .padding(horizontal = FabPadding, vertical = HalfPadding)
-              .fillMaxWidth(),
-            color = Accent,
-          )
-        }
-      }
-      DataLoading.Loaded -> return@Card
-      is DataLoading.Failed -> {
-        val reason = (loadingState as DataLoading.Failed).reason
-        if (reason is DataDownloadExceptions) {
-          when (reason) {
-            is DataDownloadExceptions.NoInternetException -> NoInternetScreen()
-            is DataDownloadExceptions.NotDownloadedException -> NotDownloadedScreen {
-              dataViewModel.checkData()
-            }
-            is DataDownloadExceptions.NotEnoughSpaceException -> NotEnoughSpaceScreen()
-            is DataDownloadExceptions.VpnException -> onVpnError.invoke()
+            LinearProgressIndicator(
+              modifier = Modifier
+                .padding(top = HalfPadding)
+                .fillMaxWidth(),
+              color = Accent,
+            )
           }
         }
+        is DataLoading.Failed -> {
+          val reason = (loadingState as DataLoading.Failed).reason
+          if (reason is DataDownloadExceptions) {
+            when (reason) {
+              is DataDownloadExceptions.NoInternetException -> NoInternetScreen()
+              is DataDownloadExceptions.NotDownloadedException -> NotDownloadedScreen {
+                dataViewModel.checkData()
+              }
+              is DataDownloadExceptions.NotEnoughSpaceException -> NotEnoughSpaceScreen()
+              is DataDownloadExceptions.VpnException -> onVpnError.invoke()
+            }
+          }
+        }
+        DataLoading.Loaded -> return@Card
       }
     }
   }

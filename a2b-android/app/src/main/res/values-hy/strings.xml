@@ -141,7 +141,7 @@
   <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
   <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
   <string name="message_check_download">Թարմացման ստուգում</string>
-  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի ք</string>
+  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի է</string>
   <string name="label_open_settings">Բացել կարգավորումները</string>
   <string name="error_not_downloaded">Ներբեռնման սխալ</string>
   <string name="label_retry">Կրկնել</string>
