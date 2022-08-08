@@ -114,14 +114,14 @@
   <string name="settings_language_ru" translatable="false">Русский</string>
   <string name="settings_db_update_3g">Update database over Mobile network</string>
   <string name="settings_notifications">Push notifications</string>
-  <string name="settings_check_app_version">Update database</string>
+  <string name="settings_check_database">Update database</string>
   <string name="settings_rate">Rate</string>
   <string name="settings_app_version">App Version</string>
   <string name="settings_app_version_details">See the current number of the app</string>
   <string name="settings_language_details">Change the app language</string>
   <string name="settings_db_update_3g_details">Update if mobile internet is connected</string>
   <string name="settings_notifications_details">Receive push notifications about database update</string>
-  <string name="settings_check_app_details">Manually update app database</string>
+  <string name="settings_update_database">Click to update app database</string>
   <string name="settings_rate_details">Rate app in Google Play Store</string>
   <string name="settings_theme_system_short">System</string>
   <string name="settings_theme_system">Follow system</string>

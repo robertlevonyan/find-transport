@@ -102,14 +102,14 @@
   <string name="settings_language">Լեզու</string>
   <string name="settings_db_update_3g">Տվյալների թարմացում հեռախոսի կապով</string>
   <string name="settings_notifications">Ծանուցումներ</string>
-  <string name="settings_check_app_version">Թարմացնել տվյալները</string>
+  <string name="settings_check_database">Թարմացնել տվյալները</string>
   <string name="settings_rate">Գնահատական</string>
   <string name="settings_app_version">Հավելվածի տարբերակը</string>
   <string name="settings_app_version_details">Հավելվածի ներկա տարբերակի համարը</string>
   <string name="settings_language_details">Փոխել հավելվախի լեզուն</string>
   <string name="settings_db_update_3g_details">Թարմացնել եթե բջջային ինտերնետը միացրած է</string>
   <string name="settings_notifications_details">Ստանալ ծանուցումներ տվյալների թարմացման վերաբերյալ</string>
-  <string name="settings_check_app_details">Ինքնուրույն թարմացումնել տվյալները</string>
+  <string name="settings_update_database">Սեղմեք տվյալները թարմացումնելու համար </string>
   <string name="settings_rate_details">Գնահատել Google Play Store-ում</string>
   <string name="settings_theme">Ձձավորում</string>
   <string name="settings_theme_details">Փոխել հավելվածի գունավորումը</string>
@@ -140,11 +140,11 @@
   <string name="cd_dropwdown">Ներքև թափվող մենյու</string>
   <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
   <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
-  <string name="message_check_download">Checking for update</string>
-  <string name="error_no_internet">Seems there\'s no Internet connection</string>
-  <string name="label_open_settings">Open settings</string>
-  <string name="error_not_downloaded">Content not donloaded</string>
-  <string name="label_retry">Retry</string>
-  <string name="error_storage">Not enaught space on disk, please free some space and try again.</string>
-  <string name="settings_general">General</string>
+  <string name="message_check_download">Թարմացման ստուգում</string>
+  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի ք</string>
+  <string name="label_open_settings">Բացել կարգավորումները</string>
+  <string name="error_not_downloaded">Ներբեռնման սխալ</string>
+  <string name="label_retry">Կրկնել</string>
+  <string name="error_storage">Ձեր սարքի հիշողությունը սխառված է, խնդրում ենք ազատել հիշողությունը և փորձել կրկին։</string>
+  <string name="settings_general">Ընդհանուր</string>
 </resources>

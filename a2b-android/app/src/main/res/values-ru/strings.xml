@@ -102,14 +102,14 @@
   <string name="settings_language">Язык</string>
   <string name="settings_db_update_3g">Обновление данных через мобильную сеть</string>
   <string name="settings_notifications">Уведомления</string>
-  <string name="settings_check_app_version">Обновить данные</string>
+  <string name="settings_check_database">Обновить данные</string>
   <string name="settings_rate">Оценка</string>
   <string name="settings_app_version">Версия </string>
   <string name="settings_app_version_details">Номер версии приложения</string>
   <string name="settings_language_details">Изменить язык приложения</string>
   <string name="settings_db_update_3g_details">Обновлять при мобильном подключении</string>
   <string name="settings_notifications_details">Получать уведомления об обновлениях базы данных</string>
-  <string name="settings_check_app_details">Вручную обновить данные</string>
+  <string name="settings_update_database">Нажмите чтобы обновить данные</string>
   <string name="settings_rate_details">Оценить в Google Play Store</string>
   <string name="settings_theme">Тема</string>
   <string name="settings_theme_details">Изменить оформление приложения</string>
@@ -140,11 +140,11 @@
   <string name="cd_dropwdown">Выпадающее меню</string>
   <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
   <string name="cd_show_on_map">Показать путь на карте</string>
-  <string name="message_check_download">Checking for update</string>
-  <string name="error_no_internet">Seems there\'s no Internet connection</string>
-  <string name="label_open_settings">Open settings</string>
-  <string name="error_not_downloaded">Content not donloaded</string>
-  <string name="label_retry">Retry</string>
-  <string name="error_storage">Not enaught space on disk, please free some space and try again.</string>
-  <string name="settings_general">General</string>
+  <string name="message_check_download">Поиск обновлений</string>
+  <string name="error_no_internet">Похоже Интернет не доступен</string>
+  <string name="label_open_settings">Открыть настройки</string>
+  <string name="error_not_downloaded">Ошибка при скачивании</string>
+  <string name="label_retry">Повторить</string>
+  <string name="error_storage">Недостаточно памяти, пожалуйста очистите часть диска.</string>
+  <string name="settings_general">Общее</string>
 </resources>

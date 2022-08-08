@@ -21,6 +21,7 @@ val ToggleButtonSize = 40.dp
 val RouteWidth = 3.dp
 val SmallFabSize = 56.dp
 val MenuVerticalOffset = (-52).dp
+val GeneralSettingCardSize = 150.dp
 
 val Text11 = 11.sp
 val Text12 = 12.sp

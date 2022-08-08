@@ -2,6 +2,7 @@ package robert.findtransport.presentation.compose.screens.settings
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,7 +27,6 @@ import com.robertlevonyan.compose.buttontogglegroup.IconPosition
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
-import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
@@ -146,6 +146,7 @@ private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewM
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,
+      shape = Shapes.large,
     )
   }
 }
@@ -194,6 +195,7 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,
+      shape = Shapes.large,
     )
   }
 }
@@ -201,23 +203,49 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
 @Composable
 private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
   val checking by settingsViewModel.checkingVersion.collectAsState()
+  Color(integerArrayResource(id = R.array.colors_bg)[2])
   Column(
     modifier = modifier
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
       .clickable { settingsViewModel.checkForUpdate() }
   ) {
-    TextMessage(text = stringResource(id = R.string.settings_check_app_details))
+    TextMessage(text = stringResource(id = R.string.settings_check_database))
 
-    when (checking) {
-      DownloadStatus.DownloadStarted -> LinearProgressIndicator(
-        modifier = Modifier
-          .padding(horizontal = FabPadding, vertical = HalfPadding)
-          .fillMaxWidth(),
-        color = Accent,
-      )
-      DownloadStatus.DownloadFailed -> TextMessage(text = stringResource(id = R.string.error_not_downloaded))
-      else -> Unit
+    Card(
+      modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight(),
+      elevation = 0.dp,
+      shape = Shapes.large,
+      backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[2]),
+    ) {
+
+      val textLabel = when (checking) {
+        DownloadStatus.DownloadStarted -> R.string.message_check_download
+        DownloadStatus.DownloadFailed -> R.string.error_not_downloaded
+        else -> R.string.settings_update_database
+      }
+
+      Column {
+        TextMessage(
+          modifier = Modifier
+            .align(Alignment.Start)
+            .wrapContentSize()
+            .padding(HalfPadding),
+          text = stringResource(id = textLabel),
+          color = BlackVariant,
+        )
+        AnimatedVisibility(
+          modifier = Modifier.fillMaxWidth(),
+          visible = checking == DownloadStatus.DownloadStarted
+        ) {
+          LinearProgressIndicator(
+            modifier = Modifier.fillMaxWidth(),
+            color = BlackVariant,
+          )
+        }
+      }
     }
   }
 }
@@ -238,8 +266,8 @@ private fun GeneralSettings(modifier: Modifier) {
     ) {
       Card(
         modifier = Modifier
-          .fillMaxWidth(fraction = 0.5f)
-          .wrapContentHeight(),
+          .fillMaxWidth(fraction = 0.47f)
+          .height(GeneralSettingCardSize),
         elevation = 0.dp,
         shape = Shapes.large,
         backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[3]),
@@ -282,7 +310,7 @@ private fun GeneralSettings(modifier: Modifier) {
       Card(
         modifier = Modifier
           .fillMaxWidth()
-          .wrapContentHeight()
+          .height(GeneralSettingCardSize)
           .padding(start = FabPadding),
         elevation = 0.dp,
         shape = Shapes.large,
