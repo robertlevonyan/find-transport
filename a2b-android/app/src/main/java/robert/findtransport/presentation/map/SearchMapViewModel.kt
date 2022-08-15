@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchMapViewModel @Inject constructor(
-  private val localeUseCase: LocaleUseCase,
+  localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   locationUseCase: LocationUseCase,

@@ -1,12 +1,14 @@
 package robert.findtransport.domain.usecase.stop
 
 import android.location.Location
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import robert.findtransport.data.model.NearbyLocation
@@ -24,7 +26,6 @@ import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
-import java.util.*
 import javax.inject.Inject
 
 class StopsUseCaseImpl @Inject constructor(

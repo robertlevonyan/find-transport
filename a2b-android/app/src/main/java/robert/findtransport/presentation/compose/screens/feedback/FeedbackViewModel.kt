@@ -32,14 +32,6 @@ class FeedbackViewModel @Inject constructor(private val feedbackUseCase: Feedbac
           type = response.exception.type,
           message = response.exception.errorMessage,
         )
-//          when (response.exception.type) {
-//            ExceptionType.ERROR_EMAIL,
-//            ExceptionType.WRONG_EMAIL,
-//            ExceptionType.ERROR_SUBJECT,
-//            ExceptionType.ERROR_MESSAGE,
-//            ExceptionType.SHORT_MESSAGE -> _errorMessage.emit(response.exception.errorMessage)
-//            else -> return@launch
-//          }
       }
     }
   }

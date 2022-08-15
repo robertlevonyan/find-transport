@@ -8,13 +8,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import robert.findtransport.BuildConfig
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.DataLoading
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
-import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
 import robert.findtransport.domain.usecase.network.CheckInternetUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
@@ -33,7 +31,6 @@ class DataViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   private val databaseUseCase: DatabaseUseCase,
-  private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
   private val _theme = MutableStateFlow(themeUseCase.getTheme())
   val theme: Flow<Int> get() = _theme
@@ -127,29 +124,6 @@ class DataViewModel @Inject constructor(
         downloaded = false
       }
       else -> downloaded = true
-    }
-  }
-
-//  private suspend fun onNext() {
-//    if (introUseCase.isIntroPassed) {
-//      _nextMain.emit(Unit)
-//    } else {
-//      _nextIntro.emit(Unit)
-//    }
-//  }
-
-  fun sendErrorFeedback(thread: Thread, throwable: Throwable) {
-    viewModelScope.launch(Dispatchers.IO) {
-      feedbackUseCase.sendFeedback(
-        email = "error@a2b.com",
-        subject = "ActivityThread",
-        message = """
-            Thread name: ${thread.name}
-            Version: ${BuildConfig.VERSION_CODE}
-            Error message: ${throwable.message} 
-            Stacktrace: ${throwable.stackTrace.joinToString("\n")}
-          """.trimIndent(),
-      )
     }
   }
 }

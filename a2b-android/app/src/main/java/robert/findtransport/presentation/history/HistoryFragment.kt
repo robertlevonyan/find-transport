@@ -18,7 +18,6 @@ import robert.findtransport.base.BaseFragment
 import robert.findtransport.data.model.History
 import robert.findtransport.data.model.enums.HistoryDialogType
 import robert.findtransport.databinding.FragmentHistoryBinding
-import robert.findtransport.presentation.component.adapter.HistoryAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
 import robert.findtransport.presentation.component.dialog.DialogHistory
 import robert.findtransport.presentation.component.rv.SwipeToDeleteCallback
@@ -75,16 +74,16 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
 
   override fun HistoryViewModel.initObservers() {
     collectWithLifecycle(itemRemoved) {
-      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
-        val size = (adapter as HistoryAdapter).removeItem(it)
-        if (size == 0) viewModel.setNoHistory()
-      }
+//      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
+//        val size = (adapter as HistoryAdapter).removeItem(it)
+//        if (size == 0) viewModel.setNoHistory()
+//      }
     }
     collectWithLifecycle(historyCleared) {
-      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
-        (adapter as HistoryAdapter).clear()
-        viewModel.setNoHistory()
-      }
+//      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
+//        (adapter as HistoryAdapter).clear()
+//        viewModel.setNoHistory()
+//      }
     }
 
     collectWithLifecycle(noHistory) {
@@ -95,27 +94,27 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
       val historyItems = historyAndLocale.first
       val locale = historyAndLocale.second
 
-      binding.rvHistory.adapter = HistoryAdapter(
-        currentLocale = locale,
-        onItemClickAction = ::onHistoryItemClick,
-        onMenuClickAction = ::onHistoryMenuClick
-      )
-        .apply {
-          setHasStableIds(false)
-          submitList(historyItems)
-        }
-        .also { adapter ->
-          val ctx = context ?: return@also
-          val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(ctx) { position ->
-            val history = historyItems[position]
-            createDialog(
-              type = HistoryDialogType.REMOVE,
-              yesAction = { viewModel.removeItem(history) },
-              noAction = { adapter.notifyItemChanged(position) },
-            )
-          })
-          itemTouchHelper.attachToRecyclerView(binding.rvHistory)
-        }
+//      binding.rvHistory.adapter = HistoryAdapter(
+//        currentLocale = locale,
+//        onItemClickAction = ::onHistoryItemClick,
+//        onMenuClickAction = ::onHistoryMenuClick
+//      )
+//        .apply {
+//          setHasStableIds(false)
+//          submitList(historyItems)
+//        }
+//        .also { adapter ->
+//          val ctx = context ?: return@also
+//          val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(ctx) { position ->
+//            val history = historyItems[position]
+//            createDialog(
+//              type = HistoryDialogType.REMOVE,
+//              yesAction = { viewModel.removeItem(history) },
+//              noAction = { adapter.notifyItemChanged(position) },
+//            )
+//          })
+//          itemTouchHelper.attachToRecyclerView(binding.rvHistory)
+//        }
     }
     collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
   }

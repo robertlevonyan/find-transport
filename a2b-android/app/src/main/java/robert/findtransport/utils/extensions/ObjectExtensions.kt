@@ -14,8 +14,6 @@ import kotlin.math.sqrt
 
 fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
-fun Boolean.inverse() = !this
-
 @SuppressLint("LogNotTimber")
 suspend fun <R> makeApiCall(call: suspend () -> R) = try {
   Result.Success(call())

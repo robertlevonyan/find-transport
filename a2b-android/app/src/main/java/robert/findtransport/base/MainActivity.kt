@@ -1,8 +1,6 @@
 package robert.findtransport.base
 
-import android.content.Context
 import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,10 +9,8 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
@@ -54,14 +50,4 @@ class MainActivity : ComponentActivity() {
       }
     }
   }
-
-  override fun onConfigurationChanged(newConfig: Configuration) {
-    super.onConfigurationChanged(newConfig)
-
-    println("Conf $newConfig")
-  }
-}
-
-private val LocalMutableContext = staticCompositionLocalOf<MutableState<Context>> {
-  error("LocalMutableContext not provided")
 }

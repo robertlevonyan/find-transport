@@ -7,13 +7,13 @@ import robert.findtransport.domain.repository.FeedbackRepository
 import javax.inject.Inject
 
 class FeedbackRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val resourcesService: ResourcesService,
+  private val apiService: ApiService,
+  private val resourcesService: ResourcesService,
 ) : FeedbackRepository {
   override suspend fun sendFeedback(email: String, subject: String, message: String) {
     apiService.sendFeedback(email, subject, message)
   }
-  
+
   override fun getExceptionMessage(type: ExceptionType): Int =
-      resourcesService.getExceptionMessage(type)
+    resourcesService.getExceptionMessage(type)
 }

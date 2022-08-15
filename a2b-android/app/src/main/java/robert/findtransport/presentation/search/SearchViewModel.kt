@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  private val localeUseCase: LocaleUseCase,
+  localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   private val historyUseCase: HistoryUseCase

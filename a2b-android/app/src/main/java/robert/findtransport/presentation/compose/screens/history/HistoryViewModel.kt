@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-  private val localeUseCase: LocaleUseCase,
+  localeUseCase: LocaleUseCase,
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
 

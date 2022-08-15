@@ -124,34 +124,12 @@ fun View.setStopOptionsMenu(viewModel: TransportViewModel?, stop: Stop) {
     .run { setOnClickListener { show() } }
 }
 
-fun View.setHistoryOptionsMenu(onClearAction: () -> Unit) {
-  PopupMenu(context, this)
-    .apply {
-      menuInflater.inflate(R.menu.menu_history, menu)
-      setOnMenuItemClickListener {
-        when (it.itemId) {
-          R.id.action_clear -> onClearAction.invoke()
-        }
-        true
-      }
-    }
-    .run { setOnClickListener { show() } }
-}
-
 fun TextView.setDisappearingError(error: Int) {
   alpha = 0f
   ObjectAnimator.ofFloat(this, View.ALPHA, 1f, 0f).apply {
     doOnStart { setText(error) }
     duration = 2000
   }.start()
-}
-
-fun TextView.setDate(timestamp: Long?, locale: String?) {
-  timestamp?.run {
-    text = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.forLanguageTag(locale ?: LNG_EN)).run {
-      format(Date(timestamp))
-    }
-  }
 }
 
 fun TextView.setSelectedStopName(stop: Stop, locale: String) {

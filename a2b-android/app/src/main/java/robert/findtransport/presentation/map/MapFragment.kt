@@ -2,7 +2,6 @@ package robert.findtransport.presentation.map
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -27,7 +26,6 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.plugin.LocationPuck2D
-import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations

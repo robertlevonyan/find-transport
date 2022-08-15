@@ -17,18 +17,6 @@ fun Context.getDrawableFromRes(@DrawableRes drw: Int): Drawable? {
   return AppCompatResources.getDrawable(this, drw)
 }
 
-fun BaseFragment<*, *>.getDrawableFromRes(@DrawableRes drw: Int): Drawable? {
-  return context?.getDrawableFromRes(drw)
-}
-
-fun Context.gerDimenFromRes(@DimenRes dmn: Int): Float {
-  return resources.getDimension(dmn)
-}
-
-fun BaseFragment<*, *>.gerDimenFromRes(@DimenRes dmn: Int): Float {
-  return context?.gerDimenFromRes(dmn) ?: 0f
-}
-
 fun Context.getDimen(@DimenRes dmn: Int): Float {
   return resources.getDimension(dmn)
 }
