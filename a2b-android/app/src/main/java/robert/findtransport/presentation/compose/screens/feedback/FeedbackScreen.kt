@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -136,6 +137,7 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorEmail),
           color = MaterialTheme.colors.error,
+          textAlign = TextAlign.Start,
         )
       }
     }
@@ -156,6 +158,7 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorSubject),
           color = MaterialTheme.colors.error,
+          textAlign = TextAlign.Start,
         )
       }
     }
@@ -177,6 +180,7 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorMessage),
           color = MaterialTheme.colors.error,
+          textAlign = TextAlign.Start,
         )
       }
     }

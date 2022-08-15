@@ -16,6 +16,7 @@ fun TextMessage(
   modifier: Modifier = Modifier,
   text: String,
   color: Color = MaterialTheme.colors.onSurface,
+  textAlign: TextAlign = TextAlign.Center,
 ) {
   Text(
     modifier = modifier.padding(HalfPadding),
@@ -23,7 +24,7 @@ fun TextMessage(
     fontSize = robert.findtransport.presentation.compose.reusables.TextMessage,
     fontWeight = FontWeight.Normal,
     color = color,
-    textAlign = TextAlign.Center,
+    textAlign = textAlign,
   )
 }
 
@@ -32,6 +33,7 @@ fun TextMessage(
   modifier: Modifier = Modifier,
   text: AnnotatedString,
   color: Color = MaterialTheme.colors.onSurface,
+  textAlign: TextAlign = TextAlign.Center,
 ) {
   Text(
     modifier = modifier.padding(HalfPadding),
@@ -39,6 +41,6 @@ fun TextMessage(
     fontSize = robert.findtransport.presentation.compose.reusables.TextMessage,
     fontWeight = FontWeight.Normal,
     color = color,
-    textAlign = TextAlign.Center,
+    textAlign = textAlign,
   )
 }

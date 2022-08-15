@@ -26,11 +26,12 @@ import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
+import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
-import robert.findtransport.utils.EMPTY_TRANSPORT_ID
+import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
@@ -41,7 +42,7 @@ fun TransportScreen(
   homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel = hiltViewModel(),
 ) {
-  if (transportId == EMPTY_TRANSPORT_ID) {
+  if (transportId == EMPTY_ID) {
     navController.popBackStack()
     return
   }
@@ -81,6 +82,7 @@ fun TransportScreen(
       onSecondaryRouteClicked = { if (showPrimary) showPrimary = false },
       stops = stops,
       homeViewModel = homeViewModel,
+      navController = navController,
     )
   }
 }
@@ -94,6 +96,7 @@ private fun StopList(
   onSecondaryRouteClicked: () -> Unit,
   stops: List<Stop>,
   homeViewModel: HomeViewModel,
+  navController: NavController,
 ) {
   if (stops.isEmpty()) return
 
@@ -124,6 +127,7 @@ private fun StopList(
           stop = firstStop,
           locale = locale,
           homeViewModel = homeViewModel,
+          navController = navController,
         )
       }
       items(restOfStops) { stop ->
@@ -131,6 +135,7 @@ private fun StopList(
           stop = stop,
           locale = locale,
           homeViewModel = homeViewModel,
+          navController = navController,
         )
       }
       item {
@@ -138,6 +143,7 @@ private fun StopList(
           stop = lastStop,
           locale = locale,
           homeViewModel = homeViewModel,
+          navController = navController,
         )
       }
     }
@@ -188,7 +194,12 @@ private fun Toggles(
 }
 
 @Composable
-private fun FirstStopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
+private fun FirstStopCard(
+  stop: Stop,
+  locale: String,
+  homeViewModel: HomeViewModel,
+  navController: NavController,
+) {
   Box(modifier = Modifier.fillMaxWidth()) {
     Card(
       modifier = Modifier
@@ -283,14 +294,19 @@ private fun FirstStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMod
             contentDescription = null,
           )
         }
-        PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
+        PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
       }
     }
   }
 }
 
 @Composable
-private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
+private fun StopCard(
+  stop: Stop,
+  locale: String,
+  homeViewModel: HomeViewModel,
+  navController: NavController,
+) {
   ConstraintLayout(
     modifier = Modifier
       .padding(horizontal = FabPadding)
@@ -375,13 +391,18 @@ private fun StopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
         tint = MaterialTheme.colors.onPrimary,
         contentDescription = null,
       )
-      PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
+      PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
     }
   }
 }
 
 @Composable
-private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewModel) {
+private fun LastStopCard(
+  stop: Stop,
+  locale: String,
+  homeViewModel: HomeViewModel,
+  navController: NavController,
+) {
   Box(
     modifier = Modifier
       .fillMaxWidth()
@@ -482,7 +503,7 @@ private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMode
             tint = WhiteVariant,
             contentDescription = null,
           )
-          PopupMenu(overflowMenuState, homeViewModel, stop) { overflowMenuState = false }
+          PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
         }
       }
     }
@@ -490,7 +511,13 @@ private fun LastStopCard(stop: Stop, locale: String, homeViewModel: HomeViewMode
 }
 
 @Composable
-private fun PopupMenu(showMenu: Boolean, homeViewModel: HomeViewModel, stop: Stop, onMenuDismiss: () -> Unit) {
+private fun PopupMenu(
+  showMenu: Boolean,
+  homeViewModel: HomeViewModel,
+  stop: Stop,
+  navController: NavController,
+  onMenuDismiss: () -> Unit,
+) {
   DropdownMenu(
     modifier = Modifier.background(MaterialTheme.colors.surface),
     expanded = showMenu,
@@ -509,7 +536,10 @@ private fun PopupMenu(showMenu: Boolean, homeViewModel: HomeViewModel, stop: Sto
     }) {
       Text(text = stringResource(id = R.string.action_set_to))
     }
-    DropdownMenuItem(onClick = { onMenuDismiss.invoke() }) {
+    DropdownMenuItem(onClick = {
+      navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
+      onMenuDismiss.invoke()
+    }) {
       Text(text = stringResource(id = R.string.action_show))
     }
   }

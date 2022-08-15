@@ -14,11 +14,12 @@ import robert.findtransport.presentation.compose.screens.history.HistoryScreen
 import robert.findtransport.presentation.compose.screens.home.HomeScreen
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.presentation.compose.screens.intro.IntroScreen
+import robert.findtransport.presentation.compose.screens.passing.PassingRoutesScreen
 import robert.findtransport.presentation.compose.screens.settings.SettingsScreen
 import robert.findtransport.presentation.compose.screens.stops.StopsPickerScreen
 import robert.findtransport.presentation.compose.screens.transport.TransportScreen
 import robert.findtransport.presentation.compose.screens.transports.TransportsScreen
-import robert.findtransport.utils.EMPTY_TRANSPORT_ID
+import robert.findtransport.utils.EMPTY_ID
 
 @Composable
 fun Navigation() {
@@ -51,7 +52,7 @@ fun Navigation() {
     ) { backStackEntry ->
       TransportScreen(
         navController = navController,
-        transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_TRANSPORT_ID,
+        transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_ID,
         homeViewModel = homeViewModel,
       )
     }
@@ -74,6 +75,15 @@ fun Navigation() {
     composable(route = NavigationScreens.HistoryScreen.name) {
       HistoryScreen(navController = navController)
     }
+    composable(
+      route = "${NavigationScreens.PassingRoutesScreen.name}/{stop_id}",
+      arguments = listOf(navArgument("stop_id") { type = NavType.IntType }),
+    ) { backStackEntry ->
+      PassingRoutesScreen(
+        navController = navController,
+        stopId = backStackEntry.arguments?.getInt("stop_id") ?: EMPTY_ID,
+      )
+    }
   }
 }
 
@@ -86,4 +96,5 @@ sealed class NavigationScreens(val name: String) {
   object SettingsScreen : NavigationScreens("settings_screen")
   object FeedbackScreen : NavigationScreens("feedback_screen")
   object HistoryScreen : NavigationScreens("history_screen")
+  object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
 }

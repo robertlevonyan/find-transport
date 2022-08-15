@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.History
@@ -18,12 +19,11 @@ class HistoryViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
   private val _loading = MutableStateFlow(true)
   val loading: Flow<Boolean> get() = _loading
 
-  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val locale: Flow<String> get() = _locale
 
   private val _noHistory = MutableSharedFlow<Boolean>()
   val noHistory: Flow<Boolean> get() = _noHistory

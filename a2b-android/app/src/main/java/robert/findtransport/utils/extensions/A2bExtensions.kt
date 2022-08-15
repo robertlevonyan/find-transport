@@ -4,7 +4,6 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.View
 import android.widget.ImageView
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
@@ -16,13 +15,10 @@ import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.LocationPermission
 import robert.findtransport.data.model.enums.TransportType.*
-import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
-import java.text.SimpleDateFormat
-import java.util.*
 
 fun ImageView.setTransportIcon(transport: Transport) {
   when (transport.type) {
@@ -104,24 +100,6 @@ fun ImageView.setLocationIcon(permission: LocationPermission) {
     }
     LocationPermission.UNDEFINED -> return
   }
-}
-
-fun View.setStopOptionsMenu(viewModel: TransportViewModel?, stop: Stop) {
-  PopupMenu(context, this)
-    .apply {
-      menuInflater.inflate(R.menu.menu_route, menu)
-      setOnMenuItemClickListener {
-        when (it.itemId) {
-          R.id.action_from -> viewModel?.setFromStop(stop)
-          R.id.action_to -> viewModel?.setToStop(stop)
-          R.id.action_show_routes -> {
-            viewModel?.onShowTransportsClicked(stop)
-          }
-        }
-        true
-      }
-    }
-    .run { setOnClickListener { show() } }
 }
 
 fun TextView.setDisappearingError(error: Int) {

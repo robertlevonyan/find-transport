@@ -100,7 +100,7 @@ private fun SettingsList(modifier: Modifier, settingsViewModel: SettingsViewMode
 @Composable
 private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
   val currentContext = LocalContext.current
-  val currentLanguage by settingsViewModel.currentLanguage.collectAsState()
+  val currentLanguage by settingsViewModel.locale.collectAsState()
   val selectionIndex = when (currentLanguage) {
     LNG_AM -> 0
     LNG_EN -> 1

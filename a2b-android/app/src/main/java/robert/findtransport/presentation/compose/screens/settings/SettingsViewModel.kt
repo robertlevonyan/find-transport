@@ -26,11 +26,11 @@ class SettingsViewModel @Inject constructor(
   private val databaseUseCase: DatabaseUseCase,
   private val localeUseCase: LocaleUseCase,
 ) : BaseViewModel() {
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
+
   private val _checkingVersion = MutableStateFlow<DownloadStatus>(DownloadStatus.NotDownloading)
   val checkingVersion: StateFlow<DownloadStatus> get() = _checkingVersion
-
-  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-  val currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
   fun changeLanguage(language: String) {
     viewModelScope.launch {

@@ -120,7 +120,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
       var toId = 0
       var selectedTransportPosition = -1
 
-      binding.rvTransportsList.adapter = MultiRouteAdapter { transport ->
+      binding.rvTransportsList.adapter = MultiRouteAdapter {
 //        router.navigateTo(detailsScreen(transport.id, false))
       }.apply {
         currentLocale = locale

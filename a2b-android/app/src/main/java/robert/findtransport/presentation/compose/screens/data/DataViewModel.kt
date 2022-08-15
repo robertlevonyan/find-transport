@@ -3,9 +3,8 @@ package robert.findtransport.presentation.compose.screens.data
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
@@ -32,33 +31,30 @@ class DataViewModel @Inject constructor(
   private val transportUseCase: TransportUseCase,
   private val databaseUseCase: DatabaseUseCase,
 ) : BaseViewModel() {
-  private val _theme = MutableStateFlow(themeUseCase.getTheme())
-  val theme: Flow<Int> get() = _theme
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
 
-  private val _currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val currentLanguage: Flow<String> get() = _currentLanguage
-
-  private val _loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
-  val loaded: StateFlow<DataLoading> get() = _loaded
+  private val loadedFlow = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
+  val loaded get() = loadedFlow.asStateFlow()
 
   private var downloaded = false
 
   fun checkData() {
-    if (_loaded.value == DataLoading.Loaded || _loaded.value == DataLoading.Loading) {
+    if (loadedFlow.value == DataLoading.Loaded || loadedFlow.value == DataLoading.Loading) {
       return
     }
 
     viewModelScope.launch(Dispatchers.IO) {
       if (checkInternetUseCase.isVpnConnected()) {
-        _loaded.value = DataLoading.Failed(DataDownloadExceptions.VpnException())
+        loadedFlow.value = DataLoading.Failed(DataDownloadExceptions.VpnException())
         return@launch
       }
       if (!checkInternetUseCase.isResolveIp() || !checkInternetUseCase.isInternetConnected()) {
         if (databaseUseCase.isDatabaseEmpty()) {
-          _loaded.value = DataLoading.Failed(DataDownloadExceptions.NoInternetException())
+          loadedFlow.value = DataLoading.Failed(DataDownloadExceptions.NoInternetException())
           return@launch
         } else {
-          _loaded.value = DataLoading.Loaded
+          loadedFlow.value = DataLoading.Loaded
         }
       }
 
@@ -68,10 +64,10 @@ class DataViewModel @Inject constructor(
 
   private fun downloadData() {
     viewModelScope.launch {
-      _loaded.value = DataLoading.Loading
+      loadedFlow.value = DataLoading.Loading
       try {
         if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
-          _loaded.value = DataLoading.Loaded
+          loadedFlow.value = DataLoading.Loaded
         } else {
           if (!databaseUseCase.isDatabaseEmpty()) {
             databaseUseCase.clearDb()
@@ -79,14 +75,14 @@ class DataViewModel @Inject constructor(
           getTransports()
           getStops()
           if (downloaded) {
-            _loaded.value = DataLoading.Loaded
+            loadedFlow.value = DataLoading.Loaded
           } else {
-            _loaded.value = DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
+            loadedFlow.value = DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
           }
         }
       } catch (e: Exception) {
         val message = e.message ?: ""
-        _loaded.value = DataLoading.Failed(
+        loadedFlow.value = DataLoading.Failed(
           if (message.contains("database or disk is full (code 13)")) {
             DataDownloadExceptions.NotEnoughSpaceException()
           } else {

@@ -19,12 +19,12 @@ class TransportsViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+
   val allTransports = transportUseCase.getTransportsPaged(false)
     .cachedIn(scope = viewModelScope + Dispatchers.IO)
   val favoriteTransports = transportUseCase.getTransportsPaged(true)
     .cachedIn(scope = viewModelScope + Dispatchers.IO)
-
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
   override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
     viewModelScope.launch(Dispatchers.IO) {

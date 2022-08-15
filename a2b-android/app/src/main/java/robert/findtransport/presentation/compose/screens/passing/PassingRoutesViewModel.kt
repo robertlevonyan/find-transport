@@ -1,12 +1,12 @@
-package robert.findtransport.presentation.passing
+package robert.findtransport.presentation.compose.screens.passing
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
@@ -22,26 +22,24 @@ class PassingRoutesViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase
 ) : BaseViewModel() {
-  private val _locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val locale: StateFlow<String> get() = _locale
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
 
-  private val _stopReceived = MutableSharedFlow<Stop>()
-  val stopReceived: Flow<Stop> get() = _stopReceived
+  private val stopFlow = MutableSharedFlow<Stop>()
+  val stop get() = stopFlow.asSharedFlow()
 
-  private val _stopTransports = MutableSharedFlow<List<Transport>>()
-  val stopTransports: Flow<List<Transport>> get() = _stopTransports
+  private val transportsFlow = MutableStateFlow<List<Transport>>(emptyList())
+  val transports get() = transportsFlow.asStateFlow()
 
-  fun getStop(stopId: Int) {
+  fun getStopAndTransports(stopId: Int) {
     viewModelScope.launch(Dispatchers.IO) {
-      val stop = stopsUseCase.getStop(stopId)
-      _stopReceived.emit(stop)
-    }
-  }
-
-  fun getTransports(stopId: Int) {
-    viewModelScope.launch(Dispatchers.IO) {
-      val transports = transportUseCase.getTransportsForStop(stopId)
-      _stopTransports.emit(transports)
+      launch {
+        val stop = stopsUseCase.getStop(stopId)
+        stopFlow.emit(stop)
+      }
+      launch {
+        val transports = transportUseCase.getTransportsForStop(stopId)
+        transportsFlow.emit(transports)
+      }
     }
   }
 }

@@ -36,7 +36,7 @@ fun IntroScreen(
   var welcomeMessage by rememberSaveable { mutableStateOf(R.string.message_slider_welcome) }
 
   LaunchedEffect(key1 = null) {
-    introViewModel.currentLanguage.collectLatest { language ->
+    introViewModel.locale.collectLatest { language ->
       LocaleService(context).changeLocale(language)
       welcomeMessage = 0
       welcomeMessage = R.string.message_slider_welcome

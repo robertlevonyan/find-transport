@@ -19,9 +19,8 @@ class HomeViewModel @Inject constructor(
   themeUseCase: ThemeUseCase,
 ) : BaseViewModel() {
   val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
-  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-
+  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
 
   private val fromStopFlow = MutableStateFlow(Stop.EMPTY)
   val fromStop get() = fromStopFlow.asStateFlow()
