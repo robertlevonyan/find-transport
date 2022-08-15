@@ -22,6 +22,7 @@ import robert.findtransport.presentation.component.adapter.HistoryAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
 import robert.findtransport.presentation.component.dialog.DialogHistory
 import robert.findtransport.presentation.component.rv.SwipeToDeleteCallback
+import robert.findtransport.presentation.compose.screens.history.HistoryViewModel
 import robert.findtransport.utils.ARG_HISTORY_DESCRIPTION
 import robert.findtransport.utils.ARG_HISTORY_DIALOG_TYPE
 import robert.findtransport.utils.RESULT_ARRIVED

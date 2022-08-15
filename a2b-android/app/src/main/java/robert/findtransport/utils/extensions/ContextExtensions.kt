@@ -17,17 +17,16 @@ import androidx.core.content.ContextCompat
 
 import android.graphics.drawable.Drawable
 
+fun Context.showToast(message: Int) {
+  Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+}
+
 fun Context.showToast(message: String) {
   Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
 
 fun Fragment.showToast(message: String) {
   context?.showToast(message)
-}
-
-fun FragmentActivity.fullRecreate() {
-  finishAndRemoveTask()
-  startActivity(Intent(this, MainActivity::class.java))
 }
 
 fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {

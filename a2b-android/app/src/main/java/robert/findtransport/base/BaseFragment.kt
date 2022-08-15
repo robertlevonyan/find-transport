@@ -75,7 +75,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
       android.R.id.home -> onBackPressed()
 //      R.id.action_settings -> router.navigateTo(settingsScreen())
 //      R.id.action_feedback -> router.navigateTo(feedbackScreen())
-      R.id.action_privacy -> openPrivacyPolicy()
+//      R.id.action_privacy -> openPrivacyPolicy()
     }
     return true
   }
@@ -84,23 +84,4 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
 //    router.exit()
   }
 
-  private fun openPrivacyPolicy() {
-    try {
-      context?.run {
-        val url = "https://www.freeprivacypolicy.com/privacy/view/58828427193536dad1fea738a43a0758"
-        CustomTabsIntent.Builder().run {
-          setDefaultColorSchemeParams(
-            CustomTabColorSchemeParams.Builder()
-              .setToolbarColor(getColorFromRes(R.color.colorPrimary))
-              .setSecondaryToolbarColor(getColorFromRes(R.color.colorOnPrimary))
-              .build()
-          )
-          build()
-        }.launchUrl(this, url.toUri())
-      }
-    } catch (e: Exception) {
-      e.printStackTrace()
-      showToast("Google Chrome cannot be found")
-    }
-  }
 }

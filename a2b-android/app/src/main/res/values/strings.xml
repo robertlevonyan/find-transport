@@ -2,29 +2,17 @@
   <string name="app_name" translatable="false" tools:ignore="PrivateResource">A2B Transport</string>
 
   <!--keys-->
-  <string name="mapbox_access_token" translatable="false">pk.eyJ1Ijoicm9iZXJ0bGV2b255YW4iLCJhIjoiY2oxajVyajJ3MDFjZjJ5cGRnOXV5a2FpbyJ9.lsKprBvsy308ZzjQQJojLg</string>
 
   <!--titles-->
-  <string name="title_oops" translatable="false">Oops!</string>
   <string name="title_search">Search</string>
   <string name="title_details">Details</string>
   <string name="title_settings">Settings</string>
   <string name="title_feedback">Feedback</string>
   <string name="title_history">Search history</string>
-  <string name="title_language_picker">Select app language</string>
-  <string name="title_theme_picker">Select app theme</string>
   <string name="title_transports">Transports</string>
-  <string name="title_track_route">A2B Route Tracking</string>
-  <string name="title_track_route_start">Starting tracker</string>
 
   <!--messages-->
   <string name="message_slider_welcome">Hello!</string>
-  <string name="message_update">There is a new update. Do you want to download?</string>
-  <string name="message_no_update">Everything is up to date</string>
-  <string name="message_downloading">Downloading update…</string>
-  <string name="message_no_data">Sorry, but it looks like there is no data downloaded. Please check the Internet connection and try again.</string>
-  <string name="message_error_download">Sorry, the data cannot be downloaded. Please check if Internet is connected or you do not have a VPN turned on.</string>
-  <string name="message_error_download_disk_full">Sorry, the data cannot be downloaded. The storage is full.</string>
   <string name="message_feedback"> Here you can send your feedback about the app. Your opinion is important!</string>
   <string name="message_history_dialog_restore">Do you want to restore this search result?</string>
   <string name="message_history_dialog_clear">Do you want to clear history?</string>
@@ -64,8 +52,6 @@
   <string name="label_interchange_to">Change here</string>
   <string name="label_take_transport">Take one of these</string>
   <string name="label_selected_stop">Transports which have stop at "%1$s"</string>
-  <string name="label_no_stops">There are no stops matching your search</string>
-  <string name="label_show">Show</string>
   <string name="label_see_all">All</string>
   <string name="label_see_favorites">Favorites</string>
   <string name="label_track">Track route</string>
@@ -73,7 +59,6 @@
   <string name="label_tracker_transport">You have selected</string>
   <string name="label_current_stop">Current Stop</string>
   <string name="label_arriving">Arriving</string>
-  <string name="label_arrived">You have arrived to destination</string>
   <string name="label_arrived_dialog">Arrived</string>
 
   <!--hints-->
@@ -112,32 +97,20 @@
   <string name="settings_language_am" translatable="false">Հայերեն</string>
   <string name="settings_language_en" translatable="false">English</string>
   <string name="settings_language_ru" translatable="false">Русский</string>
-  <string name="settings_db_update_3g">Update database over Mobile network</string>
-  <string name="settings_notifications">Push notifications</string>
   <string name="settings_check_database">Update database</string>
   <string name="settings_rate">Rate</string>
   <string name="settings_app_version">App Version</string>
-  <string name="settings_app_version_details">See the current number of the app</string>
-  <string name="settings_language_details">Change the app language</string>
-  <string name="settings_db_update_3g_details">Update if mobile internet is connected</string>
-  <string name="settings_notifications_details">Receive push notifications about database update</string>
   <string name="settings_update_database">Click to update app database</string>
   <string name="settings_rate_details">Rate app in Google Play Store</string>
   <string name="settings_theme_system_short">System</string>
-  <string name="settings_theme_system">Follow system</string>
   <string name="settings_theme">Theme</string>
-  <string name="settings_theme_details">Change the app theme</string>
   <string name="settings_theme_light">Light</string>
   <string name="settings_theme_dark">Dark</string>
-  <string name="settings_theme_battery">Switch on low battery</string>
-  <string name="settings_theme_battery_short">Battery</string>
 
   <!--action strings-->
   <string name="action_show">Show routes</string>
   <string name="action_set_from">Set as departure stop</string>
   <string name="action_set_to">Set as arriving stop</string>
-  <string name="action_set_from_route">%1$s set as departure stop</string>
-  <string name="action_set_to_route">%1$s set as arriving stop</string>
   <string name="action_settings">Settings</string>
   <string name="action_feedback">Send Feedback</string>
   <string name="action_privacy" translatable="false">Privacy Policy</string>
@@ -148,9 +121,7 @@
   <string name="feedback_sent">Your message has been sent. Thank you! 🥰😊🥰🥰🥰🥰🥰</string>
 
   <!--content description strings-->
-  <string name="cd_next">Next page</string>
   <string name="cd_options">More options</string>
-  <string name="cd_dropwdown">Drop down menu</string>
   <string name="cd_current_location">Go to current location</string>
   <string name="cd_show_on_map">Show route on map</string>
   <string name="message_check_download">Checking for update</string>
@@ -160,4 +131,5 @@
   <string name="label_retry">Retry</string>
   <string name="error_storage">Not enough space on disk, please free some space and try again.</string>
   <string name="settings_general">General</string>
+  <string name="label_send_feedback">Send Feedback</string>
 </resources>

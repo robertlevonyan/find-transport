@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
-import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
+import robert.findtransport.presentation.compose.reusables.SmallPadding
+import robert.findtransport.utils.extensions.openPrivacyPolicy
 
 @Composable
 fun A2bAppBar(
@@ -32,6 +34,7 @@ fun A2bAppBar(
   additionalActions: @Composable RowScope.() -> Unit = {},
 ) {
   var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+  val context = LocalContext.current
 
   TopAppBar(
     modifier = Modifier.statusBarsPadding(),
@@ -67,7 +70,10 @@ fun A2bAppBar(
         offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
         onDismissRequest = { overflowMenuState = false },
       ) {
-        DropdownMenuItem(onClick = { overflowMenuState = false }) {
+        DropdownMenuItem(onClick = {
+          context.openPrivacyPolicy()
+          overflowMenuState = false
+        }) {
           Text(text = stringResource(id = R.string.action_privacy))
         }
       }

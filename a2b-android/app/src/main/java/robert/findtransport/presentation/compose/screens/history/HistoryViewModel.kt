@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.history
+package robert.findtransport.presentation.compose.screens.history
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

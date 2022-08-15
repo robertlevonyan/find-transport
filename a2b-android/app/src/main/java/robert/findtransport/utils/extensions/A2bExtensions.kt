@@ -1,71 +1,28 @@
 package robert.findtransport.utils.extensions
 
 import android.animation.ObjectAnimator
-import android.graphics.Typeface
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.view.LayoutInflater
+import android.content.Context
 import android.view.View
-import android.widget.*
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.animation.doOnStart
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.updateLayoutParams
-import androidx.core.widget.doAfterTextChanged
-import androidx.viewbinding.ViewBinding
-import com.google.android.material.textfield.TextInputLayout
+import androidx.core.net.toUri
 import robert.findtransport.R
-import robert.findtransport.data.model.SettingData
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.LocationPermission
 import robert.findtransport.data.model.enums.TransportType.*
-import robert.findtransport.databinding.ItemSettingDropdownBinding
-import robert.findtransport.databinding.ItemSettingProgressBinding
-import robert.findtransport.databinding.ItemSettingSwitchBinding
 import robert.findtransport.presentation.compose.screens.transport.TransportViewModel
-import robert.findtransport.utils.CustomTypefaceSpan
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.*
-
-fun View.setCustomWidth(w: Float) = updateLayoutParams { width = w.toInt() }
-
-fun TextSwitcher.setInitialText(text: String?) = setText(text)
-
-fun FrameLayout.setEndView(type: SettingData.EndViewType): ViewBinding? {
-  val binding = when (type) {
-    SettingData.EndViewType.NONE -> return null
-    SettingData.EndViewType.IMAGE -> ItemSettingDropdownBinding.inflate(LayoutInflater.from(context)/*, this@setEndView, true*/)
-    SettingData.EndViewType.SWITCH -> ItemSettingSwitchBinding.inflate(LayoutInflater.from(context)/*, this@setEndView, true*/)
-    SettingData.EndViewType.PROGRESS -> ItemSettingProgressBinding.inflate(LayoutInflater.from(context)/*, this@setEndView, true*/)
-  }
-  addView(binding.root)
-  return binding
-}
-
-fun TextView.setBold(bold: Boolean?) {
-  if (bold == null) return
-
-  setTypeface(ResourcesCompat.getFont(context, R.font.app_font), if (bold) Typeface.BOLD else Typeface.NORMAL)
-}
-
-fun TextView.setFeedbackMessage() {
-  SpannableStringBuilder(context.getString(R.string.message_feedback)).apply {
-    ResourcesCompat.getFont(context, R.font.mdf)?.let {
-      setSpan(CustomTypefaceSpan(it), 0, 1, Spanned.SPAN_EXCLUSIVE_INCLUSIVE)
-      text = this
-    }
-  }
-}
-
-fun TextInputLayout.setCustomError(message: Int?) {
-  error = context.getString(message ?: return)
-  editText?.doAfterTextChanged { error = null }
-}
 
 fun ImageView.setTransportIcon(transport: Transport) {
   when (transport.type) {
@@ -273,4 +230,22 @@ fun Transport.getIcon(): Int = when (type) {
   TROLLEYBUS -> R.drawable.ic_trolleybus
   METRO -> R.drawable.ic_metro
   UNDEFINED -> R.drawable.ic_bus
+}
+
+fun Context.openPrivacyPolicy() {
+  try {
+    val url = "https://www.freeprivacypolicy.com/privacy/view/58828427193536dad1fea738a43a0758"
+    CustomTabsIntent.Builder().run {
+      setDefaultColorSchemeParams(
+        CustomTabColorSchemeParams.Builder()
+          .setToolbarColor(getColorFromRes(R.color.colorPrimary))
+          .setSecondaryToolbarColor(getColorFromRes(R.color.colorOnPrimary))
+          .build()
+      )
+      build()
+    }.launchUrl(this, url.toUri())
+  } catch (e: Exception) {
+    e.printStackTrace()
+    showToast("Google Chrome cannot be found")
+  }
 }

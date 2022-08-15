@@ -9,15 +9,12 @@
   <color name="colorAccent300">#e7a942</color>
   <color name="colorAccent500">#CEA053</color>
   <color name="colorOnPrimary">#C9C9C9</color>
-  <color name="colorOnPrimaryTransparent">#80C9C9C9</color>
   <color name="colorOnPrimaryLight">#9C9C9C</color>
   <color name="colorOnPrimaryLighter">#555555</color>
   <color name="colorOnPrimaryLightest">#f3f3f3</color>
 
   <color name="colorHint">#DBDBDB</color>
   <color name="colorError">#B85252</color>
-  <color name="colorWhite">#ffffff</color>
-  <color name="colorLightTransparent">#20ffffff</color>
   <color name="colorIconWheels">#000000</color>
   <color name="colorBusPurple">#B99ECA</color>
   <color name="colorMicrobusYellow">#CEA75B</color>
