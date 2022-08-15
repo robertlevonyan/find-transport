@@ -14,13 +14,15 @@ interface StopsRepository {
 
   suspend fun cacheStopLocations(locations: List<StopLocation>)
 
-  suspend fun getStopsAutocomplete(word: String, field: String): List<Stop>
-
   fun saveStopsToInMemoryCache(stops: List<Stop>)
 
   suspend fun getStopsFromCache(): List<Stop>
 
-  fun getStopsPaged(): PagingSource<Int, Stop>
+  fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
+
+  fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
+
+  fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
 
   fun getStopsFromInMemoryCache(): List<Stop>
 

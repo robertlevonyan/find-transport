@@ -23,7 +23,6 @@ import robert.findtransport.domain.repository.LocationRepository
 import robert.findtransport.domain.repository.ResourcesRepository
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.utils.LNG_AM
-import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
 import javax.inject.Inject
@@ -50,24 +49,17 @@ class StopsUseCaseImpl @Inject constructor(
       ?: emptyList()
   }
 
-  override fun getStopsPaged(): Flow<PagingData<Stop>> = Pager(config = PagingConfig(pageSize = 50)) {
-    stopsRepository.getStopsPaged()
+  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> = Pager(config = PagingConfig(pageSize = 50)) {
+    when (locale) {
+      LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
+      LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
+      else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
+    }
   }.flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
     value.map { apiStop ->
       apiStop.toStop()
     }
   }
-
-  override suspend fun getStopsAutocomplete(word: String, locale: String) =
-    stopsRepository.getStopsAutocomplete(
-      word.replace("'", ""), when (locale) {
-        LNG_EN -> "nameEn"
-        LNG_AM -> "nameAm"
-        LNG_RU -> "nameRu"
-        else -> ""
-      }
-    ).map { apiStop -> apiStop.toStop() }
-
 
   override suspend fun getStopsLocations(): List<PointAnnotationOptions> = withContext(Dispatchers.IO) {
     val iconBitmap = resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()

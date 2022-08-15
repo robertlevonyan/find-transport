@@ -11,9 +11,7 @@ import robert.findtransport.data.model.StopLocation
 interface StopsUseCase {
   suspend fun getStops(): List<Stop>
 
-  fun getStopsPaged(): Flow<PagingData<Stop>>
-
-  suspend fun getStopsAutocomplete(word: String, locale: String): List<Stop>
+  fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>>
 
   suspend fun getStopsLocations(): List<PointAnnotationOptions>
 

@@ -37,21 +37,20 @@ class StopsRepositoryImpl @Inject constructor(
     stopsDao.saveStopLocations(locations)
   }
 
-  override suspend fun getStopsAutocomplete(word: String, field: String): List<Stop> =
-    field.takeIf { it.isNotEmpty() }
-      ?.let {
-        stopsDao.getStopsAutocomplete(SimpleSQLiteQuery("SELECT * FROM Stop WHERE $field LIKE '%$word%'"))
-      }
-      ?: emptyList()
-
   override fun saveStopsToInMemoryCache(stops: List<Stop>) =
     inMemoryCacheService.save(MEM_CACHE_STOP to stops)
 
   override suspend fun getStopsFromCache(): List<Stop> =
     stopsDao.getAllStops()
 
-  override fun getStopsPaged(): PagingSource<Int, Stop> =
-    stopsDao.getAllStopsPaged()
+  override fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop> =
+    stopsDao.getAllStopsPagedEn(word)
+
+  override fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop> =
+    stopsDao.getAllStopsPagedAm(word)
+
+  override fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop> =
+    stopsDao.getAllStopsPagedRu(word)
 
   override fun getStopsFromInMemoryCache(): List<Stop> =
     inMemoryCacheService.get<List<Stop>>(MEM_CACHE_STOP) ?: emptyList()

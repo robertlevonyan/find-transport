@@ -1,30 +1,30 @@
 package robert.findtransport.presentation.compose.screens.stops
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import robert.findtransport.R
-import robert.findtransport.presentation.compose.reusables.FabPadding
-import robert.findtransport.presentation.compose.reusables.HalfPadding
-import robert.findtransport.presentation.compose.reusables.colorVariantInvertTransparent
+import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
@@ -40,6 +40,9 @@ fun StopsPickerScreen(
 ) {
   val locale by stopsPickerViewModel.locale.collectAsState()
   val stops = stopsPickerViewModel.allStops.collectAsLazyPagingItems()
+  var searchBoxState by rememberSaveable { mutableStateOf(false) }
+
+  stopsPickerViewModel.findStops("")
 
   Scaffold(
     modifier = modifier,
@@ -49,7 +52,12 @@ fun StopsPickerScreen(
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = { navController.popBackStack() },
         additionalActions = {
-          IconButton(onClick = { }) {
+          IconButton(onClick = {
+            searchBoxState = !searchBoxState
+            if (!searchBoxState) {
+              stopsPickerViewModel.findStops("")
+            }
+          }) {
             Icon(
               painter = painterResource(id = R.drawable.ic_search_splash),
               contentDescription = stringResource(id = R.string.hint_search),
@@ -60,33 +68,76 @@ fun StopsPickerScreen(
       )
     }
   ) { contentPadding ->
-    LazyColumn(modifier = Modifier.padding(contentPadding)) {
-      items(stops) { stop ->
-        stop ?: return@items
+    Column(modifier = Modifier.padding(contentPadding)) {
+      AnimatedVisibility(visible = searchBoxState) {
+        Card(
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = FabPadding)
+        ) { SearchInput(stopsPickerViewModel::findStops) }
+      }
+      LazyColumn(modifier = Modifier.fillMaxSize()) {
+        items(stops) { stop ->
+          stop ?: return@items
 
-        Column {
-          TextMessage(
-            modifier = Modifier
-              .fillMaxWidth()
-              .clickable {
-                if (isFrom) {
-                  homeViewModel.setFromStop(stop)
-                } else {
-                  homeViewModel.setToStop(stop)
+          Column {
+            TextMessage(
+              modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                  if (isFrom) {
+                    homeViewModel.setFromStop(stop)
+                  } else {
+                    homeViewModel.setToStop(stop)
+                  }
+                  navController.popBackStack()
                 }
-                navController.popBackStack()
-              }
-              .padding(HalfPadding),
-            text = stop.getCurrentName(locale),
-          )
+                .padding(HalfPadding),
+              text = stop.getCurrentName(locale),
+              textAlign = TextAlign.Start,
+            )
 
-          Divider(
-            color = colorVariantInvertTransparent(),
-            thickness = 0.5.dp,
-            startIndent = FabPadding,
-          )
+            Divider(
+              color = colorVariantInvertTransparent(),
+              thickness = 0.5.dp,
+              startIndent = FabPadding,
+            )
+          }
         }
       }
     }
   }
+}
+
+@Composable
+private fun SearchInput(onValueChange: (String) -> Unit) {
+  var inputText by rememberSaveable { mutableStateOf("") }
+
+  OutlinedTextField(
+    modifier = Modifier
+      .fillMaxWidth()
+      .padding(horizontal = HalfPadding)
+      .padding(bottom = HalfPadding),
+    value = inputText,
+    onValueChange = {
+      inputText = it
+      onValueChange.invoke(it)
+    },
+    singleLine = true,
+    shape = Shapes.medium,
+    label = { Text(text = stringResource(id = R.string.hint_search)) },
+    colors = TextFieldDefaults.outlinedTextFieldColors(
+      backgroundColor = searchInputBackgroundColor(),
+      focusedBorderColor = MaterialTheme.colors.surface,
+      unfocusedBorderColor = MaterialTheme.colors.surface,
+      disabledBorderColor = MaterialTheme.colors.surface,
+      errorBorderColor = MaterialTheme.colors.error,
+      cursorColor = MaterialTheme.colors.onSurface,
+      focusedLabelColor = MaterialTheme.colors.onSurface,
+    ),
+    textStyle = TextStyle(
+      color = MaterialTheme.colors.onSurface,
+      fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+    ),
+  )
 }
