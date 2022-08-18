@@ -27,6 +27,7 @@ import com.robertlevonyan.compose.buttontogglegroup.IconPosition
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
+import robert.findtransport.data.model.DataLoading
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
@@ -202,13 +203,11 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
 
 @Composable
 private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewModel) {
-  val checking by settingsViewModel.checkingVersion.collectAsState()
-  Color(integerArrayResource(id = R.array.colors_bg)[2])
+  val checking by settingsViewModel.loaded.collectAsState()
   Column(
     modifier = modifier
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
-      .clickable { settingsViewModel.checkForUpdate() }
   ) {
     TextMessage(text = stringResource(id = R.string.settings_check_database))
 
@@ -222,12 +221,12 @@ private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewMod
     ) {
 
       val textLabel = when (checking) {
-        DownloadStatus.DownloadStarted -> R.string.message_check_download
-        DownloadStatus.DownloadFailed -> R.string.error_not_downloaded
+        DataLoading.Loading -> R.string.message_check_download
+        is DataLoading.Failed -> R.string.error_not_downloaded
         else -> R.string.settings_update_database
       }
 
-      Column {
+      Column(modifier = Modifier.clickable { settingsViewModel.checkForUpdate() }) {
         TextMessage(
           modifier = Modifier
             .align(Alignment.Start)
@@ -238,7 +237,7 @@ private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewMod
         )
         AnimatedVisibility(
           modifier = Modifier.fillMaxWidth(),
-          visible = checking == DownloadStatus.DownloadStarted
+          visible = checking == DataLoading.Loading
         ) {
           LinearProgressIndicator(
             modifier = Modifier.fillMaxWidth(),

@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import robert.findtransport.domain.usecase.data.DownloadDataUseCase
+import robert.findtransport.domain.usecase.data.DownloadDataUseCaseImpl
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.database.DatabaseUseCaseImpl
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
@@ -66,4 +68,7 @@ abstract class UseCaseModule {
 
   @Binds
   abstract fun bindLocationUseCase(locationUseCaseImpl: LocationUseCaseImpl): LocationUseCase
+
+  @Binds
+  abstract fun bindDownloadDataUseCase(downloadDataUseCaseImpl: DownloadDataUseCaseImpl): DownloadDataUseCase
 }

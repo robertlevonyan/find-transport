@@ -2,35 +2,28 @@ package robert.findtransport.presentation.compose.screens.settings
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
-import robert.findtransport.data.model.Result
-import robert.findtransport.domain.usecase.database.DatabaseUseCase
+import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.model.error.DataDownloadExceptions
+import robert.findtransport.domain.usecase.data.DownloadDataUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
-import robert.findtransport.domain.usecase.stop.StopsUseCase
-import robert.findtransport.domain.usecase.transport.TransportUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
   private val themeUseCase: ThemeUseCase,
-  private val stopsUseCase: StopsUseCase,
-  private val transportUseCase: TransportUseCase,
-  private val databaseUseCase: DatabaseUseCase,
   private val localeUseCase: LocaleUseCase,
+  private val dataUseCase: DownloadDataUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
 
-  private val _checkingVersion = MutableStateFlow<DownloadStatus>(DownloadStatus.NotDownloading)
-  val checkingVersion: StateFlow<DownloadStatus> get() = _checkingVersion
+  private val loadedFlow = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
+  val loaded: StateFlow<DataLoading> get() = loadedFlow
 
   fun changeLanguage(language: String) {
     viewModelScope.launch {
@@ -46,48 +39,24 @@ class SettingsViewModel @Inject constructor(
 
   fun checkForUpdate() {
     viewModelScope.launch {
-      _checkingVersion.value = DownloadStatus.DownloadStarted
-      withContext(Dispatchers.IO) {
-        databaseUseCase.clearDb()
-        delay(1000)
-        getData()
-        delay(1000)
-        _checkingVersion.value = DownloadStatus.DownloadCompleted
-      }
+      dataUseCase.downloadData()
+        .catch { e ->
+          loadedFlow.value = when (e) {
+            is DataDownloadExceptions.VpnException ->
+              DataLoading.Failed(DataDownloadExceptions.VpnException())
+            is DataDownloadExceptions.NoInternetException ->
+              DataLoading.Failed(DataDownloadExceptions.NoInternetException())
+            is DataDownloadExceptions.NotEnoughSpaceException ->
+              DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
+            is DataDownloadExceptions.NotDownloadedException ->
+              DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
+            else -> return@catch
+          }
+        }
+        .collectLatest {
+          delay(2000)
+          loadedFlow.value = it
+        }
     }
   }
-
-  private suspend fun getData() = withContext(Dispatchers.IO) {
-    stopsUseCase.downloadStops().let { downloadResult ->
-      if (downloadResult is Result.Error) {
-        _checkingVersion.value = DownloadStatus.DownloadFailed
-        return@withContext
-      }
-    }
-    stopsUseCase.downloadLocations().let { downloadResult ->
-      if (downloadResult is Result.Error) {
-        _checkingVersion.value = DownloadStatus.DownloadFailed
-        return@withContext
-      }
-    }
-    transportUseCase.downloadTransports().let { downloadResult ->
-      if (downloadResult is Result.Error) {
-        _checkingVersion.value = DownloadStatus.DownloadFailed
-        return@withContext
-      }
-    }
-    transportUseCase.downloadJoins().let { downloadResult ->
-      if (downloadResult is Result.Error) {
-        _checkingVersion.value = DownloadStatus.DownloadFailed
-        return@withContext
-      }
-    }
-  }
-}
-
-sealed class DownloadStatus {
-  object NotDownloading : DownloadStatus()
-  object DownloadStarted : DownloadStatus()
-  object DownloadCompleted : DownloadStatus()
-  object DownloadFailed : DownloadStatus()
 }
