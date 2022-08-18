@@ -53,7 +53,7 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.loadHistory()
+//    viewModel.loadHistory()
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
       if (activity?.isFinishing != true) {
@@ -73,26 +73,26 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
   }
 
   override fun HistoryViewModel.initObservers() {
-    collectWithLifecycle(itemRemoved) {
+//    collectWithLifecycle(itemRemoved) {
 //      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
 //        val size = (adapter as HistoryAdapter).removeItem(it)
 //        if (size == 0) viewModel.setNoHistory()
 //      }
-    }
-    collectWithLifecycle(historyCleared) {
+//    }
+//    collectWithLifecycle(historyCleared) {
 //      binding.rvHistory.adapter?.takeIf { it is HistoryAdapter }?.let { adapter ->
 //        (adapter as HistoryAdapter).clear()
 //        viewModel.setNoHistory()
 //      }
-    }
+//    }
 
-    collectWithLifecycle(noHistory) {
-      binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
-      binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
-    }
-    collectWithLifecycle(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
-      val historyItems = historyAndLocale.first
-      val locale = historyAndLocale.second
+//    collectWithLifecycle(noHistory) {
+//      binding.tvNoHistory.visibility = if (it) View.VISIBLE else View.GONE
+//      binding.fabClear.visibility = if (!it) View.VISIBLE else View.GONE
+//    }
+//    collectWithLifecycle(allHistory.combineTransform(locale) { history, locale -> emit(history to locale) }) { historyAndLocale ->
+//      val historyItems = historyAndLocale.first
+//      val locale = historyAndLocale.second
 
 //      binding.rvHistory.adapter = HistoryAdapter(
 //        currentLocale = locale,
@@ -115,8 +115,8 @@ class HistoryFragment : BaseFragment<HistoryViewModel, FragmentHistoryBinding>()
 //          })
 //          itemTouchHelper.attachToRecyclerView(binding.rvHistory)
 //        }
-    }
-    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+//    }
+//    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
   }
 
   private fun onHistoryMenuClick(history: History) {

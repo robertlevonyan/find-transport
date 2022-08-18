@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.entity.History
 
 @Dao
@@ -12,7 +13,7 @@ interface HistoryDao {
   fun insert(history: History)
 
   @Query("SELECT * FROM History ORDER BY timestamp DESC")
-  fun getHistory(): List<History>
+  fun getHistory(): Flow<List<History>>
 
   @Query("DELETE FROM History")
   fun clearHistory()

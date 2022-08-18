@@ -2,11 +2,10 @@ package robert.findtransport.presentation.compose.screens.history
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.History
@@ -20,49 +19,17 @@ class HistoryViewModel @Inject constructor(
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-
-  private val _loading = MutableStateFlow(true)
-  val loading: Flow<Boolean> get() = _loading
-
-
-  private val _noHistory = MutableSharedFlow<Boolean>()
-  val noHistory: Flow<Boolean> get() = _noHistory
-
-  private val _allHistory = MutableSharedFlow<List<History>>()
-  val allHistory: Flow<List<History>> get() = _allHistory
-
-  private val _itemRemoved = MutableSharedFlow<History>()
-  val itemRemoved: Flow<History> get() = _itemRemoved
-
-  private val _historyCleared = MutableSharedFlow<Unit>()
-  val historyCleared: Flow<Unit> get() = _historyCleared
-
-  fun loadHistory() {
-    viewModelScope.launch(Dispatchers.IO) {
-      val history = historyUseCase.getHistory()
-      _allHistory.emit(history)
-      _noHistory.emit(history.isEmpty())
-      _loading.value = false
-    }
-  }
+  val allHistory = historyUseCase.getHistory().stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.Lazily,
+    initialValue = emptyList(),
+  )
 
   fun clearHistory() {
-    viewModelScope.launch(Dispatchers.IO) {
-      historyUseCase.clearHistory()
-      _historyCleared.emit(Unit)
-    }
+    viewModelScope.launch { historyUseCase.clearHistory() }
   }
 
   fun removeItem(history: History) {
-    viewModelScope.launch(Dispatchers.IO) {
-      historyUseCase.removeHistoryItem(history.id)
-      _itemRemoved.emit(history)
-    }
-  }
-
-  fun setNoHistory() {
-    viewModelScope.launch {
-      _noHistory.emit(true)
-    }
+    viewModelScope.launch { historyUseCase.removeHistoryItem(history.id) }
   }
 }

@@ -9,6 +9,8 @@ import android.util.Patterns
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.sqrt
 
 
@@ -43,3 +45,5 @@ fun <T> List<T>.asPairs(): List<Pair<T, T?>> {
   }
   return pairs
 }
+
+fun Date.format(): String = SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(this)
