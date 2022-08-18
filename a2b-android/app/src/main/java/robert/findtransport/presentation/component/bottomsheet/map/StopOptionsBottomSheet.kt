@@ -15,10 +15,6 @@ import robert.findtransport.utils.viewbinding.viewBinding
 
 @AndroidEntryPoint
 class StopOptionsBottomSheet : BaseBottomSheetFragment<StopOptionsViewModel, BottomSheetStopOptionsBinding>() {
-  companion object {
-    fun newInstance(args: Bundle) = StopOptionsBottomSheet().apply { arguments = args }
-  }
-
   override val binding: BottomSheetStopOptionsBinding by viewBinding(BottomSheetStopOptionsBinding::inflate)
   override val viewModel: StopOptionsViewModel by viewModels()
 
@@ -61,5 +57,9 @@ class StopOptionsBottomSheet : BaseBottomSheetFragment<StopOptionsViewModel, Bot
       llSetTo.setOnClickListener { viewModel.setTo() }
       llRoute.setOnClickListener { viewModel.showTransports() }
     }
+  }
+
+  companion object {
+    fun newInstance(args: Bundle) = StopOptionsBottomSheet().apply { arguments = args }
   }
 }

@@ -13,10 +13,6 @@ fun Context.getColorFromRes(@ColorRes clr: Int): Int {
   return ContextCompat.getColor(this, clr)
 }
 
-fun Context.getDrawableFromRes(@DrawableRes drw: Int): Drawable? {
-  return AppCompatResources.getDrawable(this, drw)
-}
-
 fun Context.getDimen(@DimenRes dmn: Int): Float {
   return resources.getDimension(dmn)
 }

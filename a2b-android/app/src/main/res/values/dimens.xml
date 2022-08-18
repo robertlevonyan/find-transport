@@ -4,12 +4,10 @@
   <dimen name="margin_x_small">5dp</dimen>
   <dimen name="margin_small">10dp</dimen>
   <dimen name="margin_large">20dp</dimen>
-  <dimen name="margin_x_large">25dp</dimen>
   <dimen name="margin_xx_large">30dp</dimen>
   <dimen name="margin_2">2dp</dimen>
   <dimen name="margin_7">7dp</dimen>
   <dimen name="margin_85">85dp</dimen>
-  <dimen name="route_list_bottom_padding">75dp</dimen>
   <dimen name="margin_tablet">0dp</dimen>
 
   <dimen name="line_width">1dp</dimen>
@@ -20,13 +18,11 @@
   <dimen name="button_size">66dp</dimen>
 
   <dimen name="card_radius">16dp</dimen>
-  <dimen name="small_radius">8dp</dimen>
-  
+
   <dimen name="number_text_size">40sp</dimen>
   <dimen name="input_text_size">14sp</dimen>
   <dimen name="type_text_size">18sp</dimen>
   <dimen name="first_last_text_size">14sp</dimen>
-  <dimen name="route_item_text_size">15sp</dimen>
   <dimen name="text_size_14">16sp</dimen>
   <dimen name="text_size_16">16sp</dimen>
   <dimen name="text_size_18">18sp</dimen>

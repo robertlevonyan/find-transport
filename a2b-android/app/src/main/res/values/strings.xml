@@ -14,11 +14,9 @@
   <!--messages-->
   <string name="message_slider_welcome">Hello!</string>
   <string name="message_feedback"> Here you can send your feedback about the app. Your opinion is important!</string>
-  <string name="message_history_dialog_restore">Do you want to restore this search result?</string>
   <string name="message_history_dialog_clear">Do you want to clear history?</string>
   <string name="message_history_dialog_delete">Do you want to delete entry from history?</string>
   <string name="message_rate">If you like our app, give us 5 stars on Google Play Store and write a review!</string>
-  <string name="message_no_history">History is empty</string>
   <string name="message_loading_data">Loading data</string>
   <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>
   <string name="message_arrived">You have arrived to your destination</string>
@@ -28,7 +26,6 @@
   <string name="label_microbus">Microbus</string>
   <string name="label_trolleybus">Trolleybus</string>
   <string name="label_underground">Metro</string>
-  <string name="label_cancel">Cancel</string>
   <string name="label_yes">Yes</string>
   <string name="label_no">No</string>
   <string name="label_ok" translatable="false">OK</string>
@@ -37,8 +34,6 @@
   <string name="label_from2">From</string>
   <string name="label_to_long">and want to reach</string>
   <string name="label_to">To:</string>
-  <string name="label_route_start">Start of the route</string>
-  <string name="label_route_end">End of the route</string>
   <string name="label_all_transports">See all transports</string>
   <string name="label_search">Search</string>
   <string name="label_rate">Rate</string>
@@ -115,13 +110,11 @@
   <string name="action_feedback">Send Feedback</string>
   <string name="action_privacy" translatable="false">Privacy Policy</string>
   <string name="action_history">History</string>
-  <string name="action_clear_history">Remove</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Your message has been sent. Thank you! 🥰😊🥰🥰🥰🥰🥰</string>
 
   <!--content description strings-->
-  <string name="cd_options">More options</string>
   <string name="cd_current_location">Go to current location</string>
   <string name="cd_show_on_map">Show route on map</string>
   <string name="message_check_download">Checking for update</string>

@@ -110,12 +110,6 @@ fun TextView.setDisappearingError(error: Int) {
   }.start()
 }
 
-fun TextView.setSelectedStopName(stop: Stop, locale: String) {
-  val value = stop.getCurrentName(locale)
-
-  text = context.getString(R.string.label_selected_stop, value)
-}
-
 fun Stop.getCurrentName(locale: String): String = when (locale) {
   LNG_EN -> nameEn
   LNG_RU -> nameRu

@@ -11,11 +11,9 @@
   <!--messages-->
   <string name="message_slider_welcome">Привет!</string>
   <string name="message_feedback"> Отсюда вы можете отправить свое мнение о приложении. Оно очень важно для нас!</string>
-  <string name="message_history_dialog_restore">Хотите востанавить результаты этого поиска?</string>
   <string name="message_history_dialog_clear">Хотите очистить историю?</string>
   <string name="message_history_dialog_delete">Хотите удалить запись из истории?</string>
   <string name="message_rate">Если вам понравилось наше приложение, поставте ему 5 звезд в Google Play Store и напишите мнение!</string>
-  <string name="message_no_history">Нет истории</string>
   <string name="message_loading_data">Загрузка данных</string>
   <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>
   <string name="message_arrived">Вы доехали до пункта назначения</string>
@@ -25,7 +23,6 @@
   <string name="label_microbus">Микроавтобус</string>
   <string name="label_trolleybus">Троллейбус</string>
   <string name="label_underground">Метро</string>
-  <string name="label_cancel">Закрыть</string>
   <string name="label_yes">Да</string>
   <string name="label_no">Нет</string>
   <string name="label_from_long">Я еду из</string>
@@ -33,8 +30,6 @@
   <string name="label_from2">Из</string>
   <string name="label_to_long">и хочу доехать</string>
   <string name="label_to">Куда:</string>
-  <string name="label_route_start">Начало пути</string>
-  <string name="label_route_end">Конец пути</string>
   <string name="label_all_transports">Все маршруты</string>
   <string name="label_search">Поиск</string>
   <string name="label_rate">Понравилось</string>
@@ -104,13 +99,11 @@
   <string name="action_settings">Настройки</string>
   <string name="action_feedback">Обратная связь</string>
   <string name="action_history">История</string>
-  <string name="action_clear_history">Очистить историю</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Ваше сообщение отправлено. Спасибо! 😊</string>
 
   <!--content description strings-->
-  <string name="cd_options">Дополнительно</string>
   <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
   <string name="cd_show_on_map">Показать путь на карте</string>
   <string name="message_check_download">Поиск обновлений</string>
