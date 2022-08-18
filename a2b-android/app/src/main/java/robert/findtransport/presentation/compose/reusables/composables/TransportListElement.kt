@@ -1,11 +1,10 @@
 package robert.findtransport.presentation.compose.reusables.composables
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,13 +26,15 @@ import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
 import robert.findtransport.utils.extensions.getTypeName
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TransportListElement(
+fun LazyItemScope.TransportListElement(
   transport: Transport,
   locale: String,
   onElementClick: (Transport) -> Unit,
-  hasStar: Boolean,
+  trailingIcon: TransportListElementTrailingIcon = TransportListElementTrailingIcon.NONE,
   onStarCheckedChange: (Boolean) -> Unit = {},
+  onTrackClick: () -> Unit = {},
 ) {
   val icon = transport.getIcon()
   if (transport.type == TransportType.UNDEFINED) return
@@ -41,6 +42,7 @@ fun TransportListElement(
   val type = transport.getTypeName()
 
   Box(modifier = Modifier
+    .animateItemPlacement()
     .fillMaxWidth()
     .clickable { onElementClick.invoke(transport) }
     .padding(vertical = HalfPadding)
@@ -51,7 +53,7 @@ fun TransportListElement(
         .fillMaxWidth(fraction = 0.9f)
         .wrapContentHeight()
     ) {
-      val (transportIcon, transportNumber, transportType, firstLast, star) = createRefs()
+      val (transportIcon, transportNumber, transportType, firstLast, trailingIconComposable) = createRefs()
 
       AsyncImage(
         modifier = Modifier
@@ -85,7 +87,7 @@ fun TransportListElement(
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
             start.linkTo(transportNumber.end)
-            end.linkTo(if (hasStar) star.start else parent.end)
+            end.linkTo(if (trailingIcon == TransportListElementTrailingIcon.NONE) trailingIconComposable.start else parent.end)
             top.linkTo(parent.top)
             bottom.linkTo(firstLast.top)
           },
@@ -105,7 +107,7 @@ fun TransportListElement(
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
             start.linkTo(transportNumber.end)
-            end.linkTo(if (hasStar) star.start else parent.end)
+            end.linkTo(if (trailingIcon == TransportListElementTrailingIcon.NONE) parent.end else trailingIconComposable.start)
             top.linkTo(transportType.bottom)
             bottom.linkTo(parent.bottom)
           },
@@ -118,11 +120,11 @@ fun TransportListElement(
         maxLines = 1,
       )
 
-      if (hasStar) {
-        IconToggleButton(
+      when (trailingIcon) {
+        TransportListElementTrailingIcon.STAR -> IconToggleButton(
           modifier = Modifier
             .padding(start = FabPadding)
-            .constrainAs(star) {
+            .constrainAs(trailingIconComposable) {
               end.linkTo(parent.end)
               top.linkTo(parent.top)
               bottom.linkTo(parent.bottom)
@@ -137,7 +139,22 @@ fun TransportListElement(
           }
           Icon(painter = painterResource(id = iconPainter), contentDescription = null)
         }
+        TransportListElementTrailingIcon.TRACK -> IconButton(
+          modifier = Modifier
+            .padding(start = FabPadding)
+            .constrainAs(trailingIconComposable) {
+              end.linkTo(parent.end)
+              top.linkTo(parent.top)
+              bottom.linkTo(parent.bottom)
+            },
+          onClick = { onTrackClick.invoke() }) {
+          Icon(painter = painterResource(id = R.drawable.ic_track_route), contentDescription = null)
+        }
       }
     }
   }
+}
+
+enum class TransportListElementTrailingIcon {
+  NONE, STAR, TRACK
 }

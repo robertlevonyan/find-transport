@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
-import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.domain.usecase.data.DownloadDataUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
@@ -23,19 +23,17 @@ class DataViewModel @Inject constructor(
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-
-  private val loadedFlow = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
-  val loaded get() = loadedFlow.asStateFlow()
+  val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
 
   fun checkData() {
-    if (loadedFlow.value == DataLoading.Loaded || loadedFlow.value == DataLoading.Loading) {
+    if (loaded.value == DataLoading.Loaded || loaded.value == DataLoading.Loading) {
       return
     }
 
     viewModelScope.launch {
       downloadDataUseCase.downloadData()
         .catch { e ->
-          loadedFlow.value = when (e) {
+          loaded.value = when (e) {
             is DataDownloadExceptions.VpnException ->
               DataLoading.Failed(DataDownloadExceptions.VpnException())
             is DataDownloadExceptions.NoInternetException ->
@@ -47,7 +45,7 @@ class DataViewModel @Inject constructor(
             else -> return@catch
           }
         }
-        .collectLatest { loadedFlow.value = it }
+        .collectLatest { loaded.value = it }
     }
   }
 }

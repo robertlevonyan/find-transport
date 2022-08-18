@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.domain.usecase.database.DatabaseUseCase

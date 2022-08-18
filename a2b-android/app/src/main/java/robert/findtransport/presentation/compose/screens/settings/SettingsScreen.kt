@@ -27,7 +27,7 @@ import com.robertlevonyan.compose.buttontogglegroup.IconPosition
 import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
-import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage

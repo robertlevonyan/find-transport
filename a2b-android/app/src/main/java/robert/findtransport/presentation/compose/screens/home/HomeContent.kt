@@ -30,10 +30,11 @@ import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
-fun SearchScreen(
+fun HomeContent(
   modifier: Modifier,
   navController: NavController,
   homeViewModel: HomeViewModel,
@@ -129,7 +130,12 @@ fun SearchScreen(
           start.linkTo(parent.start)
           bottom.linkTo(allTransports.top)
         },
-      onClick = { },
+      onClick = {
+        navController.navigate(
+          route = NavigationScreens.SearchScreen.name +
+              "?from_id=${selectedFromStop.id}&to_id=${selectedToStop.id}&opened=${SearchOpenInitiator.HOME.name}"
+        )
+      },
     )
 
     AllTransportsButton(

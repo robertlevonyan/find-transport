@@ -21,24 +21,20 @@ class HomeViewModel @Inject constructor(
   val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-
-  private val fromStopFlow = MutableStateFlow(Stop.EMPTY)
-  val fromStop get() = fromStopFlow.asStateFlow()
-
-  private val toStopFlow = MutableStateFlow(Stop.EMPTY)
-  val toStop get() = toStopFlow.asStateFlow()
+  val fromStop = MutableStateFlow(Stop.EMPTY)
+  val toStop = MutableStateFlow(Stop.EMPTY)
 
   fun setFromStop(stop: Stop) {
-    viewModelScope.launch { fromStopFlow.emit(stop) }
+    viewModelScope.launch { fromStop.emit(stop) }
   }
 
   fun setToStop(stop: Stop) {
-    viewModelScope.launch { toStopFlow.emit(stop) }
+    viewModelScope.launch { toStop.emit(stop) }
   }
 
   fun swap() {
-    val fromValue = fromStopFlow.value
-    fromStopFlow.value = toStopFlow.value
-    toStopFlow.value = fromValue
+    val fromValue = fromStop.value
+    fromStop.value = toStop.value
+    toStop.value = fromValue
   }
 }

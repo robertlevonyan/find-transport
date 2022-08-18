@@ -20,6 +20,7 @@ import robert.findtransport.databinding.FragmentSearchBinding
 import robert.findtransport.presentation.component.adapter.MultiRouteAdapter
 import robert.findtransport.presentation.component.adapter.TransportsListAdapter
 import robert.findtransport.presentation.component.dialog.ArrivedDialog
+import robert.findtransport.presentation.compose.screens.search.SearchViewModel
 import robert.findtransport.utils.ARG_ADD_TO_HISTORY
 import robert.findtransport.utils.ARG_FROM_ID
 import robert.findtransport.utils.ARG_TO_ID
@@ -38,7 +39,7 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
     val to = arguments?.getInt(ARG_TO_ID) ?: return
     val fromHistory = arguments?.getBoolean(ARG_ADD_TO_HISTORY) ?: return
 
-    viewModel.getData(from, to, fromHistory)
+//    viewModel.performSearch(from, to, fromHistory)
 
     setFragmentResultListener(RESULT_ARRIVED) { _, _ ->
       if (activity?.isFinishing != true) {
@@ -69,8 +70,8 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
   override fun FragmentSearchBinding.initViews() {
     fabShowMap.setOnClickListener {
       lifecycleScope.launch {
-        val fromId = viewModel.fromStop.firstOrNull()?.id ?: 0
-        val toId = viewModel.toStop.firstOrNull()?.id ?: 0
+//        val fromId = viewModel.fromStop.firstOrNull()?.id ?: 0
+//        val toId = viewModel.toStop.firstOrNull()?.id ?: 0
 
 //        router.navigateTo(
 //          mapSearchScreen(
@@ -87,20 +88,20 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
   }
 
   override fun SearchViewModel.initObservers() {
-    collectWithLifecycle(searchEmpty) { showToast("NOTHING") }
-    collectWithLifecycle(emptyStop) { stopNotFound() }
-    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
-    collectWithLifecycle(searchTransports) { transports ->
-      val locale = viewModel.locale.value
-      val fromId = viewModel.fromStop.value.id
-      val toId = viewModel.toStop.value.id
+//    collectWithLifecycle(searchEmpty) { showToast("NOTHING") }
+//    collectWithLifecycle(emptyStop) { stopNotFound() }
+//    collectWithLifecycle(loading) { binding.progressLoading.visibility = if (it) View.VISIBLE else View.GONE }
+//    collectWithLifecycle(searchTransports) { transports ->
+//      val locale = viewModel.locale.value
+//      val fromId = viewModel.fromStop.value.id
+//      val toId = viewModel.toStop.value.id
 
-      binding.rvTransportsList.adapter = TransportsListAdapter { transport ->
+//      binding.rvTransportsList.adapter = TransportsListAdapter { transport ->
 //        router.navigateTo(detailsScreen(transport.id, false))
-      }.apply {
-        currentLocale = locale
-        submitList(transports)
-        setOnTransportTrackClickListener { transport ->
+//      }.apply {
+//        currentLocale = locale
+//        submitList(transports)
+//        setOnTransportTrackClickListener { transport ->
 //          router.navigateTo(
 //            trackRouteScreen(
 //              bundleOf(
@@ -110,82 +111,82 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 //              )
 //            )
 //          )
-        }
-      }
-    }
-    collectWithLifecycle(searchMultiTransports) { transports ->
-      val locale = viewModel.locale.value
-      val toStop = viewModel.toStop.value
-      var fromId = 0
-      var toId = 0
-      var selectedTransportPosition = -1
-
-      binding.rvTransportsList.adapter = MultiRouteAdapter {
+//        }
+//      }
+//    }
+//    collectWithLifecycle(searchMultiTransports) { transports ->
+//      val locale = viewModel.locale.value
+//      val toStop = viewModel.toStop.value
+//      var fromId = 0
+//      var toId = 0
+//      var selectedTransportPosition = -1
+//
+//      binding.rvTransportsList.adapter = MultiRouteAdapter {
 //        router.navigateTo(detailsScreen(transport.id, false))
-      }.apply {
-        currentLocale = locale
-        submitList(transports)
-        setOnTransportTrackClickListener { transport ->
-          transports.groupBy { it.case }.entries.forEach { entry ->
-            when (entry.key) {
-              MultiRouteCase.SINGLE_FROM -> {
-                entry.value.forEach { multiRoot ->
-                  when (multiRoot.type) {
-                    MultiType.TRANSPORT_TITLE -> fromId = multiRoot.stop?.id ?: 0
-                    MultiType.INTERCHANGE_TO -> toId = multiRoot.stop?.id ?: 0
-                    else -> Unit
-                  }
-                }
-              }
-              MultiRouteCase.SINGLE_TO -> {
-                entry.value.forEach { multiRoot ->
-                  when (multiRoot.type) {
-                    MultiType.INTERCHANGE_FROM -> {
-                      fromId = multiRoot.stop?.id ?: 0
-                      toId = toStop.id
-                    }
-                    else -> Unit
-                  }
-                }
-              }
-              MultiRouteCase.FROM_TO -> {
-                if (selectedTransportPosition == -1) {
-                  entry.value.forEachIndexed { index, multiRoute ->
-                    if (multiRoute.transport?.id == transport.id) {
-                      selectedTransportPosition = index
-                    }
-                  }
-                }
-                val interchangePosition = entry.value.indexOfFirst { it.type == MultiType.INTERCHANGE_TO }
-                entry.value.forEach { multiRoute ->
-                  when (multiRoute.type) {
-                    MultiType.TRANSPORT_TITLE -> {
-                      // start or nothing
-                      if (selectedTransportPosition < interchangePosition) {
-                        fromId = multiRoute.stop?.id ?: 0
-                      }
-                    }
-                    MultiType.INTERCHANGE_TO -> {
-                      // end or start
-                      if (selectedTransportPosition < interchangePosition) {
-                        if (toId == 0) {
-                          toId = multiRoute.stop?.id ?: 0
-                        }
-                      } else {
-                        if (fromId != 0 && toId == 0) {
-                          toId = multiRoute.stop?.id ?: 0
-                        }
-                        if (fromId == 0) {
-                          fromId = multiRoute.stop?.id ?: 0
-                        }
-                      }
-                    }
-                    else -> Unit
-                  }
-                }
-              }
-            }
-          }
+//      }.apply {
+//        currentLocale = locale
+//        submitList(transports)
+//        setOnTransportTrackClickListener { transport ->
+//          transports.groupBy { it.case }.entries.forEach { entry ->
+//            when (entry.key) {
+//              MultiRouteCase.SINGLE_FROM -> {
+//                entry.value.forEach { multiRoot ->
+//                  when (multiRoot.type) {
+//                    MultiType.TRANSPORT_TITLE -> fromId = multiRoot.stop?.id ?: 0
+//                    MultiType.INTERCHANGE_TO -> toId = multiRoot.stop?.id ?: 0
+//                    else -> Unit
+//                  }
+//                }
+//              }
+//              MultiRouteCase.SINGLE_TO -> {
+//                entry.value.forEach { multiRoot ->
+//                  when (multiRoot.type) {
+//                    MultiType.INTERCHANGE_FROM -> {
+//                      fromId = multiRoot.stop?.id ?: 0
+////                      toId = toStop.id
+//                    }
+//                    else -> Unit
+//                  }
+//                }
+//              }
+//              MultiRouteCase.FROM_TO -> {
+//                if (selectedTransportPosition == -1) {
+//                  entry.value.forEachIndexed { index, multiRoute ->
+//                    if (multiRoute.transport?.id == transport.id) {
+//                      selectedTransportPosition = index
+//                    }
+//                  }
+//                }
+//                val interchangePosition = entry.value.indexOfFirst { it.type == MultiType.INTERCHANGE_TO }
+//                entry.value.forEach { multiRoute ->
+//                  when (multiRoute.type) {
+//                    MultiType.TRANSPORT_TITLE -> {
+//                      // start or nothing
+//                      if (selectedTransportPosition < interchangePosition) {
+//                        fromId = multiRoute.stop?.id ?: 0
+//                      }
+//                    }
+//                    MultiType.INTERCHANGE_TO -> {
+//                      // end or start
+//                      if (selectedTransportPosition < interchangePosition) {
+//                        if (toId == 0) {
+//                          toId = multiRoute.stop?.id ?: 0
+//                        }
+//                      } else {
+//                        if (fromId != 0 && toId == 0) {
+//                          toId = multiRoute.stop?.id ?: 0
+//                        }
+//                        if (fromId == 0) {
+//                          fromId = multiRoute.stop?.id ?: 0
+//                        }
+//                      }
+//                    }
+//                    else -> Unit
+//                  }
+//                }
+//              }
+//            }
+//          }
 
 //          router.navigateTo(
 //            trackRouteScreen(
@@ -196,17 +197,17 @@ class SearchFragment : BaseFragment<SearchViewModel, FragmentSearchBinding>() {
 //              )
 //            )
 //          )
-        }
-      }
-    }
-    collectWithLifecycle(fromStop) { stop ->
-      val locale = viewModel.locale.value
-      binding.tvFromLabel.setStopName(stop, locale)
-    }
-    collectWithLifecycle(toStop) { stop ->
-      val locale = viewModel.locale.value
-      binding.tvToLabel.setStopName(stop, locale)
-    }
+//        }
+//      }
+//    }
+//    collectWithLifecycle(fromStop) { stop ->
+//      val locale = viewModel.locale.value
+//      binding.tvFromLabel.setStopName(stop, locale)
+//    }
+//    collectWithLifecycle(toStop) { stop ->
+//      val locale = viewModel.locale.value
+//      binding.tvToLabel.setStopName(stop, locale)
+//    }
   }
 
   private fun stopNotFound() {

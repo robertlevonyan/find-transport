@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import robert.findtransport.R
-import robert.findtransport.data.model.DataLoading
+import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.RegularButton

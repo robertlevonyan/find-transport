@@ -30,6 +30,7 @@ import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
+import robert.findtransport.presentation.compose.reusables.composables.TransportListElementTrailingIcon
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getCurrentName
@@ -112,7 +113,6 @@ private fun StopList(
             transport = transport,
             locale = locale,
             onElementClick = {},
-            hasStar = false,
           )
         }
       }
@@ -200,102 +200,100 @@ private fun FirstStopCard(
   homeViewModel: HomeViewModel,
   navController: NavController,
 ) {
-  Box(modifier = Modifier.fillMaxWidth()) {
-    Card(
+  Card(
+    modifier = Modifier
+      .padding(horizontal = FabPadding)
+      .fillMaxWidth()
+      .wrapContentSize(),
+    shape = Shapes.medium,
+    backgroundColor = WhiteVariant,
+  ) {
+    ConstraintLayout(
       modifier = Modifier
-        .padding(horizontal = FabPadding)
         .fillMaxWidth()
-        .wrapContentSize(),
-      shape = Shapes.medium,
-      backgroundColor = WhiteVariant,
+        .wrapContentHeight()
     ) {
-      ConstraintLayout(
+      val (name, dot, route1, route2, options) = createRefs()
+      val dotGuide = createGuidelineFromStart(fraction = 0.08f)
+      val centerGuide = createGuidelineFromTop(fraction = 0.5f)
+
+      Box(
         modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight()
-      ) {
-        val (name, dot, route1, route2, options) = createRefs()
-        val dotGuide = createGuidelineFromStart(fraction = 0.08f)
-        val centerGuide = createGuidelineFromTop(fraction = 0.5f)
+          .width(RouteWidth)
+          .constrainAs(route1) {
+            height = Dimension.fillToConstraints
+            end.linkTo(dotGuide, SmallPadding)
+            top.linkTo(centerGuide)
+            bottom.linkTo(parent.bottom)
+          }
+          .background(BlackVariant),
+      )
 
-        Box(
-          modifier = Modifier
-            .width(RouteWidth)
-            .constrainAs(route1) {
-              height = Dimension.fillToConstraints
-              end.linkTo(dotGuide, SmallPadding)
-              top.linkTo(centerGuide)
-              bottom.linkTo(parent.bottom)
-            }
-            .background(BlackVariant),
-        )
+      Box(
+        modifier = Modifier
+          .width(RouteWidth)
+          .constrainAs(route2) {
+            height = Dimension.fillToConstraints
+            start.linkTo(dotGuide, SmallPadding)
+            top.linkTo(centerGuide)
+            bottom.linkTo(parent.bottom)
+          }
+          .background(BlackVariant),
+      )
 
-        Box(
-          modifier = Modifier
-            .width(RouteWidth)
-            .constrainAs(route2) {
-              height = Dimension.fillToConstraints
-              start.linkTo(dotGuide, SmallPadding)
-              top.linkTo(centerGuide)
-              bottom.linkTo(parent.bottom)
-            }
-            .background(BlackVariant),
-        )
+      Image(
+        modifier = Modifier
+          .padding(HalfPadding)
+          .size(IconSize)
+          .constrainAs(dot) {
+            start.linkTo(dotGuide)
+            end.linkTo(dotGuide)
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+          },
+        painter = rememberAsyncImagePainter(
+          ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_route_dot_start)
+        ),
+        contentDescription = null,
+      )
 
-        Image(
-          modifier = Modifier
-            .padding(HalfPadding)
-            .size(IconSize)
-            .constrainAs(dot) {
-              start.linkTo(dotGuide)
-              end.linkTo(dotGuide)
-              top.linkTo(parent.top)
-              bottom.linkTo(parent.bottom)
-            },
-          painter = rememberAsyncImagePainter(
-            ContextCompat.getDrawable(LocalContext.current, R.drawable.ic_route_dot_start)
-          ),
+      Text(
+        modifier = Modifier
+          .padding(horizontal = HalfPadding)
+          .padding(top = HalfPadding)
+          .padding(bottom = FabPadding)
+          .constrainAs(name) {
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
+            start.linkTo(dot.end)
+            end.linkTo(options.start)
+            top.linkTo(centerGuide)
+            bottom.linkTo(centerGuide)
+          },
+        text = stop.getCurrentName(locale),
+        fontSize = Text13,
+        color = BlackVariant,
+      )
+
+      var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+      IconButton(
+        modifier = Modifier
+          .padding(HalfPadding)
+          .constrainAs(options) {
+            width = Dimension.wrapContent
+            height = Dimension.wrapContent
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            end.linkTo(parent.end)
+          },
+        onClick = { overflowMenuState = !overflowMenuState }) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_more_vertical),
+          tint = BlackVariant,
           contentDescription = null,
         )
-
-        Text(
-          modifier = Modifier
-            .padding(horizontal = HalfPadding)
-            .padding(top = HalfPadding)
-            .padding(bottom = FabPadding)
-            .constrainAs(name) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(dot.end)
-              end.linkTo(options.start)
-              top.linkTo(centerGuide)
-              bottom.linkTo(centerGuide)
-            },
-          text = stop.getCurrentName(locale),
-          fontSize = Text13,
-          color = BlackVariant,
-        )
-
-        var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-        IconButton(
-          modifier = Modifier
-            .padding(HalfPadding)
-            .constrainAs(options) {
-              width = Dimension.wrapContent
-              height = Dimension.wrapContent
-              top.linkTo(parent.top)
-              bottom.linkTo(parent.bottom)
-              end.linkTo(parent.end)
-            },
-          onClick = { overflowMenuState = !overflowMenuState }) {
-          Icon(
-            painter = painterResource(id = R.drawable.ic_more_vertical),
-            tint = BlackVariant,
-            contentDescription = null,
-          )
-        }
-        PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
       }
+      PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
     }
   }
 }

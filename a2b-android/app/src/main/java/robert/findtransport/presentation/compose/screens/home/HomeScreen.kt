@@ -1,7 +1,5 @@
 package robert.findtransport.presentation.compose.screens.home
 
-import androidx.browser.customtabs.CustomTabColorSchemeParams
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
@@ -29,9 +26,7 @@ import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.MenuVerticalOffset
 import robert.findtransport.presentation.compose.reusables.Text24
 import robert.findtransport.presentation.compose.screens.data.CheckDataScreen
-import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.openPrivacyPolicy
-import robert.findtransport.utils.extensions.showToast
 
 @Composable
 fun HomeScreen(
@@ -44,7 +39,7 @@ fun HomeScreen(
         // vpn
       }
 
-      SearchScreen(
+      HomeContent(
         modifier = Modifier.fillMaxSize(),
         navController = navController,
         homeViewModel = homeViewModel

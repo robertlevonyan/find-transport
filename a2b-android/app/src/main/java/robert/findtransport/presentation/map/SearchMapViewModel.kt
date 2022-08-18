@@ -16,6 +16,7 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
+import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,27 +44,27 @@ class SearchMapViewModel @Inject constructor(
       val from = stopsUseCase.getStop(fromId)
       val to = stopsUseCase.getStop(toId)
 
-      transportUseCase.search(from, to).let { search ->
-        when (search) {
-          is Result.Success -> when (search.data) {
-            is SearchResult.Multi -> {
-              val multiRoute = search.data.result.map { multiRoute ->
-                val stop = multiRoute.stop
-                val coordinates = stop?.let { multiRouteStop -> stopsUseCase.getStopCoordinates(multiRouteStop) } ?: emptyList()
-
-                multiRoute.copy(stop = multiRoute.stop?.copy(coordinates = coordinates))
-              }
-
-              _searchMultiTransports.emit(Triple(multiRoute, from, to)).also { _loading.emit(false) }
-            }
-            else -> Unit
-          }
-          is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
-            _searchEmpty.emit(Unit)
-            _loading.emit(false)
-          }
-        }
-      }
+//      transportUseCase.search(from, to, SearchOpenInitiator.HOME.name).let { search ->
+//        when (search) {
+//          is Result.Success -> when (search.data) {
+//            is SearchResult.Multi -> {
+//              val multiRoute = search.data.result.map { multiRoute ->
+//                val stop = multiRoute.stop
+//                val coordinates = stop?.let { multiRouteStop -> stopsUseCase.getStopCoordinates(multiRouteStop) } ?: emptyList()
+//
+//                multiRoute.copy(stop = multiRoute.stop?.copy(coordinates = coordinates))
+//              }
+//
+//              _searchMultiTransports.emit(Triple(multiRoute, from, to)).also { _loading.emit(false) }
+//            }
+//            else -> Unit
+//          }
+//          is Result.Error -> if (search.exception.type == ExceptionType.NO_DATA) {
+//            _searchEmpty.emit(Unit)
+//            _loading.emit(false)
+//          }
+//        }
+//      }
     }
   }
 
@@ -72,7 +73,7 @@ class SearchMapViewModel @Inject constructor(
       val route = async {
         transportUseCase.getTransportRoute(id, reverse = false, isUnderground = false)
           .flowOn(Dispatchers.IO)
-          .stateIn(viewModelScope).value
+          .stateIn(scope = viewModelScope).value
           .let { routeResult ->
             if (!coroutineContext.isActive) return@let null
             when (routeResult) {
@@ -84,7 +85,7 @@ class SearchMapViewModel @Inject constructor(
       val reverse = async {
         transportUseCase.getTransportRoute(id, reverse = true, isUnderground = false)
           .flowOn(Dispatchers.IO)
-          .stateIn(viewModelScope).value
+          .stateIn(scope = viewModelScope).value
           .let { routeResult ->
             if (!coroutineContext.isActive) return@let null
             when (routeResult) {

@@ -82,7 +82,6 @@ private fun PassingRoutesContent(
       TransportListElement(
         transport = transport,
         locale = locale,
-        hasStar = false,
         onElementClick = {
           navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}")
         },

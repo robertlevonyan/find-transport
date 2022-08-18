@@ -18,9 +18,7 @@ class IntroViewModel @Inject constructor(
   private val introUseCase: IntroUseCase,
   private val localeUseCase: LocaleUseCase
 ) : BaseViewModel() {
-  private val localeFlow = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val locale get() = localeFlow.asStateFlow()
-
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
   val currentLanguageIndex = MutableStateFlow(localeUseCase.getCurrentLanguageIndex())
     .asStateFlow()
 
@@ -37,7 +35,7 @@ class IntroViewModel @Inject constructor(
       else -> LNG_AM
     }
     viewModelScope.launch {
-      localeFlow.value = language
+      locale.value = language
       localeUseCase.saveLanguage(language)
     }
   }

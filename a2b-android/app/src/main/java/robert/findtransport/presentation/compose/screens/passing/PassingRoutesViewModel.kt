@@ -5,7 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
@@ -23,23 +22,13 @@ class PassingRoutesViewModel @Inject constructor(
   private val transportUseCase: TransportUseCase
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-
-  private val stopFlow = MutableSharedFlow<Stop>()
-  val stop get() = stopFlow.asSharedFlow()
-
-  private val transportsFlow = MutableStateFlow<List<Transport>>(emptyList())
-  val transports get() = transportsFlow.asStateFlow()
+  val stop = MutableSharedFlow<Stop>()
+  val transports = MutableStateFlow<List<Transport>>(emptyList())
 
   fun getStopAndTransports(stopId: Int) {
     viewModelScope.launch(Dispatchers.IO) {
-      launch {
-        val stop = stopsUseCase.getStop(stopId)
-        stopFlow.emit(stop)
-      }
-      launch {
-        val transports = transportUseCase.getTransportsForStop(stopId)
-        transportsFlow.emit(transports)
-      }
+      launch { stop.emit(stopsUseCase.getStop(stopId)) }
+      launch { transports.emit(transportUseCase.getTransportsForStop(stopId)) }
     }
   }
 }

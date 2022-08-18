@@ -5,6 +5,7 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.*
+import robert.findtransport.data.model.enums.SearchState
 
 interface TransportUseCase {
   fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>>
@@ -21,9 +22,9 @@ interface TransportUseCase {
 
   fun areJoinsCached(): Boolean
 
-  suspend fun searchCheck(from: Stop?, to: Stop?): Result<Unit>
+  suspend fun searchCheck(from: Stop, to: Stop): Result<Unit>
 
-  suspend fun search(from: Stop?, to: Stop?): Result<SearchResult>
+  suspend fun search(fromId: Int, toId: Int, opened: String): Flow<SearchState>
 
   suspend fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<Result<RouteResult>>
 

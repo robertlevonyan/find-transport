@@ -26,6 +26,7 @@ import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
+import robert.findtransport.presentation.compose.reusables.composables.TransportListElementTrailingIcon
 
 @Composable
 fun TransportsScreen(
@@ -120,7 +121,7 @@ private fun TransportsList(
           transport = item,
           locale = locale,
           onElementClick = onTransportClick,
-          hasStar = true,
+          trailingIcon = TransportListElementTrailingIcon.STAR,
           onStarCheckedChange = { onStarCheckedChange.invoke(item) },
         )
 

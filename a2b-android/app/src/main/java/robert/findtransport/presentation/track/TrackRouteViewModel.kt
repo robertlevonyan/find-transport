@@ -64,7 +64,7 @@ class TrackRouteViewModel @Inject constructor(
   }
 
   private suspend fun subscribeToLocationChanges() =
-    locationUseCase.subscribeToLocationUpdates().stateIn(viewModelScope)
+    locationUseCase.subscribeToLocationUpdates().stateIn(scope = viewModelScope)
 
   private suspend fun getNearbyStopNames(
     location: Location,

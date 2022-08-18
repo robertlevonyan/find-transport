@@ -1,4 +1,4 @@
-package robert.findtransport.data.model
+package robert.findtransport.data.model.enums
 
 sealed class DataLoading {
   object NotStarted: DataLoading()

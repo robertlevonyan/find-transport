@@ -20,7 +20,6 @@ class TransportsViewModel @Inject constructor(
   private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-
   val allTransports = transportUseCase.getTransportsPaged(false)
     .cachedIn(scope = viewModelScope + Dispatchers.IO)
   val favoriteTransports = transportUseCase.getTransportsPaged(true)
