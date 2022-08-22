@@ -118,7 +118,8 @@ private fun HistoryListScreen(
           .clickable {
             navController.navigate(
               route = NavigationScreens.SearchScreen.name +
-                  "?from_id=${history.fromStop.id}&to_id=${history.toStop.id}&opened=${SearchOpenInitiator.HISTORY.name}"
+                  "?from_id=${history.fromStop.id}&to_id=${history.toStop.id}" +
+                  "&opened=${SearchOpenInitiator.HISTORY.name}"
             )
           }
       ) {
@@ -230,6 +231,15 @@ private fun HistoryListScreen(
       items(history) { history ->
         HistoryListElement(history = history, locale = locale)
       }
+    }
+
+    FloatingActionButton(
+      modifier = Modifier
+        .align(Alignment.BottomEnd)
+        .padding(FabPadding),
+      onClick = { showClearDialog = !showClearDialog }
+    ) {
+      Icon(painter = painterResource(id = R.drawable.ic_delete), contentDescription = null)
     }
 
     if (showClearDialog) {

@@ -174,7 +174,6 @@ class TransportUseCaseImpl @Inject constructor(
       val (multiDataTo, interchangeStopTo) = tryFindRoutes(toNearby, fromTransports)
       multiResult.addAll(createToResult(multiDataTo, interchangeStopTo, from, to))
       if (multiResult.isNotEmpty()) {
-        println("Histor 177")
         checkAndSaveToHistory(saveToHistory, fromId, toId)
         emit(SearchState.Multi(multiResult))
         return@flow
@@ -184,7 +183,6 @@ class TransportUseCaseImpl @Inject constructor(
       val (multiDataFrom, interchangeStopFrom) = tryFindRoutes(fromNearby, toTransports)
       multiResult.addAll(createFromResult(multiDataFrom, interchangeStopFrom, from))
       if (multiResult.isNotEmpty()) {
-        println("Histor 187")
         checkAndSaveToHistory(saveToHistory, fromId, toId)
         emit(SearchState.Multi(multiResult))
         return@flow
@@ -222,12 +220,10 @@ class TransportUseCaseImpl @Inject constructor(
           }
         }
       }
-      println("Histor 225")
       checkAndSaveToHistory(saveToHistory, fromId, toId)
       emit(SearchState.Multi(multiResult))
     } else {
       //return routes found
-      println("Histor 230")
       checkAndSaveToHistory(saveToHistory, fromId, toId)
       emit(SearchState.Single(foundTransports))
     }
@@ -357,13 +353,20 @@ class TransportUseCaseImpl @Inject constructor(
 
   private suspend fun checkAndSaveToHistory(saveToHistory: Boolean, fromId: Int, toId: Int) {
     if (saveToHistory) {
-      historyRepository.saveInHistory(
-        History(
-          fromStopId = fromId,
-          toStopId = toId,
-          timestamp = Date().time,
-        )
-      )
+      historyRepository.getHistory().firstOrNull()
+        ?.any { history ->
+          history.fromStopId == fromId && history.toStopId == toId
+        }?.let { contains ->
+          if (!contains) {
+            historyRepository.saveInHistory(
+              History(
+                fromStopId = fromId,
+                toStopId = toId,
+                timestamp = Date().time,
+              )
+            )
+          }
+        }
     }
   }
 
