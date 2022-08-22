@@ -255,4 +255,3 @@ private fun HistoryListScreen(
     }
   }
 }
-
