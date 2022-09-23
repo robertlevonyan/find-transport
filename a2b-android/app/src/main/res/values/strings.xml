@@ -16,6 +16,7 @@
   <string name="message_feedback"> Here you can send your feedback about the app. Your opinion is important!</string>
   <string name="message_history_dialog_clear">Do you want to clear history?</string>
   <string name="message_history_dialog_delete">Do you want to delete entry from history?</string>
+  <string name="message_history_dialog_restore">Do you want to restore this search results?</string>
   <string name="message_rate">If you like our app, give us 5 stars on Google Play Store and write a review!</string>
   <string name="message_loading_data">Loading data</string>
   <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>

@@ -1,9 +1,11 @@
 package robert.findtransport.presentation.compose.screens.search
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -21,11 +24,12 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
+import robert.findtransport.data.model.MultiRouteCase
 import robert.findtransport.data.model.enums.SearchState
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.FabPadding
+import robert.findtransport.presentation.compose.reusables.HalfPadding
 import robert.findtransport.presentation.compose.reusables.Shapes
-import robert.findtransport.presentation.compose.reusables.SmallPadding
 import robert.findtransport.presentation.compose.reusables.colorVariantInvertTransparent
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
@@ -76,6 +80,7 @@ private fun SearchContent(
   val locale by searchViewModel.locale.collectAsState()
   val from by searchViewModel.fromStop.collectAsState()
   val to by searchViewModel.toStop.collectAsState()
+  val currentContext = LocalContext.current.applicationContext
 
   LazyColumn(modifier = modifier) {
     item {
@@ -84,8 +89,7 @@ private fun SearchContent(
           .padding(horizontal = FabPadding)
           .padding(bottom = FabPadding)
           .fillMaxWidth()
-          .wrapContentSize()
-          .padding(SmallPadding),
+          .wrapContentSize(),
         shape = Shapes.large,
         backgroundColor = MaterialTheme.colors.surface,
       ) {
@@ -93,6 +97,8 @@ private fun SearchContent(
           modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clickable {}
+            .padding(horizontal = FabPadding, vertical = HalfPadding)
         ) {
           val (fromIcon, fromStop, toIcon, toStop) = createRefs()
           val guide = createGuidelineFromStart(0.25f)
@@ -106,16 +112,16 @@ private fun SearchContent(
                 end.linkTo(guide)
                 bottom.linkTo(fromStop.bottom)
                 start.linkTo(parent.start)
-              }
-              .padding(FabPadding),
+              },
             painter = painterResource(id = R.drawable.ic_start_point),
             contentDescription = null
           )
 
           TextMessage(
             modifier = Modifier
-              .padding(FabPadding)
               .constrainAs(fromStop) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 start.linkTo(guide)
@@ -134,16 +140,16 @@ private fun SearchContent(
                 end.linkTo(guide)
                 bottom.linkTo(toStop.bottom)
                 start.linkTo(parent.start)
-              }
-              .padding(FabPadding),
+              },
             painter = painterResource(id = R.drawable.ic_end_point),
             contentDescription = null
           )
 
           TextMessage(
             modifier = Modifier
-              .padding(FabPadding)
               .constrainAs(toStop) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
                 top.linkTo(fromStop.bottom)
                 end.linkTo(parent.end)
                 start.linkTo(guide)
@@ -181,7 +187,11 @@ private fun SearchContent(
             trailingIcon = TransportListElementTrailingIcon.TRACK,
             onTrackClick = {},
             onElementClick = {
-              navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}")
+              navController.navigate(
+                route = NavigationScreens.TransportScreen.name +
+                    "?transport_id=${transport.id}" +
+                    "&show_options=${false}"
+              )
             })
 
           if (index < transports.lastIndex) {
@@ -192,8 +202,28 @@ private fun SearchContent(
           }
         }
       }
-      is SearchState.Multi -> {}
-      is SearchState.Failed -> navController.popBackStack()
+      is SearchState.Multi -> {
+        val result = (searchResults as SearchState.Multi).result
+        items(result) { multiRouteElement ->
+          when (multiRouteElement.case) {
+            MultiRouteCase.SINGLE_FROM -> {}
+            MultiRouteCase.SINGLE_TO -> {}
+            MultiRouteCase.FROM_TO -> {}
+          }
+//          when (multiRouteElement.type) {
+//            MultiType.WALK_FROM -> TODO()
+//            MultiType.WALK_TO -> TODO()
+//            MultiType.TRANSPORT_TITLE -> TODO()
+//            MultiType.TRANSPORT -> TODO()
+//            MultiType.INTERCHANGE_FROM -> TODO()
+//            MultiType.INTERCHANGE_TO -> TODO()
+//          }
+        }
+      }
+      is SearchState.Failed -> {
+        Toast.makeText(currentContext, R.string.error_no_routes, Toast.LENGTH_SHORT).show()
+        navController.popBackStack()
+      }
       SearchState.NotStarted -> return@LazyColumn
     }
   }

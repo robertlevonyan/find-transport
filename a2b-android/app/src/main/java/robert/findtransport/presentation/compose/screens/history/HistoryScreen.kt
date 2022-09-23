@@ -101,6 +101,7 @@ private fun HistoryListScreen(
   @Composable
   fun LazyItemScope.HistoryListElement(history: History, locale: String) {
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+    var showRestoreDialog by rememberSaveable { mutableStateOf(false) }
 
     Card(
       modifier = Modifier
@@ -116,11 +117,7 @@ private fun HistoryListScreen(
           .fillMaxWidth()
           .wrapContentHeight()
           .clickable {
-            navController.navigate(
-              route = NavigationScreens.SearchScreen.name +
-                  "?from_id=${history.fromStop.id}&to_id=${history.toStop.id}" +
-                  "&opened=${SearchOpenInitiator.HISTORY.name}"
-            )
+            showRestoreDialog = !showRestoreDialog
           }
       ) {
         val (labelFrom, textFrom, labelTo, textTo, textDate, imageRemove) = createRefs()
@@ -216,11 +213,27 @@ private fun HistoryListScreen(
             title = stringResource(id = R.string.title_history),
             text = stringResource(id = R.string.message_history_dialog_delete),
             onConfirm = {
-              historyViewModel.removeItem(history)
               showDeleteDialog = false
+              historyViewModel.removeItem(history)
             },
             onDismiss = { showDeleteDialog = false },
           ) { showDeleteDialog = false }
+        }
+
+        if (showRestoreDialog) {
+          A2bAlertDialog(
+            title = stringResource(id = R.string.title_history),
+            text = stringResource(id = R.string.message_history_dialog_restore),
+            onConfirm = {
+              showRestoreDialog = false
+              navController.navigate(
+                route = NavigationScreens.SearchScreen.name +
+                    "?from_id=${history.fromStop.id}&to_id=${history.toStop.id}" +
+                    "&opened=${SearchOpenInitiator.HISTORY.name}"
+              )
+            },
+            onDismiss = { showRestoreDialog = false },
+          ) { showRestoreDialog = false }
         }
       }
     }

@@ -59,11 +59,13 @@ fun TransportsScreen(
       onToggleClick = { showAll = it },
       onStarCheckedChange = transportsViewModel::toggleTransportFavorite,
       onTransportClick = { transport ->
-        navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}") {
+        navController.navigate(
+          route = NavigationScreens.TransportScreen.name +
+              "?transport_id=${transport.id}" +
+              "&show_options=${false}"
+        ) {
           navController.graph.route?.let { route ->
-            popUpTo(route) {
-              saveState = true
-            }
+            popUpTo(route) { saveState = true }
           }
           launchSingleTop = true
           restoreState = true

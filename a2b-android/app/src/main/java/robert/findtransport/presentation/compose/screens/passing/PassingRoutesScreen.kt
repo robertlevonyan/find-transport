@@ -3,7 +3,6 @@ package robert.findtransport.presentation.compose.screens.passing
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
@@ -83,7 +82,11 @@ private fun PassingRoutesContent(
         transport = transport,
         locale = locale,
         onElementClick = {
-          navController.navigate(route = "${NavigationScreens.TransportScreen.name}/${transport.id}")
+          navController.navigate(
+            route = NavigationScreens.TransportScreen.name +
+                "?transport_id=${transport.id}" +
+                "&show_options=${false}"
+          )
         },
       )
 

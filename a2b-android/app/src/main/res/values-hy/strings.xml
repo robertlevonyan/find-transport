@@ -13,6 +13,7 @@
   <string name="message_feedback"> Այստեղից կարող եք ուղարկել Ձեր կարծիքը հավելվածի մասին։ Այն շա՛տ կարևոր է։</string>
   <string name="message_history_dialog_clear">Ցանկանում ե՞ք մաքրել պատմությունը։</string>
   <string name="message_history_dialog_delete">Ցանկացնում ե՞ք հեռացնել գրանցումը պատմությունից։</string>
+  <string name="message_history_dialog_restore">Ցանկացնում ե՞ք վերականգնել տվյալ փնտրման արդյունքները։</string>
   <string name="message_rate">Եթե հավանել եք մեր հավելվածը, գնահատեք այն 5 աստղ Google Play Store-ում և  կիսվեք կարծիքով</string>
   <string name="message_loading_data">Տվյալների բեռնում</string>
   <string name="message_next_stop">Դուք մոտենում եք նշված կանգառին։ Իջեք հաջորդ կանգառում։</string>

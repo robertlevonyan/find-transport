@@ -13,6 +13,7 @@
   <string name="message_feedback"> Отсюда вы можете отправить свое мнение о приложении. Оно очень важно для нас!</string>
   <string name="message_history_dialog_clear">Хотите очистить историю?</string>
   <string name="message_history_dialog_delete">Хотите удалить запись из истории?</string>
+  <string name="message_history_dialog_restore">Хотите восстановить результаты этого поиска?</string>
   <string name="message_rate">Если вам понравилось наше приложение, поставте ему 5 звезд в Google Play Store и напишите мнение!</string>
   <string name="message_loading_data">Загрузка данных</string>
   <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>

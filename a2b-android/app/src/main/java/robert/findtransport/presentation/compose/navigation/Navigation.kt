@@ -48,12 +48,16 @@ fun Navigation() {
       TransportsScreen(navController = navController)
     }
     composable(
-      route = "${NavigationScreens.TransportScreen.name}/{transport_id}",
-      arguments = listOf(navArgument("transport_id") { type = NavType.IntType }),
+      route = "${NavigationScreens.TransportScreen.name}?transport_id={transport_id}&show_options={show_options}",
+      arguments = listOf(
+        navArgument("transport_id") { type = NavType.IntType },
+        navArgument("show_options") { type = NavType.BoolType },
+      ),
     ) { backStackEntry ->
       TransportScreen(
         navController = navController,
         transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_ID,
+        showOptions = backStackEntry.arguments?.getBoolean("show_options") ?: true,
         homeViewModel = homeViewModel,
       )
     }

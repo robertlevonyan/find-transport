@@ -40,6 +40,7 @@ fun TransportScreen(
   modifier: Modifier = Modifier,
   navController: NavController,
   transportId: Int,
+  showOptions: Boolean,
   homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel = hiltViewModel(),
 ) {
@@ -82,6 +83,7 @@ fun TransportScreen(
       onPrimaryRouteClicked = { if (!showPrimary) showPrimary = true },
       onSecondaryRouteClicked = { if (showPrimary) showPrimary = false },
       stops = stops,
+      showOptions = showOptions,
       homeViewModel = homeViewModel,
       navController = navController,
     )
@@ -96,6 +98,7 @@ private fun StopList(
   onPrimaryRouteClicked: () -> Unit,
   onSecondaryRouteClicked: () -> Unit,
   stops: List<Stop>,
+  showOptions: Boolean,
   homeViewModel: HomeViewModel,
   navController: NavController,
 ) {
@@ -126,6 +129,7 @@ private fun StopList(
         FirstStopCard(
           stop = firstStop,
           locale = locale,
+          showOptions = showOptions,
           homeViewModel = homeViewModel,
           navController = navController,
         )
@@ -134,6 +138,7 @@ private fun StopList(
         StopCard(
           stop = stop,
           locale = locale,
+          showOptions = showOptions,
           homeViewModel = homeViewModel,
           navController = navController,
         )
@@ -142,6 +147,7 @@ private fun StopList(
         LastStopCard(
           stop = lastStop,
           locale = locale,
+          showOptions = showOptions,
           homeViewModel = homeViewModel,
           navController = navController,
         )
@@ -197,6 +203,7 @@ private fun Toggles(
 private fun FirstStopCard(
   stop: Stop,
   locale: String,
+  showOptions: Boolean,
   homeViewModel: HomeViewModel,
   navController: NavController,
 ) {
@@ -266,7 +273,7 @@ private fun FirstStopCard(
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
             start.linkTo(dot.end)
-            end.linkTo(options.start)
+            end.linkTo(if (showOptions) options.start else parent.end)
             top.linkTo(centerGuide)
             bottom.linkTo(centerGuide)
           },
@@ -275,25 +282,27 @@ private fun FirstStopCard(
         color = BlackVariant,
       )
 
-      var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-      IconButton(
-        modifier = Modifier
-          .padding(HalfPadding)
-          .constrainAs(options) {
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-            top.linkTo(parent.top)
-            bottom.linkTo(parent.bottom)
-            end.linkTo(parent.end)
-          },
-        onClick = { overflowMenuState = !overflowMenuState }) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_more_vertical),
-          tint = BlackVariant,
-          contentDescription = null,
-        )
+      if (showOptions) {
+        var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+        IconButton(
+          modifier = Modifier
+            .padding(HalfPadding)
+            .constrainAs(options) {
+              width = Dimension.wrapContent
+              height = Dimension.wrapContent
+              top.linkTo(parent.top)
+              bottom.linkTo(parent.bottom)
+              end.linkTo(parent.end)
+            },
+          onClick = { overflowMenuState = !overflowMenuState }) {
+          Icon(
+            painter = painterResource(id = R.drawable.ic_more_vertical),
+            tint = BlackVariant,
+            contentDescription = null,
+          )
+        }
+        PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
       }
-      PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
     }
   }
 }
@@ -302,6 +311,7 @@ private fun FirstStopCard(
 private fun StopCard(
   stop: Stop,
   locale: String,
+  showOptions: Boolean,
   homeViewModel: HomeViewModel,
   navController: NavController,
 ) {
@@ -364,7 +374,7 @@ private fun StopCard(
           width = Dimension.fillToConstraints
           height = Dimension.wrapContent
           start.linkTo(dot.end)
-          end.linkTo(options.start)
+          end.linkTo(if (showOptions) options.start else parent.end)
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         },
@@ -372,24 +382,26 @@ private fun StopCard(
       fontSize = Text13,
     )
 
-    var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-    IconButton(
-      modifier = Modifier
-        .padding(HalfPadding)
-        .constrainAs(options) {
-          width = Dimension.wrapContent
-          height = Dimension.wrapContent
-          top.linkTo(parent.top)
-          bottom.linkTo(parent.bottom)
-          end.linkTo(parent.end)
-        },
-      onClick = { overflowMenuState = !overflowMenuState }) {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_more_white),
-        tint = MaterialTheme.colors.onPrimary,
-        contentDescription = null,
-      )
-      PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
+    if (showOptions) {
+      var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+      IconButton(
+        modifier = Modifier
+          .padding(HalfPadding)
+          .constrainAs(options) {
+            width = Dimension.wrapContent
+            height = Dimension.wrapContent
+            top.linkTo(parent.top)
+            bottom.linkTo(parent.bottom)
+            end.linkTo(parent.end)
+          },
+        onClick = { overflowMenuState = !overflowMenuState }) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_more_white),
+          tint = MaterialTheme.colors.onPrimary,
+          contentDescription = null,
+        )
+        PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
+      }
     }
   }
 }
@@ -398,6 +410,7 @@ private fun StopCard(
 private fun LastStopCard(
   stop: Stop,
   locale: String,
+  showOptions: Boolean,
   homeViewModel: HomeViewModel,
   navController: NavController,
 ) {
@@ -475,7 +488,7 @@ private fun LastStopCard(
               width = Dimension.fillToConstraints
               height = Dimension.wrapContent
               start.linkTo(dot.end)
-              end.linkTo(options.start)
+              end.linkTo(if (showOptions) options.start else parent.end)
               bottom.linkTo(centerGuide)
               top.linkTo(centerGuide)
             },
@@ -484,24 +497,26 @@ private fun LastStopCard(
           fontSize = Text13,
         )
 
-        var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-        IconButton(
-          modifier = Modifier
-            .padding(HalfPadding)
-            .constrainAs(options) {
-              width = Dimension.wrapContent
-              height = Dimension.wrapContent
-              top.linkTo(parent.top)
-              bottom.linkTo(parent.bottom)
-              end.linkTo(parent.end)
-            },
-          onClick = { overflowMenuState = !overflowMenuState }) {
-          Icon(
-            painter = painterResource(id = R.drawable.ic_more_white),
-            tint = WhiteVariant,
-            contentDescription = null,
-          )
-          PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
+        if (showOptions) {
+          var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+          IconButton(
+            modifier = Modifier
+              .padding(HalfPadding)
+              .constrainAs(options) {
+                width = Dimension.wrapContent
+                height = Dimension.wrapContent
+                top.linkTo(parent.top)
+                bottom.linkTo(parent.bottom)
+                end.linkTo(parent.end)
+              },
+            onClick = { overflowMenuState = !overflowMenuState }) {
+            Icon(
+              painter = painterResource(id = R.drawable.ic_more_white),
+              tint = WhiteVariant,
+              contentDescription = null,
+            )
+            PopupMenu(overflowMenuState, homeViewModel, stop, navController) { overflowMenuState = false }
+          }
         }
       }
     }
