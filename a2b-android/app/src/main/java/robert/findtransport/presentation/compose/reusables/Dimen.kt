@@ -15,6 +15,7 @@ val LargeCornerRadius = 32.dp
 val SearchInputCornerRadius = 12.dp
 
 val SearchElementSize = 50.dp
+val SmallIconSize = 16.dp
 val IconSize = 24.dp
 val BarIconSize = 48.dp
 val ToggleButtonSize = 40.dp
@@ -24,6 +25,7 @@ val MenuVerticalOffset = (-52).dp
 val GeneralSettingCardSize = 150.dp
 val FeedbackMessageBoxSize = 120.dp
 
+val Text10 = 10.sp
 val Text11 = 11.sp
 val Text13 = 13.sp
 val Text20 = 20.sp

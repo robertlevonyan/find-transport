@@ -30,7 +30,6 @@ import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
-import robert.findtransport.presentation.compose.reusables.composables.TransportListElementTrailingIcon
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getCurrentName
@@ -220,28 +219,17 @@ private fun FirstStopCard(
         .fillMaxWidth()
         .wrapContentHeight()
     ) {
-      val (name, dot, route1, route2, options) = createRefs()
+      val (name, dot, route, options) = createRefs()
       val dotGuide = createGuidelineFromStart(fraction = 0.08f)
       val centerGuide = createGuidelineFromTop(fraction = 0.5f)
 
       Box(
         modifier = Modifier
           .width(RouteWidth)
-          .constrainAs(route1) {
+          .constrainAs(route) {
             height = Dimension.fillToConstraints
-            end.linkTo(dotGuide, SmallPadding)
-            top.linkTo(centerGuide)
-            bottom.linkTo(parent.bottom)
-          }
-          .background(BlackVariant),
-      )
-
-      Box(
-        modifier = Modifier
-          .width(RouteWidth)
-          .constrainAs(route2) {
-            height = Dimension.fillToConstraints
-            start.linkTo(dotGuide, SmallPadding)
+            start.linkTo(dot.start)
+            end.linkTo(dot.end)
             top.linkTo(centerGuide)
             bottom.linkTo(parent.bottom)
           }
@@ -321,27 +309,16 @@ private fun StopCard(
       .fillMaxWidth()
       .wrapContentHeight()
   ) {
-    val (name, dot, route1, route2, options) = createRefs()
+    val (name, dot, route, options) = createRefs()
     val dotGuide = createGuidelineFromStart(fraction = 0.08f)
 
     Box(
       modifier = Modifier
         .width(RouteWidth)
-        .constrainAs(route1) {
+        .constrainAs(route) {
           height = Dimension.fillToConstraints
-          end.linkTo(dotGuide, SmallPadding)
-          bottom.linkTo(parent.bottom)
-          top.linkTo(parent.top)
-        }
-        .background(MaterialTheme.colors.onPrimary),
-    )
-
-    Box(
-      modifier = Modifier
-        .width(RouteWidth)
-        .constrainAs(route2) {
-          height = Dimension.fillToConstraints
-          start.linkTo(dotGuide, SmallPadding)
+          start.linkTo(dot.start)
+          end.linkTo(dot.end)
           bottom.linkTo(parent.bottom)
           top.linkTo(parent.top)
         }
@@ -351,7 +328,7 @@ private fun StopCard(
     Image(
       modifier = Modifier
         .padding(HalfPadding)
-        .size(IconSize)
+        .size(SmallIconSize)
         .constrainAs(dot) {
           start.linkTo(dotGuide)
           end.linkTo(dotGuide)
@@ -379,14 +356,14 @@ private fun StopCard(
           top.linkTo(parent.top)
         },
       text = stop.getCurrentName(locale),
-      fontSize = Text13,
+      fontSize = Text11,
     )
 
     if (showOptions) {
       var overflowMenuState by rememberSaveable { mutableStateOf(false) }
       IconButton(
         modifier = Modifier
-          .padding(HalfPadding)
+          .padding(end = HalfPadding)
           .constrainAs(options) {
             width = Dimension.wrapContent
             height = Dimension.wrapContent
@@ -432,28 +409,17 @@ private fun LastStopCard(
           .fillMaxWidth()
           .wrapContentHeight()
       ) {
-        val (name, dot, route1, route2, options) = createRefs()
+        val (name, dot, route, options) = createRefs()
         val dotGuide = createGuidelineFromStart(fraction = 0.08f)
         val centerGuide = createGuidelineFromTop(fraction = 0.5f)
 
         Box(
           modifier = Modifier
             .width(RouteWidth)
-            .constrainAs(route1) {
+            .constrainAs(route) {
               height = Dimension.fillToConstraints
-              end.linkTo(dotGuide, SmallPadding)
-              bottom.linkTo(centerGuide)
-              top.linkTo(parent.top)
-            }
-            .background(WhiteVariant),
-        )
-
-        Box(
-          modifier = Modifier
-            .width(RouteWidth)
-            .constrainAs(route2) {
-              height = Dimension.fillToConstraints
-              start.linkTo(dotGuide, SmallPadding)
+              start.linkTo(dot.start)
+              end.linkTo(dot.end)
               bottom.linkTo(centerGuide)
               top.linkTo(parent.top)
             }
@@ -501,7 +467,7 @@ private fun LastStopCard(
           var overflowMenuState by rememberSaveable { mutableStateOf(false) }
           IconButton(
             modifier = Modifier
-              .padding(HalfPadding)
+              .padding(end = HalfPadding)
               .constrainAs(options) {
                 width = Dimension.wrapContent
                 height = Dimension.wrapContent

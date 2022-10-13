@@ -62,7 +62,7 @@ fun TransportsScreen(
         navController.navigate(
           route = NavigationScreens.TransportScreen.name +
               "?transport_id=${transport.id}" +
-              "&show_options=${false}"
+              "&show_options=${true}"
         ) {
           navController.graph.route?.let { route ->
             popUpTo(route) { saveState = true }
