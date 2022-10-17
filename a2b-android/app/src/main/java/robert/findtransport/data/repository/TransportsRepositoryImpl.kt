@@ -109,7 +109,7 @@ class TransportsRepositoryImpl @Inject constructor(
                 )
               )
             }
-          }
+          } else return
       }
 
       override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {

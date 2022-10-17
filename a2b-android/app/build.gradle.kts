@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 275
-    versionName = "3.7.15"
+    versionCode = 276
+    versionName = "3.7.16"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -108,20 +108,20 @@ android {
 dependencies {
   //kotlin
   kotlin("stdlib")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
   implementation("com.google.android.material:material:1.8.0-alpha01")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:21.0.0")
-  implementation("com.google.code.gson:gson:2.8.9")
-  implementation("com.google.dagger:hilt-android:2.41")
+  implementation("com.google.android.gms:play-services-location:20.0.0")
+  implementation("com.google.code.gson:gson:2.9.1")
+  implementation("com.google.dagger:hilt-android:2.44")
   implementation(platform("com.google.firebase:firebase-bom:31.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.41")
+  kapt("com.google.dagger:hilt-android-compiler:2.44")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.6.0")
@@ -152,11 +152,13 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.5.0")
+  implementation("com.mapbox.maps:android:10.8.1") /*{
+    exclude(module = "com.google.android.gms")
+  }*/
   implementation("com.mapbox.navigation:android:2.4.0")
 
   //other
-  implementation("com.airbnb.android:lottie:4.2.2")
+  implementation("com.airbnb.android:lottie:5.2.0")
   implementation("com.github.terrakok:cicerone:7.1")
   implementation("com.github.ybq:Android-SpinKit:1.4.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
