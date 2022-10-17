@@ -11,13 +11,13 @@ plugins {
 }
 
 android {
-  compileSdk = 32
+  compileSdk = 33
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
-    targetSdk = 32
-    versionCode = 274
-    versionName = "3.7.14"
+    targetSdk = 33
+    versionCode = 275
+    versionName = "3.7.15"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -98,6 +98,7 @@ android {
     jvmTarget = "11"
     freeCompilerArgs = freeCompilerArgs.toMutableList().apply { add("-opt-in=kotlin.RequiresOptIn") }
   }
+  namespace = "robert.findtransport"
   bundle {
     language { enableSplit = false }
     abi { enableSplit = false }
@@ -108,43 +109,43 @@ dependencies {
   //kotlin
   kotlin("stdlib")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.3")
 
   //google
-  implementation("com.google.android.material:material:1.7.0-alpha01")
+  implementation("com.google.android.material:material:1.8.0-alpha01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:19.0.1")
+  implementation("com.google.android.gms:play-services-location:21.0.0")
   implementation("com.google.code.gson:gson:2.8.9")
   implementation("com.google.dagger:hilt-android:2.41")
-  implementation(platform("com.google.firebase:firebase-bom:29.1.0"))
+  implementation(platform("com.google.firebase:firebase-bom:31.0.0"))
   implementation("com.google.firebase:firebase-analytics-ktx")
   implementation("com.google.firebase:firebase-crashlytics-ktx")
 
   kapt("com.google.dagger:hilt-android-compiler:2.41")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.4.0")
-  implementation("androidx.appcompat:appcompat:1.4.1")
+  implementation("androidx.activity:activity-ktx:1.6.0")
+  implementation("androidx.appcompat:appcompat:1.5.1")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.3")
-  implementation("androidx.core:core-ktx:1.7.0")
-  implementation("androidx.core:core-splashscreen:1.0.0-beta02")
-  implementation("androidx.fragment:fragment-ktx:1.4.1")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
-  implementation("androidx.lifecycle:lifecycle-common-java8:2.4.1")
+  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+  implementation("androidx.core:core-ktx:1.9.0")
+  implementation("androidx.core:core-splashscreen:1.0.0")
+  implementation("androidx.fragment:fragment-ktx:1.5.3")
+  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+  implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.1")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
-  implementation("androidx.room:room-runtime:2.4.2")
-  implementation("androidx.room:room-ktx:2.4.2")
-  implementation("androidx.room:room-paging:2.4.2")
+  implementation("androidx.room:room-runtime:2.4.3")
+  implementation("androidx.room:room-ktx:2.4.3")
+  implementation("androidx.room:room-paging:2.4.3")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.4.2")
+  kapt("androidx.room:room-compiler:2.4.3")
 
   //squareup
   implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -152,7 +153,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.4.2")
+  implementation("com.mapbox.maps:android:10.5.0")
   implementation("com.mapbox.navigation:android:2.4.0")
 
   //other

@@ -55,7 +55,6 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
   override fun AppCompatActivity.initActionBar() {
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    setHasOptionsMenu(true)
   }
 
   override fun FragmentDetailBinding.initViews() {
@@ -128,8 +127,8 @@ class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>() {
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.menu_details, menu.apply { clear() })
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    menuInflater.inflate(R.menu.menu_details, menu.apply { clear() })
   }
 
   companion object {

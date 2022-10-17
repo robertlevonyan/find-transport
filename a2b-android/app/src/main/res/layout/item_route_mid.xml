@@ -13,29 +13,19 @@
     app:layout_constraintGuide_percent="0.1" />
 
   <View
-    android:id="@+id/route_line1"
-    android:layout_width="3dp"
-    android:layout_height="0dp"
-    android:background="@color/colorOnPrimary"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="@id/guide_start"
-    app:layout_constraintStart_toStartOf="@id/route_dot_mid"
-    app:layout_constraintTop_toTopOf="parent" />
-
-  <View
-    android:id="@+id/route_line2"
+    android:id="@+id/route_line"
     android:layout_width="3dp"
     android:layout_height="0dp"
     android:background="@color/colorOnPrimary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="@id/route_dot_mid"
-    app:layout_constraintStart_toStartOf="@id/guide_start"
+    app:layout_constraintStart_toStartOf="@id/route_dot_mid"
     app:layout_constraintTop_toTopOf="parent" />
 
   <ImageView
     android:id="@+id/route_dot_mid"
-    android:layout_width="20dp"
-    android:layout_height="20dp"
+    android:layout_width="15dp"
+    android:layout_height="15dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="@id/guide_start"
     app:layout_constraintStart_toStartOf="@id/guide_start"

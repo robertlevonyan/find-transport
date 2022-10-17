@@ -2,7 +2,6 @@ package robert.findtransport.presentation.map
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
@@ -27,7 +26,6 @@ import com.mapbox.maps.Style
 import com.mapbox.maps.extension.observable.eventdata.MapLoadingErrorEventData
 import com.mapbox.maps.extension.style.layers.properties.generated.LineCap
 import com.mapbox.maps.plugin.LocationPuck2D
-import com.mapbox.maps.plugin.animation.CameraAnimationsPlugin
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.annotation.annotations
@@ -128,7 +126,6 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
   override fun AppCompatActivity.initActionBar() {
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    setHasOptionsMenu(true)
   }
 
   override fun FragmentMapBinding.initViews() {
@@ -155,7 +152,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     mapView.gestures.rotateEnabled = false
 
     mapboxMap = mapView.getMapboxMap()
-    pointAnnotationManager = mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
+    pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
       addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
         if (!isStateSaved) {
           pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
@@ -163,7 +160,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         true
       })
     }
-    polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager(binding.mapView).apply {
+    polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
       lineCap = LineCap.ROUND
     }
 
@@ -232,7 +229,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.menu_settings, menu.apply { clear() })
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    menuInflater.inflate(R.menu.menu_settings, menu.apply { clear() })
   }
 }

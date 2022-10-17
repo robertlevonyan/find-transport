@@ -31,7 +31,6 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
   override fun AppCompatActivity.initActionBar() {
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    setHasOptionsMenu(true)
   }
 
   override fun FragmentFeedbackBinding.initViews() {
@@ -55,8 +54,8 @@ class FeedbackFragment : BaseFragment<FeedbackViewModel, FragmentFeedbackBinding
     collectWithLifecycle(errorMessage) { binding.ilMessage.setCustomError(it) }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.menu_settings, menu.apply { clear() })
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    menuInflater.inflate(R.menu.menu_settings, menu.apply { clear() })
   }
 
   companion object {

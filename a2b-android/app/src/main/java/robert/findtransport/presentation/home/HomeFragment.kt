@@ -60,7 +60,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
   override fun AppCompatActivity.initActionBar() {
     setSupportActionBar(binding.toolbar)
-    setHasOptionsMenu(true)
   }
 
   override fun FragmentHomeBinding.initViews() {
@@ -157,16 +156,17 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
-    inflater.inflate(R.menu.menu_main, menu)
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    menuInflater.inflate(R.menu.menu_main, menu.apply { clear() })
+  }
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
+  override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+    return when (menuItem.itemId) {
       R.id.action_history -> {
         router.navigateTo(historyScreen())
         true
       }
-      else -> super.onOptionsItemSelected(item)
+      else -> super.onMenuItemSelected(menuItem)
     }
   }
 

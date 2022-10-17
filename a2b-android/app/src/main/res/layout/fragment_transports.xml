@@ -82,7 +82,7 @@
             android:id="@+id/sw_list_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/half_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
             app:checkedButton="@id/btn_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

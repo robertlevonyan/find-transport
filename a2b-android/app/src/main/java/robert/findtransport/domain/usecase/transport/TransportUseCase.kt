@@ -8,7 +8,7 @@ import robert.findtransport.data.model.*
 interface TransportUseCase {
   fun getTransportsPaged(checked: Boolean): List<Transport>
 
-  fun getTransportById(id: Int): Flow<Transport>
+  fun getTransportById(id: Int?): Flow<Transport>
 
   suspend fun getTransportsForStop(id: Int): List<Transport>
 

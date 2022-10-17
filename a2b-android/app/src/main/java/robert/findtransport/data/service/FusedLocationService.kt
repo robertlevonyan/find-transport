@@ -7,13 +7,15 @@ import com.google.android.gms.location.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
 
 class FusedLocationService(private val context: Context) {
   private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
   @SuppressLint("MissingPermission")
   @Suppress("EXPERIMENTAL_API_USAGE")
-  fun subscribeToCurrentLocation() = callbackFlow<Location> {
+  fun subscribeToCurrentLocation() = callbackFlow {
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
@@ -21,14 +23,10 @@ class FusedLocationService(private val context: Context) {
 
         launch {
           channel.send(Location("current_location").also { currentLocation ->
-            currentLocation.latitude = lastLocation.latitude
-            currentLocation.longitude = lastLocation.longitude
+            currentLocation.latitude = lastLocation?.latitude ?: DEFAULT_LATITUDE
+            currentLocation.longitude = lastLocation?.longitude ?: DEFAULT_LONGITUDE
           })
         }
-      }
-
-      override fun onLocationAvailability(p0: LocationAvailability) {
-        super.onLocationAvailability(p0)
       }
     }
 
@@ -38,8 +36,6 @@ class FusedLocationService(private val context: Context) {
       context.mainLooper,
     )
 
-    awaitClose {
-      fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
+    awaitClose { fusedLocationClient.removeLocationUpdates(locationCallback) }
   }
 }

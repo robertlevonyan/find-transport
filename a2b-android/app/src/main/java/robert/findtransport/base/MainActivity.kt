@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), ChainHolder {
     }
 
     if (DynamicColors.isDynamicColorAvailable()) {
-      DynamicColors.applyIfAvailable(this)
+      DynamicColors.applyToActivityIfAvailable(this)
     }
 
     installSplashScreen().also { splashScreen ->

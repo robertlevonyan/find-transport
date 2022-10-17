@@ -34,7 +34,7 @@
   <dimen name="input_text_size">14sp</dimen>
   <dimen name="type_text_size">18sp</dimen>
   <dimen name="first_last_text_size">14sp</dimen>
-  <dimen name="route_item_text_size">15sp</dimen>
+  <dimen name="route_item_text_size">11sp</dimen>
   <dimen name="setting_text_size">16sp</dimen>
   <dimen name="splash_text_size">24sp</dimen>
   <dimen name="title_text_size2">22sp</dimen>

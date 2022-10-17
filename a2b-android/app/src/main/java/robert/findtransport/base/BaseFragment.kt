@@ -2,15 +2,13 @@ package robert.findtransport.base
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.net.toUri
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -28,7 +26,7 @@ import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.showToast
 import javax.inject.Inject
 
-abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : Fragment() {
+abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : Fragment(), MenuProvider {
   abstract val binding: Binding
   abstract val viewModel: ViewModel
 
@@ -61,8 +59,11 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
 
   open fun Binding.initViews() = Unit
 
-  private fun initActionBar() = activity?.takeIf { activity is AppCompatActivity }
-    ?.let { fragmentActivity -> (fragmentActivity as AppCompatActivity).initActionBar() }
+  private fun initActionBar() {
+    activity?.takeIf { activity is AppCompatActivity }
+      ?.let { fragmentActivity -> (fragmentActivity as AppCompatActivity).initActionBar() }
+    activity?.addMenuProvider(this)
+  }
 
   open fun AppCompatActivity.initActionBar() = Unit
 
@@ -78,8 +79,10 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
     }
   }
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    when (item.itemId) {
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) = Unit
+
+  override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+    when (menuItem.itemId) {
       android.R.id.home -> onBackPressed()
       R.id.action_settings -> router.navigateTo(settingsScreen())
       R.id.action_feedback -> router.navigateTo(feedbackScreen())
@@ -110,5 +113,10 @@ abstract class BaseFragment<ViewModel : BaseViewModel, Binding : ViewBinding> : 
       e.printStackTrace()
       showToast("Google Chrome cannot be found")
     }
+  }
+
+  override fun onDetach() {
+    super.onDetach()
+    activity?.removeMenuProvider(this)
   }
 }

@@ -58,7 +58,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
   override fun AppCompatActivity.initActionBar() {
     setSupportActionBar(binding.toolbar)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    setHasOptionsMenu(true)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -137,8 +136,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel, FragmentSettingsBinding
     }
   }
 
-  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-    inflater.inflate(R.menu.menu_settings, menu.apply { clear() })
+  override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+    menuInflater.inflate(R.menu.menu_settings, menu.apply { clear() })
   }
 
   companion object {

@@ -49,13 +49,11 @@ fun View.requestApplyInsetsWhenAttached() {
     ViewCompat.requestApplyInsets(this)
   } else {
     addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-      override fun onViewDetachedFromWindow(v: View?) = Unit
+      override fun onViewDetachedFromWindow(v: View) = Unit
 
-      override fun onViewAttachedToWindow(v: View?) {
-        v?.let {
-          it.removeOnAttachStateChangeListener(this)
-          ViewCompat.requestApplyInsets(it)
-        }
+      override fun onViewAttachedToWindow(v: View) {
+        v.removeOnAttachStateChangeListener(this)
+        ViewCompat.requestApplyInsets(v)
       }
     })
   }
@@ -87,22 +85,14 @@ infix fun TextView.set(text: String) {
 
 fun ViewPropertyAnimator.doOnEnd(onEnd: () -> Unit) {
   setListener(object : Animator.AnimatorListener {
-    override fun onAnimationRepeat(animation: Animator?) = Unit
+    override fun onAnimationRepeat(animation: Animator) = Unit
 
-    override fun onAnimationEnd(animation: Animator?) = onEnd()
+    override fun onAnimationEnd(animation: Animator) = onEnd()
 
-    override fun onAnimationCancel(animation: Animator?) = Unit
+    override fun onAnimationCancel(animation: Animator) = Unit
 
-    override fun onAnimationStart(animation: Animator?) = Unit
+    override fun onAnimationStart(animation: Animator) = Unit
   })
-}
-
-fun BottomSheetBehavior<*>.animateHeight(targetHeight: Int) {
-  ValueAnimator.ofInt(0, targetHeight).apply {
-    addUpdateListener {
-      peekHeight = it.animatedValue as Int
-    }
-  }.start()
 }
 
 var View.topMargin: Int
