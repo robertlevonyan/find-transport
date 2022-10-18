@@ -11,6 +11,7 @@ plugins {
 }
 
 android {
+  namespace = "robert.findtransport"
   compileSdk = 33
   defaultConfig {
     applicationId = "robert.findtransport"
@@ -98,7 +99,6 @@ android {
     jvmTarget = "11"
     freeCompilerArgs = freeCompilerArgs.toMutableList().apply { add("-opt-in=kotlin.RequiresOptIn") }
   }
-  namespace = "robert.findtransport"
   bundle {
     language { enableSplit = false }
     abi { enableSplit = false }
