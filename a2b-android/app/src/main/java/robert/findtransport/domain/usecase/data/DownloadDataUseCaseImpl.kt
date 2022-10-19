@@ -1,6 +1,7 @@
 package robert.findtransport.domain.usecase.data
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -24,6 +25,7 @@ class DownloadDataUseCaseImpl @Inject constructor(
 ) : DownloadDataUseCase {
   override fun downloadData(): Flow<DataLoading> = flow {
     emit(DataLoading.Loading)
+    delay(1000)
 
     if (checkInternetUseCase.isVpnConnected()) {
       throw DataDownloadExceptions.VpnException()
@@ -34,12 +36,14 @@ class DownloadDataUseCaseImpl @Inject constructor(
         throw DataDownloadExceptions.NoInternetException()
       } else {
         emit(DataLoading.Loaded)
+        delay(1000)
         return@flow
       }
     }
 
     if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
       emit(DataLoading.Loaded)
+      delay(1000)
       return@flow
     }
 
@@ -65,6 +69,7 @@ class DownloadDataUseCaseImpl @Inject constructor(
 
   override fun forceDownloadData(): Flow<DataLoading> = flow {
     emit(DataLoading.Loading)
+    delay(1000)
 
     if (checkInternetUseCase.isVpnConnected()) {
       throw DataDownloadExceptions.VpnException()
@@ -81,6 +86,7 @@ class DownloadDataUseCaseImpl @Inject constructor(
       checkForException(stopsUseCase.downloadStops())
       checkForException(stopsUseCase.downloadLocations())
       emit(DataLoading.Loaded)
+      delay(1000)
     } catch (e: Exception) {
       val message = e.message ?: ""
       throw if (message.contains("database or disk is full (code 13)")) {

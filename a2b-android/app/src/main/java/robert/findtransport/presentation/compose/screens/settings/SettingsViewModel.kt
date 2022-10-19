@@ -50,9 +50,8 @@ class SettingsViewModel @Inject constructor(
             else -> return@catch
           }
         }
-        .collectLatest {
-          delay(2000)
-          loaded.value = it
+        .collectLatest { loadingState ->
+          loaded.value = loadingState
         }
     }
   }

@@ -219,7 +219,6 @@ private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewMod
       shape = Shapes.large,
       backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[2]),
     ) {
-
       val textLabel = when (checking) {
         DataLoading.Loading -> R.string.message_check_download
         is DataLoading.Failed -> R.string.error_not_downloaded
