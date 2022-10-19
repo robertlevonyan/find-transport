@@ -115,4 +115,5 @@
   <string name="error_storage">Ձեր սարքի հիշողությունը սխառված է, խնդրում ենք ազատել հիշողությունը և փորձել կրկին։</string>
   <string name="settings_general">Ընդհանուր</string>
   <string name="label_send_feedback">Ուղարկել նամակը</string>
+  <string name="feedback_sending">Ուղարկվում է…</string>
 </resources>

@@ -115,4 +115,5 @@
   <string name="error_storage">Недостаточно памяти, пожалуйста очистите часть диска.</string>
   <string name="settings_general">Общее</string>
   <string name="label_send_feedback">Отправить письмо</string>
+  <string name="feedback_sending">Отправление…</string>
 </resources>

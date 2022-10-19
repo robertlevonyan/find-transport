@@ -2,21 +2,29 @@ package robert.findtransport.presentation.compose.screens.feedback
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.*
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -28,7 +36,6 @@ import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.RegularButton
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
-import robert.findtransport.utils.extensions.showToast
 
 @Composable
 fun FeedbackScreen(
@@ -36,27 +43,44 @@ fun FeedbackScreen(
   navController: NavController,
   feedbackViewModel: FeedbackViewModel = hiltViewModel(),
 ) {
+  val scaffoldState = rememberScaffoldState()
   Scaffold(
     modifier = modifier,
+    scaffoldState = scaffoldState,
     topBar = {
       A2bAppBar(
         title = stringResource(id = R.string.title_feedback),
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = { navController.popBackStack() },
       )
-    }
+    },
+    snackbarHost = { hostState ->
+      SnackbarHost(hostState = hostState) { data ->
+        Snackbar(snackbarData = data)
+      }
+    },
   ) { contentPadding ->
     FeedbackContent(
       modifier = Modifier
         .padding(contentPadding)
         .fillMaxSize(),
+      scaffoldState = scaffoldState,
       feedbackViewModel = feedbackViewModel,
     )
   }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewModel) {
+private fun FeedbackContent(
+  modifier: Modifier,
+  scaffoldState: ScaffoldState,
+  feedbackViewModel: FeedbackViewModel,
+) {
+  val keyboardController = LocalSoftwareKeyboardController.current
+  val sendingText = stringResource(id = R.string.feedback_sending)
+  val sentText = stringResource(id = R.string.feedback_sent)
+
   val email by feedbackViewModel.email.collectAsState()
   val subject by feedbackViewModel.subject.collectAsState()
   val message by feedbackViewModel.message.collectAsState()
@@ -67,29 +91,29 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
 
   when (feedbackState) {
     FeedbackSendingStatus.Idle -> Unit
-    FeedbackSendingStatus.Sending -> {
-      AnimatedVisibility(visible = feedbackState == FeedbackSendingStatus.Sending) {
-        Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.Black.copy(alpha = 0.5f))
-            .clickable(enabled = false, onClick = {})
-        ) {
-          CircularProgressIndicator(
-            modifier = Modifier.wrapContentSize(),
-            color = MaterialTheme.colors.secondary
-          )
-        }
-      }
+    FeedbackSendingStatus.Sending -> LaunchedEffect(key1 = null) {
+      scaffoldState.snackbarHostState.showSnackbar(
+        message = sendingText,
+        duration = SnackbarDuration.Indefinite,
+      )
     }
-    FeedbackSendingStatus.Sent -> LocalContext.current.showToast(R.string.feedback_sent)
-    is FeedbackSendingStatus.Failure -> when ((feedbackState as FeedbackSendingStatus.Failure).type) {
-      ExceptionType.ERROR_EMAIL,
-      ExceptionType.WRONG_EMAIL -> errorEmail = (feedbackState as FeedbackSendingStatus.Failure).message
-      ExceptionType.ERROR_SUBJECT -> errorSubject = (feedbackState as FeedbackSendingStatus.Failure).message
-      ExceptionType.ERROR_MESSAGE,
-      ExceptionType.SHORT_MESSAGE -> errorMessage = (feedbackState as FeedbackSendingStatus.Failure).message
-      else -> Unit
+    FeedbackSendingStatus.Sent -> LaunchedEffect(key1 = null) {
+      scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+      scaffoldState.snackbarHostState.showSnackbar(
+        message = sentText,
+        duration = SnackbarDuration.Short,
+      )
+    }
+    is FeedbackSendingStatus.Failure -> {
+      scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+      when ((feedbackState as FeedbackSendingStatus.Failure).type) {
+        ExceptionType.ERROR_EMAIL,
+        ExceptionType.WRONG_EMAIL -> errorEmail = (feedbackState as FeedbackSendingStatus.Failure).message
+        ExceptionType.ERROR_SUBJECT -> errorSubject = (feedbackState as FeedbackSendingStatus.Failure).message
+        ExceptionType.ERROR_MESSAGE,
+        ExceptionType.SHORT_MESSAGE -> errorMessage = (feedbackState as FeedbackSendingStatus.Failure).message
+        else -> Unit
+      }
     }
   }
 
@@ -126,6 +150,9 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
       hint = R.string.hint_enter_email,
       text = email,
       error = errorEmail,
+      keyboardType = KeyboardType.Email,
+      imeAction = ImeAction.Next,
+      requestFocus = errorEmail != -1,
     ) {
       feedbackViewModel.feedbackProcess.value = FeedbackSendingStatus.Idle
       feedbackViewModel.email.value = it
@@ -147,6 +174,8 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
       hint = R.string.hint_subject,
       text = subject,
       error = errorSubject,
+      imeAction = ImeAction.Next,
+      requestFocus = errorSubject != -1,
     ) {
       feedbackViewModel.feedbackProcess.value = FeedbackSendingStatus.Idle
       feedbackViewModel.subject.value = it
@@ -169,6 +198,12 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
       text = message,
       singleLine = false,
       error = errorMessage,
+      imeAction = ImeAction.Send,
+      keyboardActions = KeyboardActions(onSend = {
+        feedbackViewModel.sendFeedback()
+        keyboardController?.hide()
+      }),
+      requestFocus = errorMessage != -1,
     ) {
       feedbackViewModel.feedbackProcess.value = FeedbackSendingStatus.Idle
       feedbackViewModel.message.value = it
@@ -190,7 +225,10 @@ private fun FeedbackContent(modifier: Modifier, feedbackViewModel: FeedbackViewM
         .align(CenterHorizontally)
         .padding(FabPadding),
       text = stringResource(id = R.string.label_send_feedback),
-      onClick = feedbackViewModel::sendFeedback,
+      onClick = {
+        feedbackViewModel.sendFeedback()
+        keyboardController?.hide()
+      },
     )
   }
 }
@@ -202,12 +240,19 @@ private fun FeedbackInput(
   text: String,
   singleLine: Boolean = true,
   error: Int,
+  keyboardType: KeyboardType = KeyboardType.Text,
+  imeAction: ImeAction = ImeAction.Default,
+  keyboardActions: KeyboardActions = KeyboardActions.Default,
+  requestFocus: Boolean = false,
   onValueChange: (String) -> Unit,
 ) {
+  val focusRequester = remember { FocusRequester() }
+
   OutlinedTextField(
     modifier = modifier
       .fillMaxWidth()
-      .padding(vertical = HalfPadding, horizontal = FabPadding),
+      .padding(vertical = HalfPadding, horizontal = FabPadding)
+      .focusRequester(focusRequester),
     value = text,
     onValueChange = onValueChange,
     singleLine = singleLine,
@@ -227,5 +272,14 @@ private fun FeedbackInput(
       fontFamily = FontFamily(Font(R.font.google_sans_regular)),
     ),
     isError = error != -1,
+    keyboardOptions = KeyboardOptions(
+      keyboardType = keyboardType,
+      imeAction = imeAction,
+    ),
+    keyboardActions = keyboardActions,
   )
+
+  if (requestFocus) {
+    LaunchedEffect(Unit) { focusRequester.requestFocus() }
+  }
 }
