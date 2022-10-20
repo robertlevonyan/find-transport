@@ -17,12 +17,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.robertlevonyan.compose.buttontogglegroup.ColumnToggleButtonGroup
 import kotlinx.coroutines.flow.collectLatest
 import robert.findtransport.R
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.reusables.composables.ColumnToggleButtonGroup
 
 @Composable
 fun IntroScreen(
@@ -118,7 +118,7 @@ fun IntroScreen(
         ),
         buttonIconTint = Color.Transparent,
         unselectedButtonIconTint = Color.Transparent,
-      ) { index ->
+      ) { index: Int ->
         introViewModel.setLanguage(index)
       }
 

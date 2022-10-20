@@ -23,13 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.robertlevonyan.compose.buttontogglegroup.IconPosition
-import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.compose.reusables.composables.IconPosition
+import robert.findtransport.presentation.compose.reusables.composables.RowToggleButtonGroup
 import robert.findtransport.presentation.compose.reusables.composables.TextMessage
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
@@ -121,7 +121,7 @@ private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewM
         .wrapContentHeight()
         .align(Alignment.CenterHorizontally),
       buttonCount = 3,
-      onButtonClick = { position ->
+      onButtonClick = { position: Int ->
         when (position) {
           0 -> settingsViewModel.changeLanguage(LNG_AM)
           1 -> settingsViewModel.changeLanguage(LNG_EN)
@@ -174,7 +174,7 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
         .wrapContentHeight()
         .align(Alignment.CenterHorizontally),
       buttonCount = 3,
-      onButtonClick = { position ->
+      onButtonClick = { position: Int ->
         when (position) {
           0 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_NO)
           1 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_YES)

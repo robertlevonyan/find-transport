@@ -182,7 +182,6 @@ dependencies {
 
   //other
   implementation("com.airbnb.android:lottie-compose:5.2.0")
-  implementation("com.robertlevonyan.compose:buttontogglegroup:1.1.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }

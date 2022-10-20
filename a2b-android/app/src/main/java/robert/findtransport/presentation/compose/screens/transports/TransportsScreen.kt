@@ -19,12 +19,12 @@ import androidx.navigation.NavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
-import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.compose.reusables.composables.RowToggleButtonGroup
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElementTrailingIcon
 
@@ -106,7 +106,7 @@ private fun TransportsList(
           primarySelection = if (showAll) 0 else 1,
           buttonHeight = ToggleButtonSize,
           unselectedColor = MaterialTheme.colors.background,
-        ) { index ->
+        ) { index: Int ->
           when (index) {
             0 -> onToggleClick.invoke(true)
             1 -> onToggleClick.invoke(false)

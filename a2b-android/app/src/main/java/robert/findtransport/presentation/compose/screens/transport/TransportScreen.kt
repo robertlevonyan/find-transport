@@ -22,13 +22,13 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.robertlevonyan.compose.buttontogglegroup.RowToggleButtonGroup
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.compose.reusables.composables.RowToggleButtonGroup
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.EMPTY_ID
@@ -189,7 +189,7 @@ private fun Toggles(
       primarySelection = 0,
       buttonHeight = ToggleButtonSize,
       unselectedColor = MaterialTheme.colors.background,
-    ) { index ->
+    ) { index: Int ->
       when (index) {
         0 -> onPrimaryRouteClicked.invoke()
         1 -> onSecondaryRouteClicked.invoke()
