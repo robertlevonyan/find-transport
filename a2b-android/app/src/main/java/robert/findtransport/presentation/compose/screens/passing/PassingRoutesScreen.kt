@@ -21,7 +21,7 @@ import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.FabPadding
 import robert.findtransport.presentation.compose.reusables.colorVariantInvertTransparent
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 import robert.findtransport.presentation.compose.reusables.composables.TransportListElement
 import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getCurrentName
@@ -71,7 +71,7 @@ private fun PassingRoutesContent(
 
   LazyColumn(modifier = modifier) {
     item {
-      TextMessage(
+      TextSecondary(
         modifier = Modifier.padding(FabPadding),
         text = stringResource(id = R.string.label_selected_stop, stop.getCurrentName(locale)),
         textAlign = TextAlign.Start,

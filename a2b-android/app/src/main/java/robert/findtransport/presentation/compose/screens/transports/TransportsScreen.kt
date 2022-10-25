@@ -102,7 +102,7 @@ private fun TransportsList(
             stringResource(id = R.string.label_see_favorites),
           ),
           selectedColor = Accent,
-          shape = Shapes.large,
+          shape = Shapes.medium,
           primarySelection = if (showAll) 0 else 1,
           buttonHeight = ToggleButtonSize,
           unselectedColor = MaterialTheme.colors.background,

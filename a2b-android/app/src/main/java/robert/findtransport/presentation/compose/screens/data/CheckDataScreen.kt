@@ -24,8 +24,8 @@ import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.RegularButton
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
-import robert.findtransport.presentation.compose.reusables.composables.TextTitle
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
+import robert.findtransport.presentation.compose.reusables.composables.TextPrimary
 
 @Composable
 fun CheckDataScreen(
@@ -58,7 +58,7 @@ fun CheckDataScreen(
       when (loadingState) {
         DataLoading.NotStarted, DataLoading.Loading -> {
           Column {
-            TextTitle(text = stringResource(id = R.string.message_check_download))
+            TextPrimary(text = stringResource(id = R.string.message_check_download))
 
             LinearProgressIndicator(
               modifier = Modifier
@@ -110,7 +110,7 @@ fun NoInternetScreen() {
   val context = LocalContext.current
 
   Column {
-    TextMessage(text = stringResource(id = R.string.error_no_internet))
+    TextSecondary(text = stringResource(id = R.string.error_no_internet))
 
     RegularButton(
       modifier = Modifier
@@ -126,7 +126,7 @@ fun NoInternetScreen() {
 @Composable
 fun NotDownloadedScreen(onRetry: () -> Unit) {
   Column {
-    TextMessage(text = stringResource(id = R.string.error_not_downloaded))
+    TextSecondary(text = stringResource(id = R.string.error_not_downloaded))
 
     RegularButton(
       modifier = Modifier
@@ -144,7 +144,7 @@ fun NotEnoughSpaceScreen() {
   val context = LocalContext.current
 
   Column {
-    TextMessage(text = stringResource(id = R.string.error_storage))
+    TextSecondary(text = stringResource(id = R.string.error_storage))
 
     RegularButton(
       modifier = Modifier

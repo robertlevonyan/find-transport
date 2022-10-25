@@ -185,7 +185,7 @@ private fun Toggles(
         stringResource(id = R.string.label_secondary_route),
       ),
       selectedColor = Accent,
-      shape = Shapes.large,
+      shape = Shapes.medium,
       primarySelection = 0,
       buttonHeight = ToggleButtonSize,
       unselectedColor = MaterialTheme.colors.background,

@@ -30,7 +30,7 @@ import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.IconPosition
 import robert.findtransport.presentation.compose.reusables.composables.RowToggleButtonGroup
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
@@ -113,7 +113,7 @@ private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewM
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
   ) {
-    TextMessage(text = stringResource(id = R.string.settings_language))
+    TextSecondary(text = stringResource(id = R.string.settings_language))
 
     RowToggleButtonGroup(
       modifier = Modifier
@@ -147,7 +147,7 @@ private fun LanguageSetting(modifier: Modifier, settingsViewModel: SettingsViewM
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,
-      shape = Shapes.large,
+      shape = Shapes.medium,
     )
   }
 }
@@ -166,7 +166,7 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
   ) {
-    TextMessage(text = stringResource(id = R.string.settings_theme))
+    TextSecondary(text = stringResource(id = R.string.settings_theme))
 
     RowToggleButtonGroup(
       modifier = Modifier
@@ -196,7 +196,7 @@ private fun ThemeSetting(modifier: Modifier, settingsViewModel: SettingsViewMode
       selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
       iconPosition = IconPosition.Top,
       unselectedColor = MaterialTheme.colors.background,
-      shape = Shapes.large,
+      shape = Shapes.medium,
     )
   }
 }
@@ -209,14 +209,14 @@ private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewMod
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
   ) {
-    TextMessage(text = stringResource(id = R.string.settings_check_database))
+    TextSecondary(text = stringResource(id = R.string.settings_check_database))
 
     Card(
       modifier = Modifier
         .fillMaxWidth()
         .wrapContentHeight(),
       elevation = 0.dp,
-      shape = Shapes.large,
+      shape = Shapes.medium,
       backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[2]),
     ) {
       val textLabel = when (checking) {
@@ -226,7 +226,7 @@ private fun UpdateSetting(modifier: Modifier, settingsViewModel: SettingsViewMod
       }
 
       Column(modifier = Modifier.clickable { settingsViewModel.checkForUpdate() }) {
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .align(Alignment.Start)
             .wrapContentSize()
@@ -255,7 +255,7 @@ private fun GeneralSettings(modifier: Modifier) {
       .fillMaxWidth(fraction = 0.9f)
       .wrapContentHeight()
   ) {
-    TextMessage(text = stringResource(id = R.string.settings_general))
+    TextSecondary(text = stringResource(id = R.string.settings_general))
 
     Row(
       modifier = modifier
@@ -267,7 +267,7 @@ private fun GeneralSettings(modifier: Modifier) {
           .fillMaxWidth(fraction = 0.47f)
           .height(GeneralSettingCardSize),
         elevation = 0.dp,
-        shape = Shapes.large,
+        shape = Shapes.medium,
         backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[3]),
       ) {
         Column(
@@ -294,7 +294,7 @@ private fun GeneralSettings(modifier: Modifier) {
             textAlign = TextAlign.Center,
           )
 
-          TextMessage(
+          TextSecondary(
             modifier = Modifier
               .align(Alignment.CenterHorizontally)
               .wrapContentSize()
@@ -311,7 +311,7 @@ private fun GeneralSettings(modifier: Modifier) {
           .height(GeneralSettingCardSize)
           .padding(start = FabPadding),
         elevation = 0.dp,
-        shape = Shapes.large,
+        shape = Shapes.medium,
         backgroundColor = Color(integerArrayResource(id = R.array.colors_bg)[4]),
       ) {
         Column(
@@ -338,7 +338,7 @@ private fun GeneralSettings(modifier: Modifier) {
             textAlign = TextAlign.Center,
           )
 
-          TextMessage(
+          TextSecondary(
             modifier = Modifier
               .align(Alignment.CenterHorizontally)
               .wrapContentSize()

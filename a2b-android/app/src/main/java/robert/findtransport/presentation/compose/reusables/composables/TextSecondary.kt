@@ -12,7 +12,7 @@ import androidx.compose.ui.text.style.TextAlign
 import robert.findtransport.presentation.compose.reusables.HalfPadding
 
 @Composable
-fun TextMessage(
+fun TextSecondary(
   modifier: Modifier = Modifier,
   text: String,
   color: Color = MaterialTheme.colors.onSurface,
@@ -29,7 +29,7 @@ fun TextMessage(
 }
 
 @Composable
-fun TextMessage(
+fun TextSecondary(
   modifier: Modifier = Modifier,
   text: AnnotatedString,
   color: Color = MaterialTheme.colors.onSurface,

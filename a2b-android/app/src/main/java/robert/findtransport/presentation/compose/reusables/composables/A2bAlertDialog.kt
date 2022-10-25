@@ -15,8 +15,8 @@ fun A2bAlertDialog(
   onDismissRequest: () -> Unit,
 ) {
   AlertDialog(
-    title = { TextTitle(text = title) },
-    text = { TextMessage(text = text, textAlign = TextAlign.Start) },
+    title = { TextPrimary(text = title) },
+    text = { TextSecondary(text = text, textAlign = TextAlign.Start) },
     confirmButton = {
       RegularButton(text = stringResource(id = R.string.label_yes), onClick = onConfirm)
     },

@@ -27,7 +27,7 @@ import robert.findtransport.presentation.compose.reusables.HalfPadding
 import robert.findtransport.presentation.compose.reusables.Shapes
 import robert.findtransport.presentation.compose.reusables.composables.A2bAlertDialog
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.format
 import robert.findtransport.utils.extensions.getCurrentName
@@ -109,7 +109,7 @@ private fun HistoryListScreen(
         .fillMaxWidth()
         .wrapContentHeight()
         .padding(horizontal = FabPadding, vertical = HalfPadding),
-      shape = Shapes.large,
+      shape = Shapes.medium,
       backgroundColor = MaterialTheme.colors.surface,
     ) {
       ConstraintLayout(
@@ -124,7 +124,7 @@ private fun HistoryListScreen(
 
         val guide = createGuidelineFromStart(0.35f)
 
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .constrainAs(labelFrom) {
               width = Dimension.fillToConstraints
@@ -138,7 +138,7 @@ private fun HistoryListScreen(
           textAlign = TextAlign.Start,
         )
 
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .constrainAs(textFrom) {
               width = Dimension.fillToConstraints
@@ -153,7 +153,7 @@ private fun HistoryListScreen(
           textAlign = TextAlign.Start,
         )
 
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .constrainAs(labelTo) {
               width = Dimension.fillToConstraints
@@ -167,7 +167,7 @@ private fun HistoryListScreen(
           textAlign = TextAlign.Start,
         )
 
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .constrainAs(textTo) {
               width = Dimension.fillToConstraints
@@ -182,7 +182,7 @@ private fun HistoryListScreen(
           textAlign = TextAlign.Start,
         )
 
-        TextMessage(
+        TextSecondary(
           modifier = Modifier
             .constrainAs(textDate) {
               width = Dimension.fillToConstraints

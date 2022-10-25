@@ -261,7 +261,7 @@ fun AllTransportsButton(
   Button(
     modifier = modifier,
     elevation = ButtonDefaults.elevation(defaultElevation = 0.dp),
-    shape = Shapes.large,
+    shape = Shapes.medium,
     onClick = { onClick.invoke() },
   ) {
     Column(

@@ -35,7 +35,7 @@ import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.compose.reusables.composables.RegularButton
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 
 @Composable
 fun FeedbackScreen(
@@ -137,7 +137,7 @@ private fun FeedbackContent(
         append(welcomeMessageString.substring(1))
       }
 
-      TextMessage(
+      TextSecondary(
         modifier = Modifier
           .fillMaxWidth()
           .padding(SmallPadding),
@@ -160,7 +160,7 @@ private fun FeedbackContent(
     }
     AnimatedVisibility(visible = errorEmail != -1) {
       if (errorEmail != -1) {
-        TextMessage(
+        TextSecondary(
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorEmail),
           color = MaterialTheme.colors.error,
@@ -183,7 +183,7 @@ private fun FeedbackContent(
     }
     AnimatedVisibility(visible = errorSubject != -1) {
       if (errorSubject != -1) {
-        TextMessage(
+        TextSecondary(
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorSubject),
           color = MaterialTheme.colors.error,
@@ -211,7 +211,7 @@ private fun FeedbackContent(
     }
     AnimatedVisibility(visible = errorMessage != -1) {
       if (errorMessage != -1) {
-        TextMessage(
+        TextSecondary(
           modifier = Modifier.padding(horizontal = FabPadding, vertical = SmallPadding),
           text = stringResource(id = errorMessage),
           color = MaterialTheme.colors.error,

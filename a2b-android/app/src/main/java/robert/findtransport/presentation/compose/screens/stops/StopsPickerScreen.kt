@@ -26,7 +26,7 @@ import androidx.paging.compose.items
 import robert.findtransport.R
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.A2bAppBar
-import robert.findtransport.presentation.compose.reusables.composables.TextMessage
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 import robert.findtransport.presentation.compose.screens.home.HomeViewModel
 import robert.findtransport.utils.extensions.getCurrentName
 
@@ -81,7 +81,7 @@ fun StopsPickerScreen(
           stop ?: return@items
 
           Column {
-            TextMessage(
+            TextSecondary(
               modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
