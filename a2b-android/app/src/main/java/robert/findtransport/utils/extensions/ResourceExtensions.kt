@@ -1,11 +1,8 @@
 package robert.findtransport.utils.extensions
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
-import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import robert.findtransport.base.BaseFragment
 

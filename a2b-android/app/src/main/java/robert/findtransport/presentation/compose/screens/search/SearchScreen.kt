@@ -166,10 +166,16 @@ private fun SearchContent(
           TransportListElement(transport = transport,
             locale = locale,
             trailingIcon = TransportListElementTrailingIcon.TRACK,
-            onTrackClick = {},
+            onTrackClick = {
+              navController.navigate(
+                route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
+                    + "&from_id=${from.id}" + "&to_id=${to.id}"
+              )
+            },
             onElementClick = {
               navController.navigate(
-                route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}" + "&show_options=${false}"
+                route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}"
+                    + "&show_options=${false}"
               )
             })
 
@@ -274,10 +280,16 @@ private fun SearchContent(
               TransportListElement(transport = transport,
                 locale = locale,
                 trailingIcon = TransportListElementTrailingIcon.TRACK,
-                onTrackClick = {},
+                onTrackClick = {
+                  navController.navigate(
+                    route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
+                        + "&from_id=${from.id}" + "&to_id=${to.id}"
+                  )
+                },
                 onElementClick = {
                   navController.navigate(
-                    route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}" + "&show_options=${false}"
+                    route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}"
+                        + "&show_options=${false}"
                   )
                 })
             }

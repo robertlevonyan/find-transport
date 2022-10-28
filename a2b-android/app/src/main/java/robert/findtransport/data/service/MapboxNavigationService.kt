@@ -22,8 +22,8 @@ class MapboxNavigationService {
           .post()
           .build()
 
-  fun getDirections(coordinates: MutableList<Point>): List<MapboxDirections> =
-      coordinates.asPairs().map(::createDirection)
+//  fun getDirections(coordinates: MutableList<Point>): List<MapboxDirections> =
+//      coordinates.asPairs().map(::createDirection)
 //    val directions = mutableListOf<MapboxDirections>()
 //    val coordinatePairs = mutableListOf<Pair<Point, Point?>>()
 //
@@ -44,24 +44,24 @@ class MapboxNavigationService {
 //    return directions
 //  }
 
-  private fun createDirection(pair: Pair<Point, Point?>) = MapboxDirections.builder()
-      .routeOptions(
-          RouteOptions.builder()
-              .coordinates(
-                  origin = pair.first,
-                  waypoints = null,
-                  destination = pair.second ?: pair.first
-              )
-              .overview(DirectionsCriteria.OVERVIEW_SIMPLIFIED)
-              .profile(DirectionsCriteria.PROFILE_DRIVING)
-              .build()
-      )
-      .usePostMethod(true)
+//  private fun createDirection(pair: Pair<Point, Point?>) = MapboxDirections.builder()
+//      .routeOptions(
+//          RouteOptions.builder()
+//              .coordinates(
+//                  origin = pair.first,
+//                  waypoints = null,
+//                  destination = pair.second ?: pair.first
+//              )
+//              .overview(DirectionsCriteria.OVERVIEW_SIMPLIFIED)
+//              .profile(DirectionsCriteria.PROFILE_DRIVING)
+//              .build()
+//      )
+//      .usePostMethod(true)
 //      .origin(pair.first)
 //      .destination(pair.second ?: pair.first)
 //      .overview(DirectionsCriteria.OVERVIEW_FULL)
 //      .profile(DirectionsCriteria.PROFILE_DRIVING)
 //      .accessToken(BuildConfig.MAPBOX_TOKEN)
 //      .post()
-      .build()
+//      .build()
 }

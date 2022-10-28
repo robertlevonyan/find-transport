@@ -18,6 +18,7 @@ import robert.findtransport.presentation.compose.screens.passing.PassingRoutesSc
 import robert.findtransport.presentation.compose.screens.search.SearchScreen
 import robert.findtransport.presentation.compose.screens.settings.SettingsScreen
 import robert.findtransport.presentation.compose.screens.stops.StopsPickerScreen
+import robert.findtransport.presentation.compose.screens.track.TrackRouteScreen
 import robert.findtransport.presentation.compose.screens.transport.TransportScreen
 import robert.findtransport.presentation.compose.screens.transports.TransportsScreen
 import robert.findtransport.utils.EMPTY_ID
@@ -104,6 +105,21 @@ fun Navigation() {
         opened = backStackEntry.arguments?.getString("opened").orEmpty(),
       )
     }
+    composable(
+      route = "${NavigationScreens.TrackRouteScreen.name}?transport_id={transport_id}&from_id={from_id}&to_id={to_id}",
+      arguments = listOf(
+        navArgument("transport_id") { type = NavType.IntType },
+        navArgument("from_id") { type = NavType.IntType },
+        navArgument("to_id") { type = NavType.IntType },
+      ),
+    ) { backStackEntry ->
+      TrackRouteScreen(
+        navController = navController,
+        transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_ID,
+        fromId = backStackEntry.arguments?.getInt("from_id") ?: EMPTY_ID,
+        toId = backStackEntry.arguments?.getInt("to_id") ?: EMPTY_ID,
+      )
+    }
   }
 }
 
@@ -118,4 +134,5 @@ sealed class NavigationScreens(val name: String) {
   object HistoryScreen : NavigationScreens("history_screen")
   object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
   object SearchScreen : NavigationScreens("search_screen")
+  object TrackRouteScreen : NavigationScreens("track_route_screen")
 }

@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.track
+package robert.findtransport.presentation.compose.screens.track
 
 import android.location.Location
 import androidx.lifecycle.viewModelScope
@@ -22,40 +22,27 @@ class TrackRouteViewModel @Inject constructor(
   private val transportUseCase: TransportUseCase,
   private val stopsUseCase: StopsUseCase,
   private val locationUseCase: LocationUseCase,
-  private val localeUseCase: LocaleUseCase,
+  localeUseCase: LocaleUseCase,
 ) : BaseViewModel() {
+  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+
   private val _selectedTransport = MutableSharedFlow<Transport>()
   val selectedTransport: Flow<Transport> get() = _selectedTransport
 
-  private val _fromStop = MutableSharedFlow<Stop>()
-  val fromStop: Flow<Stop> get() = _fromStop
-
-  private val _toStop = MutableSharedFlow<Stop>()
-  val toStop: Flow<Stop> get() = _toStop
-
   private val _currentStop = MutableStateFlow(Stop.EMPTY)
-  val currentStop: Flow<Stop> get() = _currentStop
-
-  private val _previousStop = MutableStateFlow(Stop.EMPTY)
-  val previousStop: Flow<Stop> get() = _previousStop
-
-  private val _predestination = MutableSharedFlow<Stop>()
-  val predestination: Flow<Stop> get() = _predestination
+  val currentStop: StateFlow<Stop> get() = _currentStop
 
   private val _notifyNextStop = MutableStateFlow(Stop.EMPTY)
-  val notifyNextStop: Flow<Stop> get() = _notifyNextStop
+  val notifyNextStop: StateFlow<Stop> get() = _notifyNextStop
 
-  private val _notifyArrived = MutableSharedFlow<Unit?>()
-  val notifyArrived: Flow<Unit?> get() = _notifyArrived
+  private val _notifyArrived = MutableStateFlow(false)
+  val notifyArrived: StateFlow<Boolean> get() = _notifyArrived
 
   private val _notifyStop = MutableSharedFlow<Unit>().apply {
     onStart { notifyStopObservers.incrementAndGet() }
     onCompletion { notifyStopObservers.decrementAndGet() }
   }
   private val notifyStopObservers = AtomicInteger(0)
-
-  val currentLanguage: String
-    get() = localeUseCase.getCurrentLanguage()
 
   init {
     if (notifyStopObservers.get() > 0) {
@@ -87,17 +74,17 @@ class TrackRouteViewModel @Inject constructor(
 
         val currentStopValue = _currentStop.value
 
-        if (currentStopValue != Stop.EMPTY) {
-          _previousStop.emit(currentStopValue)
-        }
+//        if (currentStopValue != Stop.EMPTY) {
+//          _previousStop.emit(currentStopValue)
+//        }
         _currentStop.emit(current)
-        _predestination.emit(predestination)
+//        _predestination.emit(predestination)
 
         if (current.id == predestination.id) {
           _notifyNextStop.emit(predestination)
         }
-        if (current.id == destination.id && _notifyArrived.firstOrNull() == null) {
-          _notifyArrived.emit(Unit)
+        if (current.id == destination.id && !_notifyArrived.value) {
+          _notifyArrived.value = true
         }
       }
     }
@@ -109,8 +96,8 @@ class TrackRouteViewModel @Inject constructor(
       val fromStop = async { stopsUseCase.getStop(fromId) }
       val toStop = async { stopsUseCase.getStop(toId) }
 
-      _fromStop.emit(fromStop.await())
-      _toStop.emit(toStop.await())
+//      _fromStop.emit(fromStop.await())
+//      _toStop.emit(toStop.await())
       launch { selectedTransport.await().collect(_selectedTransport::emit) }
 
       subscribeToLocationChanges()

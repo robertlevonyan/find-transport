@@ -98,7 +98,3 @@ var View.bottomMargin: Int
 var View.bottomPadding: Int
   get() = paddingBottom
   set(value) = setPaddingRelative(paddingStart, paddingTop, paddingEnd, value)
-
-var View.topPadding: Int
-  get() = paddingTop
-  set(value) = setPaddingRelative(paddingStart, value, paddingEnd, paddingBottom)

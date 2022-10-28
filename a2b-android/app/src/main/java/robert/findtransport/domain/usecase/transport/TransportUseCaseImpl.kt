@@ -247,13 +247,13 @@ class TransportUseCaseImpl @Inject constructor(
 
   private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = withContext(Dispatchers.IO) {
     val nearby = mutableListOf<Stop>()
-    val fromLocation = if (stop.coordinates.isEmpty()) {
+    val coordinates = stop.coordinates
+
+    val fromLocation = if (coordinates.isEmpty()) {
       val locations = stopsRepository.getStopLocations(stop.id)
       if (locations.isEmpty()) return@withContext emptyList()
       locations.first().toStopLocation(stop.toApiStop())
     } else {
-      val coordinates = stop.coordinates
-      if (coordinates.isEmpty()) return@withContext emptyList()
       coordinates.first()
     }
     nearby.addAll(getNearbyStops(fromLocation, stops))
@@ -262,13 +262,12 @@ class TransportUseCaseImpl @Inject constructor(
 
   private suspend fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> = withContext(Dispatchers.IO) {
     val nearby = mutableListOf<Stop>()
-    val fromLocation = if (stop.coordinates.isEmpty()) {
+    val coordinates = stop.coordinates
+    val fromLocation = if (coordinates.isEmpty()) {
       val locations = stopsRepository.getStopLocations(stop.id)
       if (locations.isEmpty()) return@withContext emptyList()
       locations.first().toStopLocation(stop.toApiStop())
     } else {
-      val coordinates = stop.coordinates
-      if (coordinates.isEmpty()) return@withContext emptyList()
       coordinates.first()
     }
     nearby.addAll(getNearbyStops(fromLocation, stops).take(5))

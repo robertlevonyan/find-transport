@@ -24,14 +24,14 @@ val SmallFabSize = 56.dp
 val MenuVerticalOffset = (-52).dp
 val GeneralSettingCardSize = 150.dp
 val FeedbackMessageBoxSize = 120.dp
+val DialogBoxSize = 320.dp
 
-val Text10 = 10.sp
 val Text11 = 11.sp
 val Text13 = 13.sp
 val Text20 = 20.sp
 val Text24 = 24.sp
-
 val TextTitle = 18.sp
 val TextMessage = 14.sp
 val TextTransportNumber = 42.sp
 val TextIntroLabel = 28.sp
+val TextTrackerLabel = 28.sp

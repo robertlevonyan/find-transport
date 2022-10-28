@@ -1,7 +1,6 @@
 package robert.findtransport.data.repository
 
 import androidx.paging.PagingSource
-import androidx.sqlite.db.SimpleSQLiteQuery
 import robert.findtransport.data.api.ApiService
 import robert.findtransport.data.cache.StopsDao
 import robert.findtransport.data.entity.Stop

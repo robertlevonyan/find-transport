@@ -158,16 +158,6 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
     inflater.inflate(R.menu.menu_main, menu)
 
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
-      R.id.action_history -> {
-//        router.navigateTo(historyScreen())
-        true
-      }
-      else -> super.onOptionsItemSelected(item)
-    }
-  }
-
   companion object {
     fun newInstance() = HomeFragment()
   }

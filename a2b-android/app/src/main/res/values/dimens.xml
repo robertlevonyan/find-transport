@@ -10,22 +10,16 @@
   <dimen name="margin_85">85dp</dimen>
   <dimen name="margin_tablet">0dp</dimen>
 
-  <dimen name="line_width">1dp</dimen>
   <dimen name="search_input_height">45dp</dimen>
   <dimen name="icon_size">24dp</dimen>
   <dimen name="icon_size2">40dp</dimen>
-  <dimen name="transport_icon_size">45dp</dimen>
   <dimen name="button_size">66dp</dimen>
 
   <dimen name="card_radius">16dp</dimen>
 
-  <dimen name="number_text_size">40sp</dimen>
   <dimen name="input_text_size">14sp</dimen>
-  <dimen name="type_text_size">18sp</dimen>
-  <dimen name="first_last_text_size">14sp</dimen>
   <dimen name="text_size_14">16sp</dimen>
   <dimen name="text_size_16">16sp</dimen>
   <dimen name="text_size_18">18sp</dimen>
   <dimen name="text_size_20">20sp</dimen>
-  <dimen name="text_size_28">28sp</dimen>
 </resources>

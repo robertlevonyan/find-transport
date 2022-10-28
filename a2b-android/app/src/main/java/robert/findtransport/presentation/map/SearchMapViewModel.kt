@@ -10,13 +10,14 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import robert.findtransport.data.model.*
-import robert.findtransport.data.model.enums.ExceptionType
+import robert.findtransport.data.model.MultiRoute
+import robert.findtransport.data.model.Result
+import robert.findtransport.data.model.RouteResult
+import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,16 +34,16 @@ class SearchMapViewModel @Inject constructor(
   private val _searchMultiTransports = MutableSharedFlow<Triple<List<MultiRoute>, Stop, Stop>>()
   val searchMultiTransports: Flow<Triple<List<MultiRoute>, Stop, Stop>> get() = _searchMultiTransports
 
-  private val _searchEmpty = MutableSharedFlow<Unit>()
-  val searchEmpty: Flow<Unit> get() = _searchEmpty
+//  private val _searchEmpty = MutableSharedFlow<Unit>()
+//  val searchEmpty: Flow<Unit> get() = _searchEmpty
 
   private val _routeSuccess = MutableSharedFlow<Pair<RouteResult?, RouteResult?>>()
   val transportRouteSuccess: Flow<Pair<RouteResult?, RouteResult?>> get() = _routeSuccess
 
   fun getMultiRoute(fromId: Int, toId: Int) {
     viewModelScope.launch(Dispatchers.IO) {
-      val from = stopsUseCase.getStop(fromId)
-      val to = stopsUseCase.getStop(toId)
+//      val from = stopsUseCase.getStop(fromId)
+//      val to = stopsUseCase.getStop(toId)
 
 //      transportUseCase.search(from, to, SearchOpenInitiator.HOME.name).let { search ->
 //        when (search) {

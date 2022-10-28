@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.compose.reusables.composables
 
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonColors
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,16 +15,17 @@ import robert.findtransport.presentation.compose.reusables.Shapes
 fun RegularButton(
   modifier: Modifier = Modifier,
   text: String,
+  colors: ButtonColors = ButtonDefaults.buttonColors(
+    backgroundColor = Accent,
+    contentColor = Black,
+  ),
   onClick: () -> Unit,
 ) {
   Button(
     modifier = modifier,
     onClick = onClick,
     shape = Shapes.small,
-    colors = ButtonDefaults.buttonColors(
-      backgroundColor = Accent,
-      contentColor = Black,
-    )
+    colors = colors,
   ) {
     Text(
       text = text,

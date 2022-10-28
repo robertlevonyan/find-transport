@@ -72,7 +72,7 @@ class SearchMapFragment : MapFragment() {
             searchMapViewModel.getRouteSuccess(firstTransport.id)
           }
 
-          collectWithLifecycle(searchMapViewModel.transportRouteSuccess) { _ ->
+          collectWithLifecycle(searchMapViewModel.transportRouteSuccess) {
 //            val routeResult = routeSuccess.first ?: return@collectWithLifecycle
 //            val routeReverse = routeSuccess.second ?: return@collectWithLifecycle
 

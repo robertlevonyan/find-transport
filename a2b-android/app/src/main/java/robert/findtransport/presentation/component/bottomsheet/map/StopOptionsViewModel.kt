@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StopOptionsViewModel @Inject constructor(
-  private val localeUseCase: LocaleUseCase,
+  localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
   private val _locale = MutableLiveData<String>()

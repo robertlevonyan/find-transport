@@ -61,8 +61,8 @@ class HomeViewModel @Inject constructor(
   private val _openRate = MutableSharedFlow<Unit>()
   val openRate: Flow<Unit> get() = _openRate
 
-  private val _openUpdate = MutableSharedFlow<Unit>()
-  val openUpdate: Flow<Unit> get() = _openUpdate
+//  private val _openUpdate = MutableSharedFlow<Unit>()
+//  val openUpdate: Flow<Unit> get() = _openUpdate
 
   init {
     rateUseCase.updateInterval()
@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(
       if (!transportUseCase.areJoinsCached() || !transportUseCase.areTransportsCached()
         || !stopsUseCase.areLocationsCached() || !stopsUseCase.areStopsCached()
       ) {
-        _openUpdate.emit(Unit)
+//        _openUpdate.emit(Unit)
       }
       val hasPermission = permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
       startFindNearbyLocation(hasPermission)

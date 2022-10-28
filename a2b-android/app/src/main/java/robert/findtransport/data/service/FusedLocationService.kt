@@ -15,7 +15,7 @@ class FusedLocationService(private val context: Context) {
 
   @SuppressLint("MissingPermission")
   @Suppress("EXPERIMENTAL_API_USAGE")
-  fun subscribeToCurrentLocation() = callbackFlow<Location> {
+  fun subscribeToCurrentLocation() = callbackFlow {
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
@@ -27,10 +27,6 @@ class FusedLocationService(private val context: Context) {
             currentLocation.longitude = lastLocation?.longitude ?: DEFAULT_LONGITUDE
           })
         }
-      }
-
-      override fun onLocationAvailability(p0: LocationAvailability) {
-        super.onLocationAvailability(p0)
       }
     }
 

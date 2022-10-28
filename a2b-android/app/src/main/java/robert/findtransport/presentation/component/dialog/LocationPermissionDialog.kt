@@ -17,7 +17,7 @@ class LocationPermissionDialog : DialogFragment() {
   var positiveClick: () -> Unit = {}
   var negativeClick: () -> Unit = {}
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
     return binding.root
   }

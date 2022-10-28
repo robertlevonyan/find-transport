@@ -20,22 +20,6 @@ import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
 
-fun ImageView.setTransportIcon(transport: Transport) {
-  when (transport.type) {
-    BUS -> if (transport.isNew) setImageResource(R.drawable.ic_new_bus) else setImageResource(R.drawable.ic_bus)
-    MICROBUS -> if (transport.isNew) setImageResource(R.drawable.ic_new_microbus) else setImageResource(R.drawable.ic_microbus)
-    TROLLEYBUS -> setImageResource(R.drawable.ic_trolleybus)
-    METRO -> setImageResource(R.drawable.ic_metro)
-    UNDEFINED -> return
-  }
-}
-
-fun TextView.setTransportType(transport: Transport) {
-  val typeName = transport.getTypeName()
-  if (typeName == -1) return
-  setText(typeName)
-}
-
 fun Transport.getTypeName() = when (type) {
   BUS -> R.string.label_bus
   MICROBUS -> R.string.label_microbus
@@ -43,20 +27,6 @@ fun Transport.getTypeName() = when (type) {
   METRO -> R.string.label_underground
   UNDEFINED -> -1
 }
-
-fun TextView.setFirstLastStop(transport: Transport, locale: String) =
-  transport.takeIf { it.stops.isNotEmpty() }?.run {
-    val firstStop = stops.first()
-    val lastStop = stops.last()
-
-    val value = when (locale) {
-      LNG_EN -> "${firstStop.nameEn} - ${lastStop.nameEn}"
-      LNG_RU -> "${firstStop.nameRu} - ${lastStop.nameRu}"
-      else -> "${firstStop.nameAm} - ${lastStop.nameAm}"
-    }
-
-    text = value
-  }
 
 fun TextView.setStopName(stop: Stop, locale: String) {
   val value = when (locale) {

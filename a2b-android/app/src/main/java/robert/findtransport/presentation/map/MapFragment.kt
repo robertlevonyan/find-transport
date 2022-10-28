@@ -159,7 +159,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
     mapView.gestures.rotateEnabled = false
 
     mapboxMap = mapView.getMapboxMap()
-    pointAnnotationManager = mapView.annotations.createPointAnnotationManager(binding.mapView).apply {
+    pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
       addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
         if (!isStateSaved) {
           pointAnnotation.getData()?.let { data -> showStopOptions(data.fromJson<Stop>().toStop()) }
@@ -167,7 +167,7 @@ abstract class MapFragment : BaseFragment<MapViewModel, FragmentMapBinding>() {
         true
       })
     }
-    polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager(binding.mapView).apply {
+    polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
       lineCap = LineCap.ROUND
     }
 
