@@ -121,10 +121,10 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.8.0-alpha01")
+  implementation("com.google.android.material:material:1.8.0-alpha02")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:20.0.0")
+  implementation("com.google.android.gms:play-services-location:21.0.0")
   implementation("com.google.code.gson:gson:2.9.1")
   implementation("com.google.dagger:hilt-android:2.44")
   releaseImplementation(platform("com.google.firebase:firebase-bom:31.0.0"))
@@ -134,14 +134,14 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.44")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.6.0")
+  implementation("androidx.activity:activity-ktx:1.6.1")
   implementation("androidx.appcompat:appcompat:1.5.1")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.9.0")
   implementation("androidx.core:core-splashscreen:1.0.0")
-  implementation("androidx.fragment:fragment-ktx:1.5.3")
+  implementation("androidx.fragment:fragment-ktx:1.5.4")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -159,15 +159,15 @@ dependencies {
   //compose
   implementation("com.google.accompanist:accompanist-insets:0.23.0")
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.23.0")
-  implementation("androidx.activity:activity-compose:1.7.0-alpha01")
+  implementation("androidx.activity:activity-compose:1.7.0-alpha02")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-  implementation("androidx.navigation:navigation-compose:2.5.2")
-  implementation("androidx.paging:paging-compose:1.0.0-alpha16")
+  implementation("androidx.navigation:navigation-compose:2.5.3")
+  implementation("androidx.paging:paging-compose:1.0.0-alpha17")
   implementation("androidx.compose.compiler:compiler:1.3.2")
-  implementation("androidx.compose.ui:ui:1.3.0-rc01")
-  implementation("androidx.compose.material:material:1.3.0-rc01")
-  implementation("androidx.compose.ui:ui-tooling:1.3.0-rc01")
+  implementation("androidx.compose.ui:ui:1.4.0-alpha01")
+  implementation("androidx.compose.material:material:1.4.0-alpha01")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha01")
 
   implementation("io.coil-kt:coil-compose:2.2.2")
 

@@ -1,7 +1,10 @@
 package robert.findtransport.presentation.compose.screens.home
 
+import android.app.Activity
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,13 +26,18 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import com.google.android.play.core.review.ReviewManagerFactory
 import robert.findtransport.R
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
+import robert.findtransport.presentation.compose.reusables.composables.BlankButton
+import robert.findtransport.presentation.compose.reusables.composables.RegularButton
+import robert.findtransport.presentation.compose.reusables.composables.TextSecondary
 import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.getCurrentName
 
@@ -44,11 +52,50 @@ fun HomeContent(
   val locale by homeViewModel.locale.collectAsState()
   val selectedFromStop by homeViewModel.fromStop.collectAsState()
   val selectedToStop by homeViewModel.toStop.collectAsState()
+  val showRate by homeViewModel.showRate.collectAsState()
   val fromInput = selectedFromStop.getCurrentName(locale)
   val toInput = selectedToStop.getCurrentName(locale)
 
   ConstraintLayout(modifier = modifier) {
-    val (fromCard, swap, toCard, search, allTransports) = createRefs()
+    val (fromCard, swap, toCard, search, allTransports,
+      rate) = createRefs()
+
+    AnimatedVisibility(
+      modifier = Modifier
+        .padding(FabPadding)
+        .constrainAs(rate) {
+          width = Dimension.fillToConstraints
+          height = Dimension.wrapContent
+          start.linkTo(parent.start)
+          end.linkTo(parent.end)
+          bottom.linkTo(fromCard.top)
+        },
+      visible = showRate
+    ) {
+      Card {
+        Column(
+          modifier = Modifier
+            .padding(HalfPadding)
+            .fillMaxWidth()
+        ) {
+          TextSecondary(
+            text = stringResource(id = R.string.message_rate),
+            textAlign = TextAlign.Start,
+          )
+
+          Row(modifier = Modifier.align(Alignment.End)) {
+            val activity = LocalActivity.current
+            RegularButton(text = stringResource(id = R.string.label_yes)) {
+              homeViewModel.openRate()
+              rate(activity)
+            }
+            BlankButton(text = stringResource(id = R.string.label_no)) {
+              homeViewModel.dismissRate()
+            }
+          }
+        }
+      }
+    }
 
     SearchInput(
       modifier = Modifier
@@ -154,7 +201,7 @@ fun HomeContent(
 }
 
 @Composable
-fun SearchInput(
+private fun SearchInput(
   modifier: Modifier,
   @StringRes label: Int,
   @StringRes hint: Int,
@@ -229,7 +276,7 @@ fun SearchInput(
 }
 
 @Composable
-fun SearchButton(
+private fun SearchButton(
   modifier: Modifier,
   onClick: () -> Unit,
 ) {
@@ -254,7 +301,7 @@ fun SearchButton(
 }
 
 @Composable
-fun AllTransportsButton(
+private fun AllTransportsButton(
   modifier: Modifier,
   onClick: () -> Unit,
 ) {
@@ -272,6 +319,26 @@ fun AllTransportsButton(
     ) {
       Image(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
       Text(text = stringResource(id = R.string.label_all_transports))
+    }
+  }
+}
+
+private fun rate(activity: Activity) {
+  val reviewManager = ReviewManagerFactory.create(activity)
+  val requestReviewFlow = reviewManager.requestReviewFlow()
+  requestReviewFlow.addOnCompleteListener { request ->
+    if (request.isSuccessful) {
+      val reviewInfo = request.result
+      val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
+      flow.addOnCompleteListener {
+        if (it.isSuccessful) {
+          Log.d("Rate: ", request.result.toString())
+        } else {
+          Log.e("Error: ", it.exception.toString())
+        }
+      }
+    } else {
+      Log.e("Error: ", request.exception.toString())
     }
   }
 }

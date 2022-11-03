@@ -11,13 +11,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import robert.findtransport.base.BaseViewModel
-import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.enums.LocationPermission
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
-import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import robert.findtransport.utils.extensions.asPair
@@ -28,8 +25,7 @@ class HomeViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
-  private val permissionUseCase: PermissionUseCase,
-  private val rateUseCase: RateUseCase
+  private val permissionUseCase: PermissionUseCase
 ) : BaseViewModel() {
   private val _allTransportsError = MutableSharedFlow<Unit>()
   val allTransportsError: Flow<Unit> get() = _allTransportsError
@@ -40,8 +36,8 @@ class HomeViewModel @Inject constructor(
   private val _fromError = MutableSharedFlow<Int>()
   val fromError: Flow<Int> get() = _fromError
 
-  private val _toStop = MutableStateFlow(Stop.EMPTY)
-  val toStop: StateFlow<Stop> get() = _toStop
+//  private val _toStop = MutableStateFlow(Stop.EMPTY)
+//  val toStop: StateFlow<Stop> get() = _toStop
 
   private val _toError = MutableSharedFlow<Int>()
   val toError: Flow<Int> get() = _toError
@@ -55,26 +51,26 @@ class HomeViewModel @Inject constructor(
   private val _openSearch = MutableSharedFlow<Pair<Int, Int>>()
   val openSearch: Flow<Pair<Int, Int>> get() = _openSearch
 
-  private val _showRate = MutableStateFlow(rateUseCase.showDialog())
-  val showRate: Flow<Boolean> get() = _showRate
+//  private val _showRate = MutableStateFlow(rateUseCase.showDialog())
+//  val showRate: Flow<Boolean> get() = _showRate
 
-  private val _openRate = MutableSharedFlow<Unit>()
-  val openRate: Flow<Unit> get() = _openRate
+//  private val _openRate = MutableSharedFlow<Unit>()
+//  val openRate: Flow<Unit> get() = _openRate
 
 //  private val _openUpdate = MutableSharedFlow<Unit>()
 //  val openUpdate: Flow<Unit> get() = _openUpdate
 
   init {
-    rateUseCase.updateInterval()
-    viewModelScope.launch {
-      if (!transportUseCase.areJoinsCached() || !transportUseCase.areTransportsCached()
-        || !stopsUseCase.areLocationsCached() || !stopsUseCase.areStopsCached()
-      ) {
+//    rateUseCase.updateInterval()
+//    viewModelScope.launch {
+//      if (!transportUseCase.areJoinsCached() || !transportUseCase.areTransportsCached()
+//        || !stopsUseCase.areLocationsCached() || !stopsUseCase.areStopsCached()
+//      ) {
 //        _openUpdate.emit(Unit)
-      }
+//      }
       val hasPermission = permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
       startFindNearbyLocation(hasPermission)
-    }
+//    }
   }
 
   fun startFindNearbyLocation(hasPermission: Boolean) {
@@ -108,60 +104,60 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun setFromStop(stopId: Int) {
-    viewModelScope.launch {
-      val stop = stopsUseCase.getStop(stopId)
-      _fromStop.value = stop
-    }
-  }
+//  fun setFromStop(stopId: Int) {
+//    viewModelScope.launch {
+//      val stop = stopsUseCase.getStop(stopId)
+//      _fromStop.value = stop
+//    }
+//  }
+//
+//  fun setToStop(stopId: Int) {
+//    viewModelScope.launch {
+//      val stop = stopsUseCase.getStop(stopId)
+//      _toStop.value = stop
+//    }
+//  }
 
-  fun setToStop(stopId: Int) {
-    viewModelScope.launch {
-      val stop = stopsUseCase.getStop(stopId)
-      _toStop.value = stop
-    }
-  }
+//  fun swapStops() {
+//    val from = _fromStop.value
+//    val to = _toStop.value
+//
+//    viewModelScope.launch {
+//      _fromStop.value = to
+//      _toStop.value = from
+//    }
+//  }
 
-  fun swapStops() {
-    val from = _fromStop.value
-    val to = _toStop.value
+//  fun openRate() {
+//    viewModelScope.launch {
+//      rateUseCase.setRate()
+//      _openRate.emit(Unit)
+//      _showRate.emit(false)
+//    }
+//  }
 
-    viewModelScope.launch {
-      _fromStop.value = to
-      _toStop.value = from
-    }
-  }
+//  fun dismissRate() {
+//    viewModelScope.launch {
+//      _showRate.emit(false)
+//    }
+//  }
 
-  fun openRate() {
-    viewModelScope.launch {
-      rateUseCase.setRate()
-      _openRate.emit(Unit)
-      _showRate.emit(false)
-    }
-  }
-
-  fun dismissRate() {
-    viewModelScope.launch {
-      _showRate.emit(false)
-    }
-  }
-
-  fun search() {
-    val from = _fromStop.value
-    val to = _toStop.value
-
-    viewModelScope.launch(Dispatchers.IO) {
-      when (val search = transportUseCase.searchCheck(from, to)) {
-        is Result.Success -> _openSearch.emit(from.id to to.id)
-        is Result.Error -> when (search.exception.type) {
-          ExceptionType.EMPTY_OR_WRONG_FROM -> _fromError.emit(search.exception.errorMessage)
-          ExceptionType.EMPTY_OR_WRONG_TO -> _toError.emit(search.exception.errorMessage)
-          ExceptionType.SAME_STOPS -> _toError.emit(search.exception.errorMessage)
-          else -> return@launch
-        }
-      }
-    }
-  }
+//  fun search() {
+//    val from = _fromStop.value
+//    val to = _toStop.value
+//
+//    viewModelScope.launch(Dispatchers.IO) {
+//      when (val search = transportUseCase.searchCheck(from, to)) {
+//        is Result.Success -> _openSearch.emit(from.id to to.id)
+//        is Result.Error -> when (search.exception.type) {
+//          ExceptionType.EMPTY_OR_WRONG_FROM -> _fromError.emit(search.exception.errorMessage)
+//          ExceptionType.EMPTY_OR_WRONG_TO -> _toError.emit(search.exception.errorMessage)
+//          ExceptionType.SAME_STOPS -> _toError.emit(search.exception.errorMessage)
+//          else -> return@launch
+//        }
+//      }
+//    }
+//  }
 
   suspend fun getCoordinates(stop: Stop): Pair<Double, Double>? =
     stopsUseCase.getStopCoordinates(stop).firstOrNull()?.asPair()

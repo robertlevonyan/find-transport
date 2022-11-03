@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.compose.navigation.Navigation
 import robert.findtransport.presentation.compose.reusables.A2bTheme
+import robert.findtransport.presentation.compose.reusables.LocalActivity
 import robert.findtransport.utils.extensions.isTablet
 
 @AndroidEntryPoint
@@ -38,13 +40,15 @@ class MainActivity : ComponentActivity() {
 
     installSplashScreen()
     setContent {
-      val theme by mainViewModel.theme.collectAsState()
-      val currentLanguage by mainViewModel.currentLanguage.collectAsState()
-      LocaleService(this).changeLocale(currentLanguage)
-      A2bTheme(theme) {
-        ProvideWindowInsets {
-          Surface(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
-            Navigation()
+      CompositionLocalProvider(LocalActivity provides this) {
+        val theme by mainViewModel.theme.collectAsState()
+        val currentLanguage by mainViewModel.currentLanguage.collectAsState()
+        LocaleService(this).changeLocale(currentLanguage)
+        A2bTheme(theme) {
+          ProvideWindowInsets {
+            Surface(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
+              Navigation()
+            }
           }
         }
       }

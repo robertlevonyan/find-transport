@@ -6,5 +6,4 @@ interface RateUseCase {
   fun showDialog(): Boolean
 
   fun updateInterval()
-
 }

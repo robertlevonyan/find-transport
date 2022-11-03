@@ -33,11 +33,11 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
     super.onViewCreated(view, savedInstanceState)
     setFragmentResultListener(RESULT_FROM) { key, bundle ->
       val stopId = bundle.getInt(key)
-      viewModel.setFromStop(stopId)
+//      viewModel.setFromStop(stopId)
     }
     setFragmentResultListener(RESULT_TO) { key, bundle ->
       val stopId = bundle.getInt(key)
-      viewModel.setToStop(stopId)
+//      viewModel.setToStop(stopId)
     }
     setFragmentResultListener(RESULT_LOCATION_PERMISSION) { _, _ ->
       viewModel.startFindNearbyLocation(true)
@@ -68,8 +68,8 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 
     etFrom.isSelected = true
 
-    btnRate.setOnClickListener { viewModel.openRate() }
-    btnDismiss.setOnClickListener { viewModel.dismissRate() }
+//    btnRate.setOnClickListener { viewModel.openRate() }
+//    btnDismiss.setOnClickListener { viewModel.dismissRate() }
 //    clFromInput.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
 //    etFrom.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
 //    btnFromList.setOnClickListener { router.navigateTo(stopsPickerScreen(0)) }
@@ -77,15 +77,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //    etTo.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
 //    btnToList.setOnClickListener { router.navigateTo(stopsPickerScreen(1)) }
     btnFromMap.setOnClickListener {
-      lifecycleScope.launchWhenCreated {
-        val stop = viewModel.toStop.value
-        val coordinates = if (stop != Stop.EMPTY) {
-          viewModel.getCoordinates(stop)
-        } else {
-          null
-        }
+//      lifecycleScope.launchWhenCreated {
+//        val stop = viewModel.toStop.value
+//        val coordinates = if (stop != Stop.EMPTY) {
+//          viewModel.getCoordinates(stop)
+//        } else {
+//          null
+//        }
 //        router.navigateTo(mapChooserScreen(coordinates))
-      }
+//      }
     }
     btnToMap.setOnClickListener {
       lifecycleScope.launchWhenCreated {
@@ -98,15 +98,15 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //        router.navigateTo(mapChooserScreen(coordinates))
       }
     }
-    btnSearch.setOnClickListener { viewModel.search() }
-    fabSwap.setOnClickListener { viewModel.swapStops() }
+//    btnSearch.setOnClickListener { viewModel.search() }
+//    fabSwap.setOnClickListener { viewModel.swapStops() }
   }
 
   override fun HomeViewModel.initObservers() {
     collectWithLifecycle(allTransportsError) { showToast("ERROR") }
-    collectWithLifecycle(openRate) { rate() }
+//    collectWithLifecycle(openRate) { rate() }
 //    collectWithLifecycle(openUpdate) { router.navigateTo(updateScreen()) }
-    collectWithLifecycle(openSearch) { ids ->
+//    collectWithLifecycle(openSearch) { ids ->
 //      router.navigateTo(
 //        searchScreen(
 //          bundleOf(
@@ -116,44 +116,44 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //          )
 //        )
 //      )
-    }
-    collectWithLifecycle(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
+//    }
+//    collectWithLifecycle(showRate) { show -> binding.cvRate.visibility = if (show) View.VISIBLE else View.GONE }
     collectWithLifecycle(fromStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
       val stop = stopAndLocale.first
       val locale = stopAndLocale.second
 
       binding.etFrom.setStopName(stop, locale)
     }
-    collectWithLifecycle(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
-      val stop = stopAndLocale.first
-      val locale = stopAndLocale.second
-
-      binding.etTo.setStopName(stop, locale)
-    }
+//    collectWithLifecycle(toStop.combineTransform(locale) { stop, locale -> emit(stop to locale) }) { stopAndLocale ->
+//      val stop = stopAndLocale.first
+//      val locale = stopAndLocale.second
+//
+//      binding.etTo.setStopName(stop, locale)
+//    }
     collectWithLifecycle(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
     collectWithLifecycle(fromError) { error -> binding.tvFromError.setDisappearingError(error) }
     collectWithLifecycle(toError) { error -> binding.tvToError.setDisappearingError(error) }
   }
 
-  private fun rate() = activity?.run {
-    val reviewManager = ReviewManagerFactory.create(this)
-    val requestReviewFlow = reviewManager.requestReviewFlow()
-    requestReviewFlow.addOnCompleteListener { request ->
-      if (request.isSuccessful) {
-        val reviewInfo = request.result
-        val flow = reviewManager.launchReviewFlow(this, reviewInfo)
-        flow.addOnCompleteListener {
-          if (it.isSuccessful) {
-            Log.d("Rate: ", request.result.toString())
-          } else {
-            Log.e("Error: ", it.exception.toString())
-          }
-        }
-      } else {
-        Log.e("Error: ", request.exception.toString())
-      }
-    }
-  }
+//  private fun rate() = activity?.run {
+//    val reviewManager = ReviewManagerFactory.create(this)
+//    val requestReviewFlow = reviewManager.requestReviewFlow()
+//    requestReviewFlow.addOnCompleteListener { request ->
+//      if (request.isSuccessful) {
+//        val reviewInfo = request.result
+//        val flow = reviewManager.launchReviewFlow(this, reviewInfo)
+//        flow.addOnCompleteListener {
+//          if (it.isSuccessful) {
+//            Log.d("Rate: ", request.result.toString())
+//          } else {
+//            Log.e("Error: ", it.exception.toString())
+//          }
+//        }
+//      } else {
+//        Log.e("Error: ", request.exception.toString())
+//      }
+//    }
+//  }
 
   override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
     inflater.inflate(R.menu.menu_main, menu)
