@@ -13,7 +13,7 @@ import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
-import robert.findtransport.data.model.enums.LocationPermission
+import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
@@ -35,41 +35,6 @@ fun TextView.setStopName(stop: Stop, locale: String) {
     else -> stop.nameAm
   }
   text = value
-}
-
-fun ImageView.setLocationIcon(permission: LocationPermission) {
-  var res = R.drawable.ic_current_location_black
-  var ended = false
-  val anim = animate().alpha(1f).apply {
-    duration = 500
-    doOnEnd {
-      if (ended) return@doOnEnd
-      start()
-      res = if (res == R.drawable.ic_current_location_black) {
-        R.drawable.ic_current_location_color
-      } else {
-        R.drawable.ic_current_location_black
-      }
-      setImageResource(res)
-    }
-  }
-  when (permission) {
-    LocationPermission.LOADING -> {
-      anim.start()
-    }
-    LocationPermission.HAS_PERMISSION -> {
-      ended = true
-      clearAnimation()
-      anim.cancel()
-      setImageResource(R.drawable.ic_current_location_color)
-    }
-    LocationPermission.NO_PERMISSION -> {
-      clearAnimation()
-      anim.cancel()
-      setImageResource(R.drawable.ic_current_location_black)
-    }
-    LocationPermission.UNDEFINED -> return
-  }
 }
 
 fun TextView.setDisappearingError(error: Int) {

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.enums.NearbyStopStatus
 
 interface StopsUseCase {
   suspend fun getStops(): List<Stop>
@@ -17,7 +18,7 @@ interface StopsUseCase {
 
   suspend fun getMetroStopsLocations(): List<PointAnnotationOptions>
 
-  suspend fun getNearbyStop(stops: List<Stop>, coroutineScope: CoroutineScope): Flow<Stop>
+  fun getNearbyStop(): Flow<NearbyStopStatus>
 
   suspend fun getStop(id: Int): Stop
 

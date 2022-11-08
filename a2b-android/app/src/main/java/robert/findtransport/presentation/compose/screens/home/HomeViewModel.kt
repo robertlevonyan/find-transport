@@ -2,7 +2,6 @@ package robert.findtransport.presentation.compose.screens.home
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -12,6 +11,7 @@ import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCase
+import robert.findtransport.domain.usecase.stop.StopsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +19,7 @@ class HomeViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   introUseCase: IntroUseCase,
   themeUseCase: ThemeUseCase,
+  stopsUseCase: StopsUseCase,
   private val rateUseCase: RateUseCase,
 ) : BaseViewModel() {
   val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
@@ -27,6 +28,7 @@ class HomeViewModel @Inject constructor(
   val fromStop = MutableStateFlow(Stop.EMPTY)
   val toStop = MutableStateFlow(Stop.EMPTY)
   val showRate = MutableStateFlow(rateUseCase.showDialog())
+  val nearbyStop = stopsUseCase.getNearbyStop()
 
   init {
     rateUseCase.updateInterval()

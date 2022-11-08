@@ -40,7 +40,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //      viewModel.setToStop(stopId)
     }
     setFragmentResultListener(RESULT_LOCATION_PERMISSION) { _, _ ->
-      viewModel.startFindNearbyLocation(true)
+//      viewModel.startFindNearbyLocation(true)
     }
   }
 
@@ -130,7 +130,7 @@ class HomeFragment : BaseFragment<HomeViewModel, FragmentHomeBinding>() {
 //
 //      binding.etTo.setStopName(stop, locale)
 //    }
-    collectWithLifecycle(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
+//    collectWithLifecycle(hasLocationPermission) { locationPermission -> binding.btnFromMap.setLocationIcon(locationPermission) }
     collectWithLifecycle(fromError) { error -> binding.tvFromError.setDisappearingError(error) }
     collectWithLifecycle(toError) { error -> binding.tvToError.setDisappearingError(error) }
   }

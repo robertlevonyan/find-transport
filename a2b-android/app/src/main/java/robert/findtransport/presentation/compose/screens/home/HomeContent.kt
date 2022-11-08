@@ -2,7 +2,6 @@ package robert.findtransport.presentation.compose.screens.home
 
 import android.app.Activity
 import android.util.Log
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
@@ -12,12 +11,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,7 +31,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import com.google.android.play.core.review.ReviewManagerFactory
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import robert.findtransport.R
+import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.presentation.compose.navigation.NavigationScreens
 import robert.findtransport.presentation.compose.reusables.*
 import robert.findtransport.presentation.compose.reusables.composables.BlankButton
@@ -53,8 +56,10 @@ fun HomeContent(
   val selectedFromStop by homeViewModel.fromStop.collectAsState()
   val selectedToStop by homeViewModel.toStop.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
-  val fromInput = selectedFromStop.getCurrentName(locale)
+  val nearbyStop by homeViewModel.nearbyStop.collectAsState(NearbyStopStatus.Idle)
   val toInput = selectedToStop.getCurrentName(locale)
+  var fromInput = remember { selectedFromStop.getCurrentName(locale) }
+  var resourceId = remember { R.drawable.ic_current_location_default }
 
   ConstraintLayout(modifier = modifier) {
     val (fromCard, swap, toCard, search, allTransports,
@@ -97,6 +102,31 @@ fun HomeContent(
       }
     }
 
+    var animatingJob: Job? = null
+    when (nearbyStop) {
+      NearbyStopStatus.Failed, NearbyStopStatus.Idle -> resourceId = R.drawable.ic_current_location_default
+      NearbyStopStatus.Loading ->
+        LaunchedEffect(key1 = null) {
+          animatingJob = launch {
+            while (nearbyStop == NearbyStopStatus.Loading) {
+              delay(100)
+              resourceId = if (resourceId == R.drawable.ic_current_location_default) {
+                R.drawable.ic_current_location_color
+              } else {
+                R.drawable.ic_current_location_default
+              }
+            }
+          }
+        }
+      is NearbyStopStatus.NearbyStop -> {
+        animatingJob?.cancel()
+        resourceId = R.drawable.ic_current_location_color
+        fromInput = (nearbyStop as NearbyStopStatus.NearbyStop).stop.getCurrentName(locale)
+      }
+    }
+
+    val topIcon = painterResource(id = resourceId)
+
     SearchInput(
       modifier = Modifier
         .fillMaxWidth(0.9f)
@@ -111,7 +141,7 @@ fun HomeContent(
         },
       label = R.string.label_from_long,
       hint = R.string.hint_from,
-      trailingIcon = R.drawable.ic_current_location_black,
+      trailingIcon = topIcon,
       text = fromInput,
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
@@ -119,8 +149,7 @@ fun HomeContent(
         }
       },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-      keyboardActions = KeyboardActions(
-        onNext = { focusManager.moveFocus(FocusDirection.Down) }
+      keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }
       ),
     )
 
@@ -154,7 +183,7 @@ fun HomeContent(
         },
       label = R.string.label_to_long,
       hint = R.string.hint_to,
-      trailingIcon = R.drawable.ic_map,
+      trailingIcon = painterResource(id = R.drawable.ic_map),
       text = toInput,
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/false") {
@@ -162,8 +191,7 @@ fun HomeContent(
         }
       },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-      keyboardActions = KeyboardActions(
-        onDone = { focusManager.clearFocus() }
+      keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }
       ),
     )
 
@@ -187,14 +215,14 @@ fun HomeContent(
 
     AllTransportsButton(
       modifier = Modifier
+        .padding(all = DoublePadding)
         .constrainAs(allTransports) {
           width = Dimension.wrapContent
           height = Dimension.wrapContent
           end.linkTo(parent.end)
           start.linkTo(parent.start)
           bottom.linkTo(parent.bottom)
-        }
-        .padding(all = DoublePadding),
+        },
       onClick = { navController.navigate(NavigationScreens.TransportsScreen.name) },
     )
   }
@@ -205,7 +233,7 @@ private fun SearchInput(
   modifier: Modifier,
   @StringRes label: Int,
   @StringRes hint: Int,
-  @DrawableRes trailingIcon: Int,
+  trailingIcon: Painter,
   text: String = "",
   keyboardOptions: KeyboardOptions,
   keyboardActions: KeyboardActions,
@@ -268,7 +296,7 @@ private fun SearchInput(
             .align(Alignment.CenterEnd),
           onClick = { },
         ) {
-          Icon(painter = painterResource(id = trailingIcon), contentDescription = null)
+          Icon(painter = trailingIcon, tint = Color.Unspecified, contentDescription = null)
         }
       }
     }
