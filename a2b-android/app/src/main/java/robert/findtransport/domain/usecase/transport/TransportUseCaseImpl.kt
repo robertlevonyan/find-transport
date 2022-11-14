@@ -21,7 +21,7 @@ import robert.findtransport.domain.mapper.toTransport
 import robert.findtransport.domain.repository.HistoryRepository
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.domain.repository.TransportsRepository
-import robert.findtransport.presentation.compose.screens.search.SearchOpenInitiator
+import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.correctStops
 import java.util.*
 import javax.inject.Inject

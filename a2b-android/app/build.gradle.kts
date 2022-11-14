@@ -124,7 +124,7 @@ dependencies {
   implementation("com.google.android.material:material:1.8.0-alpha02")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:21.0.0")
+  implementation("com.google.android.gms:play-services-location:20.0.0")
   implementation("com.google.code.gson:gson:2.9.1")
   implementation("com.google.dagger:hilt-android:2.44")
   releaseImplementation(platform("com.google.firebase:firebase-bom:31.0.0"))
@@ -165,10 +165,10 @@ dependencies {
   implementation("androidx.navigation:navigation-compose:2.5.3")
   implementation("androidx.paging:paging-compose:1.0.0-alpha17")
   implementation("androidx.compose.compiler:compiler:1.3.2")
-  implementation("androidx.compose.ui:ui:1.4.0-alpha01")
-  implementation("androidx.compose.material:material:1.4.0-alpha01")
+  implementation("androidx.compose.ui:ui:1.4.0-alpha02")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha02")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha02")
   implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha01")
-
   implementation("io.coil-kt:coil-compose:2.2.2")
 
   //squareup
@@ -177,7 +177,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.8.1")
+  implementation("com.mapbox.maps:android:10.9.1")
   implementation("com.mapbox.navigation:android:2.4.0")
 
   //other

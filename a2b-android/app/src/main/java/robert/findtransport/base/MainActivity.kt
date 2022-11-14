@@ -7,8 +7,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -17,9 +17,9 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.data.service.LocaleService
-import robert.findtransport.presentation.compose.navigation.Navigation
-import robert.findtransport.presentation.compose.reusables.A2bTheme
-import robert.findtransport.presentation.compose.reusables.LocalActivity
+import robert.findtransport.presentation.navigation.Navigation
+import robert.findtransport.presentation.reusables.A2bTheme
+import robert.findtransport.presentation.reusables.LocalActivity
 import robert.findtransport.utils.extensions.isTablet
 
 @AndroidEntryPoint
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
         LocaleService(this).changeLocale(currentLanguage)
         A2bTheme(theme) {
           ProvideWindowInsets {
-            Surface(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
+            Surface(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
               Navigation()
             }
           }

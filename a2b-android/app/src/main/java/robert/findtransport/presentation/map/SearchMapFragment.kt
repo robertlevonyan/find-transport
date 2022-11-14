@@ -6,6 +6,7 @@ import com.mapbox.maps.Style
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.R
 import robert.findtransport.data.model.*
+import robert.findtransport.presentation.screens.map.search.SearchMapViewModel
 import robert.findtransport.utils.ARG_FROM_ID
 import robert.findtransport.utils.ARG_TO_ID
 import robert.findtransport.utils.extensions.showInfiniteSnackbar
@@ -30,7 +31,7 @@ class SearchMapFragment : MapFragment() {
     searchMapViewModel.getMultiRoute(fromId, toId)
 
     searchMapViewModel.run {
-      collectWithLifecycle(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
+//      collectWithLifecycle(loading) { isLoading -> loadingSnackbar?.run { if (isLoading) show() else dismiss() } }
       collectWithLifecycle(searchMultiTransports) { onDataLoaded(it.first/*, it.second, it.third*/) }
 //      collectWithLifecycle(searchEmpty) { router.exit() }
     }

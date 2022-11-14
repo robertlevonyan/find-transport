@@ -9,7 +9,10 @@ import androidx.paging.map
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import robert.findtransport.data.model.NearbyLocation
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
@@ -106,7 +109,7 @@ class StopsUseCaseImpl @Inject constructor(
 
     channel.send(NearbyStopStatus.Loading)
     val stops = getStops()
-    locationRepository.subscribeToCurrentLocation().collect { currentLocation ->
+    locationRepository.getCurrentLocation().let { currentLocation ->
       val nearby = mutableListOf<NearbyLocation>()
 
       stops.forEach { stop ->
@@ -122,7 +125,7 @@ class StopsUseCaseImpl @Inject constructor(
 
       if (nearby.isEmpty()) {
         channel.send(NearbyStopStatus.Failed)
-        return@collect
+        return@let
       }
 
       nearby.sortBy { it.locationDistance }
