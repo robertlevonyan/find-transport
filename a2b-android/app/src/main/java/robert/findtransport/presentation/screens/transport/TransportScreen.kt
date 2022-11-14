@@ -26,6 +26,8 @@ import coil.compose.rememberAsyncImagePainter
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
+import robert.findtransport.data.model.enums.MapType
+import robert.findtransport.data.model.enums.TransportType
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.A2bAppBar
@@ -87,6 +89,7 @@ fun TransportScreen(
       showOptions = showOptions,
       homeViewModel = homeViewModel,
       navController = navController,
+      showPrimary = showPrimary,
     )
   }
 }
@@ -102,6 +105,7 @@ private fun StopList(
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
   navController: NavController,
+  showPrimary: Boolean,
 ) {
   if (stops.isEmpty()) return
 
@@ -162,7 +166,13 @@ private fun StopList(
       containerColor = MaterialTheme.colorScheme.secondary,
       contentColor = Black,
       onClick = {
-
+        navController.navigate(
+          route = NavigationScreens.PreviewMapScreen.name +
+              "?map_type=${MapType.PREVIEW.ordinal}" +
+              "&transport_id=${transport.id}" +
+              "&underground=${transport.type == TransportType.METRO}" +
+              "&reversed=${!showPrimary}"
+        )
       }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_map),

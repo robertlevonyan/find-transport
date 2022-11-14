@@ -5,17 +5,15 @@ import android.location.Location
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
-import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
-import robert.findtransport.utils.LNG_EN
-import robert.findtransport.utils.LNG_RU
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,11 +34,5 @@ open class MapViewModel @Inject constructor(
     viewModelScope.launch(Dispatchers.Main) {
       currentLocation.value = locationUseCase.getCurrentLocation()
     }
-  }
-
-  fun getStopName(stop: Stop): String = when (locale.value) {
-    LNG_EN -> stop.nameEn
-    LNG_RU -> stop.nameRu
-    else -> stop.nameAm
   }
 }

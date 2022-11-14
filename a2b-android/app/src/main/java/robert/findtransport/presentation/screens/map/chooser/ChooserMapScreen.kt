@@ -55,7 +55,6 @@ fun BoxScope.ChooserMapScreen(
 
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
-
     MapView(context = context)
   }, update = { mapView ->
     val map = mapView.getMapboxMap()

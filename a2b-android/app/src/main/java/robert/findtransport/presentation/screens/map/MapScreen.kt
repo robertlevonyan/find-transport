@@ -33,6 +33,7 @@ import robert.findtransport.presentation.reusables.isAppInDarkMode
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.map.chooser.ChooserMapScreen
 import robert.findtransport.presentation.screens.map.preview.PreviewMapScreen
+import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 
@@ -43,6 +44,9 @@ fun MapScreen(
   mapViewModel: MapViewModel = hiltViewModel(),
   homeViewModel: HomeViewModel,
   mapType: MapType,
+  transportId: Int = EMPTY_ID,
+  underground: Boolean = false,
+  reversed: Boolean = false,
 ) {
   val mapStyle = getMapStyle()
   val locationEnabled by mapViewModel.locationEnabled.collectAsState()
@@ -58,6 +62,10 @@ fun MapScreen(
       MapType.PREVIEW -> PreviewMapScreen(
         mapStyle = mapStyle,
         locationEnabled = locationEnabled,
+        navController = navController,
+        transportId = transportId,
+        underground = underground,
+        reversed = reversed,
       )
       MapType.SEARCH -> return
     }

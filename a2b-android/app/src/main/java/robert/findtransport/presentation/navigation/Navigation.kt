@@ -123,13 +123,32 @@ fun Navigation() {
       )
     }
     composable(
-      route = "${NavigationScreens.MapScreen.name}/{map_type}",
+      route = "${NavigationScreens.ChooserMapScreen.name}/{map_type}",
       arguments = listOf(navArgument("map_type") { type = NavType.IntType }),
     ) { backStackEntry ->
       MapScreen(
         navController = navController,
         homeViewModel = homeViewModel,
         mapType = MapType.getByIndex(backStackEntry.arguments?.getInt("map_type") ?: 0),
+      )
+    }
+    composable(
+      route = "${NavigationScreens.PreviewMapScreen.name}?map_type={map_type}&transport_id={transport_id}" +
+          "&underground={underground}&reversed={reversed}",
+      arguments = listOf(
+        navArgument("map_type") { type = NavType.IntType },
+        navArgument("transport_id") { type = NavType.IntType },
+        navArgument("underground") { type = NavType.BoolType },
+        navArgument("reversed") { type = NavType.BoolType },
+      ),
+    ) { backStackEntry ->
+      MapScreen(
+        navController = navController,
+        homeViewModel = homeViewModel,
+        mapType = MapType.getByIndex(backStackEntry.arguments?.getInt("map_type") ?: 0),
+        transportId = backStackEntry.arguments?.getInt("transport_id") ?: EMPTY_ID,
+        underground = backStackEntry.arguments?.getBoolean("underground") ?: false,
+        reversed = backStackEntry.arguments?.getBoolean("reversed") ?: false,
       )
     }
   }
@@ -147,5 +166,6 @@ sealed class NavigationScreens(val name: String) {
   object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
   object SearchScreen : NavigationScreens("search_screen")
   object TrackRouteScreen : NavigationScreens("track_route_screen")
-  object MapScreen : NavigationScreens("map_screen")
+  object ChooserMapScreen : NavigationScreens("chooser_map_screen")
+  object PreviewMapScreen : NavigationScreens("preview_map_screen")
 }

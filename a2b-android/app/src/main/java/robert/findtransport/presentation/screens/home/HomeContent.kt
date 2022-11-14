@@ -159,7 +159,7 @@ fun HomeContent(
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
       keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
       onTrailingIconClick = {
-        navController.navigate(route = "${NavigationScreens.MapScreen.name}/${MapType.CHOOSER.ordinal}")
+        navController.navigate(route = "${NavigationScreens.ChooserMapScreen.name}/${MapType.CHOOSER.ordinal}")
       },
     )
 
@@ -203,7 +203,7 @@ fun HomeContent(
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
       keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
       onTrailingIconClick = {
-        navController.navigate(route = "${NavigationScreens.MapScreen.name}/${MapType.CHOOSER.ordinal}")
+        navController.navigate(route = "${NavigationScreens.ChooserMapScreen.name}/${MapType.CHOOSER.ordinal}")
       },
     )
 

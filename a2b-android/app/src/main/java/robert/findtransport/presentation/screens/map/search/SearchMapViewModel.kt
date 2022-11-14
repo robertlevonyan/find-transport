@@ -6,12 +6,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.MultiRoute
-import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.RouteResult
 import robert.findtransport.data.model.Stop
 import robert.findtransport.domain.usecase.location.LocationUseCase
@@ -70,31 +66,29 @@ class SearchMapViewModel @Inject constructor(
   fun getRouteSuccess(id: Int) {
     viewModelScope.launch(Dispatchers.IO) {
       val route = async {
-        transportUseCase.getTransportRoute(id, reverse = false, isUnderground = false)
-          .flowOn(Dispatchers.IO)
-          .stateIn(scope = viewModelScope).value
-          .let { routeResult ->
-            if (!coroutineContext.isActive) return@let null
-            when (routeResult) {
-              is Result.Success -> routeResult.data
-              else -> return@let null
-            }
-          }
+//        transportUseCase.getTransportRoute(id, reverse = false, isUnderground = false)
+//          .stateIn(scope = viewModelScope).value
+//          .let { routeResult ->
+//            if (!coroutineContext.isActive) return@let null
+//            when (routeResult) {
+//              is Result.Success -> routeResult.data
+//              else -> return@let null
+//            }
+//          }
       }
       val reverse = async {
-        transportUseCase.getTransportRoute(id, reverse = true, isUnderground = false)
-          .flowOn(Dispatchers.IO)
-          .stateIn(scope = viewModelScope).value
-          .let { routeResult ->
-            if (!coroutineContext.isActive) return@let null
-            when (routeResult) {
-              is Result.Success -> routeResult.data
-              else -> return@let null
-            }
-          }
+//        transportUseCase.getTransportRoute(id, reverse = true, isUnderground = false)
+//          .stateIn(scope = viewModelScope).value
+//          .let { routeResult ->
+//            if (!coroutineContext.isActive) return@let null
+//            when (routeResult) {
+//              is Result.Success -> routeResult.data
+//              else -> return@let null
+//            }
+//          }
       }
 
-      _routeSuccess.emit(route.await() to reverse.await())
+//      _routeSuccess.emit(route.await() to reverse.await())
     }
   }
 }
