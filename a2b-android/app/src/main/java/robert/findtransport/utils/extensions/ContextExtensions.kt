@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 
 fun Context.showToast(message: Int) {
   Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -13,10 +12,6 @@ fun Context.showToast(message: Int) {
 
 fun Context.showToast(message: String) {
   Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-}
-
-fun Fragment.showToast(message: String) {
-  context?.showToast(message)
 }
 
 fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {

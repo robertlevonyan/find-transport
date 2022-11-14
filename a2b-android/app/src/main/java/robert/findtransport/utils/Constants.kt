@@ -20,22 +20,9 @@ const val LNG_AM = "hy"
 const val LNG_EN = "en"
 const val LNG_RU = "ru"
 
-const val ARG_STOP = "argStop"
-const val ARG_FROM_ID = "argFromId"
-const val ARG_TO_ID = "argToId"
-const val ARG_TRANSPORT_ID = "argTransportId"
-const val ARG_ROUTE_REVERSE = "argRouteReverse"
-const val ARG_UNDERGROUND = "argUnderground"
-const val ARG_LATITUDE = "argLatitude"
-const val ARG_LONGITUDE = "argLongitude"
-
 const val MEM_CACHE_STOP = "memCacheStop"
 
 const val DEFAULT_LATITUDE = 40.177576
 const val DEFAULT_LONGITUDE = 44.5114867
 const val STOP_ICON_SIZE = 0.12
 const val EMPTY_ID = -1
-
-const val RESULT_FROM = "resFrom"
-const val RESULT_TO = "resTo"
-const val RESULT_LOCATION_PERMISSION = "resLocationPermission"

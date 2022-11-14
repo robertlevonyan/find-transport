@@ -9,14 +9,6 @@ fun Context.getColorFromRes(@ColorRes clr: Int): Int {
   return ContextCompat.getColor(this, clr)
 }
 
-fun Context.getDimen(@DimenRes dmn: Int): Float {
-  return resources.getDimension(dmn)
-}
-
 fun Context.getDimenInt(@DimenRes dmn: Int): Int {
   return resources.getDimensionPixelSize(dmn)
-}
-
-fun BaseFragment<*, *>.getDimenInt(@DimenRes dmn: Int): Int {
-  return context?.getDimenInt(dmn) ?: 0
 }

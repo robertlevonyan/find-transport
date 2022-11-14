@@ -1,13 +1,9 @@
 package robert.findtransport.data.service
 
 import com.mapbox.api.directions.v5.DirectionsCriteria
-import com.mapbox.api.directions.v5.MapboxDirections
-import com.mapbox.api.directions.v5.models.RouteOptions
 import com.mapbox.api.matching.v5.MapboxMapMatching
 import com.mapbox.geojson.Point
-import com.mapbox.navigation.base.extensions.coordinates
 import robert.findtransport.BuildConfig
-import robert.findtransport.utils.extensions.asPairs
 
 class MapboxNavigationService {
 

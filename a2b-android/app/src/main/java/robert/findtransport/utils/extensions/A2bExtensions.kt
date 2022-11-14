@@ -1,19 +1,12 @@
 package robert.findtransport.utils.extensions
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.animation.doOnStart
 import androidx.core.net.toUri
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
-import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
@@ -26,23 +19,6 @@ fun Transport.getTypeName() = when (type) {
   TROLLEYBUS -> R.string.label_trolleybus
   METRO -> R.string.label_underground
   UNDEFINED -> -1
-}
-
-fun TextView.setStopName(stop: Stop, locale: String) {
-  val value = when (locale) {
-    LNG_EN -> stop.nameEn
-    LNG_RU -> stop.nameRu
-    else -> stop.nameAm
-  }
-  text = value
-}
-
-fun TextView.setDisappearingError(error: Int) {
-  alpha = 0f
-  ObjectAnimator.ofFloat(this, View.ALPHA, 1f, 0f).apply {
-    doOnStart { setText(error) }
-    duration = 2000
-  }.start()
 }
 
 fun Stop.getCurrentName(locale: String): String = when (locale) {
@@ -89,8 +65,6 @@ fun Transport.correctStops(start: Stop, destination: Stop): List<Stop> {
 
   return if (which == 2) stopsReversed else stops
 }
-
-fun StopLocation.asPair(): Pair<Double, Double> = lat to lng
 
 fun md5(vararg values: Any): String {
   var input = ""
