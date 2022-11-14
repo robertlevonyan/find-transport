@@ -15,9 +15,9 @@
   <string name="message_history_dialog_delete">Хотите удалить запись из истории?</string>
   <string name="message_history_dialog_restore">Хотите восстановить результаты этого поиска?</string>
   <string name="message_rate">Если вам понравилось наше приложение, поставте ему 5 звезд в Google Play Store и напишите мнение!</string>
-  <string name="message_loading_data">Загрузка данных</string>
   <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>
   <string name="message_arrived">Вы доехали до пункта назначения</string>
+  <string name="message_check_download">Поиск обновлений</string>
 
   <!--labels-->
   <string name="label_bus">Автобус</string>
@@ -33,11 +33,9 @@
   <string name="label_to">Куда:</string>
   <string name="label_all_transports">Все маршруты</string>
   <string name="label_search">Поиск</string>
-  <string name="label_rate">Понравилось</string>
   <string name="label_select_stop">Выберите остановку</string>
   <string name="label_primary_route">Основной</string>
   <string name="label_secondary_route">Обратный</string>
-  <string name="label_dismiss">Закрыть</string>
   <string name="label_walk_to">Потом пройдите</string>
   <string name="label_walk_from">Пройдите отсюда</string>
   <string name="label_interchange_from">Садитесь в транспорт отсюда</string>
@@ -50,6 +48,11 @@
   <string name="label_tracker_transport">Вы выбрали</string>
   <string name="label_current_stop">Текущая остановка</string>
   <string name="label_arriving">Прибытие</string>
+  <string name="label_open_settings">Открыть настройки</string>
+  <string name="label_retry">Повторить</string>
+  <string name="label_send_feedback">Отправить письмо</string>
+  <string name="label_close">Close</string>
+  <string name="label_feedback_sending">Отправление…</string>
 
   <!--hints-->
   <string name="hint_from">откуда</string>
@@ -60,17 +63,18 @@
   <string name="hint_search">Поиск остановки</string>
 
   <!--errors-->
-  <string name="error_same_stops">Пожалуйста выберите разные остановки</string>
   <string name="error_no_routes">К сожалению, ничего не найдено</string>
   <string name="error_no_from">Пожалуйста, выберите точку отбытия</string>
   <string name="error_no_to">Пожалуйста, выберите точку прибытия</string>
-  <string name="error_stop_not_found">Остановка не найдена</string>
   <string name="error_empty_email">Адрел эл. почты не должен быть пустым</string>
   <string name="error_email">Пожалуйста, введите корректный адрел эл. почты</string>
   <string name="error_subject">Пожалуйста, введите заголовок</string>
   <string name="error_message">Пожалуйста, введите сообщение</string>
   <string name="error_message_short">Сообщение должно состоять минимум из 20-и символов</string>
   <string name="error_app">Приложение не скачано из Google Play store. Пожалуйста скачайте оттуда.</string>
+  <string name="error_no_internet">Похоже Интернет не доступен</string>
+  <string name="error_not_downloaded">Ошибка при скачивании</string>
+  <string name="error_storage">Недостаточно памяти, пожалуйста очистите часть диска.</string>
 
   <!--permissions-->
   <string name="permission_title">Вы нужны нам</string>
@@ -89,6 +93,7 @@
   <string name="settings_theme_light">Светлая</string>
   <string name="settings_theme_dark">Темная</string>
   <string name="settings_theme_system_short">Системная</string>
+  <string name="settings_general">Общее</string>
 
   <!--action strings-->
   <string name="action_show">Показать маршруты</string>
@@ -104,14 +109,4 @@
   <!--content description strings-->
   <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
   <string name="cd_show_on_map">Показать путь на карте</string>
-  <string name="message_check_download">Поиск обновлений</string>
-  <string name="error_no_internet">Похоже Интернет не доступен</string>
-  <string name="label_open_settings">Открыть настройки</string>
-  <string name="error_not_downloaded">Ошибка при скачивании</string>
-  <string name="label_retry">Повторить</string>
-  <string name="error_storage">Недостаточно памяти, пожалуйста очистите часть диска.</string>
-  <string name="settings_general">Общее</string>
-  <string name="label_send_feedback">Отправить письмо</string>
-  <string name="feedback_sending">Отправление…</string>
-  <string name="label_close">Close</string>
 </resources>

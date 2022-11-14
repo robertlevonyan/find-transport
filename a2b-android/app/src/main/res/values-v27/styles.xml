@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-  <style name="BottomSheetTheme.Dark.Dialog" parent="BaseBottomSheet.Dark.Dialog">
-    <item name="android:statusBarColor">@android:color/transparent</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryVariant23</item>
-    <item name="android:windowLightNavigationBar">true</item>
-  </style>
-</resources>

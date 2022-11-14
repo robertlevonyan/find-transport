@@ -15,9 +15,9 @@
   <string name="message_history_dialog_delete">Ցանկացնում ե՞ք հեռացնել գրանցումը պատմությունից։</string>
   <string name="message_history_dialog_restore">Ցանկացնում ե՞ք վերականգնել տվյալ փնտրման արդյունքները։</string>
   <string name="message_rate">Եթե հավանել եք մեր հավելվածը, գնահատեք այն 5 աստղ Google Play Store-ում և  կիսվեք կարծիքով</string>
-  <string name="message_loading_data">Տվյալների բեռնում</string>
   <string name="message_next_stop">Դուք մոտենում եք նշված կանգառին։ Իջեք հաջորդ կանգառում։</string>
   <string name="message_arrived">Դուք հասել եք։ Կարող եք իջնել տրանսպորտից</string>
+  <string name="message_check_download">Թարմացման ստուգում</string>
 
   <!--labels-->
   <string name="label_bus">Ավտոբուս</string>
@@ -33,11 +33,9 @@
   <string name="label_to">Ուր`</string>
   <string name="label_all_transports">Բոլոր երթուղիները</string>
   <string name="label_search">Փնտրել</string>
-  <string name="label_rate">Գնահատել</string>
   <string name="label_select_stop">Ընտրեք կանգառ</string>
   <string name="label_primary_route">Հիմնական</string>
   <string name="label_secondary_route">Հետադարձ</string>
-  <string name="label_dismiss">Փակել</string>
   <string name="label_walk_to">Այնուհետև քայլեք</string>
   <string name="label_walk_from">Քայլեք այստեղից՝</string>
   <string name="label_interchange_from">Նստեք տրանսպորտ այստեղից՝</string>
@@ -50,6 +48,11 @@
   <string name="label_tracker_transport">Դուք ընտրել եք</string>
   <string name="label_current_stop">Ներկայիս կանգառը</string>
   <string name="label_arriving">Հասնում ենք</string>
+  <string name="label_open_settings">Բացել կարգավորումները</string>
+  <string name="label_retry">Կրկնել</string>
+  <string name="label_send_feedback">Ուղարկել նամակը</string>
+  <string name="label_close">Close</string>
+  <string name="label_feedback_sending">Ուղարկվում է…</string>
 
   <!--hints-->
   <string name="hint_from">որտեղից</string>
@@ -60,17 +63,18 @@
   <string name="hint_search">Փնտրել կանգառ</string>
 
   <!--errors-->
-  <string name="error_same_stops">Խնդրում եմ ընտրել տարբեր կանգառներ</string>
   <string name="error_no_routes">Դժբախտաբար, ոչ մի երթուղի չի գտնվել</string>
   <string name="error_no_from">Խնդրում եմ ընտրել մեկնելու կանգառը</string>
   <string name="error_no_to">Խնդրում եմ ընտրել ժամանման կանգառը</string>
-  <string name="error_stop_not_found">Կանգառը չի գտնվել</string>
   <string name="error_empty_email">Էլ. փոստը չի կարող դատարկ լինել</string>
   <string name="error_email">Խնդրում եմ մուտքագրել ճիշտ էլ. փոստ</string>
   <string name="error_subject">Խնդրում եմ մուտքագրել հաղորդագրության վերնագիրը</string>
   <string name="error_message">Խնդրում եմ մուտքագրել հաղորդագրությունը</string>
   <string name="error_message_short">Հաղորդագրությունը պետք է ունենա նվազագույնը 20 սիմվոլ</string>
   <string name="error_app">Հավելվածը ներբեռնված չէ Google Play-ից։ Խնդրում եմ քաշեք այդտեղից։</string>
+  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի է</string>
+  <string name="error_not_downloaded">Ներբեռնման սխալ</string>
+  <string name="error_storage">Ձեր սարքի հիշողությունը սխառված է, խնդրում ենք ազատել հիշողությունը և փորձել կրկին։</string>
 
   <!--permissions-->
   <string name="permission_title">Դուք մեզ պետք եք</string>
@@ -89,6 +93,7 @@
   <string name="settings_theme_light">Բաց</string>
   <string name="settings_theme_dark">Մուգ</string>
   <string name="settings_theme_system_short">Համակարգային</string>
+  <string name="settings_general">Ընդհանուր</string>
 
   <!--action strings-->
   <string name="action_show">Ցույց տալ երթուղիները</string>
@@ -104,14 +109,4 @@
   <!--content description strings-->
   <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
   <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
-  <string name="message_check_download">Թարմացման ստուգում</string>
-  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի է</string>
-  <string name="label_open_settings">Բացել կարգավորումները</string>
-  <string name="error_not_downloaded">Ներբեռնման սխալ</string>
-  <string name="label_retry">Կրկնել</string>
-  <string name="error_storage">Ձեր սարքի հիշողությունը սխառված է, խնդրում ենք ազատել հիշողությունը և փորձել կրկին։</string>
-  <string name="settings_general">Ընդհանուր</string>
-  <string name="label_send_feedback">Ուղարկել նամակը</string>
-  <string name="feedback_sending">Ուղարկվում է…</string>
-  <string name="label_close">Close</string>
 </resources>

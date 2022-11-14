@@ -80,7 +80,7 @@ private fun FeedbackContent(
   snackbarHostState: SnackbarHostState,
 ) {
   val keyboardController = LocalSoftwareKeyboardController.current
-  val sendingText = stringResource(id = R.string.feedback_sending)
+  val sendingText = stringResource(id = R.string.label_feedback_sending)
   val sentText = stringResource(id = R.string.feedback_sent)
 
   val email by feedbackViewModel.email.collectAsState()

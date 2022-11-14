@@ -2,7 +2,6 @@
 <resources>
   <color name="colorPrimary">#ffffff</color>
   <color name="colorPrimaryVariant">#cecece</color>
-  <color name="colorPrimaryVariant23">#f1f1f1</color>
   <color name="colorPrimaryVariantTransparent">#65F1F1F1</color>
   <color name="colorSecondary">#f1f1f1</color>
   <color name="colorSecondaryUntranslated">#f1f1f1</color>
@@ -11,13 +10,8 @@
   <color name="colorAccent500">#CEA053</color>
   <color name="colorOnPrimary">#1a1a1a</color>
   <color name="colorOnPrimaryUntranslated">#1a1a1a</color>
-  <color name="colorOnPrimaryTransparentUntranslated">#801a1a1a</color>
   <color name="colorOnPrimaryLight">#5b5b5b</color>
-  <color name="colorOnPrimaryLighter">#9E9E9E</color>
-  <color name="colorOnPrimaryLightest">#f3f3f3</color>
 
-  <color name="colorHint">#000000</color>
-  <color name="colorError">#9f0000</color>
   <color name="colorIconWheels">#191319</color>
   <color name="colorBusPurple">#A57AB9</color>
   <color name="colorMicrobusYellow">#FABC2C</color>

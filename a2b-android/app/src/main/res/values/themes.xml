@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
   <style name="AppSplash" parent="Theme.SplashScreen">
     <item name="windowSplashScreenBackground">@color/colorPrimary</item>
     <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
@@ -20,16 +21,5 @@
     <item name="android:progressTint">@color/colorAccent500</item>
     <item name="thumbTint">@color/colorAccent500</item>
     <item name="trackTint">@color/colorAccent100</item>
-  </style>
-
-  <style name="AppTheme.AppBarOverlay" parent="@style/Widget.Material3.PopupMenu.Overflow">
-    <item name="colorControlNormal">@color/colorOnPrimary</item>
-    <item name="android:textColorSecondary">@color/colorOnPrimary</item>
-  </style>
-
-  <style name="AppTheme.PopupOverlay" parent="@style/Widget.Material3.PopupMenu.Overflow">
-    <item name="actionBarItemBackground">@color/colorPrimaryVariant23</item>
-    <item name="android:textColor">@color/colorOnPrimary</item>
-    <item name="popupMenuBackground">@drawable/bg_dialog</item>
   </style>
 </resources>
