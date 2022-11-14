@@ -1,19 +1,25 @@
 package robert.findtransport.presentation.screens.map
 
+import android.Manifest
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.location.Location
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.SmallFloatingActionButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.NavController
@@ -28,8 +34,9 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.MapType
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.isAppInDarkMode
+import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.composables.TextPrimary
+import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.map.chooser.ChooserMapScreen
 import robert.findtransport.presentation.screens.map.preview.PreviewMapScreen
@@ -50,6 +57,80 @@ fun MapScreen(
 ) {
   val mapStyle = getMapStyle()
   val locationEnabled by mapViewModel.locationEnabled.collectAsState()
+  var showPermissionDialog by rememberSaveable { mutableStateOf(!locationEnabled) }
+
+  val launcher = rememberLauncherForActivityResult(
+    ActivityResultContracts.RequestPermission()
+  ) { isGranted: Boolean ->
+    mapViewModel.setLocationEnabled(isGranted)
+  }
+
+  if (showPermissionDialog) {
+    Dialog(onDismissRequest = {
+      showPermissionDialog = false
+    }) {
+      Card(
+        modifier = Modifier
+          .padding(horizontal = FabPadding)
+          .padding(bottom = FabPadding)
+          .fillMaxWidth()
+          .wrapContentSize(),
+        shape = Shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+      ) {
+        Column(modifier) {
+          TextPrimary(
+            modifier = Modifier
+              .padding(FabPadding)
+              .align(Alignment.CenterHorizontally),
+            text = stringResource(id = R.string.permission_title)
+          )
+          Image(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            painter = painterResource(id = R.drawable.il_location_access),
+            contentDescription = stringResource(id = R.string.permission_title)
+          )
+          TextSecondary(
+            modifier = Modifier
+              .padding(FabPadding)
+              .align(Alignment.CenterHorizontally),
+            text = stringResource(id = R.string.permission_message),
+            textAlign = TextAlign.Start,
+          )
+          Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+              containerColor = Accent,
+              contentColor = Black,
+            ),
+            onClick = {
+              launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+              showPermissionDialog = false
+            },
+            shape = RectangleShape
+          ) {
+            Text(
+              text = stringResource(id = R.string.permission_yes),
+              fontWeight = FontWeight.Bold,
+            )
+          }
+          Button(
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+              containerColor = MaterialTheme.colorScheme.surface,
+              contentColor = MaterialTheme.colorScheme.onPrimary,
+            ),
+            onClick = {
+              showPermissionDialog = false
+            },
+            shape = RectangleShape,
+          ) {
+            Text(text = stringResource(id = R.string.permission_no), textAlign = TextAlign.Center)
+          }
+        }
+      }
+    }
+  }
 
   Box(modifier = modifier.fillMaxSize()) {
     when (mapType) {

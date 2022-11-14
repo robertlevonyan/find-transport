@@ -23,12 +23,17 @@ open class MapViewModel @Inject constructor(
   private val locationUseCase: LocationUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val locationEnabled = MutableStateFlow(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)).asStateFlow()
+  private val _locationEnabled = MutableStateFlow(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+  val locationEnabled get() = _locationEnabled.asStateFlow()
 
   val currentLocation = MutableStateFlow(Location("default").apply {
     latitude = DEFAULT_LATITUDE
     longitude = DEFAULT_LONGITUDE
   })
+
+  fun setLocationEnabled(enabled: Boolean) {
+    _locationEnabled.value = enabled
+  }
 
   fun getCurrentLocation() {
     viewModelScope.launch(Dispatchers.Main) {
