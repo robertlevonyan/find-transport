@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 277
-    versionName = "3.8.0ß"
+    versionCode = 278
+    versionName = "3.8.0ß2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -105,6 +105,7 @@ android {
   bundle {
     language { enableSplit = false }
     abi { enableSplit = false }
+    storeArchive.enable = true
   }
   composeOptions {
     kotlinCompilerExtensionVersion = "1.2.0-rc01"
