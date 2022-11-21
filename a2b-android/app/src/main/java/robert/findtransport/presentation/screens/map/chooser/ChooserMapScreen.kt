@@ -24,6 +24,7 @@ import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -81,7 +82,7 @@ fun BoxScope.ChooserMapScreen(
       scope.launch {
         mapViewModel.allStops.collectLatest { allStops ->
           pointAnnotationManager.create(allStops)
-          delay(1000)
+          delay(2000)
           loading = false
         }
       }
