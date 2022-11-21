@@ -7,11 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
+import robert.findtransport.utils.extensions.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,23 +30,24 @@ class HomeViewModel @Inject constructor(
   val fromStop = MutableStateFlow(Stop.EMPTY)
   val toStop = MutableStateFlow(Stop.EMPTY)
   val showRate = MutableStateFlow(rateUseCase.showDialog())
-  val nearbyStop = stopsUseCase.getNearbyStop()
+  val nearbyStop = stopsUseCase.getNearbyStop().asStateFlow(NearbyStopStatus.Idle)
 
   init {
     rateUseCase.updateInterval()
   }
 
   fun setFromStop(stop: Stop) {
-    viewModelScope.launch { fromStop.emit(stop) }
+    fromStop.value = stop
   }
 
   fun setToStop(stop: Stop) {
-    viewModelScope.launch { toStop.emit(stop) }
+    toStop.value = stop
   }
 
   fun swap() {
     val fromValue = fromStop.value
-    fromStop.value = toStop.value
+    val toValue = toStop.value
+    fromStop.value = toValue
     toStop.value = fromValue
   }
 

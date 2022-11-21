@@ -63,6 +63,7 @@
   <string name="hint_search">Поиск остановки</string>
 
   <!--errors-->
+  <string name="error_same_stops">Пожалуйста выберите разные остановки</string>
   <string name="error_no_routes">К сожалению, ничего не найдено</string>
   <string name="error_no_from">Пожалуйста, выберите точку отбытия</string>
   <string name="error_no_to">Пожалуйста, выберите точку прибытия</string>

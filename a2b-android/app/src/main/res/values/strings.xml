@@ -65,6 +65,7 @@
   <string name="hint_search">Search stop</string>
 
   <!--errors-->
+  <string name="error_same_stops">Please select different stops</string>
   <string name="error_no_routes">Unfortunately, nothing has found</string>
   <string name="error_no_from">Please, select departure stop</string>
   <string name="error_no_to">Please, select arriving stop</string>

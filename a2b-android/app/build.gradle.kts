@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 279
-    versionName = "3.8.0ß3"
+    versionCode = 280
+    versionName = "3.8.0ß4"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -100,7 +100,10 @@ android {
   }
   kotlinOptions {
     jvmTarget = "11"
-    freeCompilerArgs = freeCompilerArgs.toMutableList().apply { add("-opt-in=kotlin.RequiresOptIn") }
+    freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
+      add("-opt-in=kotlin.RequiresOptIn")
+      add("-Xcontext-receivers")
+    }
   }
   bundle {
     language { enableSplit = false }
@@ -126,13 +129,13 @@ dependencies {
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:20.0.0")
-  implementation("com.google.code.gson:gson:2.9.1")
-  implementation("com.google.dagger:hilt-android:2.44")
-  releaseImplementation(platform("com.google.firebase:firebase-bom:31.0.0"))
+  implementation("com.google.code.gson:gson:2.10")
+  implementation("com.google.dagger:hilt-android:2.44.2")
+  releaseImplementation(platform("com.google.firebase:firebase-bom:31.1.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.44")
+  kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.6.1")
@@ -158,8 +161,8 @@ dependencies {
   kapt("androidx.room:room-compiler:2.4.3")
 
   //compose
-  implementation("com.google.accompanist:accompanist-insets:0.23.0")
-  implementation("com.google.accompanist:accompanist-systemuicontroller:0.23.0")
+  implementation("com.google.accompanist:accompanist-insets:0.27.1")
+  implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.1")
   implementation("androidx.activity:activity-compose:1.7.0-alpha02")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
@@ -169,7 +172,7 @@ dependencies {
   implementation("androidx.compose.ui:ui:1.4.0-alpha02")
   implementation("androidx.compose.material3:material3:1.1.0-alpha02")
   implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha02")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha01")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha02")
   implementation("io.coil-kt:coil-compose:2.2.2")
 
   //squareup

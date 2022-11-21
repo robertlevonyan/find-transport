@@ -63,6 +63,7 @@
   <string name="hint_search">Փնտրել կանգառ</string>
 
   <!--errors-->
+  <string name="error_same_stops">Խնդրում եմ ընտրել տարբեր կանգառներ</string>
   <string name="error_no_routes">Դժբախտաբար, ոչ մի երթուղի չի գտնվել</string>
   <string name="error_no_from">Խնդրում եմ ընտրել մեկնելու կանգառը</string>
   <string name="error_no_to">Խնդրում եմ ընտրել ժամանման կանգառը</string>

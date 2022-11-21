@@ -24,6 +24,7 @@ import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -77,10 +78,10 @@ fun BoxScope.ChooserMapScreen(
           map.flyTo(currentLocation)
         }
       }
-      scope.launch { mapViewModel.metroStops.collectLatest(pointAnnotationManager::create) }
       scope.launch {
         mapViewModel.allStops.collectLatest { allStops ->
           pointAnnotationManager.create(allStops)
+          delay(1000)
           loading = false
         }
       }

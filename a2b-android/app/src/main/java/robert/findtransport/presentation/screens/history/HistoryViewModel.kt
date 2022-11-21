@@ -11,6 +11,7 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.History
 import robert.findtransport.domain.usecase.history.HistoryUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import robert.findtransport.utils.extensions.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,11 +20,7 @@ class HistoryViewModel @Inject constructor(
   private val historyUseCase: HistoryUseCase
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val allHistory = historyUseCase.getHistory().stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.Lazily,
-    initialValue = emptyList(),
-  )
+  val allHistory = historyUseCase.getHistory().asStateFlow(emptyList())
 
   fun clearHistory() {
     viewModelScope.launch { historyUseCase.clearHistory() }

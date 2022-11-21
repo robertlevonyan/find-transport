@@ -4,6 +4,12 @@ import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.util.Log
 import android.util.Patterns
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
@@ -31,3 +37,7 @@ fun isTablet(): Boolean {
 }
 
 fun Date.format(): String = SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(this)
+
+context(BaseViewModel)
+fun <T> Flow<T>.asStateFlow(default: T, started: SharingStarted = SharingStarted.Lazily): StateFlow<T> =
+  stateIn(viewModelScope, started = started, initialValue = default)

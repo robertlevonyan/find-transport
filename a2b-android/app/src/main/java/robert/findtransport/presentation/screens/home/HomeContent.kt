@@ -1,11 +1,11 @@
 package robert.findtransport.presentation.screens.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -62,10 +62,16 @@ fun HomeContent(
   val selectedFromStop by homeViewModel.fromStop.collectAsState()
   val selectedToStop by homeViewModel.toStop.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
-  val nearbyStop by homeViewModel.nearbyStop.collectAsState(NearbyStopStatus.Idle)
-  val toInput = selectedToStop.getCurrentName(locale)
-  var fromInput = remember { selectedFromStop.getCurrentName(locale) }
+  val nearbyStop by homeViewModel.nearbyStop.collectAsState()
   var resourceId = remember { R.drawable.ic_current_location_default }
+
+  checkAndGetNearbyStop(
+    nearbyStop = nearbyStop,
+    homeViewModel = homeViewModel,
+    resourceId = resourceId
+  ) { newResourceId ->
+    resourceId = newResourceId
+  }
 
   ConstraintLayout(modifier = modifier) {
     val (fromCard, swap, toCard, search, allTransports,
@@ -108,33 +114,6 @@ fun HomeContent(
       }
     }
 
-    var animatingJob: Job? = null
-    when (nearbyStop) {
-      NearbyStopStatus.Failed, NearbyStopStatus.Idle -> resourceId = R.drawable.ic_current_location_default
-      NearbyStopStatus.Loading ->
-        LaunchedEffect(key1 = null) {
-          animatingJob = launch {
-            while (nearbyStop == NearbyStopStatus.Loading) {
-              delay(100)
-              resourceId = if (resourceId == R.drawable.ic_current_location_default) {
-                R.drawable.ic_current_location_color
-              } else {
-                R.drawable.ic_current_location_default
-              }
-            }
-          }
-        }
-      is NearbyStopStatus.NearbyStop -> {
-        animatingJob?.cancel()
-        resourceId = R.drawable.ic_current_location_color
-        val foundNearbyStop = (nearbyStop as NearbyStopStatus.NearbyStop).stop
-        homeViewModel.setFromStop(foundNearbyStop)
-        fromInput = foundNearbyStop.getCurrentName(locale)
-      }
-    }
-
-    val topIcon = painterResource(id = resourceId)
-
     SearchInput(
       modifier = Modifier
         .fillMaxWidth(0.9f)
@@ -149,8 +128,8 @@ fun HomeContent(
         },
       label = R.string.label_from_long,
       hint = R.string.hint_from,
-      trailingIcon = topIcon,
-      text = fromInput,
+      trailingIcon = painterResource(id = resourceId),
+      text = selectedFromStop.getCurrentName(locale),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
           launchSingleTop = true
@@ -194,7 +173,7 @@ fun HomeContent(
       label = R.string.label_to_long,
       hint = R.string.hint_to,
       trailingIcon = painterResource(id = R.drawable.ic_map),
-      text = toInput,
+      text = selectedToStop.getCurrentName(locale),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/false") {
           launchSingleTop = true
@@ -226,6 +205,10 @@ fun HomeContent(
           context.showToast(R.string.error_no_to)
           return@SearchButton
         }
+        if (selectedFromStop == selectedToStop) {
+          context.showToast(R.string.error_same_stops)
+          return@SearchButton
+        }
         navController.navigate(
           route = NavigationScreens.SearchScreen.name +
               "?from_id=${selectedFromStop.id}&to_id=${selectedToStop.id}&opened=${SearchOpenInitiator.HOME.name}"
@@ -245,6 +228,42 @@ fun HomeContent(
         },
       onClick = { navController.navigate(NavigationScreens.TransportsScreen.name) },
     )
+  }
+}
+
+@SuppressLint("ComposableNaming")
+@Composable
+fun checkAndGetNearbyStop(
+  nearbyStop: NearbyStopStatus,
+  homeViewModel: HomeViewModel,
+  resourceId: Int,
+  updateResource: (Int) -> Unit,
+) {
+  var animatingJob: Job? = null
+
+  when (nearbyStop) {
+    NearbyStopStatus.Failed, NearbyStopStatus.Idle -> updateResource.invoke(R.drawable.ic_current_location_default)
+    NearbyStopStatus.Loading ->
+      LaunchedEffect(key1 = null) {
+        animatingJob = launch {
+          while (nearbyStop == NearbyStopStatus.Loading) {
+            delay(100)
+            updateResource.invoke(
+              if (resourceId == R.drawable.ic_current_location_default) {
+                R.drawable.ic_current_location_color
+              } else {
+                R.drawable.ic_current_location_default
+              }
+            )
+          }
+        }
+      }
+    is NearbyStopStatus.NearbyStop -> {
+      animatingJob?.cancel()
+      updateResource.invoke(R.drawable.ic_current_location_color)
+      val foundNearbyStop = nearbyStop.stop
+      homeViewModel.setFromStop(foundNearbyStop)
+    }
   }
 }
 

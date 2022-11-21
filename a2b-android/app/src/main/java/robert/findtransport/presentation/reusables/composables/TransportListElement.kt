@@ -38,7 +38,7 @@ fun LazyItemScope.TransportListElement(
   onTrackClick: () -> Unit = {},
 ) {
   val icon = transport.getIcon()
-  if (transport.type == TransportType.UNDEFINED) return
+  if (transport == Transport.EMPTY || transport.stops.isEmpty() || transport.type == TransportType.UNDEFINED) return
 
   val type = transport.getTypeName()
 
@@ -145,6 +145,7 @@ fun LazyItemScope.TransportListElement(
           onClick = { onTrackClick.invoke() }) {
           Icon(painter = painterResource(id = R.drawable.ic_track_route), contentDescription = null)
         }
+        TransportListElementTrailingIcon.NONE -> Unit
       }
     }
   }
