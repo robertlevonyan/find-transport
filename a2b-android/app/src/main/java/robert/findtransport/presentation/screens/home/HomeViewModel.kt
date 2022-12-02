@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.enums.NearbyStopStatus
+import robert.findtransport.data.model.isEmpty
 import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
@@ -37,6 +38,11 @@ class HomeViewModel @Inject constructor(
   }
 
   fun setFromStop(stop: Stop) {
+    fromStop.value = stop
+  }
+
+  fun setFromStopIfEmpty(stop: Stop) {
+    if (!fromStop.value.isEmpty()) return
     fromStop.value = stop
   }
 

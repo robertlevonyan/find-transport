@@ -262,7 +262,7 @@ fun checkAndGetNearbyStop(
       animatingJob?.cancel()
       updateResource.invoke(R.drawable.ic_current_location_color)
       val foundNearbyStop = nearbyStop.stop
-      homeViewModel.setFromStop(foundNearbyStop)
+      homeViewModel.setFromStopIfEmpty(foundNearbyStop)
     }
   }
 }

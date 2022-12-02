@@ -24,7 +24,6 @@ import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -34,7 +33,10 @@ import robert.findtransport.data.entity.Stop
 import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.Black
+import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.Shapes
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
@@ -54,6 +56,48 @@ fun BoxScope.ChooserMapScreen(
   val locale by mapViewModel.locale.collectAsState()
   var loading by remember { mutableStateOf(true) }
   var showStopOptions by remember { mutableStateOf<JsonElement?>(null) }
+
+  showStopOptions?.let { options ->
+    val stop = options.fromJson<Stop>().toStop()
+    Dialog(onDismissRequest = { showStopOptions = null }) {
+      Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        shape = Shapes.medium,
+      ) {
+        LazyColumn(content = {
+          item { TextPrimary(text = stop.getCurrentName(locale)) }
+          item { Divider(modifier = Modifier.padding(vertical = HalfPadding)) }
+          item {
+            ModalItem(
+              image = R.drawable.ic_chooser_from,
+              label = R.string.action_set_from,
+            ) {
+              homeViewModel.setFromStop(stop)
+              navController.popBackStack()
+            }
+          }
+          item {
+            ModalItem(
+              image = R.drawable.ic_chooser_to,
+              label = R.string.action_set_to,
+            ) {
+              homeViewModel.setToStop(stop)
+              navController.popBackStack()
+            }
+          }
+          item {
+            ModalItem(
+              image = R.drawable.ic_road,
+              label = R.string.action_show,
+            ) {
+              navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
+            }
+          }
+        })
+      }
+    }
+  }
 
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
@@ -119,48 +163,6 @@ fun BoxScope.ChooserMapScreen(
           .align(Alignment.Center),
         color = MaterialTheme.colorScheme.secondary,
       )
-    }
-  }
-
-  showStopOptions?.let { options ->
-    val stop = options.fromJson<Stop>().toStop()
-    Dialog(onDismissRequest = { showStopOptions = null }) {
-      Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = Shapes.medium,
-      ) {
-        LazyColumn(content = {
-          item { TextPrimary(text = stop.getCurrentName(locale)) }
-          item { Divider(modifier = Modifier.padding(vertical = HalfPadding)) }
-          item {
-            ModalItem(
-              image = R.drawable.ic_chooser_from,
-              label = R.string.action_set_from,
-            ) {
-              homeViewModel.setFromStop(stop)
-              navController.popBackStack()
-            }
-          }
-          item {
-            ModalItem(
-              image = R.drawable.ic_chooser_to,
-              label = R.string.action_set_to,
-            ) {
-              homeViewModel.setToStop(stop)
-              navController.popBackStack()
-            }
-          }
-          item {
-            ModalItem(
-              image = R.drawable.ic_road,
-              label = R.string.action_show,
-            ) {
-              navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
-            }
-          }
-        })
-      }
     }
   }
 }

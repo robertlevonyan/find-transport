@@ -14,7 +14,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.accompanist.insets.ProvideWindowInsets
 import dagger.hilt.android.AndroidEntryPoint
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.navigation.Navigation
@@ -45,10 +44,8 @@ class MainActivity : ComponentActivity() {
         val currentLanguage by mainViewModel.currentLanguage.collectAsState()
         LocaleService(this).changeLocale(currentLanguage)
         A2bTheme(theme) {
-          ProvideWindowInsets {
-            Surface(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
-              Navigation()
-            }
+          Surface(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)) {
+            Navigation()
           }
         }
       }

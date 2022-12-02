@@ -17,8 +17,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.MenuVerticalOffset
 import robert.findtransport.presentation.reusables.SmallPadding
@@ -47,7 +45,7 @@ fun A2bAppBar(
         modifier = Modifier
           .fillMaxWidth()
           .padding(top = SmallPadding)
-          .systemBarsPadding(false),
+          .systemBarsPadding(),
         text = title,
         textAlign = TextAlign.Center
       )

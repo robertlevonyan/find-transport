@@ -1,9 +1,7 @@
 package robert.findtransport.presentation.screens.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -20,8 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.systemBarsPadding
 import robert.findtransport.R
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.MenuVerticalOffset
@@ -85,7 +81,7 @@ fun HomeAppBar(navController: NavController) {
 @Composable
 private fun A2bTitle() {
   Text(
-    modifier = Modifier.systemBarsPadding(false),
+    modifier = Modifier.systemBarsPadding(),
     text = stringResource(id = R.string.app_name),
     fontWeight = FontWeight.Bold,
     fontSize = Text24,

@@ -72,13 +72,7 @@ class TrackRouteViewModel @Inject constructor(
 
         if (current == Stop.EMPTY) return@collect
 
-        val currentStopValue = _currentStop.value
-
-//        if (currentStopValue != Stop.EMPTY) {
-//          _previousStop.emit(currentStopValue)
-//        }
         _currentStop.emit(current)
-//        _predestination.emit(predestination)
 
         if (current.id == predestination.id) {
           _notifyNextStop.emit(predestination)
@@ -96,8 +90,6 @@ class TrackRouteViewModel @Inject constructor(
       val fromStop = async { stopsUseCase.getStop(fromId) }
       val toStop = async { stopsUseCase.getStop(toId) }
 
-//      _fromStop.emit(fromStop.await())
-//      _toStop.emit(toStop.await())
       launch { selectedTransport.await().collect(_selectedTransport::emit) }
 
       subscribeToLocationChanges()

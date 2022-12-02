@@ -76,7 +76,7 @@ class TransportsRepositoryImpl @Inject constructor(
       if (!channel.isClosedForSend) {
         launch {
           channel.send(
-            Result.Error(
+            element = Result.Error(
               A2bException(
                 type = ExceptionType.NAVIGATION_EMPTY,
                 errorMessage = R.string.error_no_routes,
@@ -91,18 +91,19 @@ class TransportsRepositoryImpl @Inject constructor(
     val navigation = mapboxNavigationService.getNavigation(coordinates)
     navigation.enqueueCall(object : Callback<MapMatchingResponse> {
       override fun onResponse(call: Call<MapMatchingResponse>, response: Response<MapMatchingResponse>) {
-        response.takeIf { it.isSuccessful }
-          ?.body()?.matchings()?.run {
+        if (response.isSuccessful) {
+          response.body()?.matchings()?.run {
             val route = get(0).toDirectionRoute()
             if (!channel.isClosedForSend) {
-              launch { channel.send(Result.Success(route)) }
+              launch { channel.send(element = Result.Success(route)) }
             }
           }
-          ?: if (!channel.isClosedForSend) {
+        } else {
+          if (!channel.isClosedForSend) {
             launch {
               channel.send(
-                Result.Error(
-                  A2bException(
+                element = Result.Error(
+                  exception = A2bException(
                     type = ExceptionType.NAVIGATION_EMPTY,
                     errorMessage = R.string.error_no_routes,
                     error = Exception("")
@@ -111,6 +112,7 @@ class TransportsRepositoryImpl @Inject constructor(
               )
             }
           }
+        }
       }
 
       override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
@@ -118,7 +120,7 @@ class TransportsRepositoryImpl @Inject constructor(
         if (!channel.isClosedForSend) {
           launch {
             channel.send(
-              Result.Error(
+              element = Result.Error(
                 A2bException(
                   type = ExceptionType.NAVIGATION_ERROR,
                   errorMessage = R.string.error_no_routes,

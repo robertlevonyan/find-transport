@@ -16,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 280
-    versionName = "3.8.0ß4"
+    versionCode = 281
+    versionName = "3.8.0ß5"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -125,7 +125,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.8.0-alpha02")
+  implementation("com.google.android.material:material:1.8.0-alpha03")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:20.0.0")
@@ -161,8 +161,7 @@ dependencies {
   kapt("androidx.room:room-compiler:2.4.3")
 
   //compose
-  implementation("com.google.accompanist:accompanist-insets:0.27.1")
-  implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.1")
+  implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
   implementation("androidx.activity:activity-compose:1.7.0-alpha02")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")

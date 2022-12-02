@@ -9,6 +9,7 @@ import robert.findtransport.R
 
 @HiltAndroidApp
 class A2BApp : MultiDexApplication() {
+  @Suppress("DEPRECATION")
   override fun onCreate() {
     if (MissingSplitsManagerFactory.create(this).disableAppIfMissingRequiredSplits()) {
       Toast.makeText(this, R.string.error_app, Toast.LENGTH_SHORT).show()

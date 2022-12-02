@@ -107,7 +107,7 @@ private fun StopList(
   navController: NavController,
   showPrimary: Boolean,
 ) {
-  if (stops.isEmpty()) return
+  if (stops.isEmpty() || stops.size < 2) return
 
   val firstStop = stops.first()
   val restOfStops = stops.subList(1, stops.lastIndex - 1)
