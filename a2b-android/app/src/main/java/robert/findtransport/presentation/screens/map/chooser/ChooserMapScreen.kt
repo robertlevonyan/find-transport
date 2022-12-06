@@ -23,6 +23,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
@@ -53,51 +54,15 @@ fun BoxScope.ChooserMapScreen(
   homeViewModel: HomeViewModel,
 ) {
   val scope = rememberCoroutineScope()
-  val locale by mapViewModel.locale.collectAsState()
   var loading by remember { mutableStateOf(true) }
-  var showStopOptions by remember { mutableStateOf<JsonElement?>(null) }
+  val showStopOptions = remember { mutableStateOf<JsonElement?>(null) }
 
-  showStopOptions?.let { options ->
-    val stop = options.fromJson<Stop>().toStop()
-    Dialog(onDismissRequest = { showStopOptions = null }) {
-      Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = Shapes.medium,
-      ) {
-        LazyColumn(content = {
-          item { TextPrimary(text = stop.getCurrentName(locale)) }
-          item { Divider(modifier = Modifier.padding(vertical = HalfPadding)) }
-          item {
-            ModalItem(
-              image = R.drawable.ic_chooser_from,
-              label = R.string.action_set_from,
-            ) {
-              homeViewModel.setFromStop(stop)
-              navController.popBackStack()
-            }
-          }
-          item {
-            ModalItem(
-              image = R.drawable.ic_chooser_to,
-              label = R.string.action_set_to,
-            ) {
-              homeViewModel.setToStop(stop)
-              navController.popBackStack()
-            }
-          }
-          item {
-            ModalItem(
-              image = R.drawable.ic_road,
-              label = R.string.action_show,
-            ) {
-              navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
-            }
-          }
-        })
-      }
-    }
-  }
+  ShowStopOptionsDialog(
+    showStopOptions = showStopOptions,
+    mapViewModel = mapViewModel,
+    navController = navController,
+    homeViewModel = homeViewModel,
+  )
 
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
@@ -105,12 +70,10 @@ fun BoxScope.ChooserMapScreen(
   }, update = { mapView ->
     val map = mapView.getMapboxMap()
 
-    val pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
-      addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
-        pointAnnotation.getData()?.let { data -> showStopOptions = data }
-        true
-      })
-    }
+    val pointAnnotationManager = createPointAnnotationManager(
+      mapView = mapView,
+      showStopOptions = showStopOptions,
+    )
 
     map.loadStyleUri(mapStyle) {
       if (locationEnabled) {
@@ -151,18 +114,57 @@ fun BoxScope.ChooserMapScreen(
   }
 
   if (loading) {
-    Box(
-      modifier = Modifier
-        .background(color = Color.Black.copy(alpha = 0.3f))
-        .fillMaxSize()
+    CircularLoading()
+  }
+}
+
+@Composable
+private fun ShowStopOptionsDialog(
+  showStopOptions: MutableState<JsonElement?>,
+  mapViewModel: ChooserMapViewModel,
+  navController: NavController,
+  homeViewModel: HomeViewModel
+) {
+  val options = showStopOptions.value ?: return
+  val locale by mapViewModel.locale.collectAsState()
+
+  val stop = options.fromJson<Stop>().toStop()
+  Dialog(onDismissRequest = { showStopOptions.value = null }) {
+    Card(
+      elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+      shape = Shapes.medium,
     ) {
-      CircularProgressIndicator(
-        modifier = Modifier
-          .wrapContentSize()
-          .padding(FabPadding)
-          .align(Alignment.Center),
-        color = MaterialTheme.colorScheme.secondary,
-      )
+      LazyColumn(content = {
+        item { TextPrimary(text = stop.getCurrentName(locale)) }
+        item { Divider(modifier = Modifier.padding(vertical = HalfPadding)) }
+        item {
+          ModalItem(
+            image = R.drawable.ic_chooser_from,
+            label = R.string.action_set_from,
+          ) {
+            homeViewModel.setFromStop(stop)
+            navController.popBackStack()
+          }
+        }
+        item {
+          ModalItem(
+            image = R.drawable.ic_chooser_to,
+            label = R.string.action_set_to,
+          ) {
+            homeViewModel.setToStop(stop)
+            navController.popBackStack()
+          }
+        }
+        item {
+          ModalItem(
+            image = R.drawable.ic_road,
+            label = R.string.action_show,
+          ) {
+            navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
+          }
+        }
+      })
     }
   }
 }
@@ -186,6 +188,33 @@ private fun ModalItem(image: Int, label: Int, action: () -> Unit) {
         .align(Alignment.CenterVertically),
       text = stringResource(id = label),
       textAlign = TextAlign.Start,
+    )
+  }
+}
+
+private fun createPointAnnotationManager(
+  mapView: MapView,
+  showStopOptions: MutableState<JsonElement?>,
+): PointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
+  addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+    pointAnnotation.getData()?.let { data -> showStopOptions.value = data }
+    true
+  })
+}
+
+@Composable
+private fun CircularLoading() {
+  Box(
+    modifier = Modifier
+      .background(color = Color.Black.copy(alpha = 0.3f))
+      .fillMaxSize()
+  ) {
+    CircularProgressIndicator(
+      modifier = Modifier
+        .wrapContentSize()
+        .padding(FabPadding)
+        .align(Alignment.Center),
+      color = MaterialTheme.colorScheme.secondary,
     )
   }
 }
