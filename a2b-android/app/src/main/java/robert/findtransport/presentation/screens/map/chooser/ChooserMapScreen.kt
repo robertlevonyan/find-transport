@@ -34,24 +34,25 @@ import robert.findtransport.data.entity.Stop
 import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.Black
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
 import robert.findtransport.presentation.reusables.Shapes
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
+import robert.findtransport.presentation.screens.map.MapViewModel
 import robert.findtransport.presentation.screens.map.enableLocationComponent
 import robert.findtransport.presentation.screens.map.flyTo
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
-fun BoxScope.ChooserMapScreen(
+fun ChooserMapScreen(
   mapStyle: String,
   locationEnabled: Boolean,
-  mapViewModel: ChooserMapViewModel = hiltViewModel(),
+  chooserMapViewModel: ChooserMapViewModel = hiltViewModel(),
   navController: NavController,
   homeViewModel: HomeViewModel,
+  mapViewModel: MapViewModel,
 ) {
   val scope = rememberCoroutineScope()
   var loading by remember { mutableStateOf(true) }
@@ -59,7 +60,7 @@ fun BoxScope.ChooserMapScreen(
 
   ShowStopOptionsDialog(
     showStopOptions = showStopOptions,
-    mapViewModel = mapViewModel,
+    chooserMapViewModel = chooserMapViewModel,
     navController = navController,
     homeViewModel = homeViewModel,
   )
@@ -87,7 +88,7 @@ fun BoxScope.ChooserMapScreen(
         }
       }
       scope.launch {
-        mapViewModel.allStops.collectLatest { allStops ->
+        chooserMapViewModel.allStops.collectLatest { allStops ->
           pointAnnotationManager.create(allStops)
           delay(2000)
           loading = false
@@ -95,23 +96,6 @@ fun BoxScope.ChooserMapScreen(
       }
     }
   })
-
-  if (locationEnabled) {
-    FloatingActionButton(modifier = Modifier
-      .align(Alignment.BottomEnd)
-      .padding(FabPadding),
-      containerColor = MaterialTheme.colorScheme.secondary,
-      contentColor = Black,
-      onClick = {
-        mapViewModel.getCurrentLocation()
-      }) {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_current_location_default),
-        contentDescription = stringResource(id = R.string.cd_current_location),
-        tint = Black,
-      )
-    }
-  }
 
   if (loading) {
     CircularLoading()
@@ -121,12 +105,12 @@ fun BoxScope.ChooserMapScreen(
 @Composable
 private fun ShowStopOptionsDialog(
   showStopOptions: MutableState<JsonElement?>,
-  mapViewModel: ChooserMapViewModel,
+  chooserMapViewModel: ChooserMapViewModel,
   navController: NavController,
   homeViewModel: HomeViewModel
 ) {
   val options = showStopOptions.value ?: return
-  val locale by mapViewModel.locale.collectAsState()
+  val locale by chooserMapViewModel.locale.collectAsState()
 
   val stop = options.fromJson<Stop>().toStop()
   Dialog(onDismissRequest = { showStopOptions.value = null }) {

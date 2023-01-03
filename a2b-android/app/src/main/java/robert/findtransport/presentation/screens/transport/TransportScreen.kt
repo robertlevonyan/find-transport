@@ -4,7 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -107,12 +107,6 @@ private fun StopList(
   navController: NavController,
   showPrimary: Boolean,
 ) {
-  if (stops.isEmpty() || stops.size < 2) return
-
-  val firstStop = stops.first()
-  val restOfStops = stops.subList(1, stops.lastIndex - 1)
-  val lastStop = stops.last()
-
   Box(modifier = modifier) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
       item {
@@ -130,32 +124,30 @@ private fun StopList(
           onSecondaryRouteClicked = onSecondaryRouteClicked,
         )
       }
-      item {
-        FirstStopCard(
-          stop = firstStop,
-          locale = locale,
-          showOptions = showOptions,
-          homeViewModel = homeViewModel,
-          navController = navController,
-        )
-      }
-      items(restOfStops) { stop ->
-        StopCard(
-          stop = stop,
-          locale = locale,
-          showOptions = showOptions,
-          homeViewModel = homeViewModel,
-          navController = navController,
-        )
-      }
-      item {
-        LastStopCard(
-          stop = lastStop,
-          locale = locale,
-          showOptions = showOptions,
-          homeViewModel = homeViewModel,
-          navController = navController,
-        )
+      itemsIndexed(stops) { index, stop ->
+        when (index) {
+          0 -> FirstStopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+          stops.lastIndex -> LastStopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+          else -> StopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+        }
       }
     }
 

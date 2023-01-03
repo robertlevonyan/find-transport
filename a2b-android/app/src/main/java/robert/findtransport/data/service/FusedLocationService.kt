@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.*
+import kotlinx.coroutines.CancellableContinuation
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import kotlin.coroutines.resume
@@ -13,7 +14,7 @@ class FusedLocationService(private val context: Context) {
   private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
   @SuppressLint("MissingPermission")
-  suspend fun subscribeToCurrentLocation() = suspendCoroutine<Location> { locationContinuation ->
+  suspend fun getCurrentLocation() = suspendCoroutine<Location> { locationContinuation ->
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
@@ -22,8 +23,12 @@ class FusedLocationService(private val context: Context) {
         Location("current_location").also { currentLocation ->
           currentLocation.latitude = lastLocation?.latitude ?: DEFAULT_LATITUDE
           currentLocation.longitude = lastLocation?.longitude ?: DEFAULT_LONGITUDE
-        }.let(locationContinuation::resume)
-
+        }.let { location ->
+          if (locationContinuation is CancellableContinuation && !locationContinuation.isActive) {
+            return
+          }
+          locationContinuation.resume(location)
+        }
         fusedLocationClient.removeLocationUpdates(this)
       }
     }
@@ -33,5 +38,6 @@ class FusedLocationService(private val context: Context) {
       locationCallback,
       context.mainLooper,
     )
+
   }
 }

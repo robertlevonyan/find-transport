@@ -31,7 +31,9 @@ import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
+import robert.findtransport.presentation.screens.map.MapViewModel
 import robert.findtransport.presentation.screens.map.enableLocationComponent
+import robert.findtransport.presentation.screens.map.flyTo
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.EMPTY_ID
@@ -42,7 +44,8 @@ import robert.findtransport.utils.extensions.*
 fun PreviewMapScreen(
   mapStyle: String,
   locationEnabled: Boolean,
-  mapViewModel: PreviewMapViewModel = hiltViewModel(),
+  previewMapViewModel: PreviewMapViewModel = hiltViewModel(),
+  mapViewModel: MapViewModel,
   navController: NavController,
   transportId: Int,
   underground: Boolean,
@@ -53,13 +56,13 @@ fun PreviewMapScreen(
     return
   }
   if (reversed) {
-    mapViewModel.getReversedTransportRoute(transportId, underground)
+    previewMapViewModel.getReversedTransportRoute(transportId, underground)
   } else {
-    mapViewModel.getTransportRoute(transportId, underground)
+    previewMapViewModel.getTransportRoute(transportId, underground)
   }
 
   val scope = rememberCoroutineScope()
-  val locale by mapViewModel.locale.collectAsState()
+  val locale by previewMapViewModel.locale.collectAsState()
 
   AndroidView(
     modifier = Modifier.fillMaxSize(),
@@ -89,10 +92,17 @@ fun PreviewMapScreen(
         onStyleLoaded = {
           if (locationEnabled) {
             mapView.enableLocationComponent()
+            mapViewModel.getCurrentLocation()
           }
 
           scope.launch {
-            mapViewModel.route.collectLatest { result ->
+            mapViewModel.currentLocation.collectLatest { currentLocation ->
+              map.flyTo(currentLocation)
+            }
+          }
+
+          scope.launch {
+            previewMapViewModel.route.collectLatest { result ->
               handleRoute(
                 result = result,
                 reversed = reversed,

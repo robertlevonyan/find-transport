@@ -13,7 +13,7 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
 
   override suspend fun getCurrentLocation(): Location =
-    fusedLocationService.subscribeToCurrentLocation()
+    fusedLocationService.getCurrentLocation()
 
   override fun subscribeToLocationUpdates(): Flow<Location> =
     locationObserverService.getLocationUpdates()

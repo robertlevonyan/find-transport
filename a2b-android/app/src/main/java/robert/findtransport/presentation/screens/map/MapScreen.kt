@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -139,10 +138,12 @@ fun MapScreen(
         locationEnabled = locationEnabled,
         navController = navController,
         homeViewModel = homeViewModel,
+        mapViewModel = mapViewModel,
       )
       MapType.PREVIEW -> PreviewMapScreen(
         mapStyle = mapStyle,
         locationEnabled = locationEnabled,
+        mapViewModel = mapViewModel,
         navController = navController,
         transportId = transportId,
         underground = underground,
@@ -159,6 +160,23 @@ fun MapScreen(
         painter = painterResource(id = R.drawable.ic_arrow_back),
         contentDescription = stringResource(id = R.string.cd_current_location),
       )
+    }
+
+    if (locationEnabled) {
+      FloatingActionButton(modifier = Modifier
+        .align(Alignment.BottomEnd)
+        .padding(FabPadding),
+        containerColor = MaterialTheme.colorScheme.secondary,
+        contentColor = Black,
+        onClick = {
+          mapViewModel.getCurrentLocation()
+        }) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_current_location_default),
+          contentDescription = stringResource(id = R.string.cd_current_location),
+          tint = Black,
+        )
+      }
     }
   }
 }
