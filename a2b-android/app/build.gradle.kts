@@ -126,13 +126,13 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.8.0-alpha03")
+  implementation("com.google.android.material:material:1.8.0-beta01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:20.0.0")
   implementation("com.google.code.gson:gson:2.10")
   implementation("com.google.dagger:hilt-android:2.44.2")
-  releaseImplementation(platform("com.google.firebase:firebase-bom:31.1.0"))
+  releaseImplementation(platform("com.google.firebase:firebase-bom:31.1.1"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 
@@ -146,7 +146,7 @@ dependencies {
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.9.0")
   implementation("androidx.core:core-splashscreen:1.0.0")
-  implementation("androidx.fragment:fragment-ktx:1.5.4")
+  implementation("androidx.fragment:fragment-ktx:1.5.5")
   implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
   implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
   implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
@@ -169,10 +169,10 @@ dependencies {
   implementation("androidx.navigation:navigation-compose:2.5.3")
   implementation("androidx.paging:paging-compose:1.0.0-alpha17")
   implementation("androidx.compose.compiler:compiler:1.3.2")
-  implementation("androidx.compose.ui:ui:1.4.0-alpha02")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha02")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha02")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha02")
+  implementation("androidx.compose.ui:ui:1.4.0-alpha03")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha03")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha03")
   implementation("io.coil-kt:coil-compose:2.2.2")
 
   //squareup
