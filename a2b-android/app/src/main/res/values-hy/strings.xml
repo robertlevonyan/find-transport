@@ -6,69 +6,53 @@
   <string name="title_settings">Կարգավորումներ</string>
   <string name="title_feedback">Հետադարձ կապ</string>
   <string name="title_history">Փնտրման պատմություն</string>
-  <string name="title_language_picker">Ընտրեք հավելվածի լեզուն</string>
-  <string name="title_theme_picker">Ընտրեք ձևավորման տարբերակը</string>
   <string name="title_transports">Տրանսպորտներ</string>
-  <string name="title_track_route">A2B-ի ճանապարհի հետևում</string>
-  <string name="title_track_route_start">Հետևումը սկսվում է</string>
 
   <!--messages-->
   <string name="message_slider_welcome">Բարև՜</string>
-  <string name="message_update">Թարմացումը հասանելի է։ Ներբեռնե՞լ</string>
-  <string name="message_no_update">Ձեր մոտ ամենանոր տարբերակն է</string>
-  <string name="message_downloading">Թարմացումը ներբեռնվում է…</string>
-  <string name="message_no_data">Կներեք, բայց տվյալները բացակայում են։ Ստուգեք Ինտերնետի հասանելիությունը և փորձեք կրկին։</string>
-  <string name="message_error_download">Կներեք, տվյալները հնարավոր չէ ներբեռնել։ Ստուգեք Ինտերնետի հասանելիությունը կամ առկա VPN միացման բացակայությունը։</string>
-  <string name="message_error_download_disk_full">Կներեք, տվյալները հնարավոր չէ ներբեռնել։ Սարքի հիշողությունը սպառված է։</string>
   <string name="message_feedback"> Այստեղից կարող եք ուղարկել Ձեր կարծիքը հավելվածի մասին։ Այն շա՛տ կարևոր է։</string>
-  <string name="message_history_dialog_restore">Ցանկանում ե՞ք վերականգնել տվյալ փնտրման արդյունքները։</string>
   <string name="message_history_dialog_clear">Ցանկանում ե՞ք մաքրել պատմությունը։</string>
   <string name="message_history_dialog_delete">Ցանկացնում ե՞ք հեռացնել գրանցումը պատմությունից։</string>
+  <string name="message_history_dialog_restore">Ցանկացնում ե՞ք վերականգնել տվյալ փնտրման արդյունքները։</string>
   <string name="message_rate">Եթե հավանել եք մեր հավելվածը, գնահատեք այն 5 աստղ Google Play Store-ում և  կիսվեք կարծիքով</string>
-  <string name="message_no_history">Փնտրման պատմությունը դատարկ է</string>
-  <string name="message_loading_data">Տվյալների բեռնում</string>
   <string name="message_next_stop">Դուք մոտենում եք նշված կանգառին։ Իջեք հաջորդ կանգառում։</string>
   <string name="message_arrived">Դուք հասել եք։ Կարող եք իջնել տրանսպորտից</string>
+  <string name="message_check_download">Թարմացման ստուգում</string>
 
   <!--labels-->
   <string name="label_bus">Ավտոբուս</string>
   <string name="label_microbus">Միկրոավտոբուս</string>
   <string name="label_trolleybus">Տրոլեյբուս</string>
   <string name="label_underground">Մետրո</string>
-  <string name="label_cancel">Փակել</string>
   <string name="label_yes">Այո</string>
   <string name="label_no">Ոչ</string>
   <string name="label_from_long">Ես մեկնում եմ</string>
   <string name="label_from">Որտեղից՝</string>
   <string name="label_from2">Այս կանգառից`</string>
   <string name="label_to_long">եւ ուզում եմ հասնել</string>
-  <string name="label_to">Ուր:</string>
-  <string name="label_route_start">Երթուղու սկիզբ</string>
-  <string name="label_route_end">Երթուղու ավարտ</string>
+  <string name="label_to">Ուր`</string>
   <string name="label_all_transports">Բոլոր երթուղիները</string>
   <string name="label_search">Փնտրել</string>
-  <string name="label_rate">Գնահատել</string>
   <string name="label_select_stop">Ընտրեք կանգառ</string>
   <string name="label_primary_route">Հիմնական</string>
   <string name="label_secondary_route">Հետադարձ</string>
-  <string name="label_dismiss">Փակել</string>
   <string name="label_walk_to">Այնուհետև քայլեք</string>
   <string name="label_walk_from">Քայլեք այստեղից՝</string>
   <string name="label_interchange_from">Նստեք տրանսպորտ այստեղից՝</string>
   <string name="label_interchange_to">Իջեք այստեղ`</string>
   <string name="label_take_transport">Նստեք հետևյալներից որևէ մեկը</string>
-  <string name="label_no_stops">Ձեր փնտրմանը հապատասխան կանգառ չի գտնվել</string>
   <string name="label_selected_stop">«%1$s» կանգառում կանգնող տրանսպորտի ցանկը</string>
-  <string name="label_show">Ցուցադրել</string>
   <string name="label_see_all">Բոլորը</string>
   <string name="label_see_favorites">Նախընտրելիները</string>
-  <string name="label_track">Հետևել ճանապարհին</string>
   <string name="label_stop_tracker">Դադարեցնել հետևումը</string>
   <string name="label_tracker_transport">Դուք ընտրել եք</string>
   <string name="label_current_stop">Ներկայիս կանգառը</string>
   <string name="label_arriving">Հասնում ենք</string>
-  <string name="label_arrived">Դուք հասել եք</string>
-  <string name="label_arrived_dialog">Հասել եք</string>
+  <string name="label_open_settings">Բացել կարգավորումները</string>
+  <string name="label_retry">Կրկնել</string>
+  <string name="label_send_feedback">Ուղարկել նամակը</string>
+  <string name="label_close">Close</string>
+  <string name="label_feedback_sending">Ուղարկվում է…</string>
 
   <!--hints-->
   <string name="hint_from">որտեղից</string>
@@ -83,14 +67,15 @@
   <string name="error_no_routes">Դժբախտաբար, ոչ մի երթուղի չի գտնվել</string>
   <string name="error_no_from">Խնդրում եմ ընտրել մեկնելու կանգառը</string>
   <string name="error_no_to">Խնդրում եմ ընտրել ժամանման կանգառը</string>
-  <string name="error_stop_not_found">Կանգառը չի գտնվել</string>
   <string name="error_empty_email">Էլ. փոստը չի կարող դատարկ լինել</string>
   <string name="error_email">Խնդրում եմ մուտքագրել ճիշտ էլ. փոստ</string>
   <string name="error_subject">Խնդրում եմ մուտքագրել հաղորդագրության վերնագիրը</string>
   <string name="error_message">Խնդրում եմ մուտքագրել հաղորդագրությունը</string>
   <string name="error_message_short">Հաղորդագրությունը պետք է ունենա նվազագույնը 20 սիմվոլ</string>
   <string name="error_app">Հավելվածը ներբեռնված չէ Google Play-ից։ Խնդրում եմ քաշեք այդտեղից։</string>
-  <string name="error_location">Այս հնարավորությունը չի կարող աշխատել առանց տեղորոշման թույլտվության</string>
+  <string name="error_no_internet">Կարծես թե Ինտերնետն անհասանելի է</string>
+  <string name="error_not_downloaded">Ներբեռնման սխալ</string>
+  <string name="error_storage">Ձեր սարքի հիշողությունը սխառված է, խնդրում ենք ազատել հիշողությունը և փորձել կրկին։</string>
 
   <!--permissions-->
   <string name="permission_title">Դուք մեզ պետք եք</string>
@@ -100,44 +85,29 @@
   
   <!--settings strings-->
   <string name="settings_language">Լեզու</string>
-  <string name="settings_db_update_3g">Տվյալների թարմացում հեռախոսի կապով</string>
-  <string name="settings_notifications">Ծանուցումներ</string>
-  <string name="settings_check_app_version">Թարմացնել տվյալները</string>
+  <string name="settings_check_database">Թարմացնել տվյալները</string>
   <string name="settings_rate">Գնահատական</string>
   <string name="settings_app_version">Հավելվածի տարբերակը</string>
-  <string name="settings_app_version_details">Հավելվածի ներկա տարբերակի համարը</string>
-  <string name="settings_language_details">Փոխել հավելվախի լեզուն</string>
-  <string name="settings_db_update_3g_details">Թարմացնել եթե բջջային ինտերնետը միացրած է</string>
-  <string name="settings_notifications_details">Ստանալ ծանուցումներ տվյալների թարմացման վերաբերյալ</string>
-  <string name="settings_check_app_details">Ինքնուրույն թարմացումնել տվյալները</string>
+  <string name="settings_update_database">Սեղմեք տվյալները թարմացումնելու համար </string>
   <string name="settings_rate_details">Գնահատել Google Play Store-ում</string>
   <string name="settings_theme">Ձձավորում</string>
-  <string name="settings_theme_details">Փոխել հավելվածի գունավորումը</string>
   <string name="settings_theme_light">Բաց</string>
   <string name="settings_theme_dark">Մուգ</string>
-  <string name="settings_theme_battery">Փոխել մարտկոցի ցածր տոկոսի դեպքում</string>
-  <string name="settings_theme_battery_short">Մարտկոցով</string>
   <string name="settings_theme_system_short">Համակարգային</string>
-  <string name="settings_theme_system">Ըստ օպերացիոն համակարգի</string>
+  <string name="settings_general">Ընդհանուր</string>
 
   <!--action strings-->
   <string name="action_show">Ցույց տալ երթուղիները</string>
   <string name="action_set_from">Ընտրել որպես մեկնելու կանգառ</string>
   <string name="action_set_to">Ընտրել որպես ժամանման կանգառ</string>
-  <string name="action_set_from_route">%1$s֊ն ընտրված է որպես մեկնելու կանգառ</string>
-  <string name="action_set_to_route">%1$s֊ն ընտրված է որպես ժամանման կանգառ</string>
   <string name="action_settings">Կարգավորումներ</string>
   <string name="action_feedback">Հետադարձ կապ</string>
   <string name="action_history">Պատմություն</string>
-  <string name="action_clear_history">Մաքրել պատմությունը</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Ձեր հաղորդագրությունն ուղարկված է։ Շնորհակալություն 😊</string>
 
   <!--content description strings-->
-  <string name="cd_next">Հաջորդ էջը</string>
-  <string name="cd_options">Բացել տարբերակներ</string>
-  <string name="cd_dropwdown">Ներքև թափվող մենյու</string>
   <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
   <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
 </resources>

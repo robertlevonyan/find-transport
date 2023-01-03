@@ -3,8 +3,10 @@ package robert.findtransport.di
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ServiceComponent
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
+import robert.findtransport.domain.usecase.data.DownloadDataUseCase
+import robert.findtransport.domain.usecase.data.DownloadDataUseCaseImpl
 import robert.findtransport.domain.usecase.database.DatabaseUseCase
 import robert.findtransport.domain.usecase.database.DatabaseUseCaseImpl
 import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
@@ -20,15 +22,15 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCaseImpl
 import robert.findtransport.domain.usecase.preference.*
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCaseImpl
-import robert.findtransport.domain.usecase.settings.SettingsUseCase
-import robert.findtransport.domain.usecase.settings.SettingsUseCaseImpl
+import robert.findtransport.domain.usecase.search.SearchUseCase
+import robert.findtransport.domain.usecase.search.SearchUseCaseImpl
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCaseImpl
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCaseImpl
 
 @Module
-@InstallIn(ViewModelComponent::class, ServiceComponent::class)
+@InstallIn(ViewModelComponent::class, ActivityComponent::class)
 abstract class UseCaseModule {
   @Binds
   abstract fun bindCheckInternetUseCase(checkInternetUseCaseImpl: CheckInternetUseCaseImpl): CheckInternetUseCase
@@ -49,9 +51,6 @@ abstract class UseCaseModule {
   abstract fun bindIntroUseCase(introUseCaseImpl: IntroUseCaseImpl): IntroUseCase
 
   @Binds
-  abstract fun bindSettingsUseCase(settingsUseCaseImpl: SettingsUseCaseImpl): SettingsUseCase
-
-  @Binds
   abstract fun bindFeedbackUseCase(feedbackUseCaseImpl: FeedbackUseCaseImpl): FeedbackUseCase
 
   @Binds
@@ -59,6 +58,9 @@ abstract class UseCaseModule {
 
   @Binds
   abstract fun bindTransportUseCase(transportUseCaseImpl: TransportUseCaseImpl): TransportUseCase
+
+  @Binds
+  abstract fun bindSearchUseCase(searchUseCaseImpl: SearchUseCaseImpl): SearchUseCase
 
   @Binds
   abstract fun bindPermissionUseCase(permissionUseCaseImpl: PermissionUseCaseImpl): PermissionUseCase
@@ -71,4 +73,7 @@ abstract class UseCaseModule {
 
   @Binds
   abstract fun bindLocationUseCase(locationUseCaseImpl: LocationUseCaseImpl): LocationUseCase
+
+  @Binds
+  abstract fun bindDownloadDataUseCase(downloadDataUseCaseImpl: DownloadDataUseCaseImpl): DownloadDataUseCase
 }

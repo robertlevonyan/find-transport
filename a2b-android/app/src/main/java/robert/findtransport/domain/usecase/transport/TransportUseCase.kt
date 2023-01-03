@@ -1,12 +1,17 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
+import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import robert.findtransport.data.model.*
+import robert.findtransport.data.model.Result
+import robert.findtransport.data.model.RouteResult
+import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.Transport
+import robert.findtransport.data.model.enums.SearchState
 
 interface TransportUseCase {
-  fun getTransportsPaged(checked: Boolean): List<Transport>
+  fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>>
 
   fun getTransportById(id: Int?): Flow<Transport>
 
@@ -20,11 +25,7 @@ interface TransportUseCase {
 
   fun areJoinsCached(): Boolean
 
-  suspend fun searchCheck(from: Stop?, to: Stop?): Result<Unit>
-
-  suspend fun search(from: Stop?, to: Stop?): Result<SearchResult>
-
-  suspend fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<Result<RouteResult>>
+  fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<RouteResult>
 
   suspend fun toggleFavorite(transport: Transport)
 

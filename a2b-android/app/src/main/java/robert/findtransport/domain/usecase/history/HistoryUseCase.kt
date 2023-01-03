@@ -1,9 +1,10 @@
 package robert.findtransport.domain.usecase.history
 
+import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.History
 
 interface HistoryUseCase {
-  suspend fun getHistory(): List<History>
+  fun getHistory(): Flow<List<History>>
 
   suspend fun clearHistory()
 

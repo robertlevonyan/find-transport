@@ -1,47 +1,7 @@
 <resources>
   <dimen name="fab_margin">16dp</dimen>
-  <dimen name="half_margin">8dp</dimen>
-  <dimen name="activity_horizontal_margin_big">32dp</dimen>
-  <dimen name="margin_x_small">5dp</dimen>
-  <dimen name="margin_small">10dp</dimen>
-  <dimen name="margin_large">20dp</dimen>
-  <dimen name="margin_x_large">25dp</dimen>
-  <dimen name="margin_xx_large">30dp</dimen>
-  <dimen name="margin_xxx_large">40dp</dimen>
-  <dimen name="margin_2">2dp</dimen>
-  <dimen name="margin_7">7dp</dimen>
-  <dimen name="margin_12">12dp</dimen>
   <dimen name="margin_85">85dp</dimen>
-  <dimen name="route_list_bottom_padding">75dp</dimen>
-  <dimen name="margin_tablet">0dp</dimen>
 
-  <dimen name="splash_title_width">200dp</dimen>
-  <dimen name="intro_lng_height">90dp</dimen>
-  <dimen name="line_width">1dp</dimen>
-  <dimen name="search_input_height">45dp</dimen>
-  <dimen name="main_list_bottom_padding">50dp</dimen>
   <dimen name="icon_size">24dp</dimen>
-  <dimen name="icon_size2">40dp</dimen>
-  <dimen name="setting_icon_size">36dp</dimen>
-  <dimen name="transport_icon_size">45dp</dimen>
-  <dimen name="fab_size">56dp</dimen>
-  <dimen name="button_size">66dp</dimen>
 
-  <dimen name="card_radius">16dp</dimen>
-  <dimen name="small_radius">8dp</dimen>
-  
-  <dimen name="number_text_size">40sp</dimen>
-  <dimen name="input_text_size">14sp</dimen>
-  <dimen name="type_text_size">18sp</dimen>
-  <dimen name="first_last_text_size">14sp</dimen>
-  <dimen name="route_item_text_size">11sp</dimen>
-  <dimen name="setting_text_size">16sp</dimen>
-  <dimen name="splash_text_size">24sp</dimen>
-  <dimen name="title_text_size2">22sp</dimen>
-  <dimen name="text_size_12">12sp</dimen>
-  <dimen name="text_size_14">16sp</dimen>
-  <dimen name="text_size_16">16sp</dimen>
-  <dimen name="text_size_18">18sp</dimen>
-  <dimen name="text_size_20">20sp</dimen>
-  <dimen name="text_size_28">28sp</dimen>
 </resources>

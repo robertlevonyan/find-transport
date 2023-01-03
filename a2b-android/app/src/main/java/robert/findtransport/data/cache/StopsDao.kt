@@ -1,8 +1,10 @@
 package robert.findtransport.data.cache
 
 import androidx.paging.PagingSource
-import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteQuery
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.StopLocation
 
@@ -32,11 +34,14 @@ interface StopsDao {
   @Query("SELECT count(*) FROM StopLocation")
   suspend fun getLocationsCount(): Int
 
-  @RawQuery
-  suspend fun getStopsAutocomplete(supportSQLiteQuery: SupportSQLiteQuery): List<Stop>
+  @Query("SELECT * FROM Stop WHERE nameEn LIKE '%'||:word||'%' ORDER BY nameEn ASC")
+  fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
 
-  @Query("SELECT * FROM Stop")
-  fun getAllStopsPaged(): PagingSource<Int, Stop>
+  @Query("SELECT * FROM Stop WHERE nameAm LIKE '%'||:word||'%' ORDER BY nameAm ASC")
+  fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
+
+  @Query("SELECT * FROM Stop WHERE nameRu LIKE '%'||:word||'%' ORDER BY nameRu ASC")
+  fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
 
   @Query("SELECT * FROM StopLocation WHERE stopId = :stopId")
   suspend fun getStopLocations(stopId: Int): List<StopLocation>

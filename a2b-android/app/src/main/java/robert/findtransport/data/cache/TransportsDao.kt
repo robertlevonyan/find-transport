@@ -1,5 +1,6 @@
 package robert.findtransport.data.cache
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -27,7 +28,7 @@ interface TransportsDao {
   fun getTransportById(id: Int): Flow<Transport>
 
   @Query("SELECT * FROM Transport WHERE CASE(:favorite) WHEN 1 THEN favorite = 1 ELSE  favorite = 1 OR favorite = 0 END ORDER BY type ASC, CAST(name AS DECIMAL) ASC")
-  fun getAllTransports(favorite: Boolean): List<Transport>
+  fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
 
   @Query("SELECT count(*) FROM Transport")
   suspend fun getTransportsCount(): Int

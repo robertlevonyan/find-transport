@@ -6,36 +6,24 @@
   <string name="title_settings">Настройки</string>
   <string name="title_feedback">Обратная связь</string>
   <string name="title_history">История поисков</string>
-  <string name="title_language_picker">Выберите язык приложения</string>
-  <string name="title_theme_picker">Выберите тему оформления</string>
   <string name="title_transports">Транспорты</string>
-  <string name="title_track_route">A2B трэкер дивжения</string>
-  <string name="title_track_route_start">Запуск трэкера</string>
 
   <!--messages-->
   <string name="message_slider_welcome">Привет!</string>
-  <string name="message_update">Доступно обновление. Скачать?</string>
-  <string name="message_no_update">У вас последняя версия</string>
-  <string name="message_downloading">Скачивание обновления…</string>
-  <string name="message_no_data">Извините, но данные отсустсвуют. Пожалуйста, проверьте наличие Интернета и попробуйте снова.</string>
-  <string name="message_error_download">Извините, невозможно скачать данные. Пожалуйста, проверьте наличие Интернета и отсуствие VPN подключения.</string>
-  <string name="message_error_download_disk_full">Извините, невозможно скачать данные. Нет свободного места на диске.</string>
   <string name="message_feedback"> Отсюда вы можете отправить свое мнение о приложении. Оно очень важно для нас!</string>
-  <string name="message_history_dialog_restore">Хотите востанавить результаты этого поиска?</string>
   <string name="message_history_dialog_clear">Хотите очистить историю?</string>
   <string name="message_history_dialog_delete">Хотите удалить запись из истории?</string>
+  <string name="message_history_dialog_restore">Хотите восстановить результаты этого поиска?</string>
   <string name="message_rate">Если вам понравилось наше приложение, поставте ему 5 звезд в Google Play Store и напишите мнение!</string>
-  <string name="message_no_history">Нет истории</string>
-  <string name="message_loading_data">Загрузка данных</string>
   <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>
   <string name="message_arrived">Вы доехали до пункта назначения</string>
+  <string name="message_check_download">Поиск обновлений</string>
 
   <!--labels-->
   <string name="label_bus">Автобус</string>
   <string name="label_microbus">Микроавтобус</string>
   <string name="label_trolleybus">Троллейбус</string>
   <string name="label_underground">Метро</string>
-  <string name="label_cancel">Закрыть</string>
   <string name="label_yes">Да</string>
   <string name="label_no">Нет</string>
   <string name="label_from_long">Я еду из</string>
@@ -43,32 +31,28 @@
   <string name="label_from2">Из</string>
   <string name="label_to_long">и хочу доехать</string>
   <string name="label_to">Куда:</string>
-  <string name="label_route_start">Начало пути</string>
-  <string name="label_route_end">Конец пути</string>
   <string name="label_all_transports">Все маршруты</string>
   <string name="label_search">Поиск</string>
-  <string name="label_rate">Понравилось</string>
   <string name="label_select_stop">Выберите остановку</string>
   <string name="label_primary_route">Основной</string>
   <string name="label_secondary_route">Обратный</string>
-  <string name="label_dismiss">Закрыть</string>
   <string name="label_walk_to">Потом пройдите</string>
   <string name="label_walk_from">Пройдите отсюда</string>
   <string name="label_interchange_from">Садитесь в транспорт отсюда</string>
   <string name="label_interchange_to">Выходите здесь</string>
   <string name="label_take_transport">Воспользуетесь каким либо транспортом из списка</string>
-  <string name="label_no_stops">По вашему запросу остановок не найдено</string>
   <string name="label_selected_stop">Транспорты останавливающиеся у остановки "%1$s"</string>
-  <string name="label_show">Показать</string>
   <string name="label_see_all">Все</string>
   <string name="label_see_favorites">Избранные</string>
-  <string name="label_track">Трекер пути</string>
   <string name="label_stop_tracker">Остановка трекера</string>
   <string name="label_tracker_transport">Вы выбрали</string>
   <string name="label_current_stop">Текущая остановка</string>
   <string name="label_arriving">Прибытие</string>
-  <string name="label_arrived">Вы доехали до пункта назначения</string>
-  <string name="label_arrived_dialog">Доехали</string>
+  <string name="label_open_settings">Открыть настройки</string>
+  <string name="label_retry">Повторить</string>
+  <string name="label_send_feedback">Отправить письмо</string>
+  <string name="label_close">Close</string>
+  <string name="label_feedback_sending">Отправление…</string>
 
   <!--hints-->
   <string name="hint_from">откуда</string>
@@ -83,14 +67,15 @@
   <string name="error_no_routes">К сожалению, ничего не найдено</string>
   <string name="error_no_from">Пожалуйста, выберите точку отбытия</string>
   <string name="error_no_to">Пожалуйста, выберите точку прибытия</string>
-  <string name="error_stop_not_found">Остановка не найдена</string>
   <string name="error_empty_email">Адрел эл. почты не должен быть пустым</string>
   <string name="error_email">Пожалуйста, введите корректный адрел эл. почты</string>
   <string name="error_subject">Пожалуйста, введите заголовок</string>
   <string name="error_message">Пожалуйста, введите сообщение</string>
   <string name="error_message_short">Сообщение должно состоять минимум из 20-и символов</string>
   <string name="error_app">Приложение не скачано из Google Play store. Пожалуйста скачайте оттуда.</string>
-  <string name="error_location">Эта функция не может работать без местоположения</string>
+  <string name="error_no_internet">Похоже Интернет не доступен</string>
+  <string name="error_not_downloaded">Ошибка при скачивании</string>
+  <string name="error_storage">Недостаточно памяти, пожалуйста очистите часть диска.</string>
 
   <!--permissions-->
   <string name="permission_title">Вы нужны нам</string>
@@ -100,44 +85,29 @@
 
   <!--settings strings-->
   <string name="settings_language">Язык</string>
-  <string name="settings_db_update_3g">Обновление данных через мобильную сеть</string>
-  <string name="settings_notifications">Уведомления</string>
-  <string name="settings_check_app_version">Обновить данные</string>
+  <string name="settings_check_database">Обновить данные</string>
   <string name="settings_rate">Оценка</string>
   <string name="settings_app_version">Версия </string>
-  <string name="settings_app_version_details">Номер версии приложения</string>
-  <string name="settings_language_details">Изменить язык приложения</string>
-  <string name="settings_db_update_3g_details">Обновлять при мобильном подключении</string>
-  <string name="settings_notifications_details">Получать уведомления об обновлениях базы данных</string>
-  <string name="settings_check_app_details">Вручную обновить данные</string>
+  <string name="settings_update_database">Нажмите чтобы обновить данные</string>
   <string name="settings_rate_details">Оценить в Google Play Store</string>
   <string name="settings_theme">Тема</string>
-  <string name="settings_theme_details">Изменить оформление приложения</string>
   <string name="settings_theme_light">Светлая</string>
   <string name="settings_theme_dark">Темная</string>
-  <string name="settings_theme_battery">Изменить при низком уровне батареи</string>
-  <string name="settings_theme_battery_short">Батарея</string>
   <string name="settings_theme_system_short">Системная</string>
-  <string name="settings_theme_system">Системная тема</string>
+  <string name="settings_general">Общее</string>
 
   <!--action strings-->
   <string name="action_show">Показать маршруты</string>
   <string name="action_set_from">Выбрать как точку отбытия</string>
   <string name="action_set_to">Выбрать как точку прибытия</string>
-  <string name="action_set_from_route">%1$s выбрана как точка отбытия</string>
-  <string name="action_set_to_route">%1$s выбрана как точка прибытия</string>
   <string name="action_settings">Настройки</string>
   <string name="action_feedback">Обратная связь</string>
   <string name="action_history">История</string>
-  <string name="action_clear_history">Очистить историю</string>
 
   <!--feedback strings-->
   <string name="feedback_sent">Ваше сообщение отправлено. Спасибо! 😊</string>
 
   <!--content description strings-->
-  <string name="cd_next">Слдеующая страница</string>
-  <string name="cd_options">Дополнительно</string>
-  <string name="cd_dropwdown">Выпадающее меню</string>
   <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
   <string name="cd_show_on_map">Показать путь на карте</string>
 </resources>

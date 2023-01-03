@@ -1,6 +1,7 @@
 package robert.findtransport.data.repository
 
 import android.util.Log
+import androidx.paging.PagingSource
 import com.mapbox.api.directions.v5.models.DirectionsRoute
 import com.mapbox.api.matching.v5.models.MapMatchingResponse
 import com.mapbox.geojson.Point
@@ -53,8 +54,8 @@ class TransportsRepositoryImpl @Inject constructor(
     Log.d("A2B Join", "${saved.size}")
   }
 
-  override fun getAllTransports(favorite: Boolean): List<Transport> =
-    transportsDao.getAllTransports(favorite)
+  override fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport> =
+    transportsDao.getTransportsPaged(favorite)
 
   override fun getTransportById(id: Int): Flow<Transport> =
     transportsDao.getTransportById(id)
@@ -75,7 +76,7 @@ class TransportsRepositoryImpl @Inject constructor(
       if (!channel.isClosedForSend) {
         launch {
           channel.send(
-            Result.Error(
+            element = Result.Error(
               A2bException(
                 type = ExceptionType.NAVIGATION_EMPTY,
                 errorMessage = R.string.error_no_routes,
@@ -90,18 +91,19 @@ class TransportsRepositoryImpl @Inject constructor(
     val navigation = mapboxNavigationService.getNavigation(coordinates)
     navigation.enqueueCall(object : Callback<MapMatchingResponse> {
       override fun onResponse(call: Call<MapMatchingResponse>, response: Response<MapMatchingResponse>) {
-        response.takeIf { it.isSuccessful }
-          ?.body()?.matchings()?.run {
+        if (response.isSuccessful) {
+          response.body()?.matchings()?.run {
             val route = get(0).toDirectionRoute()
             if (!channel.isClosedForSend) {
-              launch { channel.send(Result.Success(route)) }
+              launch { channel.send(element = Result.Success(route)) }
             }
           }
-          ?: if (!channel.isClosedForSend) {
+        } else {
+          if (!channel.isClosedForSend) {
             launch {
               channel.send(
-                Result.Error(
-                  A2bException(
+                element = Result.Error(
+                  exception = A2bException(
                     type = ExceptionType.NAVIGATION_EMPTY,
                     errorMessage = R.string.error_no_routes,
                     error = Exception("")
@@ -109,7 +111,8 @@ class TransportsRepositoryImpl @Inject constructor(
                 )
               )
             }
-          } else return
+          }
+        }
       }
 
       override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
@@ -117,7 +120,7 @@ class TransportsRepositoryImpl @Inject constructor(
         if (!channel.isClosedForSend) {
           launch {
             channel.send(
-              Result.Error(
+              element = Result.Error(
                 A2bException(
                   type = ExceptionType.NAVIGATION_ERROR,
                   errorMessage = R.string.error_no_routes,

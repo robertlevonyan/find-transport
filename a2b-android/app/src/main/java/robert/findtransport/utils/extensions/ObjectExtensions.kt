@@ -1,20 +1,23 @@
 package robert.findtransport.utils.extensions
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.Log
 import android.util.Patterns
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.sqrt
 
-
 fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
-
-fun Boolean.inverse() = !this
 
 @SuppressLint("LogNotTimber")
 suspend fun <R> makeApiCall(call: suspend () -> R) = try {
@@ -33,15 +36,8 @@ fun isTablet(): Boolean {
   return diagonalInches >= 6.8
 }
 
-fun Context.isNightMode(): Boolean =
-  (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+fun Date.format(): String = SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(this)
 
-fun <T> List<T>.asPairs(): List<Pair<T, T?>> {
-  val pairs = mutableListOf<Pair<T, T?>>()
-  for (i in 0..lastIndex) {
-    val first = get(i)
-    val second: T? = if (i == lastIndex) null else get(i + 1)
-    pairs.add(first to second)
-  }
-  return pairs
-}
+context(BaseViewModel)
+fun <T> Flow<T>.asStateFlow(default: T, started: SharingStarted = SharingStarted.Lazily): StateFlow<T> =
+  stateIn(viewModelScope, started = started, initialValue = default)
