@@ -92,9 +92,9 @@ private fun SearchContent(
           .fillMaxWidth()
           .wrapContentHeight()
           .clickable {}
-          .padding(horizontal = FabPadding, vertical = HalfPadding)) {
+          .padding(vertical = HalfPadding)) {
           val (fromIcon, fromStop, toIcon, toStop) = createRefs()
-          val guide = createGuidelineFromStart(0.25f)
+          val guide = createGuidelineFromStart(0.15f)
 
           Image(
             modifier = Modifier.constrainAs(fromIcon) {

@@ -5,17 +5,14 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-class StopLocation {
+class StopLocation(
   @PrimaryKey
   @SerializedName("id")
-  var id: Int? = null
-
+  val id: Int? = null,
   @SerializedName("stop_id")
-  var stopId: Int? = null
-
+  val stopId: Int? = null,
   @SerializedName("lat")
-  var lat: Double? = null
-
+  val lat: Double? = null,
   @SerializedName("lng")
-  var lng: Double? = null
-}
+  val lng: Double? = null,
+)

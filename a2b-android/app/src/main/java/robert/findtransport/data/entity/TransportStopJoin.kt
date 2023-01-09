@@ -5,20 +5,16 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-class TransportStopJoin {
+class TransportStopJoin(
   @PrimaryKey
   @SerializedName("id")
-  var id: Int? = null
-
+  val id: Int? = null,
   @SerializedName("transport_id")
-  var transportId: Int? = 0
-
+  val transportId: Int? = 0,
   @SerializedName("stop_id")
-  var stopId: Int? = 0
-
+  val stopId: Int? = 0,
   @SerializedName("reverse")
-  var reverse: Int? = 0
-
+  val reverse: Int? = 0,
   @SerializedName("position")
-  var order: Int? = 0
-}
+  val order: Int? = 0,
+)

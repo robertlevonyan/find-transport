@@ -3,13 +3,12 @@ package robert.findtransport.data.model
 import robert.findtransport.data.model.enums.TransportType
 
 data class Transport(
-    var id: Int = 0,
-    var number: String = "",
-    var type: TransportType = TransportType.UNDEFINED,
-    var isNew: Boolean = false,
-    var stops: List<Stop> = emptyList(),
-    var stopsReversed: List<Stop> = emptyList(),
-    var isFavorite: Boolean = false,
+    val id: Int = 0,
+    val number: String = "",
+    val type: TransportType = TransportType.UNDEFINED,
+    val stops: List<Stop> = emptyList(),
+    val stopsReversed: List<Stop> = emptyList(),
+    val isFavorite: Boolean = false,
 ) {
     companion object {
         val EMPTY = Transport()

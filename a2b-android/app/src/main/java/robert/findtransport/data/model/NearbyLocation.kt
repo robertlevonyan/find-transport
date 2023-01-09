@@ -4,5 +4,5 @@ data class NearbyLocation(
     val stopId: Int,
     val latitude: Double,
     val longitude: Double,
-    val locationDistance: Float
+    val locationDistance: Float,
 )

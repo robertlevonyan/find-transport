@@ -27,9 +27,14 @@ class FusedLocationService(private val context: Context) {
           if (locationContinuation is CancellableContinuation && !locationContinuation.isActive) {
             return
           }
-          locationContinuation.resume(location)
+          try {
+            locationContinuation.resume(location)
+          } catch (e: Exception) {
+            e.printStackTrace()
+          } finally {
+            fusedLocationClient.removeLocationUpdates(this)
+          }
         }
-        fusedLocationClient.removeLocationUpdates(this)
       }
     }
 

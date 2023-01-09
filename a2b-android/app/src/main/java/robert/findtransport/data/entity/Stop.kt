@@ -5,17 +5,14 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity
-class Stop {
+class Stop(
   @PrimaryKey
   @SerializedName("id")
-  var id: Int? = null
-
+  val id: Int? = null,
   @SerializedName("name_am")
-  var nameAm: String? = null
-
+  val nameAm: String? = null,
   @SerializedName("name_ru")
-  var nameRu: String? = null
-
+  val nameRu: String? = null,
   @SerializedName("name_en")
-  var nameEn: String? = null
-}
+  val nameEn: String? = null,
+)

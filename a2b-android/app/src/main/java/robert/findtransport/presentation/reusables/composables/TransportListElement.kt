@@ -46,7 +46,7 @@ fun LazyItemScope.TransportListElement(
     .animateItemPlacement()
     .fillMaxWidth()
     .clickable { onElementClick.invoke(transport) }
-    .padding(vertical = HalfPadding)
+    .padding(vertical = SmallPadding)
   ) {
     ConstraintLayout(
       modifier = Modifier
@@ -70,7 +70,7 @@ fun LazyItemScope.TransportListElement(
 
       Text(
         modifier = Modifier
-          .padding(horizontal = FabPadding)
+          .padding(horizontal = HalfPadding)
           .constrainAs(transportNumber) {
             start.linkTo(transportIcon.end)
             top.linkTo(parent.top)

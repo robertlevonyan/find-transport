@@ -14,7 +14,7 @@ import robert.findtransport.utils.DATABASE_NAME
     StopLocation::class,
     Transport::class,
     TransportStopJoin::class],
-  version = 19,
+  version = 22,
 )
 
 abstract class AppDatabase : RoomDatabase() {

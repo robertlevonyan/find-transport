@@ -14,9 +14,9 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 fun Transport.getTypeName() = when (type) {
-  BUS -> R.string.label_bus
-  MICROBUS -> R.string.label_microbus
-  TROLLEYBUS -> R.string.label_trolleybus
+  MICROBUS_OLD, MICROBUS_NEW -> R.string.label_microbus
+  BUS_BOGDAN, BUS_VIOLET, BUS_JONGTONG, BUS_MAN -> R.string.label_bus
+  TROLLEYBUS_OLD, TROLLEYBUS_NEW -> R.string.label_trolleybus
   METRO -> R.string.label_underground
   UNDEFINED -> -1
 }
@@ -76,19 +76,16 @@ fun md5(vararg values: Any): String {
 }
 
 fun Transport.getIcon(): Int = when (type) {
-  BUS -> if (isNew) {
-    R.drawable.ic_new_bus
-  } else {
-    R.drawable.ic_bus
-  }
-  MICROBUS -> if (isNew) {
-    R.drawable.ic_new_microbus
-  } else {
-    R.drawable.ic_microbus
-  }
-  TROLLEYBUS -> R.drawable.ic_trolleybus
+  MICROBUS_OLD -> R.drawable.ic_microbus_old
+  MICROBUS_NEW -> R.drawable.ic_microbus_new
+  BUS_BOGDAN -> R.drawable.ic_bus_bogdan
+  BUS_VIOLET -> R.drawable.ic_bus_violet
+  BUS_JONGTONG -> R.drawable.ic_bus_jongtong
+  BUS_MAN -> R.drawable.ic_bus_man
+  TROLLEYBUS_OLD -> R.drawable.ic_trolleybus
+  TROLLEYBUS_NEW -> R.drawable.ic_trolleybus
   METRO -> R.drawable.ic_metro
-  UNDEFINED -> R.drawable.ic_bus
+  UNDEFINED -> R.drawable.ic_bus_violet
 }
 
 fun Context.openPrivacyPolicy() {

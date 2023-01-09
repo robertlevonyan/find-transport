@@ -41,13 +41,13 @@ class RetrofitClient private constructor() {
 
               array.map { it.asJsonObject }.forEach { jsonObject ->
                 list.add(
-                  TransportStopJoin().apply {
-                    id = jsonObject.get("id").asInt
-                    transportId = jsonObject.get("transport_id").asInt
-                    stopId = jsonObject.get("stop_id").asInt
-                    reverse = jsonObject.get("reverse").asInt
-                    order = jsonObject.get("position").asInt
-                  }
+                  TransportStopJoin(
+                    id = jsonObject.get("id").asInt,
+                    transportId = jsonObject.get("transport_id").asInt,
+                    stopId = jsonObject.get("stop_id").asInt,
+                    reverse = jsonObject.get("reverse").asInt,
+                    order = jsonObject.get("position").asInt,
+                  )
                 )
               }
             }
