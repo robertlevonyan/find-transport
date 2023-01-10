@@ -27,7 +27,11 @@ interface TransportsDao {
   @Query("SELECT * FROM Transport WHERE id = :id")
   fun getTransportById(id: Int): Flow<Transport>
 
-  @Query("SELECT * FROM Transport WHERE CASE(:favorite) WHEN 1 THEN favorite = 1 ELSE favorite = 1 OR favorite = 0 END ORDER BY type ASC, CAST(name AS DECIMAL) ASC")
+  @Query(
+    """SELECT * FROM Transport WHERE
+    CASE(:favorite) WHEN 1 THEN favorite = 1 ELSE favorite = 1 OR favorite = 0 END 
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
   fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
 
   @Query("SELECT count(*) FROM Transport")

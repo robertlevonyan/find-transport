@@ -14,8 +14,8 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 fun Transport.getTypeName() = when (type) {
-  MICROBUS_OLD, MICROBUS_NEW -> R.string.label_microbus
-  BUS_BOGDAN, BUS_VIOLET, BUS_JONGTONG, BUS_MAN -> R.string.label_bus
+  MICROBUS_OLD, MICROBUS_NEW, MICROBUS_SPRINTER -> R.string.label_microbus
+  BUS_BOGDAN, BUS_VIOLET, BUS_JONGTONG, BUS_MAN, BUS_HYUNDAI, BUS_PAZ -> R.string.label_bus
   TROLLEYBUS_OLD, TROLLEYBUS_NEW -> R.string.label_trolleybus
   METRO -> R.string.label_underground
   UNDEFINED -> -1
@@ -85,6 +85,9 @@ fun Transport.getIcon(): Int = when (type) {
   TROLLEYBUS_OLD -> R.drawable.ic_trolleybus
   TROLLEYBUS_NEW -> R.drawable.ic_trolleybus
   METRO -> R.drawable.ic_metro
+  BUS_HYUNDAI -> R.drawable.ic_bus_hyundai
+  BUS_PAZ -> R.drawable.ic_bus_paz
+  MICROBUS_SPRINTER -> R.drawable.ic_microbus_sprinter
   UNDEFINED -> R.drawable.ic_bus_violet
 }
 

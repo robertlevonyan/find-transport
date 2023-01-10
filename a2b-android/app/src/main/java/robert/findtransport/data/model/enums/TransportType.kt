@@ -10,8 +10,11 @@ enum class TransportType {
   TROLLEYBUS_OLD,
   TROLLEYBUS_NEW,
   METRO,
+  BUS_HYUNDAI,
+  BUS_PAZ,
+  MICROBUS_SPRINTER,
   UNDEFINED;
-  
+
   companion object {
     fun getByIndex(index: Int): TransportType =
       when (index) {
@@ -24,6 +27,9 @@ enum class TransportType {
         6 -> TROLLEYBUS_OLD
         7 -> TROLLEYBUS_NEW
         8 -> METRO
+        9 -> BUS_HYUNDAI
+        10 -> BUS_PAZ
+        11 -> MICROBUS_SPRINTER
         else -> UNDEFINED
       }
   }
