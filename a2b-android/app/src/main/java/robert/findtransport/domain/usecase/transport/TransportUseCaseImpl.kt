@@ -8,24 +8,16 @@ import androidx.paging.map
 import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import robert.findtransport.R
-import robert.findtransport.data.entity.History
 import robert.findtransport.data.model.*
-import robert.findtransport.data.model.enums.ExceptionType
-import robert.findtransport.data.model.enums.SearchState
-import robert.findtransport.data.model.error.A2bException
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.domain.mapper.toStopLocation
 import robert.findtransport.domain.mapper.toTransport
-import robert.findtransport.domain.repository.HistoryRepository
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.domain.repository.TransportsRepository
-import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.correctStops
 import java.util.*
 import javax.inject.Inject
-import robert.findtransport.data.entity.Transport as ApiTransport
 
 class TransportUseCaseImpl @Inject constructor(
   private val transportsRepository: TransportsRepository,
@@ -40,6 +32,42 @@ class TransportUseCaseImpl @Inject constructor(
           .map { it.toStop() })
       }
     }
+
+  override fun getBusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
+    transportsRepository.getBusesPaged()
+  }.flow.map { value ->
+    value.map { apiTransport ->
+      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+        .map { it.toStop() })
+    }
+  }
+
+  override fun getMicrobusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
+    transportsRepository.getMicrobusesPaged()
+  }.flow.map { value ->
+    value.map { apiTransport ->
+      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+        .map { it.toStop() })
+    }
+  }
+
+  override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
+    transportsRepository.getTrolleybusesPaged()
+  }.flow.map { value ->
+    value.map { apiTransport ->
+      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+        .map { it.toStop() })
+    }
+  }
+
+  override fun getMetroPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
+    transportsRepository.getMetroPaged()
+  }.flow.map { value ->
+    value.map { apiTransport ->
+      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+        .map { it.toStop() })
+    }
+  }
 
   override fun getTransportById(id: Int?): Flow<Transport> = if (id == null) {
     emptyFlow()

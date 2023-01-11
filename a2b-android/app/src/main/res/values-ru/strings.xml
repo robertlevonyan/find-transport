@@ -23,7 +23,7 @@
   <string name="label_bus">Автобус</string>
   <string name="label_microbus">Микроавтобус</string>
   <string name="label_trolleybus">Троллейбус</string>
-  <string name="label_underground">Метро</string>
+  <string name="label_metro">Метро</string>
   <string name="label_yes">Да</string>
   <string name="label_no">Нет</string>
   <string name="label_from_long">Я еду из</string>

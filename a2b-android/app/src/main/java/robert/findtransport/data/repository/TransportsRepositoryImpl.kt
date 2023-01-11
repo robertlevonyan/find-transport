@@ -57,6 +57,18 @@ class TransportsRepositoryImpl @Inject constructor(
   override fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport> =
     transportsDao.getTransportsPaged(favorite)
 
+  override fun getBusesPaged(): PagingSource<Int, Transport> =
+    transportsDao.getBusesPaged()
+
+  override fun getMicrobusesPaged(): PagingSource<Int, Transport> =
+    transportsDao.getMicrobusesPaged()
+
+  override fun getTrolleybusesPaged(): PagingSource<Int, Transport> =
+    transportsDao.getTrolleybusesPaged()
+
+  override fun getMetroPaged(): PagingSource<Int, Transport> =
+    transportsDao.getMetroPaged()
+
   override fun getTransportById(id: Int): Flow<Transport> =
     transportsDao.getTransportById(id)
       .distinctUntilChanged()

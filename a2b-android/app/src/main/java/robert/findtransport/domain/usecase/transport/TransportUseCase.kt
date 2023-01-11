@@ -15,6 +15,14 @@ interface TransportUseCase {
 
   fun getTransportById(id: Int?): Flow<Transport>
 
+  fun getBusesPaged(): Flow<PagingData<Transport>>
+
+  fun getMicrobusesPaged(): Flow<PagingData<Transport>>
+
+  fun getTrolleybusesPaged(): Flow<PagingData<Transport>>
+
+  fun getMetroPaged(): Flow<PagingData<Transport>>
+
   suspend fun getTransportsForStop(id: Int): List<Transport>
 
   suspend fun downloadTransports(): Result<Unit>

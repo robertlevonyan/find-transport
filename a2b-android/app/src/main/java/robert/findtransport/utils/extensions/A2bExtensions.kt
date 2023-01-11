@@ -17,7 +17,7 @@ fun Transport.getTypeName() = when (type) {
   MICROBUS_OLD, MICROBUS_NEW, MICROBUS_SPRINTER -> R.string.label_microbus
   BUS_BOGDAN, BUS_VIOLET, BUS_JONGTONG, BUS_MAN, BUS_HYUNDAI, BUS_PAZ -> R.string.label_bus
   TROLLEYBUS_OLD, TROLLEYBUS_NEW -> R.string.label_trolleybus
-  METRO -> R.string.label_underground
+  METRO -> R.string.label_metro
   UNDEFINED -> -1
 }
 

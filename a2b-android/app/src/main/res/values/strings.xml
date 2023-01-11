@@ -24,7 +24,7 @@
   <string name="label_bus">Bus</string>
   <string name="label_microbus">Microbus</string>
   <string name="label_trolleybus">Trolleybus</string>
-  <string name="label_underground">Metro</string>
+  <string name="label_metro">Metro</string>
   <string name="label_yes">Yes</string>
   <string name="label_no">No</string>
   <string name="label_ok" translatable="false">OK</string>

@@ -34,6 +34,34 @@ interface TransportsDao {
   )
   fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
 
+  @Query(
+    """SELECT * FROM Transport WHERE
+    type = 3 OR type = 4 OR type = 5 OR type = 6 OR type = 10 OR type = 11  
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
+  fun getBusesPaged(): PagingSource<Int, Transport>
+
+  @Query(
+    """SELECT * FROM Transport WHERE
+    type = 1 OR type = 2 OR type = 12  
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
+  fun getMicrobusesPaged(): PagingSource<Int, Transport>
+
+  @Query(
+    """SELECT * FROM Transport WHERE
+    type = 7 OR type = 8  
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
+  fun getTrolleybusesPaged(): PagingSource<Int, Transport>
+
+  @Query(
+    """SELECT * FROM Transport WHERE
+    type = 9  
+    ORDER BY type ASC, CAST(name AS DECIMAL) ASC"""
+  )
+  fun getMetroPaged(): PagingSource<Int, Transport>
+
   @Query("SELECT count(*) FROM Transport")
   suspend fun getTransportsCount(): Int
 

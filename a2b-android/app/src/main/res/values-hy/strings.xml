@@ -23,7 +23,7 @@
   <string name="label_bus">Ավտոբուս</string>
   <string name="label_microbus">Միկրոավտոբուս</string>
   <string name="label_trolleybus">Տրոլեյբուս</string>
-  <string name="label_underground">Մետրո</string>
+  <string name="label_metro">Մետրո</string>
   <string name="label_yes">Այո</string>
   <string name="label_no">Ոչ</string>
   <string name="label_from_long">Ես մեկնում եմ</string>

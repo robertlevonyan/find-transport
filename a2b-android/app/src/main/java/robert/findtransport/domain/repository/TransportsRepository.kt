@@ -20,6 +20,14 @@ interface TransportsRepository {
 
   fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
 
+  fun getBusesPaged(): PagingSource<Int, Transport>
+
+  fun getMicrobusesPaged(): PagingSource<Int, Transport>
+
+  fun getTrolleybusesPaged(): PagingSource<Int, Transport>
+
+  fun getMetroPaged(): PagingSource<Int, Transport>
+
   fun getTransportById(id: Int): Flow<Transport>
 
   suspend fun getTransportsForStop(id: Int): List<Transport>
