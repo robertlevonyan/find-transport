@@ -165,21 +165,12 @@ private fun SearchContent(
       is SearchState.Single -> {
         val transports = (searchResults as SearchState.Single).result
         itemsIndexed(transports) { index, transport ->
-          TransportListElement(transport = transport,
-            locale = locale,
-            trailingIcon = TransportListElementTrailingIcon.TRACK,
-            onTrackClick = {
-              navController.navigate(
-                route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
-                    + "&from_id=${from.id}" + "&to_id=${to.id}"
-              )
-            },
-            onElementClick = {
-              navController.navigate(
-                route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}"
-                    + "&show_options=${false}"
-              )
-            })
+          TransportListElement(transport = transport, locale = locale) {
+            navController.navigate(
+              route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
+                  + "&from_id=${from.id}" + "&to_id=${to.id}"
+            )
+          }
 
           if (index < transports.lastIndex) {
             Divider(
@@ -281,13 +272,6 @@ private fun SearchContent(
               val transport = multiRouteElement.transport ?: Transport.EMPTY
               TransportListElement(transport = transport,
                 locale = locale,
-                trailingIcon = TransportListElementTrailingIcon.TRACK,
-                onTrackClick = {
-                  navController.navigate(
-                    route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
-                        + "&from_id=${from.id}" + "&to_id=${to.id}"
-                  )
-                },
                 onElementClick = {
                   navController.navigate(
                     route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}"

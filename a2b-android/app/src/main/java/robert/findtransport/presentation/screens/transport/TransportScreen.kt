@@ -68,11 +68,15 @@ fun TransportScreen(
         onNavigationIconClick = { navController.popBackStack() },
         additionalActions = {
           IconButton(onClick = { transportViewModel.toggleTransportFavorite(transport) }) {
-            val icon = if (transport.isFavorite) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_outline
+            val tint = if (transport.isFavorite) {
+              MaterialTheme.colorScheme.secondary
+            } else {
+              MaterialTheme.colorScheme.onSurface
+            }
             Icon(
-              painter = painterResource(id = icon),
+              painter = painterResource(id = R.drawable.ic_star),
               contentDescription = stringResource(id = R.string.hint_search),
-              tint = MaterialTheme.colorScheme.onSurface,
+              tint = tint,
             )
           }
         }

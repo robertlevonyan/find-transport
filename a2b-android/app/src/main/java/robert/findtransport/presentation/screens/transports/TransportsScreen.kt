@@ -56,7 +56,6 @@ fun TransportsScreen(
       transports = transports,
       locale = locale,
       transportCategory = transportCategory,
-      onStarCheckedChange = transportsViewModel::toggleTransportFavorite,
       onTransportCategoryClick = { transportCategory = it },
       onTransportClick = { transport ->
         navController.navigate(
@@ -78,7 +77,6 @@ private fun TransportsList(
   transports: LazyPagingItems<Transport>,
   locale: String,
   transportCategory: TransportCategory,
-  onStarCheckedChange: (Transport) -> Unit,
   onTransportCategoryClick: (TransportCategory) -> Unit,
   onTransportClick: (Transport) -> Unit,
 ) {
@@ -232,8 +230,6 @@ private fun TransportsList(
           transport = item,
           locale = locale,
           onElementClick = onTransportClick,
-          trailingIcon = TransportListElementTrailingIcon.STAR,
-          onStarCheckedChange = { onStarCheckedChange.invoke(item) },
         )
 
         if (index < transports.itemCount - 1) {

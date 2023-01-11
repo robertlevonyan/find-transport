@@ -26,13 +26,13 @@ val MenuVerticalOffset = (-52).dp
 val GeneralSettingCardSize = 150.dp
 val FeedbackMessageBoxSize = 120.dp
 val DialogBoxSize = 320.dp
-val AppbarSize = 56.dp
+val TransportNumberSize = 80.dp
 
 val Text11 = 11.sp
 val Text13 = 13.sp
 val Text20 = 20.sp
 val Text24 = 24.sp
 val TextTitle = 18.sp
-val TextTransportNumber = 42.sp
+val TextTransportNumber = 40.sp
 val TextIntroLabel = 28.sp
 val TextTrackerLabel = 28.sp

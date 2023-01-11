@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.reusables.composables
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -11,10 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
@@ -33,9 +37,6 @@ fun LazyItemScope.TransportListElement(
   transport: Transport,
   locale: String,
   onElementClick: (Transport) -> Unit,
-  trailingIcon: TransportListElementTrailingIcon = TransportListElementTrailingIcon.NONE,
-  onStarCheckedChange: (Boolean) -> Unit = {},
-  onTrackClick: () -> Unit = {},
 ) {
   val icon = transport.getIcon()
   if (transport == Transport.EMPTY || transport.stops.isEmpty() || transport.type == TransportType.UNDEFINED) return
@@ -54,7 +55,7 @@ fun LazyItemScope.TransportListElement(
         .fillMaxWidth(fraction = 0.9f)
         .wrapContentHeight()
     ) {
-      val (transportIcon, transportNumber, transportType, firstLast, trailingIconComposable) = createRefs()
+      val (transportIcon, transportNumber, startIcon, firstStop, endIcon, lastStop) = createRefs()
 
       AsyncImage(
         modifier = Modifier
@@ -68,89 +69,97 @@ fun LazyItemScope.TransportListElement(
         contentDescription = null,
       )
 
+      val number = buildAnnotatedString {
+        if (transport.number.endsWith("ա")) {
+          val currentNumber = transport.number
+          append(currentNumber.substring(0, currentNumber.lastIndex))
+          withStyle(
+            SpanStyle(
+              baselineShift = BaselineShift.Superscript,
+              fontSize = Text20,
+            )
+          ) {
+            append("ա")
+          }
+        } else {
+          append(transport.number)
+        }
+      }
+
       Text(
         modifier = Modifier
-          .padding(horizontal = HalfPadding)
+          .width(width = TransportNumberSize)
+          .padding(start = HalfPadding)
           .constrainAs(transportNumber) {
             start.linkTo(transportIcon.end)
             top.linkTo(parent.top)
             bottom.linkTo(parent.bottom)
           },
-        text = transport.number,
+        text = number,
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Black,
         fontSize = TextTransportNumber,
-      )
-
-      TextPrimary(
-        modifier = Modifier
-          .constrainAs(transportType) {
-            width = Dimension.fillToConstraints
-            height = Dimension.wrapContent
-            start.linkTo(transportNumber.end)
-            end.linkTo(if (trailingIcon == TransportListElementTrailingIcon.NONE) trailingIconComposable.start else parent.end)
-            top.linkTo(parent.top)
-            bottom.linkTo(firstLast.top)
-          },
-        text = stringResource(id = type),
       )
 
       val stops = transport.stops
       val first = stops.first()
       val last = stops.last()
 
-      TextTertiary(
+      Image(
+        painter = painterResource(id = R.drawable.ic_start_point),
+        contentDescription = null,
         modifier = Modifier
-          .constrainAs(firstLast) {
+          .size(IconSize)
+          .constrainAs(startIcon) {
+            start.linkTo(transportNumber.end)
+            end.linkTo(firstStop.start)
+            top.linkTo(firstStop.top)
+            bottom.linkTo(firstStop.bottom)
+          },
+      )
+      TextSecondary(
+        modifier = Modifier
+          .constrainAs(firstStop) {
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
-            start.linkTo(transportNumber.end)
-            end.linkTo(if (trailingIcon == TransportListElementTrailingIcon.NONE) parent.end else trailingIconComposable.start)
-            top.linkTo(transportType.bottom)
-            bottom.linkTo(parent.bottom)
+            start.linkTo(startIcon.end)
+            end.linkTo(parent.end)
+            top.linkTo(parent.top)
+            bottom.linkTo(lastStop.top)
           },
-        text = "${first.getCurrentName(locale)} - ${last.getCurrentName(locale)}",
+        text = first.getCurrentName(locale),
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
       )
 
-      when (trailingIcon) {
-        TransportListElementTrailingIcon.STAR -> IconToggleButton(
-          modifier = Modifier
-            .padding(start = FabPadding)
-            .constrainAs(trailingIconComposable) {
-              end.linkTo(parent.end)
-              top.linkTo(parent.top)
-              bottom.linkTo(parent.bottom)
-            },
-          checked = transport.isFavorite,
-          onCheckedChange = { checked -> onStarCheckedChange.invoke(checked) },
-        ) {
-          val iconPainter = if (transport.isFavorite) {
-            R.drawable.ic_favorite_filled
-          } else {
-            R.drawable.ic_favorite_outline
-          }
-          Icon(painter = painterResource(id = iconPainter), contentDescription = null)
-        }
-        TransportListElementTrailingIcon.TRACK -> IconButton(
-          modifier = Modifier
-            .padding(start = FabPadding)
-            .constrainAs(trailingIconComposable) {
-              end.linkTo(parent.end)
-              top.linkTo(parent.top)
-              bottom.linkTo(parent.bottom)
-            },
-          onClick = { onTrackClick.invoke() }) {
-          Icon(painter = painterResource(id = R.drawable.ic_track_route), contentDescription = null)
-        }
-        TransportListElementTrailingIcon.NONE -> Unit
-      }
+      Image(
+        painter = painterResource(id = R.drawable.ic_end_point),
+        contentDescription = null,
+        modifier = Modifier
+          .size(IconSize)
+          .constrainAs(endIcon) {
+            start.linkTo(transportNumber.end)
+            end.linkTo(lastStop.start)
+            top.linkTo(lastStop.top)
+            bottom.linkTo(lastStop.bottom)
+          },
+      )
+      TextTertiary(
+        modifier = Modifier
+          .constrainAs(lastStop) {
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
+            start.linkTo(endIcon.end)
+            end.linkTo(parent.end)
+            top.linkTo(firstStop.bottom)
+            bottom.linkTo(parent.bottom)
+          },
+        text = last.getCurrentName(locale),
+        textAlign = TextAlign.Start,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+      )
     }
   }
-}
-
-enum class TransportListElementTrailingIcon {
-  NONE, STAR, TRACK
 }
