@@ -126,7 +126,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.8.0-beta01")
+  implementation("com.google.android.material:material:1.8.0-rc01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:20.0.0")
@@ -140,7 +140,7 @@ dependencies {
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.6.1")
-  implementation("androidx.appcompat:appcompat:1.5.1")
+  implementation("androidx.appcompat:appcompat:1.6.0")
   implementation("androidx.browser:browser:1.4.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -154,25 +154,25 @@ dependencies {
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.paging:paging-runtime-ktx:3.1.1")
   implementation("androidx.recyclerview:recyclerview:1.2.1")
-  implementation("androidx.room:room-runtime:2.4.3")
-  implementation("androidx.room:room-ktx:2.4.3")
-  implementation("androidx.room:room-paging:2.4.3")
+  implementation("androidx.room:room-runtime:2.5.0")
+  implementation("androidx.room:room-ktx:2.5.0")
+  implementation("androidx.room:room-paging:2.5.0")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  ksp("androidx.room:room-compiler:2.4.3")
+  ksp("androidx.room:room-compiler:2.5.0")
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.activity:activity-compose:1.7.0-alpha02")
+  implementation("androidx.activity:activity-compose:1.7.0-alpha03")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")
   implementation("androidx.paging:paging-compose:1.0.0-alpha17")
   implementation("androidx.compose.compiler:compiler:1.3.2")
-  implementation("androidx.compose.ui:ui:1.4.0-alpha03")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha03")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha03")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha03")
+  implementation("androidx.compose.ui:ui:1.4.0-alpha04")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha04")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha04")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha04")
   implementation("io.coil-kt:coil-compose:2.2.2")
 
   //squareup
