@@ -18,8 +18,6 @@ interface TransportsRepository {
 
   suspend fun cacheJoins(joins: List<TransportStopJoin>)
 
-  fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport>
-
   fun getBusesPaged(): PagingSource<Int, Transport>
 
   fun getMicrobusesPaged(): PagingSource<Int, Transport>

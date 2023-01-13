@@ -54,9 +54,6 @@ class TransportsRepositoryImpl @Inject constructor(
     Log.d("A2B Join", "${saved.size}")
   }
 
-  override fun getTransportsPaged(favorite: Boolean): PagingSource<Int, Transport> =
-    transportsDao.getTransportsPaged(favorite)
-
   override fun getBusesPaged(): PagingSource<Int, Transport> =
     transportsDao.getBusesPaged()
 
@@ -83,67 +80,71 @@ class TransportsRepositoryImpl @Inject constructor(
     transportId?.let { id -> transportsDao.getTransportStopsReversed(id) } ?: emptyList()
 
   @OptIn(ExperimentalCoroutinesApi::class)
-  override suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>> = channelFlow {
-    if (coordinates.size < 2) {
-      if (!channel.isClosedForSend) {
-        launch {
-          channel.send(
-            element = Result.Error(
-              A2bException(
-                type = ExceptionType.NAVIGATION_EMPTY,
-                errorMessage = R.string.error_no_routes,
-                error = Exception("")
+  override suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>> =
+    channelFlow {
+      if (coordinates.size < 2) {
+        if (!channel.isClosedForSend) {
+          launch {
+            channel.send(
+              element = Result.Error(
+                A2bException(
+                  type = ExceptionType.NAVIGATION_EMPTY,
+                  errorMessage = R.string.error_no_routes,
+                  error = Exception("")
+                )
               )
             )
-          )
+          }
         }
+        return@channelFlow
       }
-      return@channelFlow
-    }
-    val navigation = mapboxNavigationService.getNavigation(coordinates)
-    navigation.enqueueCall(object : Callback<MapMatchingResponse> {
-      override fun onResponse(call: Call<MapMatchingResponse>, response: Response<MapMatchingResponse>) {
-        if (response.isSuccessful) {
-          response.body()?.matchings()?.run {
-            val route = get(0).toDirectionRoute()
+      val navigation = mapboxNavigationService.getNavigation(coordinates)
+      navigation.enqueueCall(object : Callback<MapMatchingResponse> {
+        override fun onResponse(
+          call: Call<MapMatchingResponse>,
+          response: Response<MapMatchingResponse>
+        ) {
+          if (response.isSuccessful) {
+            response.body()?.matchings()?.run {
+              val route = get(0).toDirectionRoute()
+              if (!channel.isClosedForSend) {
+                launch { channel.send(element = Result.Success(route)) }
+              }
+            }
+          } else {
             if (!channel.isClosedForSend) {
-              launch { channel.send(element = Result.Success(route)) }
+              launch {
+                channel.send(
+                  element = Result.Error(
+                    exception = A2bException(
+                      type = ExceptionType.NAVIGATION_EMPTY,
+                      errorMessage = R.string.error_no_routes,
+                      error = Exception("")
+                    )
+                  )
+                )
+              }
             }
           }
-        } else {
+        }
+
+        override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
+          Log.e("Navigation", "Error", t)
           if (!channel.isClosedForSend) {
             launch {
               channel.send(
                 element = Result.Error(
-                  exception = A2bException(
-                    type = ExceptionType.NAVIGATION_EMPTY,
+                  A2bException(
+                    type = ExceptionType.NAVIGATION_ERROR,
                     errorMessage = R.string.error_no_routes,
-                    error = Exception("")
+                    error = Exception(t)
                   )
                 )
               )
             }
           }
         }
-      }
-
-      override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
-        Log.e("Navigation", "Error", t)
-        if (!channel.isClosedForSend) {
-          launch {
-            channel.send(
-              element = Result.Error(
-                A2bException(
-                  type = ExceptionType.NAVIGATION_ERROR,
-                  errorMessage = R.string.error_no_routes,
-                  error = Exception(t)
-                )
-              )
-            )
-          }
-        }
-      }
-    })
+      })
 //    val directions = mapboxNavigationService.getDirections(coordinates)
 //    directions.forEach { direction ->
 //          direction.enqueueCall(object : Callback<DirectionsResponse> {
@@ -163,14 +164,14 @@ class TransportsRepositoryImpl @Inject constructor(
 //            }
 //          })
 //        }
-    awaitClose {
-      navigation.cancelCall()
+      awaitClose {
+        navigation.cancelCall()
 //      directions.forEach {
 //        it.cancelCall()
 //    }
-      println("Closed")
+        println("Closed")
+      }
     }
-  }
 
   override suspend fun changeFavorite(id: Int, favorite: Boolean) {
     transportsDao.changeFavorite(id, favorite)

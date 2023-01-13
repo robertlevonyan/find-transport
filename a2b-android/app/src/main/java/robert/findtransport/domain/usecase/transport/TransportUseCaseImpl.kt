@@ -23,9 +23,9 @@ class TransportUseCaseImpl @Inject constructor(
   private val transportsRepository: TransportsRepository,
   private val stopsRepository: StopsRepository,
 ) : TransportUseCase {
-  override fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>> =
+  override fun getBusesPaged(): Flow<PagingData<Transport>> =
     Pager(config = PagingConfig(pageSize = 10)) {
-      transportsRepository.getTransportsPaged(checked)
+      transportsRepository.getBusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
         apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
@@ -33,41 +33,35 @@ class TransportUseCaseImpl @Inject constructor(
       }
     }
 
-  override fun getBusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
-    transportsRepository.getBusesPaged()
-  }.flow.map { value ->
-    value.map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-        .map { it.toStop() })
+  override fun getMicrobusesPaged(): Flow<PagingData<Transport>> =
+    Pager(config = PagingConfig(pageSize = 10)) {
+      transportsRepository.getMicrobusesPaged()
+    }.flow.map { value ->
+      value.map { apiTransport ->
+        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+          .map { it.toStop() })
+      }
     }
-  }
 
-  override fun getMicrobusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
-    transportsRepository.getMicrobusesPaged()
-  }.flow.map { value ->
-    value.map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-        .map { it.toStop() })
+  override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> =
+    Pager(config = PagingConfig(pageSize = 10)) {
+      transportsRepository.getTrolleybusesPaged()
+    }.flow.map { value ->
+      value.map { apiTransport ->
+        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+          .map { it.toStop() })
+      }
     }
-  }
 
-  override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
-    transportsRepository.getTrolleybusesPaged()
-  }.flow.map { value ->
-    value.map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-        .map { it.toStop() })
+  override fun getMetroPaged(): Flow<PagingData<Transport>> =
+    Pager(config = PagingConfig(pageSize = 10)) {
+      transportsRepository.getMetroPaged()
+    }.flow.map { value ->
+      value.map { apiTransport ->
+        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
+          .map { it.toStop() })
+      }
     }
-  }
-
-  override fun getMetroPaged(): Flow<PagingData<Transport>> = Pager(config = PagingConfig(pageSize = 10)) {
-    transportsRepository.getMetroPaged()
-  }.flow.map { value ->
-    value.map { apiTransport ->
-      apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-        .map { it.toStop() })
-    }
-  }
 
   override fun getTransportById(id: Int?): Flow<Transport> = if (id == null) {
     emptyFlow()
@@ -81,26 +75,28 @@ class TransportUseCaseImpl @Inject constructor(
           }
         )
       }
-      val stopsReversed = transportsRepository.getTransportStopsReversed(apiTransport.id).map { apiStop ->
-        apiStop.toStop(
-          runBlocking {
-            stopsRepository.getStopLocations(apiStop.id)
-              .map { it.toStopLocation(apiStop) }
-              .reversed()
-          }
-        )
-      }
+      val stopsReversed =
+        transportsRepository.getTransportStopsReversed(apiTransport.id).map { apiStop ->
+          apiStop.toStop(
+            runBlocking {
+              stopsRepository.getStopLocations(apiStop.id)
+                .map { it.toStopLocation(apiStop) }
+                .reversed()
+            }
+          )
+        }
       apiTransport.toTransport(stops, stopsReversed)
     }.flowOn(Dispatchers.IO)
   }
 
-  override suspend fun getTransportsForStop(id: Int): List<Transport> = withContext(Dispatchers.IO) {
-    transportsRepository.getTransportsForStop(id).map { apiTransport ->
-      apiTransport
-        .toTransport(transportsRepository.getTransportStops(apiTransport.id)
-          .map { it.toStop() })
+  override suspend fun getTransportsForStop(id: Int): List<Transport> =
+    withContext(Dispatchers.IO) {
+      transportsRepository.getTransportsForStop(id).map { apiTransport ->
+        apiTransport
+          .toTransport(transportsRepository.getTransportStops(apiTransport.id)
+            .map { it.toStop() })
+      }
     }
-  }
 
   override suspend fun downloadTransports(): Result<Unit> = withContext(Dispatchers.IO) {
     when (val transportsFromApiResult = transportsRepository.getTransportsFromApi()) {
@@ -136,7 +132,11 @@ class TransportUseCaseImpl @Inject constructor(
 
   override fun areJoinsCached(): Boolean = transportsRepository.areJoinsCached
 
-  override fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<RouteResult> =
+  override fun getTransportRoute(
+    id: Int,
+    reverse: Boolean,
+    isUnderground: Boolean
+  ): Flow<RouteResult> =
     getTransportById(id).map { transport ->
       val stops = if (reverse) transport.stopsReversed else transport.stops
       stops.flatMap { it.coordinates }
@@ -169,7 +169,8 @@ class TransportUseCaseImpl @Inject constructor(
     val nearby = mutableListOf<NearbyLocation>()
     val nearbyDestination = mutableListOf<NearbyLocation>()
     val filledDestination = destination.copy(
-      coordinates = stopsRepository.getStopLocations(destination.id).map { it.toStopLocation(destination.toApiStop()) }
+      coordinates = stopsRepository.getStopLocations(destination.id)
+        .map { it.toStopLocation(destination.toApiStop()) }
     )
 
     if (filledDestination.coordinates.isEmpty()) return@flow
@@ -188,9 +189,21 @@ class TransportUseCaseImpl @Inject constructor(
           longitude = coordinate.lng
         }
 
-        nearby.add(NearbyLocation(stop.id, newLocation.latitude, newLocation.longitude, location.distanceTo(newLocation)))
+        nearby.add(
+          NearbyLocation(
+            stop.id,
+            newLocation.latitude,
+            newLocation.longitude,
+            location.distanceTo(newLocation)
+          )
+        )
         nearbyDestination.add(
-          NearbyLocation(stop.id, newLocation.latitude, newLocation.longitude, destinationLocation.distanceTo(newLocation))
+          NearbyLocation(
+            stop.id,
+            newLocation.latitude,
+            newLocation.longitude,
+            destinationLocation.distanceTo(newLocation)
+          )
         )
       }
     }
@@ -204,7 +217,8 @@ class TransportUseCaseImpl @Inject constructor(
     nearbyDestination.sortBy { it.locationDistance }
 
     val nearbyStop = stops.find { stop -> stop.id == nearby.first().stopId } ?: Stop.EMPTY
-    val preDestination = stops.findLast { stop -> stop.id == nearbyDestination[1].stopId } ?: Stop.EMPTY
+    val preDestination =
+      stops.findLast { stop -> stop.id == nearbyDestination[1].stopId } ?: Stop.EMPTY
 
     emit(nearbyStop to preDestination)
   }.flowOn(Dispatchers.IO)

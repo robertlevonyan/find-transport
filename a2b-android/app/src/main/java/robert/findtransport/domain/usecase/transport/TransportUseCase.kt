@@ -11,8 +11,6 @@ import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.SearchState
 
 interface TransportUseCase {
-  fun getTransportsPaged(checked: Boolean): Flow<PagingData<Transport>>
-
   fun getTransportById(id: Int?): Flow<Transport>
 
   fun getBusesPaged(): Flow<PagingData<Transport>>
