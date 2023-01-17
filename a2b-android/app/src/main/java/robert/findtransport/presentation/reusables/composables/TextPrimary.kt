@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import robert.findtransport.presentation.reusables.HalfPadding
 
@@ -18,6 +19,8 @@ fun TextPrimary(
   color: Color = MaterialTheme.colorScheme.onSurface,
   fontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
   textAlign: TextAlign = TextAlign.Start,
+  overflow: TextOverflow = TextOverflow.Clip,
+  maxLines: Int = Int.MAX_VALUE,
 ) {
   Text(
     modifier = modifier.padding(HalfPadding),
@@ -26,6 +29,8 @@ fun TextPrimary(
     fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
     color = color,
     textAlign = textAlign,
+    overflow = overflow,
+    maxLines = maxLines,
   )
 }
 

@@ -38,8 +38,6 @@ import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.map.chooser.ChooserMapScreen
-import robert.findtransport.presentation.screens.map.preview.PreviewMapScreen
-import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 
@@ -50,9 +48,6 @@ fun MapScreen(
   mapViewModel: MapViewModel = hiltViewModel(),
   homeViewModel: HomeViewModel,
   mapType: MapType,
-  transportId: Int = EMPTY_ID,
-  underground: Boolean = false,
-  reversed: Boolean = false,
 ) {
   val mapStyle = getMapStyle()
   val locationEnabled by mapViewModel.locationEnabled.collectAsState()
@@ -140,15 +135,6 @@ fun MapScreen(
         homeViewModel = homeViewModel,
         mapViewModel = mapViewModel,
       )
-      MapType.PREVIEW -> PreviewMapScreen(
-        mapStyle = mapStyle,
-        locationEnabled = locationEnabled,
-        mapViewModel = mapViewModel,
-        navController = navController,
-        transportId = transportId,
-        underground = underground,
-        reversed = reversed,
-      )
       MapType.SEARCH -> return
     }
 
@@ -194,7 +180,8 @@ internal fun MapView.enableLocationComponent() {
     pulsingEnabled = false
     pulsingColor = context?.getColorFromRes(R.color.colorAccent300) ?: Color.YELLOW
     locationPuck = LocationPuck2D().apply {
-      topImage = BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
+      topImage =
+        BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
     }
   }
 }

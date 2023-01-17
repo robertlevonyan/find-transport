@@ -5,20 +5,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyItemScope
-import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
@@ -29,7 +24,7 @@ import robert.findtransport.data.model.enums.TransportType
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
-import robert.findtransport.utils.extensions.getTypeName
+import robert.findtransport.utils.extensions.getNameFormatted
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,13 +36,11 @@ fun LazyItemScope.TransportListElement(
   val icon = transport.getIcon()
   if (transport == Transport.EMPTY || transport.stops.isEmpty() || transport.type == TransportType.UNDEFINED) return
 
-  val type = transport.getTypeName()
-
   Box(modifier = Modifier
-    .animateItemPlacement()
     .fillMaxWidth()
     .clickable { onElementClick.invoke(transport) }
     .padding(vertical = SmallPadding)
+    .animateItemPlacement()
   ) {
     ConstraintLayout(
       modifier = Modifier
@@ -69,23 +62,6 @@ fun LazyItemScope.TransportListElement(
         contentDescription = null,
       )
 
-      val number = buildAnnotatedString {
-        if (transport.number.endsWith("ա")) {
-          val currentNumber = transport.number
-          append(currentNumber.substring(0, currentNumber.lastIndex))
-          withStyle(
-            SpanStyle(
-              baselineShift = BaselineShift.Superscript,
-              fontSize = Text20,
-            )
-          ) {
-            append("ա")
-          }
-        } else {
-          append(transport.number)
-        }
-      }
-
       Text(
         modifier = Modifier
           .width(width = TransportNumberSize)
@@ -95,7 +71,7 @@ fun LazyItemScope.TransportListElement(
             top.linkTo(parent.top)
             bottom.linkTo(parent.bottom)
           },
-        text = number,
+        text = transport.getNameFormatted(),
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Black,
         fontSize = TextTransportNumber,

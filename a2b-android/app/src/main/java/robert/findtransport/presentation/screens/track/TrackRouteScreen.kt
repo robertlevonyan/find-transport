@@ -99,7 +99,8 @@ private fun TrackRouteContent(
     if (selectedTransport != Transport.EMPTY) {
       val label = stringResource(id = R.string.label_tracker_transport)
       val typeNameRes = selectedTransport.getTypeName()
-      val typeName = if (typeNameRes == -1) "" else stringResource(typeNameRes).lowercase(Locale.ROOT)
+      val typeName =
+        if (typeNameRes == -1) "" else stringResource(typeNameRes).lowercase(Locale.ROOT)
       val selectedTransportString = buildAnnotatedString {
         withStyle(SpanStyle(fontWeight = FontWeight.Normal)) {
           append(label)

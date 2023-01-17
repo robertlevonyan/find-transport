@@ -106,7 +106,7 @@ class TransportsRepositoryImpl @Inject constructor(
         ) {
           if (response.isSuccessful) {
             response.body()?.matchings()?.run {
-              val route = get(0).toDirectionRoute()
+              val route = getOrNull(0)?.toDirectionRoute() ?: return
               if (!channel.isClosedForSend) {
                 launch { channel.send(element = Result.Success(route)) }
               }

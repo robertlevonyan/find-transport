@@ -1,14 +1,12 @@
 package robert.findtransport.data.model.enums
 
 enum class MapType {
-  CHOOSER, PREVIEW, SEARCH;
+  CHOOSER, SEARCH;
 
   companion object {
-    fun getByIndex(index: Int): MapType =
-      when (index) {
-        1 -> PREVIEW
-        2 -> SEARCH
-        else -> CHOOSER
-      }
+    fun getByIndex(index: Int): MapType = when (index) {
+      1 -> SEARCH
+      else -> CHOOSER
+    }
   }
 }

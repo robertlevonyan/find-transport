@@ -119,4 +119,5 @@
   <!--content description strings-->
   <string name="cd_current_location">Go to current location</string>
   <string name="cd_show_on_map">Show route on map</string>
+    <string name="label_stops">stops</string>
 </resources>

@@ -3,11 +3,17 @@ package robert.findtransport.utils.extensions
 import android.content.Context
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.BaselineShift
+import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType.*
+import robert.findtransport.presentation.reusables.Text20
 import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
@@ -89,6 +95,22 @@ fun Transport.getIcon(): Int = when (type) {
   BUS_PAZ -> R.drawable.ic_bus_paz
   MICROBUS_SPRINTER -> R.drawable.ic_microbus_sprinter
   UNDEFINED -> R.drawable.ic_bus_violet
+}
+
+fun Transport.getNameFormatted(): AnnotatedString = buildAnnotatedString {
+  if (number.endsWith("ա")) {
+    append(number.substring(0, number.lastIndex))
+    withStyle(
+      SpanStyle(
+        baselineShift = BaselineShift.Superscript,
+        fontSize = Text20,
+      )
+    ) {
+      append("ա")
+    }
+  } else {
+    append(number)
+  }
 }
 
 fun Context.openPrivacyPolicy() {
