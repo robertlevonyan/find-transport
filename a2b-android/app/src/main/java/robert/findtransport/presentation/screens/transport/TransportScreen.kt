@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
 import androidx.compose.material3.*
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -22,6 +20,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -81,6 +80,7 @@ import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.STOP_ICON_SIZE
 import robert.findtransport.utils.extensions.*
+import kotlin.math.abs
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -114,10 +114,7 @@ fun TransportScreen(
   }
   val mapStyle = getMapStyle()
   val scope = rememberCoroutineScope()
-  val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-    drawerState = DrawerState(DrawerValue.Closed),
-    bottomSheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed),
-  )
+  val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
 
   BottomSheetScaffold(
     scaffoldState = bottomSheetScaffoldState,
@@ -270,16 +267,20 @@ private fun StopList(
     LazyColumn(modifier = Modifier.fillMaxSize()) {
       item {
         Card(modifier = Modifier.padding(bottom = FabPadding)) {
-          TransportInfo(transport = transport, locale = locale, onElementClick = {
-            scope.launch {
-              val bottomSheetState = bottomSheetScaffoldState.bottomSheetState
-              if (bottomSheetState.isExpanded) {
-                bottomSheetState.collapse()
-              } else {
-                bottomSheetState.expand()
+          TransportInfo(
+            transport = transport,
+            locale = locale,
+            bottomSheetScaffoldState = bottomSheetScaffoldState,
+            onElementClick = {
+              scope.launch {
+                val bottomSheetState = bottomSheetScaffoldState.bottomSheetState
+                if (bottomSheetState.isExpanded) {
+                  bottomSheetState.collapse()
+                } else {
+                  bottomSheetState.expand()
+                }
               }
-            }
-          })
+            })
         }
       }
       itemsIndexed(stops) { index, stop ->
@@ -311,10 +312,12 @@ private fun StopList(
   }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TransportInfo(
   transport: Transport,
   locale: String,
+  bottomSheetScaffoldState: BottomSheetScaffoldState,
   onElementClick: () -> Unit,
 ) {
   Column(modifier = Modifier
@@ -394,11 +397,22 @@ fun TransportInfo(
         fontWeight = FontWeight.Bold,
       )
 
+      val alphaValue = bottomSheetScaffoldState.bottomSheetState.offset.value / 1000
+      var alpha = when {
+        alphaValue < 0 -> 0f
+        alphaValue > 1 -> 1f
+        else -> alphaValue
+      }
+      alpha = abs(1 - alpha)
+
+      println(alpha)
+
       Image(
         painter = painterResource(id = R.drawable.ic_start_point),
         contentDescription = null,
         modifier = Modifier
           .size(IconSize)
+          .alpha(alpha)
           .constrainAs(startIcon) {
             start.linkTo(parent.start)
             end.linkTo(firstStop.start)
@@ -407,14 +421,16 @@ fun TransportInfo(
           },
       )
       TextPrimary(
-        modifier = Modifier.constrainAs(firstStop) {
-          width = Dimension.fillToConstraints
-          height = Dimension.wrapContent
-          start.linkTo(startIcon.end)
-          end.linkTo(parent.end)
-          top.linkTo(transportIcon.bottom)
-          bottom.linkTo(lastStop.top)
-        },
+        modifier = Modifier
+          .alpha(alpha)
+          .constrainAs(firstStop) {
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
+            start.linkTo(startIcon.end)
+            end.linkTo(parent.end)
+            top.linkTo(transportIcon.bottom)
+            bottom.linkTo(lastStop.top)
+          },
         text = first.getCurrentName(locale),
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
@@ -427,6 +443,7 @@ fun TransportInfo(
         contentDescription = null,
         modifier = Modifier
           .size(IconSize)
+          .alpha(alpha)
           .constrainAs(endIcon) {
             start.linkTo(parent.start)
             end.linkTo(lastStop.start)
@@ -435,14 +452,16 @@ fun TransportInfo(
           },
       )
       TextSecondary(
-        modifier = Modifier.constrainAs(lastStop) {
-          width = Dimension.fillToConstraints
-          height = Dimension.wrapContent
-          start.linkTo(endIcon.end)
-          end.linkTo(parent.end)
-          top.linkTo(firstStop.bottom)
-          bottom.linkTo(parent.bottom)
-        },
+        modifier = Modifier
+          .alpha(alpha)
+          .constrainAs(lastStop) {
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
+            start.linkTo(endIcon.end)
+            end.linkTo(parent.end)
+            top.linkTo(firstStop.bottom)
+            bottom.linkTo(parent.bottom)
+          },
         text = last.getCurrentName(locale),
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
