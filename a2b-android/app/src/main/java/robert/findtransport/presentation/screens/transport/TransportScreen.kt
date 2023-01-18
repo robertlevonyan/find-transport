@@ -54,6 +54,7 @@ import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -69,7 +70,7 @@ import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
-import robert.findtransport.presentation.reusables.composables.RowToggleButtonGroup
+import robert.findtransport.presentation.reusables.composables.BackPressHandler
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
@@ -104,14 +105,6 @@ fun TransportScreen(
   val transport by transportViewModel.selectedTransport.collectAsState()
   val locationEnabled by mapViewModel.locationEnabled.collectAsState()
 
-  var isPrimary by rememberSaveable { mutableStateOf(true) }
-  val stops = if (isPrimary) transport.stops else transport.stopsReversed
-  val isMetro = transport.type == TransportType.METRO
-  if (isPrimary) {
-    previewMapViewModel.getReversedTransportRoute(transportId, isMetro)
-  } else {
-    previewMapViewModel.getTransportRoute(transportId, isMetro)
-  }
   val mapStyle = getMapStyle()
   val scope = rememberCoroutineScope()
   val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
@@ -132,14 +125,12 @@ fun TransportScreen(
           modifier = Modifier,
           transport = transport,
           locale = locale,
-          onPrimaryRouteClicked = { if (!isPrimary) isPrimary = true },
-          onSecondaryRouteClicked = { if (isPrimary) isPrimary = false },
-          stops = stops,
           showOptions = showOptions,
           homeViewModel = homeViewModel,
           navController = navController,
           bottomSheetScaffoldState = bottomSheetScaffoldState,
           scope = scope,
+          previewMapViewModel = previewMapViewModel,
         )
       }
     },
@@ -151,9 +142,17 @@ fun TransportScreen(
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       previewMapViewModel = previewMapViewModel,
-      isPrimary = isPrimary,
       scope = scope,
     )
+  }
+
+  BackPressHandler {
+    val bottomSheetState = bottomSheetScaffoldState.bottomSheetState
+    if (bottomSheetState.isExpanded) {
+      scope.launch { bottomSheetState.collapse() }
+    } else {
+      navController.popBackStack()
+    }
   }
 }
 
@@ -165,7 +164,6 @@ private fun MapContent(
   locationEnabled: Boolean,
   mapStyle: String,
   previewMapViewModel: PreviewMapViewModel,
-  isPrimary: Boolean,
   scope: CoroutineScope,
 ) {
   Box(modifier = modifier) {
@@ -175,7 +173,6 @@ private fun MapContent(
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       previewMapViewModel = previewMapViewModel,
-      isPrimary = isPrimary,
       scope = scope,
     )
 
@@ -199,7 +196,6 @@ private fun MapView(
   locationEnabled: Boolean,
   mapStyle: String,
   previewMapViewModel: PreviewMapViewModel,
-  isPrimary: Boolean,
   scope: CoroutineScope,
 ) {
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
@@ -233,7 +229,7 @@ private fun MapView(
         previewMapViewModel.route.collectLatest { result ->
           handleRoute(
             result = result,
-            reversed = isPrimary,
+            reversed = previewMapViewModel.isPrimary.value,
             context = context,
             polylineAnnotationManager = polylineAnnotationManager,
             map = map,
@@ -248,78 +244,16 @@ private fun MapView(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun StopList(
-  modifier: Modifier,
-  transport: Transport,
-  locale: String,
-  onPrimaryRouteClicked: () -> Unit,
-  onSecondaryRouteClicked: () -> Unit,
-  stops: List<Stop>,
-  showOptions: Boolean,
-  homeViewModel: HomeViewModel,
-  navController: NavController,
-  bottomSheetScaffoldState: BottomSheetScaffoldState,
-  scope: CoroutineScope,
-) {
-  if (transport == Transport.EMPTY) return
-
-  Box(modifier = modifier) {
-    LazyColumn(modifier = Modifier.fillMaxSize()) {
-      item {
-        Card(modifier = Modifier.padding(bottom = FabPadding)) {
-          TransportInfo(
-            transport = transport,
-            locale = locale,
-            bottomSheetScaffoldState = bottomSheetScaffoldState,
-            onElementClick = {
-              scope.launch {
-                val bottomSheetState = bottomSheetScaffoldState.bottomSheetState
-                if (bottomSheetState.isExpanded) {
-                  bottomSheetState.collapse()
-                } else {
-                  bottomSheetState.expand()
-                }
-              }
-            })
-        }
-      }
-      itemsIndexed(stops) { index, stop ->
-        when (index) {
-          0 -> FirstStopCard(
-            stop = stop,
-            locale = locale,
-            showOptions = showOptions,
-            homeViewModel = homeViewModel,
-            navController = navController,
-          )
-          stops.lastIndex -> LastStopCard(
-            stop = stop,
-            locale = locale,
-            showOptions = showOptions,
-            homeViewModel = homeViewModel,
-            navController = navController,
-          )
-          else -> StopCard(
-            stop = stop,
-            locale = locale,
-            showOptions = showOptions,
-            homeViewModel = homeViewModel,
-            navController = navController,
-          )
-        }
-      }
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
 fun TransportInfo(
   transport: Transport,
   locale: String,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
+  previewMapViewModel: PreviewMapViewModel,
+  onSwapClick: () -> Unit,
   onElementClick: () -> Unit,
 ) {
+  val isPrimary by previewMapViewModel.isPrimary.collectAsState()
+
   Column(modifier = Modifier
     .fillMaxSize()
     .background(color = MaterialTheme.colorScheme.secondary)
@@ -342,7 +276,8 @@ fun TransportInfo(
     ) {
       val icon = transport.getIcon()
 
-      val (transportIcon, transportNumber, startIcon, firstStop, endIcon, lastStop, stopCount) = createRefs()
+      val (transportIcon, transportNumber, startIcon,
+        firstStop, endIcon, lastStop, stopCount, swap) = createRefs()
 
       AsyncImage(
         modifier = Modifier
@@ -405,7 +340,22 @@ fun TransportInfo(
       }
       alpha = abs(1 - alpha)
 
-      println(alpha)
+      IconButton(
+        modifier = Modifier
+          .alpha(alpha)
+          .constrainAs(swap) {
+            end.linkTo(parent.end)
+            top.linkTo(stopCount.bottom)
+            bottom.linkTo(parent.bottom)
+          },
+        onClick = { onSwapClick.invoke() },
+      ) {
+        Image(
+          painter = painterResource(id = R.drawable.ic_swap),
+          contentDescription = null,
+          colorFilter = ColorFilter.tint(Color.Black),
+        )
+      }
 
       Image(
         painter = painterResource(id = R.drawable.ic_start_point),
@@ -427,11 +377,11 @@ fun TransportInfo(
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
             start.linkTo(startIcon.end)
-            end.linkTo(parent.end)
+            end.linkTo(swap.start)
             top.linkTo(transportIcon.bottom)
             bottom.linkTo(lastStop.top)
           },
-        text = first.getCurrentName(locale),
+        text = (if (isPrimary) first else last).getCurrentName(locale),
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -458,11 +408,11 @@ fun TransportInfo(
             width = Dimension.fillToConstraints
             height = Dimension.wrapContent
             start.linkTo(endIcon.end)
-            end.linkTo(parent.end)
+            end.linkTo(swap.start)
             top.linkTo(firstStop.bottom)
             bottom.linkTo(parent.bottom)
           },
-        text = last.getCurrentName(locale),
+        text = (if (isPrimary) last else first).getCurrentName(locale),
         textAlign = TextAlign.Start,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
@@ -472,31 +422,78 @@ fun TransportInfo(
   }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-private fun Toggles(
-  onPrimaryRouteClicked: () -> Unit,
-  onSecondaryRouteClicked: () -> Unit,
+private fun StopList(
+  modifier: Modifier,
+  transport: Transport,
+  locale: String,
+  showOptions: Boolean,
+  homeViewModel: HomeViewModel,
+  navController: NavController,
+  bottomSheetScaffoldState: BottomSheetScaffoldState,
+  scope: CoroutineScope,
+  previewMapViewModel: PreviewMapViewModel,
 ) {
-  Box(modifier = Modifier.fillMaxWidth()) {
-    RowToggleButtonGroup(
-      modifier = Modifier
-        .align(Alignment.Center)
-        .fillMaxWidth(0.9f)
-        .padding(vertical = FabPadding),
-      buttonCount = 2,
-      buttonTexts = arrayOf(
-        stringResource(id = R.string.label_primary_route),
-        stringResource(id = R.string.label_secondary_route),
-      ),
-      selectedColor = Accent,
-      shape = Shapes.medium,
-      primarySelection = 0,
-      buttonHeight = ToggleButtonSize,
-      unselectedColor = MaterialTheme.colorScheme.background,
-    ) { index: Int ->
-      when (index) {
-        0 -> onPrimaryRouteClicked.invoke()
-        1 -> onSecondaryRouteClicked.invoke()
+  if (transport == Transport.EMPTY) return
+  var isPrimary by rememberSaveable { mutableStateOf(true) }
+  val stops = if (isPrimary) transport.stops else transport.stopsReversed
+  val isMetro = transport.type == TransportType.METRO
+  if (isPrimary) {
+    previewMapViewModel.getReversedTransportRoute(transport.id, isMetro)
+  } else {
+    previewMapViewModel.getTransportRoute(transport.id, isMetro)
+  }
+
+  Box(modifier = modifier) {
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+      item {
+        Card(modifier = Modifier.padding(bottom = FabPadding)) {
+          TransportInfo(
+            transport = transport,
+            locale = locale,
+            bottomSheetScaffoldState = bottomSheetScaffoldState,
+            previewMapViewModel = previewMapViewModel,
+            onSwapClick = {
+              isPrimary = !isPrimary
+              previewMapViewModel.isPrimary.value = isPrimary
+            },
+          ) {
+            scope.launch {
+              val bottomSheetState = bottomSheetScaffoldState.bottomSheetState
+              if (bottomSheetState.isExpanded) {
+                bottomSheetState.collapse()
+              } else {
+                bottomSheetState.expand()
+              }
+            }
+          }
+        }
+      }
+      itemsIndexed(stops) { index, stop ->
+        when (index) {
+          0 -> FirstStopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+          stops.lastIndex -> LastStopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+          else -> StopCard(
+            stop = stop,
+            locale = locale,
+            showOptions = showOptions,
+            homeViewModel = homeViewModel,
+            navController = navController,
+          )
+        }
       }
     }
   }

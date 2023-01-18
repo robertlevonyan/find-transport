@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.RouteResult
@@ -21,9 +22,10 @@ class PreviewMapViewModel @Inject constructor(
   locationUseCase: LocationUseCase,
   private val transportUseCase: TransportUseCase,
 ) : MapViewModel(localeUseCase, permissionUseCase, locationUseCase) {
-
   private val _route = MutableSharedFlow<RouteResult>()
   val route: Flow<RouteResult> get() = _route
+
+  val isPrimary = MutableStateFlow(true)
 
   fun getTransportRoute(id: Int, underground: Boolean) {
     viewModelScope.launch {
