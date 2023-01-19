@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.screens.home
 
+import android.Manifest
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,6 +10,7 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.data.model.isEmpty
+import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.IntroUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
@@ -24,6 +26,7 @@ class HomeViewModel @Inject constructor(
   themeUseCase: ThemeUseCase,
   stopsUseCase: StopsUseCase,
   private val rateUseCase: RateUseCase,
+  private val permissionUseCase: PermissionUseCase,
 ) : BaseViewModel() {
   val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
@@ -31,7 +34,8 @@ class HomeViewModel @Inject constructor(
   val fromStop = MutableStateFlow(Stop.EMPTY)
   val toStop = MutableStateFlow(Stop.EMPTY)
   val showRate = MutableStateFlow(rateUseCase.showDialog())
-  val nearbyStop = stopsUseCase.getNearbyStop().asStateFlow(NearbyStopStatus.Idle)
+//  val nearbyStop = stopsUseCase.getNearbyStop().asStateFlow(NearbyStopStatus.Idle)
+  val locationEnabled = MutableStateFlow(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
 
   init {
     rateUseCase.updateInterval()

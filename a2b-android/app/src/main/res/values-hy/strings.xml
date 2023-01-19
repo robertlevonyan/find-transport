@@ -53,6 +53,8 @@
     <string name="label_send_feedback">Ուղարկել նամակը</string>
     <string name="label_close">Close</string>
     <string name="label_feedback_sending">Ուղարկվում է…</string>
+    <string name="label_stops">կանգառ</string>
+    <string name="label_current_location">Ներկայիս վայրից</string>
 
     <!--hints-->
     <string name="hint_from">որտեղից</string>
@@ -110,5 +112,4 @@
     <!--content description strings-->
     <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
     <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
-    <string name="label_stops">կանգառ</string>
 </resources>

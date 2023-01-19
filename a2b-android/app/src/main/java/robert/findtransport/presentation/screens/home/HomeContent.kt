@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
@@ -28,13 +30,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapView
+import com.mapbox.maps.ResourceOptionsManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.enums.MapType
@@ -44,7 +53,12 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.BlankButton
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.presentation.screens.map.MapViewModel
+import robert.findtransport.presentation.screens.map.enableLocationComponent
+import robert.findtransport.presentation.screens.map.flyTo
+import robert.findtransport.presentation.screens.map.getMapStyle
 import robert.findtransport.presentation.screens.search.SearchOpenInitiator
+import robert.findtransport.utils.extensions.disableAllGestures
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.showToast
 
@@ -53,6 +67,7 @@ fun HomeContent(
   modifier: Modifier,
   navController: NavController,
   homeViewModel: HomeViewModel,
+  mapViewModel: MapViewModel = hiltViewModel(),
 ) {
   val focusManager = LocalFocusManager.current
   val context = LocalContext.current
@@ -61,20 +76,10 @@ fun HomeContent(
   val selectedFromStop by homeViewModel.fromStop.collectAsState()
   val selectedToStop by homeViewModel.toStop.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
-  val nearbyStop by homeViewModel.nearbyStop.collectAsState()
-  var resourceId = remember { R.drawable.ic_current_location_default }
-
-  checkAndGetNearbyStop(
-    nearbyStop = nearbyStop,
-    homeViewModel = homeViewModel,
-    resourceId = resourceId
-  ) { newResourceId ->
-    resourceId = newResourceId
-  }
+  val locationEnabled by homeViewModel.locationEnabled.collectAsState()
 
   ConstraintLayout(modifier = modifier) {
-    val (fromCard, swap, toCard, search, allTransports,
-      rate) = createRefs()
+    val (fromCard, swap, toCard, search, allTransports, rate, map) = createRefs()
 
     AnimatedVisibility(
       modifier = Modifier
@@ -82,11 +87,11 @@ fun HomeContent(
         .constrainAs(rate) {
           width = Dimension.fillToConstraints
           height = Dimension.wrapContent
+          top.linkTo(parent.top)
           start.linkTo(parent.start)
           end.linkTo(parent.end)
           bottom.linkTo(fromCard.top)
-        },
-      visible = showRate
+        }, visible = showRate
     ) {
       Card {
         Column(
@@ -113,11 +118,53 @@ fun HomeContent(
       }
     }
 
+    if (locationEnabled) {
+      Box(modifier = Modifier
+        .padding(bottom = HalfPadding)
+        .constrainAs(map) {
+          width = Dimension.fillToConstraints
+          height = Dimension.fillToConstraints
+          top.linkTo(parent.top)
+          start.linkTo(parent.start)
+          end.linkTo(parent.end)
+          bottom.linkTo(fromCard.top)
+        }) {
+        MapContent(mapViewModel = mapViewModel)
+        Box(
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(HomePageMapGradientSize)
+            .background(
+              brush = Brush.verticalGradient(
+                colors = listOf(
+                  getMapGradientColor(),
+                  Color.Transparent,
+                )
+              )
+            )
+        ) {}
+        Box(
+          modifier = Modifier
+            .fillMaxWidth()
+            .height(HomePageMapGradientSize)
+            .align(Alignment.BottomCenter)
+            .background(
+              brush = Brush.verticalGradient(
+                colors = listOf(
+                  Color.Transparent,
+                  getMapGradientColor(),
+                )
+              )
+            )
+        ) {}
+      }
+    }
+
     SearchInput(
       modifier = Modifier
         .fillMaxWidth(0.9f)
         .wrapContentHeight()
-        .padding(bottom = DoublePadding)
+        .padding(bottom = FabPadding)
         .constrainAs(fromCard) {
           width = Dimension.wrapContent
           height = Dimension.wrapContent
@@ -127,8 +174,8 @@ fun HomeContent(
         },
       label = R.string.label_from_long,
       hint = R.string.hint_from,
-      trailingIcon = painterResource(id = resourceId),
-      text = selectedFromStop.getCurrentName(locale),
+      trailingIcon = painterResource(id = R.drawable.ic_current_location_default),
+      text = stringResource(id = R.string.label_current_location),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
           launchSingleTop = true
@@ -143,6 +190,7 @@ fun HomeContent(
 
     FloatingActionButton(
       modifier = Modifier
+        .padding(top = FabPadding)
         .size(SmallFabSize)
         .padding(bottom = FabPadding)
         .padding(end = FabPadding)
@@ -161,7 +209,7 @@ fun HomeContent(
       modifier = Modifier
         .fillMaxWidth(0.9f)
         .wrapContentHeight()
-        .padding(bottom = DoublePadding)
+        .padding(bottom = FabPadding)
         .constrainAs(toCard) {
           width = Dimension.wrapContent
           height = Dimension.wrapContent
@@ -209,15 +257,15 @@ fun HomeContent(
           return@SearchButton
         }
         navController.navigate(
-          route = NavigationScreens.SearchScreen.name +
-              "?from_id=${selectedFromStop.id}&to_id=${selectedToStop.id}&opened=${SearchOpenInitiator.HOME.name}"
+          route = NavigationScreens.SearchScreen.name + "?from_id=${selectedFromStop.id}&to_id=${selectedToStop.id}&opened=${SearchOpenInitiator.HOME.name}"
         )
       },
     )
 
     AllTransportsButton(
       modifier = Modifier
-        .padding(all = DoublePadding)
+        .padding(horizontal = DoublePadding)
+        .padding(vertical = FabPadding)
         .constrainAs(allTransports) {
           width = Dimension.wrapContent
           height = Dimension.wrapContent
@@ -228,6 +276,32 @@ fun HomeContent(
       onClick = { navController.navigate(NavigationScreens.TransportsScreen.name) },
     )
   }
+}
+
+@Composable
+private fun MapContent(mapViewModel: MapViewModel) {
+  val mapStyle = getMapStyle()
+  val scope = rememberCoroutineScope()
+
+  AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
+    ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
+    MapView(context = context)
+  }, update = { mapView ->
+    val map = mapView.getMapboxMap()
+    mapView.disableAllGestures()
+    map.setCamera(CameraOptions.Builder().zoom(7.0).build())
+
+    map.loadStyleUri(mapStyle) {
+      mapView.enableLocationComponent()
+      mapViewModel.getCurrentLocation()
+
+      scope.launch {
+        mapViewModel.currentLocation.collectLatest { currentLocation ->
+          map.flyTo(currentLocation)
+        }
+      }
+    }
+  })
 }
 
 @SuppressLint("ComposableNaming")
@@ -242,21 +316,20 @@ fun checkAndGetNearbyStop(
 
   when (nearbyStop) {
     NearbyStopStatus.Failed, NearbyStopStatus.Idle -> updateResource.invoke(R.drawable.ic_current_location_default)
-    NearbyStopStatus.Loading ->
-      LaunchedEffect(key1 = null) {
-        animatingJob = launch {
-          while (nearbyStop == NearbyStopStatus.Loading) {
-            delay(100)
-            updateResource.invoke(
-              if (resourceId == R.drawable.ic_current_location_default) {
-                R.drawable.ic_current_location_color
-              } else {
-                R.drawable.ic_current_location_default
-              }
-            )
-          }
+    NearbyStopStatus.Loading -> LaunchedEffect(key1 = null) {
+      animatingJob = launch {
+        while (nearbyStop == NearbyStopStatus.Loading) {
+          delay(100)
+          updateResource.invoke(
+            if (resourceId == R.drawable.ic_current_location_default) {
+              R.drawable.ic_current_location_color
+            } else {
+              R.drawable.ic_current_location_default
+            }
+          )
         }
       }
+    }
     is NearbyStopStatus.NearbyStop -> {
       animatingJob?.cancel()
       updateResource.invoke(R.drawable.ic_current_location_color)
@@ -306,7 +379,10 @@ private fun SearchInput(
           label = { Text(text = stringResource(id = hint)) },
           trailingIcon = {
             IconButton(onClick = { onDropdownClick.invoke() }) {
-              Icon(painter = painterResource(id = R.drawable.ic_arrow_drop_down), contentDescription = null)
+              Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_drop_down),
+                contentDescription = null
+              )
             }
           },
           singleLine = true,

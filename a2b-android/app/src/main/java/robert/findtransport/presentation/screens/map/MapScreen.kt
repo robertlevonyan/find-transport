@@ -168,7 +168,7 @@ fun MapScreen(
 }
 
 @Composable
-private fun getMapStyle(): String = if (isAppInDarkMode()) {
+fun getMapStyle(): String = if (isAppInDarkMode()) {
   BuildConfig.MAPBOX_STYLE_NIGHT
 } else {
   BuildConfig.MAPBOX_STYLE_LIGHT

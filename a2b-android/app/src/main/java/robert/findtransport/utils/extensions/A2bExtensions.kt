@@ -9,6 +9,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
+import com.mapbox.maps.MapView
+import com.mapbox.maps.plugin.gestures.gestures
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
@@ -128,5 +130,23 @@ fun Context.openPrivacyPolicy() {
   } catch (e: Exception) {
     e.printStackTrace()
     showToast("Google Chrome cannot be found")
+  }
+}
+
+fun MapView.disableAllGestures() {
+  with(gestures) {
+    rotateEnabled = false
+    pinchToZoomEnabled = false
+    scrollEnabled = false
+    simultaneousRotateAndPinchToZoomEnabled = false
+    pitchEnabled = false
+    doubleTapToZoomInEnabled = false
+    doubleTouchToZoomOutEnabled = false
+    quickZoomEnabled = false
+    pinchToZoomDecelerationEnabled = false
+    rotateDecelerationEnabled = false
+    scrollDecelerationEnabled = false
+    increasePinchToZoomThresholdWhenRotating = false
+    pinchScrollEnabled = false
   }
 }

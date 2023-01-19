@@ -62,7 +62,10 @@ android {
 
     release {
       isMinifyEnabled = true
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "$project.rootDir/tools/proguard-rules.pro")
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "$project.rootDir/tools/proguard-rules.pro"
+      )
       ndk {
         debugSymbolLevel = "FULL"
       }
@@ -129,7 +132,7 @@ dependencies {
   implementation("com.google.android.material:material:1.8.0-rc01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:20.0.0")
+  implementation("com.google.android.gms:play-services-location:21.0.1")
   implementation("com.google.code.gson:gson:2.10")
   implementation("com.google.dagger:hilt-android:2.44.2")
   releaseImplementation(platform("com.google.firebase:firebase-bom:31.1.1"))
@@ -182,8 +185,13 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //mapbox
-  implementation("com.mapbox.maps:android:10.9.1")
-  implementation("com.mapbox.navigation:android:2.4.0")
+  implementation("com.mapbox.maps:android:10.10.0") {
+    exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
+  }
+  implementation("com.mapbox.navigation:android:2.9.6") {
+    exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
+//    exclude(group = "com.mapbox.common", module = "common")
+  }
 
   //other
   implementation("com.airbnb.android:lottie-compose:5.2.0")

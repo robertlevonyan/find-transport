@@ -54,7 +54,6 @@ import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -76,6 +75,7 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.map.MapViewModel
 import robert.findtransport.presentation.screens.map.enableLocationComponent
+import robert.findtransport.presentation.screens.map.getMapStyle
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.EMPTY_ID
@@ -816,13 +816,6 @@ private fun PopupMenu(
       onMenuDismiss.invoke()
     }, text = { Text(text = stringResource(id = R.string.action_show)) })
   }
-}
-
-@Composable
-private fun getMapStyle(): String = if (isAppInDarkMode()) {
-  BuildConfig.MAPBOX_STYLE_NIGHT
-} else {
-  BuildConfig.MAPBOX_STYLE_LIGHT
 }
 
 private fun handleRoute(

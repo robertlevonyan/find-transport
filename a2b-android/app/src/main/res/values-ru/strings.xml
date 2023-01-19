@@ -53,6 +53,8 @@
     <string name="label_send_feedback">Отправить письмо</string>
     <string name="label_close">Close</string>
     <string name="label_feedback_sending">Отправление…</string>
+    <string name="label_stops">остановки</string>
+    <string name="label_current_location">Мое местоположение</string>
 
     <!--hints-->
     <string name="hint_from">откуда</string>
@@ -110,5 +112,4 @@
     <!--content description strings-->
     <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
     <string name="cd_show_on_map">Показать путь на карте</string>
-    <string name="label_stops">остановки</string>
 </resources>
