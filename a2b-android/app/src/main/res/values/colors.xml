@@ -3,8 +3,7 @@
   <color name="colorPrimary">#ffffff</color>
   <color name="colorPrimaryVariant">#cecece</color>
   <color name="colorPrimaryVariantTransparent">#65F1F1F1</color>
-  <color name="colorSecondary">#f1f1f1</color>
-  <color name="colorSecondaryUntranslated">#f1f1f1</color>
+    <color name="colorSecondaryUntranslated">#f1f1f1</color>
   <color name="colorAccent100">#FFEDD1</color>
   <color name="colorAccent300">#e7a942</color>
   <color name="colorAccent500">#CEA053</color>
@@ -13,10 +12,7 @@
   <color name="colorOnPrimaryLight">#5b5b5b</color>
 
   <color name="colorIconWheels">#191319</color>
-  <color name="colorBusPurple">#A57AB9</color>
-  <color name="colorMicrobusYellow">#FABC2C</color>
-  <color name="colorMicrobusSecondary">#6E5958</color>
-  <color name="colorTrolleyGreen">#6CB64B</color>
+    <color name="colorTrolleyGreen">#6CB64B</color>
   <color name="colorTrolleySecondary">#404C37</color>
 
   <color name="ic_launcher_background">#f1f1f1</color>

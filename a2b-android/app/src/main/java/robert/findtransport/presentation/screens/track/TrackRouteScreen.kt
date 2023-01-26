@@ -82,7 +82,7 @@ private fun TrackRouteContent(
     A2bDialog(
       title = stringResource(id = R.string.label_arriving),
       text = stringResource(id = R.string.message_next_stop),
-      image = painterResource(id = R.drawable.ic_transport_arriving),
+      image = painterResource(id = R.drawable.il_transport_arriving),
       onConfirm = { showNextStopDialog = false }) {
       showNextStopDialog = false
     }

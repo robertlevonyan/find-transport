@@ -25,6 +25,7 @@ fun TextSecondary(
     text = text,
     fontSize = MaterialTheme.typography.displayMedium.fontSize,
     fontWeight = MaterialTheme.typography.displayMedium.fontWeight,
+    fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     color = color,
     textAlign = textAlign,
     overflow = overflow,
@@ -44,6 +45,7 @@ fun TextSecondary(
     text = text,
     fontSize = MaterialTheme.typography.displayMedium.fontSize,
     fontWeight = MaterialTheme.typography.displayMedium.fontWeight,
+    fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     color = color,
     textAlign = textAlign,
   )

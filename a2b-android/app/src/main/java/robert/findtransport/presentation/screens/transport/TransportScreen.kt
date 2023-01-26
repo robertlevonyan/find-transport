@@ -117,7 +117,7 @@ fun TransportScreen(
     sheetPeekHeight = TransportInfoSize,
     sheetContent = {
       Column(
-        modifier = Modifier
+        modifier = modifier
           .background(MaterialTheme.colorScheme.surface)
           .fillMaxWidth()
       ) {
@@ -303,6 +303,7 @@ fun TransportInfo(
         color = Color.Black,
         fontWeight = FontWeight.Black,
         fontSize = TextTransportNumber,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
       )
 
       val stops = transport.stops
@@ -330,6 +331,7 @@ fun TransportInfo(
         textAlign = TextAlign.Center,
         color = Color.Black,
         fontWeight = FontWeight.Bold,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
       )
 
       val alphaValue = bottomSheetScaffoldState.bottomSheetState.offset.value / 1000
@@ -568,6 +570,7 @@ private fun FirstStopCard(
           },
         text = stop.getCurrentName(locale),
         fontSize = Text13,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
         color = BlackVariant,
       )
 
@@ -583,7 +586,7 @@ private fun FirstStopCard(
             end.linkTo(parent.end)
           }, onClick = { overflowMenuState = !overflowMenuState }) {
           Icon(
-            painter = painterResource(id = R.drawable.ic_more_vertical),
+            painter = painterResource(id = R.drawable.ic_more),
             tint = BlackVariant,
             contentDescription = null,
           )
@@ -658,6 +661,7 @@ private fun StopCard(
         },
       text = stop.getCurrentName(locale),
       fontSize = Text11,
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     )
 
     if (showOptions) {
@@ -672,7 +676,7 @@ private fun StopCard(
           end.linkTo(parent.end)
         }, onClick = { overflowMenuState = !overflowMenuState }) {
         Icon(
-          painter = painterResource(id = R.drawable.ic_more_white),
+          painter = painterResource(id = R.drawable.ic_more),
           tint = MaterialTheme.colorScheme.onPrimary,
           contentDescription = null,
         )
@@ -761,6 +765,7 @@ private fun LastStopCard(
           text = stop.getCurrentName(locale),
           color = WhiteVariant,
           fontSize = Text13,
+          fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
         )
 
         if (showOptions) {
@@ -775,7 +780,7 @@ private fun LastStopCard(
               end.linkTo(parent.end)
             }, onClick = { overflowMenuState = !overflowMenuState }) {
             Icon(
-              painter = painterResource(id = R.drawable.ic_more_white),
+              painter = painterResource(id = R.drawable.ic_more),
               tint = WhiteVariant,
               contentDescription = null,
             )
@@ -806,15 +811,30 @@ private fun PopupMenu(
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
       homeViewModel.setFromStop(stop)
-    }, text = { Text(text = stringResource(id = R.string.action_set_from)) })
+    }, text = {
+      Text(
+        text = stringResource(id = R.string.action_set_from),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
+    })
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
       homeViewModel.setToStop(stop)
-    }, text = { Text(text = stringResource(id = R.string.action_set_to)) })
+    }, text = {
+      Text(
+        text = stringResource(id = R.string.action_set_to),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
+    })
     DropdownMenuItem(onClick = {
       navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
       onMenuDismiss.invoke()
-    }, text = { Text(text = stringResource(id = R.string.action_show)) })
+    }, text = {
+      Text(
+        text = stringResource(id = R.string.action_show),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
+    })
   }
 }
 

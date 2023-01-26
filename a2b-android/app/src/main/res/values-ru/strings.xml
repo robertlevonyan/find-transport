@@ -34,16 +34,12 @@
     <string name="label_all_transports">Все маршруты</string>
     <string name="label_search">Поиск</string>
     <string name="label_select_stop">Выберите остановку</string>
-    <string name="label_primary_route">Основной</string>
-    <string name="label_secondary_route">Обратный</string>
     <string name="label_walk_to">Потом пройдите</string>
     <string name="label_walk_from">Пройдите отсюда</string>
     <string name="label_interchange_from">Садитесь в транспорт отсюда</string>
     <string name="label_interchange_to">Выходите здесь</string>
     <string name="label_take_transport">Воспользуетесь каким либо транспортом из списка</string>
     <string name="label_selected_stop">Транспорты останавливающиеся у остановки "%1$s"</string>
-    <string name="label_see_all">Все</string>
-    <string name="label_see_favorites">Избранные</string>
     <string name="label_stop_tracker">Остановка трекера</string>
     <string name="label_tracker_transport">Вы выбрали</string>
     <string name="label_current_stop">Текущая остановка</string>
@@ -111,5 +107,4 @@
 
     <!--content description strings-->
     <string name="cd_current_location">Переместиться на нынешнее мостоположение</string>
-    <string name="cd_show_on_map">Показать путь на карте</string>
 </resources>

@@ -41,6 +41,7 @@ import robert.findtransport.presentation.screens.map.chooser.ChooserMapScreen
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MapScreen(
   modifier: Modifier = Modifier,
@@ -106,6 +107,7 @@ fun MapScreen(
             Text(
               text = stringResource(id = R.string.permission_yes),
               fontWeight = FontWeight.Bold,
+              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
             )
           }
           Button(
@@ -119,7 +121,11 @@ fun MapScreen(
             },
             shape = RectangleShape,
           ) {
-            Text(text = stringResource(id = R.string.permission_no), textAlign = TextAlign.Center)
+            Text(
+              text = stringResource(id = R.string.permission_no),
+              textAlign = TextAlign.Center,
+              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
           }
         }
       }
@@ -138,9 +144,10 @@ fun MapScreen(
       MapType.SEARCH -> return
     }
 
-    SmallFloatingActionButton(
-      modifier = Modifier.padding(FabPadding),
-      containerColor = androidx.compose.ui.graphics.Color.Transparent,
+    SmallFloatingActionButton(modifier = Modifier.padding(
+      vertical = FabPadding, horizontal = HalfPadding
+    ),
+      containerColor = MaterialTheme.colorScheme.secondary,
       onClick = { navController.popBackStack() }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_arrow_back),
@@ -158,7 +165,7 @@ fun MapScreen(
           mapViewModel.getCurrentLocation()
         }) {
         Icon(
-          painter = painterResource(id = R.drawable.ic_current_location_default),
+          painter = painterResource(id = R.drawable.ic_current_location),
           contentDescription = stringResource(id = R.string.cd_current_location),
           tint = Black,
         )

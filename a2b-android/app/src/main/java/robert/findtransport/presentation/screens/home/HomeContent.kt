@@ -1,6 +1,5 @@
 package robert.findtransport.presentation.screens.home
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
 import androidx.annotation.StringRes
@@ -39,15 +38,12 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.ResourceOptionsManager
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.enums.MapType
-import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.BlankButton
@@ -79,7 +75,7 @@ fun HomeContent(
   val locationEnabled by homeViewModel.locationEnabled.collectAsState()
 
   ConstraintLayout(modifier = modifier) {
-    val (fromCard, swap, toCard, search, allTransports, rate, map) = createRefs()
+    val (appBar, fromCard, swap, toCard, search, allTransports, rate, map) = createRefs()
 
     AnimatedVisibility(
       modifier = Modifier
@@ -91,7 +87,8 @@ fun HomeContent(
           start.linkTo(parent.start)
           end.linkTo(parent.end)
           bottom.linkTo(fromCard.top)
-        }, visible = showRate
+        },
+      visible = showRate,
     ) {
       Card {
         Column(
@@ -160,6 +157,17 @@ fun HomeContent(
       }
     }
 
+    HomeAppBar(
+      modifier = Modifier
+        .constrainAs(appBar) {
+          start.linkTo(parent.start)
+          top.linkTo(parent.top)
+          end.linkTo(parent.end)
+        },
+      navController = navController,
+      containerColor = Color.Transparent,
+    )
+
     SearchInput(
       modifier = Modifier
         .fillMaxWidth(0.9f)
@@ -174,7 +182,7 @@ fun HomeContent(
         },
       label = R.string.label_from_long,
       hint = R.string.hint_from,
-      trailingIcon = painterResource(id = R.drawable.ic_current_location_default),
+      trailingIcon = painterResource(id = R.drawable.ic_current_location),
       text = stringResource(id = R.string.label_current_location),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
@@ -283,7 +291,8 @@ private fun MapContent(mapViewModel: MapViewModel) {
   val mapStyle = getMapStyle()
   val scope = rememberCoroutineScope()
 
-  AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
+  AndroidView(modifier = Modifier
+    .fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
     MapView(context = context)
   }, update = { mapView ->
@@ -302,41 +311,6 @@ private fun MapContent(mapViewModel: MapViewModel) {
       }
     }
   })
-}
-
-@SuppressLint("ComposableNaming")
-@Composable
-fun checkAndGetNearbyStop(
-  nearbyStop: NearbyStopStatus,
-  homeViewModel: HomeViewModel,
-  resourceId: Int,
-  updateResource: (Int) -> Unit,
-) {
-  var animatingJob: Job? = null
-
-  when (nearbyStop) {
-    NearbyStopStatus.Failed, NearbyStopStatus.Idle -> updateResource.invoke(R.drawable.ic_current_location_default)
-    NearbyStopStatus.Loading -> LaunchedEffect(key1 = null) {
-      animatingJob = launch {
-        while (nearbyStop == NearbyStopStatus.Loading) {
-          delay(100)
-          updateResource.invoke(
-            if (resourceId == R.drawable.ic_current_location_default) {
-              R.drawable.ic_current_location_color
-            } else {
-              R.drawable.ic_current_location_default
-            }
-          )
-        }
-      }
-    }
-    is NearbyStopStatus.NearbyStop -> {
-      animatingJob?.cancel()
-      updateResource.invoke(R.drawable.ic_current_location_color)
-      val foundNearbyStop = nearbyStop.stop
-      homeViewModel.setFromStopIfEmpty(foundNearbyStop)
-    }
-  }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -358,6 +332,7 @@ private fun SearchInput(
       text = stringResource(id = label),
       fontWeight = FontWeight.W600,
       fontSize = Text20,
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     )
 
     Card(
@@ -376,7 +351,12 @@ private fun SearchInput(
             .padding(vertical = SmallPadding),
           value = text,
           onValueChange = {},
-          label = { Text(text = stringResource(id = hint)) },
+          label = {
+            Text(
+              text = stringResource(id = hint),
+              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+          },
           trailingIcon = {
             IconButton(onClick = { onDropdownClick.invoke() }) {
               Icon(
@@ -435,6 +415,7 @@ private fun SearchButton(
       Text(
         text = stringResource(id = R.string.label_search),
         fontWeight = FontWeight.W400,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
       )
     },
     shape = Shapes.medium,
@@ -461,7 +442,10 @@ private fun AllTransportsButton(
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
       Image(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
-      Text(text = stringResource(id = R.string.label_all_transports))
+      Text(
+        text = stringResource(id = R.string.label_all_transports),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
     }
   }
 }

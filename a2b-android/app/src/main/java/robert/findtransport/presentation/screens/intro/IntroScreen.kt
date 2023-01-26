@@ -88,6 +88,7 @@ fun IntroScreen(
         text = stringResource(id = welcomeMessage),
         fontWeight = FontWeight.SemiBold,
         fontSize = Text24,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
       )
 
@@ -166,6 +167,7 @@ private fun TitleAndLogo(
       color = MaterialTheme.colorScheme.onSurface,
       fontSize = TextIntroLabel,
       fontWeight = FontWeight.Bold,
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     )
   }
 }

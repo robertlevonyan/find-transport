@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -37,6 +36,7 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FeedbackScreen(
@@ -109,10 +109,13 @@ private fun FeedbackContent(
       snackbarHostState.currentSnackbarData?.dismiss()
       when ((feedbackState as FeedbackSendingStatus.Failure).type) {
         ExceptionType.ERROR_EMAIL,
-        ExceptionType.WRONG_EMAIL -> errorEmail = (feedbackState as FeedbackSendingStatus.Failure).message
-        ExceptionType.ERROR_SUBJECT -> errorSubject = (feedbackState as FeedbackSendingStatus.Failure).message
+        ExceptionType.WRONG_EMAIL -> errorEmail =
+          (feedbackState as FeedbackSendingStatus.Failure).message
+        ExceptionType.ERROR_SUBJECT -> errorSubject =
+          (feedbackState as FeedbackSendingStatus.Failure).message
         ExceptionType.ERROR_MESSAGE,
-        ExceptionType.SHORT_MESSAGE -> errorMessage = (feedbackState as FeedbackSendingStatus.Failure).message
+        ExceptionType.SHORT_MESSAGE -> errorMessage =
+          (feedbackState as FeedbackSendingStatus.Failure).message
         else -> Unit
       }
     }
@@ -259,7 +262,12 @@ private fun FeedbackInput(
     onValueChange = onValueChange,
     singleLine = singleLine,
     shape = Shapes.medium,
-    label = { Text(text = stringResource(id = hint)) },
+    label = {
+      Text(
+        text = stringResource(id = hint),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
+    },
     colors = TextFieldDefaults.outlinedTextFieldColors(
       containerColor = searchInputBackgroundColor(),
       focusedBorderColor = MaterialTheme.colorScheme.surface,

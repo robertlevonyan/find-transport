@@ -274,6 +274,7 @@ private fun TextContent(modifier: Modifier, buttonTexts: Array<String>, index: I
     color = contentColor,
     maxLines = 1,
     overflow = TextOverflow.Ellipsis,
+    fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
   )
 }
 

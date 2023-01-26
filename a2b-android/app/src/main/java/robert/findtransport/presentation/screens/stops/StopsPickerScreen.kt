@@ -60,7 +60,7 @@ fun StopsPickerScreen(
             }
           }) {
             Icon(
-              painter = painterResource(id = R.drawable.ic_search_splash),
+              painter = painterResource(id = R.drawable.ic_search),
               contentDescription = stringResource(id = R.string.hint_search),
               tint = Color.Unspecified,
             )
@@ -127,7 +127,12 @@ private fun SearchInput(onValueChange: (String) -> Unit) {
     },
     singleLine = true,
     shape = Shapes.medium,
-    label = { Text(text = stringResource(id = R.string.hint_search)) },
+    label = {
+      Text(
+        text = stringResource(id = R.string.hint_search),
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      )
+    },
     colors = TextFieldDefaults.outlinedTextFieldColors(
       containerColor = searchInputBackgroundColor(),
       focusedBorderColor = MaterialTheme.colorScheme.surface,

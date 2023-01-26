@@ -25,7 +25,6 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -55,15 +54,15 @@ fun ChooserMapScreen(
   mapViewModel: MapViewModel,
 ) {
   val scope = rememberCoroutineScope()
-  var loading by remember { mutableStateOf(true) }
-  val showStopOptions = remember { mutableStateOf<JsonElement?>(null) }
+//  var loading by remember { mutableStateOf(true) }
+//  val showStopOptions = remember { mutableStateOf<JsonElement?>(null) }
 
-  ShowStopOptionsDialog(
-    showStopOptions = showStopOptions,
-    chooserMapViewModel = chooserMapViewModel,
-    navController = navController,
-    homeViewModel = homeViewModel,
-  )
+//  ShowStopOptionsDialog(
+//    showStopOptions = showStopOptions,
+//    chooserMapViewModel = chooserMapViewModel,
+//    navController = navController,
+//    homeViewModel = homeViewModel,
+//  )
 
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
@@ -71,10 +70,10 @@ fun ChooserMapScreen(
   }, update = { mapView ->
     val map = mapView.getMapboxMap()
 
-    val pointAnnotationManager = createPointAnnotationManager(
-      mapView = mapView,
-      showStopOptions = showStopOptions,
-    )
+//    val pointAnnotationManager = createPointAnnotationManager(
+//      mapView = mapView,
+//      showStopOptions = showStopOptions,
+//    )
 
     map.loadStyleUri(mapStyle) {
       if (locationEnabled) {
@@ -87,19 +86,19 @@ fun ChooserMapScreen(
           map.flyTo(currentLocation)
         }
       }
-      scope.launch {
-        chooserMapViewModel.allStops.collectLatest { allStops ->
-          pointAnnotationManager.create(allStops)
-          delay(2000)
-          loading = false
-        }
-      }
+//      scope.launch {
+//        chooserMapViewModel.allStops.collectLatest { allStops ->
+//          pointAnnotationManager.create(allStops)
+//          delay(2000)
+//          loading = false
+//        }
+//      }
     }
   })
 
-  if (loading) {
-    CircularLoading()
-  }
+//  if (loading) {
+//    CircularLoading()
+//  }
 }
 
 @Composable

@@ -22,19 +22,19 @@ class ChooserMapViewModel @Inject constructor(
   locationUseCase: LocationUseCase,
 ) : MapViewModel(localeUseCase, permissionUseCase, locationUseCase) {
 
-  private val _allStops = MutableStateFlow(emptyList<PointAnnotationOptions>())
-  val allStops: StateFlow<List<PointAnnotationOptions>> get() = _allStops.asStateFlow()
+//  private val _allStops = MutableStateFlow(emptyList<PointAnnotationOptions>())
+//  val allStops: StateFlow<List<PointAnnotationOptions>> get() = _allStops.asStateFlow()
 
-  init {
-    viewModelScope.launch {
-      try {
-        if (!coroutineContext.isActive) return@launch
-        val stops = async { stopsUseCase.getStopsLocations() }
-        val metroStops = async { stopsUseCase.getMetroStopsLocations() }
-        _allStops.value = stops.await() + metroStops.await()
-      } catch (e: Exception) {
-        e.printStackTrace()
-      }
-    }
-  }
+//  init {
+//    viewModelScope.launch {
+//      try {
+//        if (!coroutineContext.isActive) return@launch
+//        val stops = async { stopsUseCase.getStopsLocations() }
+//        val metroStops = async { stopsUseCase.getMetroStopsLocations() }
+//        _allStops.value = stops.await() + metroStops.await()
+//      } catch (e: Exception) {
+//        e.printStackTrace()
+//      }
+//    }
+//  }
 }

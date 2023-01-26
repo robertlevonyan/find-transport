@@ -75,6 +75,7 @@ fun LazyItemScope.TransportListElement(
         color = MaterialTheme.colorScheme.onSurface,
         fontWeight = FontWeight.Black,
         fontSize = TextTransportNumber,
+        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
       )
 
       val stops = transport.stops

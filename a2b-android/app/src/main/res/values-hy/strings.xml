@@ -34,16 +34,12 @@
     <string name="label_all_transports">Բոլոր երթուղիները</string>
     <string name="label_search">Փնտրել</string>
     <string name="label_select_stop">Ընտրեք կանգառ</string>
-    <string name="label_primary_route">Հիմնական</string>
-    <string name="label_secondary_route">Հետադարձ</string>
     <string name="label_walk_to">Այնուհետև քայլեք</string>
     <string name="label_walk_from">Քայլեք այստեղից՝</string>
     <string name="label_interchange_from">Նստեք տրանսպորտ այստեղից՝</string>
     <string name="label_interchange_to">Իջեք այստեղ`</string>
     <string name="label_take_transport">Նստեք հետևյալներից որևէ մեկը</string>
     <string name="label_selected_stop">«%1$s» կանգառում կանգնող տրանսպորտի ցանկը</string>
-    <string name="label_see_all">Բոլորը</string>
-    <string name="label_see_favorites">Նախընտրելիները</string>
     <string name="label_stop_tracker">Դադարեցնել հետևումը</string>
     <string name="label_tracker_transport">Դուք ընտրել եք</string>
     <string name="label_current_stop">Ներկայիս կանգառը</string>
@@ -111,5 +107,4 @@
 
     <!--content description strings-->
     <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
-    <string name="cd_show_on_map">Տեսնել երթուղին քարտեզի վրա</string>
 </resources>

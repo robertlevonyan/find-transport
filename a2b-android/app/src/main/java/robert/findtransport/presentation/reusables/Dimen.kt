@@ -31,6 +31,7 @@ val TransportInfoSize = 100.dp
 val TransportInfoElevation = 12.dp
 val HomePageMapGradientSize = 55.dp
 
+val Text10 = 10.sp
 val Text11 = 11.sp
 val Text12 = 12.sp
 val Text13 = 13.sp

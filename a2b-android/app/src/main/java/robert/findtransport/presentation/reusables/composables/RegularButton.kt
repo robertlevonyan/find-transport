@@ -1,9 +1,6 @@
 package robert.findtransport.presentation.reusables.composables
 
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +27,7 @@ fun RegularButton(
     Text(
       text = text,
       fontWeight = FontWeight.Bold,
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     )
   }
 }

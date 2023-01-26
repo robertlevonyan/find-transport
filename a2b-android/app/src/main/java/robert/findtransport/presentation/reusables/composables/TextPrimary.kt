@@ -27,6 +27,7 @@ fun TextPrimary(
     text = text,
     fontSize = fontSize,
     fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
+    fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
     color = color,
     textAlign = textAlign,
     overflow = overflow,
@@ -47,6 +48,7 @@ fun TextPrimary(
     text = text,
     fontSize = fontSize,
     fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
+    fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
     color = color,
     textAlign = textAlign,
   )

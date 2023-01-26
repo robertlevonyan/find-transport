@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -47,7 +48,7 @@ fun isAppInDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) 
 @SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColorScheme(
   primary = Black,
-  primaryContainer = BlackPure,
+  primaryContainer = Color.Transparent,
   onPrimary = WhiteVariant,
   secondary = Accent,
   secondaryContainer = AccentVariant,

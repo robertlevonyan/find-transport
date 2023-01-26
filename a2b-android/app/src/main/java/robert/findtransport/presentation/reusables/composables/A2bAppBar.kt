@@ -42,11 +42,9 @@ fun A2bAppBar(
     title = {
       TextPrimary(
         modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = SmallPadding)
-          .systemBarsPadding(),
+          .fillMaxWidth(),
         text = title,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
       )
     },
     actions = {
@@ -54,7 +52,7 @@ fun A2bAppBar(
 
       IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
         Icon(
-          painter = painterResource(id = R.drawable.ic_more_vertical),
+          painter = painterResource(id = R.drawable.ic_more),
           contentDescription = stringResource(id = R.string.action_settings),
           tint = MaterialTheme.colorScheme.onSurface,
         )
@@ -71,7 +69,10 @@ fun A2bAppBar(
             overflowMenuState = false
           },
           text = {
-            Text(text = stringResource(id = R.string.action_privacy))
+            Text(
+              text = stringResource(id = R.string.action_privacy),
+              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
           })
       }
     },

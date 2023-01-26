@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
     } else {
       ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
-
     installSplashScreen()
     setContent {
       CompositionLocalProvider(LocalActivity provides this) {

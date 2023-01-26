@@ -292,14 +292,14 @@ private fun GeneralSettings(modifier: Modifier) {
             text = stringResource(id = R.string.settings_rate),
             color = BlackVariant,
             fontWeight = FontWeight.Bold,
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
             textAlign = TextAlign.Center,
           )
 
           TextSecondary(
             modifier = Modifier
               .align(Alignment.CenterHorizontally)
-              .wrapContentSize()
-              .padding(bottom = FabPadding),
+              .wrapContentSize(),
             text = stringResource(id = R.string.settings_rate_details),
             color = BlackVariant,
           )
@@ -336,14 +336,14 @@ private fun GeneralSettings(modifier: Modifier) {
             text = stringResource(id = R.string.settings_app_version),
             color = BlackVariant,
             fontWeight = FontWeight.Bold,
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
             textAlign = TextAlign.Center,
           )
 
           TextSecondary(
             modifier = Modifier
               .align(Alignment.CenterHorizontally)
-              .wrapContentSize()
-              .padding(bottom = FabPadding),
+              .wrapContentSize(),
             text = BuildConfig.VERSION_NAME,
             color = BlackVariant,
           )

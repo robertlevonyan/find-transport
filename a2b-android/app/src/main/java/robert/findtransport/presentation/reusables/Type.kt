@@ -9,18 +9,18 @@ import robert.findtransport.R
 
 val Typography = Typography(
   displayLarge = TextStyle(
-    fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+    fontFamily = FontFamily(Font(R.font.dejavu)),
     fontSize = TextTitle,
     fontWeight = FontWeight.Bold,
   ),
   displayMedium = TextStyle(
-    fontFamily = FontFamily(Font(R.font.google_sans_regular)),
-    fontSize = Text13,
+    fontFamily = FontFamily(Font(R.font.dejavu)),
+    fontSize = Text12,
     fontWeight = FontWeight.Medium,
   ),
   displaySmall = TextStyle(
-    fontFamily = FontFamily(Font(R.font.google_sans_regular)),
-    fontSize = Text11,
+    fontFamily = FontFamily(Font(R.font.dejavu)),
+    fontSize = Text10,
     fontWeight = FontWeight.Normal,
   )
 )

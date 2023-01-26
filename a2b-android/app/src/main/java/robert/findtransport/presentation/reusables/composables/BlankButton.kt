@@ -27,6 +27,7 @@ fun BlankButton(
     Text(
       text = text,
       fontWeight = FontWeight.Bold,
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     )
   }
 }
