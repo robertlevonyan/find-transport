@@ -17,7 +17,7 @@ import robert.findtransport.utils.DEFAULT_LONGITUDE
 import javax.inject.Inject
 
 @HiltViewModel
-open class MapViewModel @Inject constructor(
+open class LocationPickerViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   permissionUseCase: PermissionUseCase,
   private val locationUseCase: LocationUseCase,

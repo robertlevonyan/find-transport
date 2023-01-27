@@ -23,8 +23,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -43,13 +41,12 @@ import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.enums.MapType
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.BlankButton
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
-import robert.findtransport.presentation.screens.map.MapViewModel
+import robert.findtransport.presentation.screens.map.LocationPickerViewModel
 import robert.findtransport.presentation.screens.map.enableLocationComponent
 import robert.findtransport.presentation.screens.map.flyTo
 import robert.findtransport.presentation.screens.map.getMapStyle
@@ -63,7 +60,7 @@ fun HomeContent(
   modifier: Modifier,
   navController: NavController,
   homeViewModel: HomeViewModel,
-  mapViewModel: MapViewModel = hiltViewModel(),
+  locationPickerViewModel: LocationPickerViewModel = hiltViewModel(),
 ) {
   val focusManager = LocalFocusManager.current
   val context = LocalContext.current
@@ -126,7 +123,7 @@ fun HomeContent(
           end.linkTo(parent.end)
           bottom.linkTo(fromCard.top)
         }) {
-        MapContent(mapViewModel = mapViewModel)
+        MapContent(locationPickerViewModel = locationPickerViewModel)
         Box(
           modifier = Modifier
             .fillMaxWidth()
@@ -182,7 +179,7 @@ fun HomeContent(
         },
       label = R.string.label_from_long,
       hint = R.string.hint_from,
-      trailingIcon = painterResource(id = R.drawable.ic_current_location),
+      trailingIcon = painterResource(id = R.drawable.ic_location_start),
       text = stringResource(id = R.string.label_current_location),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/true") {
@@ -192,7 +189,7 @@ fun HomeContent(
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
       keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) }),
       onTrailingIconClick = {
-        navController.navigate(route = "${NavigationScreens.ChooserMapScreen.name}/${MapType.CHOOSER.ordinal}")
+        navController.navigate(route = "${NavigationScreens.LocationPicker.name}/${0}")
       },
     )
 
@@ -227,7 +224,7 @@ fun HomeContent(
         },
       label = R.string.label_to_long,
       hint = R.string.hint_to,
-      trailingIcon = painterResource(id = R.drawable.ic_map),
+      trailingIcon = painterResource(id = R.drawable.ic_location),
       text = selectedToStop.getCurrentName(locale),
       onDropdownClick = {
         navController.navigate(route = "${NavigationScreens.StopsPickerScreen.name}/false") {
@@ -237,7 +234,7 @@ fun HomeContent(
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
       keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
       onTrailingIconClick = {
-        navController.navigate(route = "${NavigationScreens.ChooserMapScreen.name}/${MapType.CHOOSER.ordinal}")
+        navController.navigate(route = "${NavigationScreens.LocationPicker.name}/${1}")
       },
     )
 
@@ -287,7 +284,7 @@ fun HomeContent(
 }
 
 @Composable
-private fun MapContent(mapViewModel: MapViewModel) {
+private fun MapContent(locationPickerViewModel: LocationPickerViewModel) {
   val mapStyle = getMapStyle()
   val scope = rememberCoroutineScope()
 
@@ -302,10 +299,10 @@ private fun MapContent(mapViewModel: MapViewModel) {
 
     map.loadStyleUri(mapStyle) {
       mapView.enableLocationComponent()
-      mapViewModel.getCurrentLocation()
+      locationPickerViewModel.getCurrentLocation()
 
       scope.launch {
-        mapViewModel.currentLocation.collectLatest { currentLocation ->
+        locationPickerViewModel.currentLocation.collectLatest { currentLocation ->
           map.flyTo(currentLocation)
         }
       }
@@ -381,7 +378,7 @@ private fun SearchInput(
           enabled = false,
           textStyle = TextStyle(
             color = MaterialTheme.colorScheme.onSurface,
-            fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
           ),
         )
 

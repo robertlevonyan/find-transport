@@ -51,6 +51,8 @@
     <string name="label_feedback_sending">Отправление…</string>
     <string name="label_stops">остановки</string>
     <string name="label_current_location">Мое местоположение</string>
+    <string name="label_select_origin">Выбрать <i>"%1$s"</i> как начало пути</string>
+    <string name="label_select_destination">Выбрать <i>"%1$s"</i> как конец пути</string>
 
     <!--hints-->
     <string name="hint_from">откуда</string>

@@ -1,119 +1,121 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="app_name" translatable="false" tools:ignore="PrivateResource">A2B Transport</string>
+    <string name="app_name" translatable="false" tools:ignore="PrivateResource">A2B Transport</string>
 
-  <!--titles-->
-  <string name="title_search">Search</string>
-  <string name="title_details">Details</string>
-  <string name="title_settings">Settings</string>
-  <string name="title_feedback">Feedback</string>
-  <string name="title_history">Search history</string>
-  <string name="title_transports">Transports</string>
+    <!--titles-->
+    <string name="title_search">Search</string>
+    <string name="title_details">Details</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_history">Search history</string>
+    <string name="title_transports">Transports</string>
 
-  <!--messages-->
-  <string name="message_slider_welcome">Hello!</string>
-  <string name="message_feedback"> Here you can send your feedback about the app. Your opinion is important!</string>
-  <string name="message_history_dialog_clear">Do you want to clear history?</string>
-  <string name="message_history_dialog_delete">Do you want to delete entry from history?</string>
-  <string name="message_history_dialog_restore">Do you want to restore this search results?</string>
-  <string name="message_rate">If you like our app, give us 5 stars on Google Play Store and write a review!</string>
-  <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>
-  <string name="message_arrived">You have arrived to your destination</string>
-  <string name="message_check_download">Checking for update</string>
+    <!--messages-->
+    <string name="message_slider_welcome">Hello!</string>
+    <string name="message_feedback"> Here you can send your feedback about the app. Your opinion is important!</string>
+    <string name="message_history_dialog_clear">Do you want to clear history?</string>
+    <string name="message_history_dialog_delete">Do you want to delete entry from history?</string>
+    <string name="message_history_dialog_restore">Do you want to restore this search results?</string>
+    <string name="message_rate">If you like our app, give us 5 stars on Google Play Store and write a review!</string>
+    <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>
+    <string name="message_arrived">You have arrived to your destination</string>
+    <string name="message_check_download">Checking for update</string>
 
-  <!--labels-->
-  <string name="label_bus">Bus</string>
-  <string name="label_microbus">Microbus</string>
-  <string name="label_trolleybus">Trolleybus</string>
-  <string name="label_metro">Metro</string>
-  <string name="label_yes">Yes</string>
-  <string name="label_no">No</string>
-  <string name="label_ok" translatable="false">OK</string>
-  <string name="label_from_long">I am going</string>
-  <string name="label_from">From:</string>
-  <string name="label_from2">From</string>
-  <string name="label_to_long">and want to reach</string>
-  <string name="label_to">To:</string>
-  <string name="label_all_transports">See all transports</string>
-  <string name="label_search">Search</string>
-  <string name="label_select_stop">Select Stop</string>
+    <!--labels-->
+    <string name="label_bus">Bus</string>
+    <string name="label_microbus">Microbus</string>
+    <string name="label_trolleybus">Trolleybus</string>
+    <string name="label_metro">Metro</string>
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="label_ok" translatable="false">OK</string>
+    <string name="label_from_long">I am going</string>
+    <string name="label_from">From:</string>
+    <string name="label_from2">From</string>
+    <string name="label_to_long">and want to reach</string>
+    <string name="label_to">To:</string>
+    <string name="label_all_transports">See all transports</string>
+    <string name="label_search">Search</string>
+    <string name="label_select_stop">Select Stop</string>
     <string name="label_walk_to">Then walk to</string>
-  <string name="label_walk_from">Start walk from</string>
-  <string name="label_interchange_from">Take transport here</string>
-  <string name="label_interchange_to">Change here</string>
-  <string name="label_take_transport">Take one of these</string>
-  <string name="label_selected_stop">Transports which have stop at "%1$s"</string>
+    <string name="label_walk_from">Start walk from</string>
+    <string name="label_interchange_from">Take transport here</string>
+    <string name="label_interchange_to">Change here</string>
+    <string name="label_take_transport">Take one of these</string>
+    <string name="label_selected_stop">Transports which have stop at "%1$s"</string>
     <string name="label_stop_tracker">Stop tracking</string>
-  <string name="label_tracker_transport">You have selected</string>
-  <string name="label_current_stop">Current Stop</string>
-  <string name="label_arriving">Arriving</string>
-  <string name="label_open_settings">Open settings</string>
-  <string name="label_retry">Retry</string>
-  <string name="label_send_feedback">Send Feedback</string>
-  <string name="label_close">Close</string>
-  <string name="label_feedback_sending">Sending…</string>
-  <string name="label_stops">stops</string>
-  <string name="label_current_location">My current location</string>
+    <string name="label_tracker_transport">You have selected</string>
+    <string name="label_current_stop">Current Stop</string>
+    <string name="label_arriving">Arriving</string>
+    <string name="label_open_settings">Open settings</string>
+    <string name="label_retry">Retry</string>
+    <string name="label_send_feedback">Send Feedback</string>
+    <string name="label_close">Close</string>
+    <string name="label_feedback_sending">Sending…</string>
+    <string name="label_stops">stops</string>
+    <string name="label_current_location">My current location</string>
+    <string name="label_select_origin">Select <i>"%1$s"</i> as origin</string>
+    <string name="label_select_destination">Select <i>"%1$s"</i> as destination</string>
 
-  <!--hints-->
-  <string name="hint_from">from</string>
-  <string name="hint_to">to</string>
-  <string name="hint_enter_email">Enter email</string>
-  <string name="hint_subject">Subject</string>
-  <string name="hint_message">Message</string>
-  <string name="hint_search">Search stop</string>
+    <!--hints-->
+    <string name="hint_from">from</string>
+    <string name="hint_to">to</string>
+    <string name="hint_enter_email">Enter email</string>
+    <string name="hint_subject">Subject</string>
+    <string name="hint_message">Message</string>
+    <string name="hint_search">Search stop</string>
 
-  <!--errors-->
-  <string name="error_same_stops">Please select different stops</string>
-  <string name="error_no_routes">Unfortunately, nothing has found</string>
-  <string name="error_no_from">Please, select departure stop</string>
-  <string name="error_no_to">Please, select arriving stop</string>
-  <string name="error_empty_email">Email cannot be empty</string>
-  <string name="error_email">Please enter valid email address</string>
-  <string name="error_subject">Please enter a subject for email</string>
-  <string name="error_message">Please enter message</string>
-  <string name="error_message_short">Message should have at least 20 characters</string>
-  <string name="error_app">The app is not downloaded from Google Play store. Please download it from there.</string>
-  <string name="error_no_internet">Seems there\'s no Internet connection</string>
-  <string name="error_not_downloaded">Content not downloaded</string>
-  <string name="error_storage">Not enough space on disk, please free some space and try again.</string>
+    <!--errors-->
+    <string name="error_same_stops">Please select different stops</string>
+    <string name="error_no_routes">Unfortunately, nothing has found</string>
+    <string name="error_no_from">Please, select departure stop</string>
+    <string name="error_no_to">Please, select arriving stop</string>
+    <string name="error_empty_email">Email cannot be empty</string>
+    <string name="error_email">Please enter valid email address</string>
+    <string name="error_subject">Please enter a subject for email</string>
+    <string name="error_message">Please enter message</string>
+    <string name="error_message_short">Message should have at least 20 characters</string>
+    <string name="error_app">The app is not downloaded from Google Play store. Please download it from there.</string>
+    <string name="error_no_internet">Seems there\'s no Internet connection</string>
+    <string name="error_not_downloaded">Content not downloaded</string>
+    <string name="error_storage">Not enough space on disk, please free some space and try again.</string>
 
-  <!--permissions-->
-  <string name="permission_title">We need you</string>
-  <string name="permission_message">App needs to know your current location to see the map</string>
-  <string name="permission_yes">Grant permission</string>
-  <string name="permission_no">Continue without permissions</string>
+    <!--permissions-->
+    <string name="permission_title">We need you</string>
+    <string name="permission_message">App needs to know your current location to see the map</string>
+    <string name="permission_yes">Grant permission</string>
+    <string name="permission_no">Continue without permissions</string>
 
-  <!--settings strings-->
-  <string name="settings_language">Language</string>
-  <string name="settings_language_am_short" translatable="false">Հայ</string>
-  <string name="settings_language_en_short" translatable="false">En</string>
-  <string name="settings_language_ru_short" translatable="false">Рус</string>
-  <string name="settings_language_am" translatable="false">Հայերեն</string>
-  <string name="settings_language_en" translatable="false">English</string>
-  <string name="settings_language_ru" translatable="false">Русский</string>
-  <string name="settings_check_database">Update database</string>
-  <string name="settings_rate">Rate</string>
-  <string name="settings_app_version">App Version</string>
-  <string name="settings_update_database">Click to update app database</string>
-  <string name="settings_rate_details">Rate app in Google Play Store</string>
-  <string name="settings_theme_system_short">System</string>
-  <string name="settings_theme">Theme</string>
-  <string name="settings_theme_light">Light</string>
-  <string name="settings_theme_dark">Dark</string>
-  <string name="settings_general">General</string>
+    <!--settings strings-->
+    <string name="settings_language">Language</string>
+    <string name="settings_language_am_short" translatable="false">Հայ</string>
+    <string name="settings_language_en_short" translatable="false">En</string>
+    <string name="settings_language_ru_short" translatable="false">Рус</string>
+    <string name="settings_language_am" translatable="false">Հայերեն</string>
+    <string name="settings_language_en" translatable="false">English</string>
+    <string name="settings_language_ru" translatable="false">Русский</string>
+    <string name="settings_check_database">Update database</string>
+    <string name="settings_rate">Rate</string>
+    <string name="settings_app_version">App Version</string>
+    <string name="settings_update_database">Click to update app database</string>
+    <string name="settings_rate_details">Rate app in Google Play Store</string>
+    <string name="settings_theme_system_short">System</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_general">General</string>
 
-  <!--action strings-->
-  <string name="action_show">Show routes</string>
-  <string name="action_set_from">Set as departure stop</string>
-  <string name="action_set_to">Set as arriving stop</string>
-  <string name="action_settings">Settings</string>
-  <string name="action_feedback">Send Feedback</string>
-  <string name="action_privacy" translatable="false">Privacy Policy</string>
-  <string name="action_history">History</string>
+    <!--action strings-->
+    <string name="action_show">Show routes</string>
+    <string name="action_set_from">Set as departure stop</string>
+    <string name="action_set_to">Set as arriving stop</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_feedback">Send Feedback</string>
+    <string name="action_privacy" translatable="false">Privacy Policy</string>
+    <string name="action_history">History</string>
 
-  <!--feedback strings-->
-  <string name="feedback_sent">Your message has been sent. Thank you! 🥰😊🥰🥰🥰🥰🥰</string>
+    <!--feedback strings-->
+    <string name="feedback_sent">Your message has been sent. Thank you! 🥰😊🥰🥰🥰🥰🥰</string>
 
-  <!--content description strings-->
-  <string name="cd_current_location">Go to current location</string>
+    <!--content description strings-->
+    <string name="cd_current_location">Go to current location</string>
 </resources>

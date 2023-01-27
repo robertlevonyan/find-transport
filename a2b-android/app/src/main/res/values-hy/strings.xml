@@ -51,6 +51,8 @@
     <string name="label_feedback_sending">Ուղարկվում է…</string>
     <string name="label_stops">կանգառ</string>
     <string name="label_current_location">Ներկայիս վայրից</string>
+    <string name="label_select_origin">Ընտրել <i>"%1$s"</i> որպես սկզբնակետ</string>
+    <string name="label_select_destination">Ընտրել <i>"%1$s"</i> որպես վերջնակետ</string>
 
     <!--hints-->
     <string name="hint_from">որտեղից</string>

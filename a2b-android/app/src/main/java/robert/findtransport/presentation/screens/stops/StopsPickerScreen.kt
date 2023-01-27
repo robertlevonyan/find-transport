@@ -144,7 +144,7 @@ private fun SearchInput(onValueChange: (String) -> Unit) {
     ),
     textStyle = TextStyle(
       color = MaterialTheme.colorScheme.onSurface,
-      fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     ),
   )
 }

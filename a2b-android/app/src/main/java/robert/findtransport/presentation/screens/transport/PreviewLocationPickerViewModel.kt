@@ -12,16 +12,16 @@ import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
-import robert.findtransport.presentation.screens.map.MapViewModel
+import robert.findtransport.presentation.screens.map.LocationPickerViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PreviewMapViewModel @Inject constructor(
+class PreviewLocationPickerViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   permissionUseCase: PermissionUseCase,
   locationUseCase: LocationUseCase,
   private val transportUseCase: TransportUseCase,
-) : MapViewModel(localeUseCase, permissionUseCase, locationUseCase) {
+) : LocationPickerViewModel(localeUseCase, permissionUseCase, locationUseCase) {
   private val _route = MutableSharedFlow<RouteResult>()
   val route: Flow<RouteResult> get() = _route
 

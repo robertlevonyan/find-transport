@@ -73,7 +73,7 @@ import robert.findtransport.presentation.reusables.composables.BackPressHandler
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
-import robert.findtransport.presentation.screens.map.MapViewModel
+import robert.findtransport.presentation.screens.map.LocationPickerViewModel
 import robert.findtransport.presentation.screens.map.enableLocationComponent
 import robert.findtransport.presentation.screens.map.getMapStyle
 import robert.findtransport.utils.DEFAULT_LATITUDE
@@ -92,8 +92,8 @@ fun TransportScreen(
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel = hiltViewModel(),
-  mapViewModel: MapViewModel = hiltViewModel(),
-  previewMapViewModel: PreviewMapViewModel = hiltViewModel(),
+  locationPickerViewModel: LocationPickerViewModel = hiltViewModel(),
+  previewMapViewModel: PreviewLocationPickerViewModel = hiltViewModel(),
 ) {
   if (transportId == EMPTY_ID) {
     navController.popBackStack()
@@ -103,7 +103,7 @@ fun TransportScreen(
 
   val locale by transportViewModel.locale.collectAsState()
   val transport by transportViewModel.selectedTransport.collectAsState()
-  val locationEnabled by mapViewModel.locationEnabled.collectAsState()
+  val locationEnabled by locationPickerViewModel.locationEnabled.collectAsState()
 
   val mapStyle = getMapStyle()
   val scope = rememberCoroutineScope()
@@ -163,7 +163,7 @@ private fun MapContent(
   locale: String,
   locationEnabled: Boolean,
   mapStyle: String,
-  previewMapViewModel: PreviewMapViewModel,
+  previewMapViewModel: PreviewLocationPickerViewModel,
   scope: CoroutineScope,
 ) {
   Box(modifier = modifier) {
@@ -195,7 +195,7 @@ private fun MapView(
   locale: String,
   locationEnabled: Boolean,
   mapStyle: String,
-  previewMapViewModel: PreviewMapViewModel,
+  previewMapViewModel: PreviewLocationPickerViewModel,
   scope: CoroutineScope,
 ) {
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
@@ -248,7 +248,7 @@ fun TransportInfo(
   transport: Transport,
   locale: String,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
-  previewMapViewModel: PreviewMapViewModel,
+  previewMapViewModel: PreviewLocationPickerViewModel,
   onSwapClick: () -> Unit,
   onElementClick: () -> Unit,
 ) {
@@ -435,7 +435,7 @@ private fun StopList(
   navController: NavController,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
   scope: CoroutineScope,
-  previewMapViewModel: PreviewMapViewModel,
+  previewMapViewModel: PreviewLocationPickerViewModel,
 ) {
   if (transport == Transport.EMPTY) return
   var isPrimary by rememberSaveable { mutableStateOf(true) }

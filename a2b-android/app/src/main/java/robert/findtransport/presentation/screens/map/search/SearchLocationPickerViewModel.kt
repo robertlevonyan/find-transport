@@ -4,16 +4,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
-import robert.findtransport.presentation.screens.map.MapViewModel
+import robert.findtransport.presentation.screens.map.LocationPickerViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchMapViewModel @Inject constructor(
+class SearchLocationPickerViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
 //  private val transportUseCase: TransportUseCase,
   locationUseCase: LocationUseCase,
   permissionUseCase: PermissionUseCase,
-) : MapViewModel(localeUseCase, permissionUseCase, locationUseCase) {
+) : LocationPickerViewModel(localeUseCase, permissionUseCase, locationUseCase) {
 
 //  private val _searchMultiTransports = MutableSharedFlow<Triple<List<MultiRoute>, Stop, Stop>>()
 //  val searchMultiTransports: Flow<Triple<List<MultiRoute>, Stop, Stop>> get() = _searchMultiTransports

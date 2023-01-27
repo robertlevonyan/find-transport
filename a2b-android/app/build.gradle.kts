@@ -115,7 +115,7 @@ android {
     storeArchive.enable = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.2.0-rc01"
+    kotlinCompilerExtensionVersion = "1.4.0"
   }
   kapt {
     correctErrorTypes = true
@@ -129,13 +129,13 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.8.0-rc01")
+  implementation("com.google.android.material:material:1.9.0-alpha01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
-  implementation("com.google.code.gson:gson:2.10")
+  implementation("com.google.code.gson:gson:2.10.1")
   implementation("com.google.dagger:hilt-android:2.44.2")
-  releaseImplementation(platform("com.google.firebase:firebase-bom:31.1.1"))
+  releaseImplementation(platform("com.google.firebase:firebase-bom:31.2.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 
@@ -167,12 +167,12 @@ dependencies {
   //compose
   implementation(platform("androidx.compose:compose-bom:2023.01.00"))
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.0-alpha02")
-  implementation("androidx.compose.ui:ui:1.4.0-alpha04")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha04")
+  implementation("androidx.compose.compiler:compiler:1.4.0")
+  implementation("androidx.compose.ui:ui:1.4.0-alpha05")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha05")
   implementation("androidx.compose.material:material:1.3.1")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha04")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha04")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha05")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha05")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")
@@ -184,14 +184,16 @@ dependencies {
   implementation("com.squareup.retrofit2:converter-gson:2.9.0")
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
-  //mapbox
+  //map
   implementation("com.mapbox.maps:android:10.10.0") {
     exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
   }
   implementation("com.mapbox.navigation:android:2.9.6") {
     exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
-//    exclude(group = "com.mapbox.common", module = "common")
   }
+  implementation("com.google.maps.android:android-maps-utils:2.3.0")
+  implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
+
 
   //other
   implementation("com.airbnb.android:lottie-compose:5.2.0")

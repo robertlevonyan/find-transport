@@ -279,7 +279,7 @@ private fun FeedbackInput(
     ),
     textStyle = TextStyle(
       color = MaterialTheme.colorScheme.onSurface,
-      fontFamily = FontFamily(Font(R.font.google_sans_regular)),
+      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
     ),
     isError = error != -1,
     keyboardOptions = KeyboardOptions(

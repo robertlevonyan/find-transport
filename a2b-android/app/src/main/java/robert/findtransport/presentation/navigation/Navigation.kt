@@ -1,24 +1,21 @@
 package robert.findtransport.presentation.navigation
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import robert.findtransport.data.model.enums.MapType
+import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.screens.feedback.FeedbackScreen
 import robert.findtransport.presentation.screens.history.HistoryScreen
 import robert.findtransport.presentation.screens.home.HomeScreen
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.intro.IntroScreen
-import robert.findtransport.presentation.screens.map.MapScreen
+import robert.findtransport.presentation.screens.map.LocationPickerScreen
 import robert.findtransport.presentation.screens.passing.PassingRoutesScreen
 import robert.findtransport.presentation.screens.search.SearchScreen
 import robert.findtransport.presentation.screens.settings.SettingsScreen
@@ -126,13 +123,15 @@ fun Navigation() {
       )
     }
     composable(
-      route = "${NavigationScreens.ChooserMapScreen.name}/{map_type}",
-      arguments = listOf(navArgument("map_type") { type = NavType.IntType }),
+      route = "${NavigationScreens.LocationPicker.name}/{type}",
+      arguments = listOf(
+        navArgument("type") { type = NavType.IntType },
+      )
     ) { backStackEntry ->
-      MapScreen(
+      LocationPickerScreen(
         navController = navController,
         homeViewModel = homeViewModel,
-        mapType = MapType.getByIndex(backStackEntry.arguments?.getInt("map_type") ?: 0),
+        pickerType = StopType.values()[backStackEntry.arguments?.getInt("type") ?: 0]
       )
     }
   }
@@ -150,5 +149,5 @@ sealed class NavigationScreens(val name: String) {
   object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
   object SearchScreen : NavigationScreens("search_screen")
   object TrackRouteScreen : NavigationScreens("track_route_screen")
-  object ChooserMapScreen : NavigationScreens("chooser_map_screen")
+  object LocationPicker : NavigationScreens("location_picker")
 }

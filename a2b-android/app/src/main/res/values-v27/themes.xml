@@ -5,7 +5,7 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
     <item name="colorAccent">@color/colorAccent500</item>
-    <item name="android:fontFamily">@font/app_font</item>
+    <item name="android:fontFamily">@font/dejavu</item>
     <item name="android:windowLightNavigationBar">true</item>
     <item name="android:windowLightStatusBar">true</item>
     <item name="android:navigationBarColor">@color/colorPrimaryVariantTransparent</item>
