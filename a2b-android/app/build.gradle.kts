@@ -7,7 +7,6 @@ plugins {
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
-  id("com.google.devtools.ksp")
   id("dagger.hilt.android.plugin")
 }
 
@@ -17,8 +16,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 285
-    versionName = "3.8.1"
+    versionCode = 286
+    versionName = "3.8.2"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -159,7 +158,7 @@ dependencies {
   implementation("androidx.room:room-paging:2.4.3")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  ksp("androidx.room:room-compiler:2.4.3")
+  kapt("androidx.room:room-compiler:2.4.3")
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
