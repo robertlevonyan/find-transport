@@ -7,7 +7,6 @@ plugins {
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
-  id("com.google.devtools.ksp")
   id("dagger.hilt.android.plugin")
 }
 
@@ -162,7 +161,7 @@ dependencies {
   implementation("androidx.room:room-paging:2.5.0")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  ksp("androidx.room:room-compiler:2.5.0")
+  kapt("androidx.room:room-compiler:2.5.0")
 
   //compose
   implementation(platform("androidx.compose:compose-bom:2023.01.00"))

@@ -69,7 +69,7 @@ fun HomeContent(
   val selectedFromStop by homeViewModel.fromStop.collectAsState()
   val selectedToStop by homeViewModel.toStop.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
-  val locationEnabled by homeViewModel.locationEnabled.collectAsState()
+//  val locationEnabled by homeViewModel.locationEnabled.collectAsState()
 
   ConstraintLayout(modifier = modifier) {
     val (appBar, fromCard, swap, toCard, search, allTransports, rate, map) = createRefs()
@@ -112,47 +112,47 @@ fun HomeContent(
       }
     }
 
-    if (locationEnabled) {
-      Box(modifier = Modifier
-        .padding(bottom = HalfPadding)
-        .constrainAs(map) {
-          width = Dimension.fillToConstraints
-          height = Dimension.fillToConstraints
-          top.linkTo(parent.top)
-          start.linkTo(parent.start)
-          end.linkTo(parent.end)
-          bottom.linkTo(fromCard.top)
-        }) {
-        MapContent(locationPickerViewModel = locationPickerViewModel)
-        Box(
-          modifier = Modifier
-            .fillMaxWidth()
-            .height(HomePageMapGradientSize)
-            .background(
-              brush = Brush.verticalGradient(
-                colors = listOf(
-                  getMapGradientColor(),
-                  Color.Transparent,
-                )
-              )
-            )
-        ) {}
-        Box(
-          modifier = Modifier
-            .fillMaxWidth()
-            .height(HomePageMapGradientSize)
-            .align(Alignment.BottomCenter)
-            .background(
-              brush = Brush.verticalGradient(
-                colors = listOf(
-                  Color.Transparent,
-                  getMapGradientColor(),
-                )
-              )
-            )
-        ) {}
-      }
-    }
+//    if (locationEnabled) {
+//      Box(modifier = Modifier
+//        .padding(bottom = HalfPadding)
+//        .constrainAs(map) {
+//          width = Dimension.fillToConstraints
+//          height = Dimension.fillToConstraints
+//          top.linkTo(parent.top)
+//          start.linkTo(parent.start)
+//          end.linkTo(parent.end)
+//          bottom.linkTo(fromCard.top)
+//        }) {
+//        MapContent(locationPickerViewModel = locationPickerViewModel)
+//        Box(
+//          modifier = Modifier
+//            .fillMaxWidth()
+//            .height(HomePageMapGradientSize)
+//            .background(
+//              brush = Brush.verticalGradient(
+//                colors = listOf(
+//                  getMapGradientColor(),
+//                  Color.Transparent,
+//                )
+//              )
+//            )
+//        ) {}
+//        Box(
+//          modifier = Modifier
+//            .fillMaxWidth()
+//            .height(HomePageMapGradientSize)
+//            .align(Alignment.BottomCenter)
+//            .background(
+//              brush = Brush.verticalGradient(
+//                colors = listOf(
+//                  Color.Transparent,
+//                  getMapGradientColor(),
+//                )
+//              )
+//            )
+//        ) {}
+//      }
+//    }
 
     HomeAppBar(
       modifier = Modifier

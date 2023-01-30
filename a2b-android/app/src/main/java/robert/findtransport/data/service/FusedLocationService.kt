@@ -14,7 +14,7 @@ class FusedLocationService(private val context: Context) {
   private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
   @SuppressLint("MissingPermission")
-  suspend fun getCurrentLocation() = suspendCoroutine<Location> { locationContinuation ->
+  suspend fun getCurrentLocation(): Location = suspendCoroutine { locationContinuation ->
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
