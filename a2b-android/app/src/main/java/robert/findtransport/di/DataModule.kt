@@ -36,6 +36,10 @@ object DataModule {
     FusedLocationService(context = context)
 
   @Provides
+  fun getAddressProviderService(@ApplicationContext context: Context): AddressProviderService =
+    AddressProviderService(context = context)
+
+  @Provides
   fun getLocationObserverService(@ApplicationContext context: Context): LocationObserverService =
     LocationObserverService(context = context)
 

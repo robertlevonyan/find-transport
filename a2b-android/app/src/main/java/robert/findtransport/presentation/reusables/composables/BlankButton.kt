@@ -20,7 +20,7 @@ fun BlankButton(
     onClick = onClick,
     shape = Shapes.small,
     colors = ButtonDefaults.buttonColors(
-      containerColor = MaterialTheme.colorScheme.primary,
+      containerColor = MaterialTheme.colorScheme.surface,
       contentColor = MaterialTheme.colorScheme.onPrimary,
     )
   ) {

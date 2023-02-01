@@ -15,8 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,25 +46,12 @@ fun StopsPickerScreen(
   Scaffold(
     modifier = modifier,
     topBar = {
-      A2bAppBar(
-        title = stringResource(id = R.string.label_select_stop),
-        navigationIcon = R.drawable.ic_arrow_back,
-        onNavigationIconClick = { navController.popBackStack() },
-        additionalActions = {
-          IconButton(onClick = {
-            searchBoxState = !searchBoxState
-            if (!searchBoxState) {
-              stopsPickerViewModel.findStops("")
-            }
-          }) {
-            Icon(
-              painter = painterResource(id = R.drawable.ic_search),
-              contentDescription = stringResource(id = R.string.hint_search),
-              tint = Color.Unspecified,
-            )
-          }
+      TopBar(navController = navController) {
+        searchBoxState = !searchBoxState
+        if (!searchBoxState) {
+          stopsPickerViewModel.findStops("")
         }
-      )
+      }
     }
   ) { contentPadding ->
     Column(modifier = Modifier.padding(contentPadding)) {
@@ -78,8 +63,8 @@ fun StopsPickerScreen(
         ) { SearchInput(stopsPickerViewModel::findStops) }
       }
       LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(stops) { stop ->
-          stop ?: return@items
+        items(stops) { stopWithAddress ->
+          stopWithAddress ?: return@items
 
           Column {
             TextSecondary(
@@ -87,14 +72,14 @@ fun StopsPickerScreen(
                 .fillMaxWidth()
                 .clickable {
                   if (isFrom) {
-                    homeViewModel.setFromStop(stop)
+                    homeViewModel.setOriginStop(stopWithAddress)
                   } else {
-                    homeViewModel.setToStop(stop)
+                    homeViewModel.setDestinationStop(stopWithAddress)
                   }
                   navController.popBackStack()
                 }
                 .padding(HalfPadding),
-              text = stop.getCurrentName(locale),
+              text = stopWithAddress.stop.getCurrentName(locale),
               textAlign = TextAlign.Start,
             )
 
@@ -108,6 +93,27 @@ fun StopsPickerScreen(
       }
     }
   }
+}
+
+@Composable
+private fun TopBar(
+  navController: NavController,
+  searchBoxStateToggle: () -> Unit,
+) {
+  A2bAppBar(
+    title = stringResource(id = R.string.label_select_stop),
+    navigationIcon = R.drawable.ic_arrow_back,
+    onNavigationIconClick = { navController.popBackStack() },
+    additionalActions = {
+      IconButton(onClick = searchBoxStateToggle) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_search),
+          contentDescription = stringResource(id = R.string.hint_search),
+          tint = Color.Unspecified,
+        )
+      }
+    }
+  )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

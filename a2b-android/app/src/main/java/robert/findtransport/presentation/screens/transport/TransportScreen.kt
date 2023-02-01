@@ -810,7 +810,7 @@ private fun PopupMenu(
   ) {
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
-      homeViewModel.setFromStop(stop)
+//      homeViewModel.setOrigin(stop)
     }, text = {
       Text(
         text = stringResource(id = R.string.action_set_from),
@@ -819,7 +819,7 @@ private fun PopupMenu(
     })
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
-      homeViewModel.setToStop(stop)
+//      homeViewModel.setDestination(stop)
     }, text = {
       Text(
         text = stringResource(id = R.string.action_set_to),

@@ -23,10 +23,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
-import robert.findtransport.presentation.reusables.Accent
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.Shapes
-import robert.findtransport.presentation.reusables.SmallPadding
+import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
@@ -49,6 +46,7 @@ fun CheckDataScreen(
   AnimatedVisibility(
     modifier = Modifier
       .fillMaxWidth()
+      .padding(top = ToolbarSize)
       .padding(HalfPadding),
     visible = loadingState != DataLoading.Loaded,
   ) {

@@ -1,5 +1,6 @@
 package robert.findtransport.domain.usecase.location
 
+import android.location.Address
 import android.location.Location
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +10,7 @@ import robert.findtransport.domain.repository.LocationRepository
 import javax.inject.Inject
 
 class LocationUseCaseImpl @Inject constructor(private val locationRepository: LocationRepository) : LocationUseCase {
-  override suspend fun getCurrentLocation(): Location = withContext(Dispatchers.IO) {
+  override suspend fun getCurrentLocation(): Address? = withContext(Dispatchers.IO) {
     locationRepository.getCurrentLocation()
   }
 

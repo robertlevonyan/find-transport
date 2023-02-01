@@ -11,5 +11,3 @@ data class Stop(
     val EMPTY = Stop()
   }
 }
-
-fun Stop.isEmpty(): Boolean = this == Stop.EMPTY

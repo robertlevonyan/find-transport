@@ -3,7 +3,6 @@ package robert.findtransport.presentation.screens.map
 import android.Manifest
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -42,7 +41,6 @@ import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.navigation.utils.internal.toPoint
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -55,6 +53,8 @@ import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.utils.*
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
+import robert.findtransport.utils.extensions.getFormattedAddress
+import robert.findtransport.utils.extensions.toLocation
 import java.util.*
 
 @Composable
@@ -118,7 +118,8 @@ fun LocationPickerScreen(
         }
 
         scope.launch {
-          locationPickerViewModel.currentLocation.collectLatest { currentLocation ->
+          locationPickerViewModel.currentLocation.collectLatest { address ->
+            val currentLocation = address?.toLocation() ?: return@collectLatest
             map.flyTo(currentLocation)
             centralPoint.value = currentLocation.toPoint()
           }
@@ -137,6 +138,7 @@ fun LocationPickerScreen(
       locationEnabled = locationEnabled,
       centralPoint = centralPoint,
       homeViewModel = homeViewModel,
+      navController = navController
     )
 
     if (locationEnabled.value) {
@@ -151,22 +153,30 @@ fun BoxScope.SelectLocationButton(
   locationEnabled: State<Boolean>,
   centralPoint: MutableState<Point>,
   homeViewModel: HomeViewModel,
+  navController: NavController,
 ) {
   var buttonText by rememberSaveable { mutableStateOf("") }
+  val locale by homeViewModel.locale.collectAsState()
 
   val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
   val point = centralPoint.value
-  val address = getAddress(
-    address = geocoder.getFromLocation(point.latitude(), point.longitude(), 1)?.firstOrNull(),
-    locale = homeViewModel.locale
-  )
+  val address = geocoder.getFromLocation(point.latitude(), point.longitude(), 1)
+    ?.firstOrNull()
+  val formattedAddress = address?.getFormattedAddress(locale = locale).orEmpty()
+
   buttonText = when (pickerType) {
-    StopType.ORIGIN -> stringResource(id = R.string.label_select_origin, address)
-    StopType.DESTINATION -> stringResource(id = R.string.label_select_destination, address)
+    StopType.ORIGIN -> stringResource(id = R.string.label_select_origin, formattedAddress)
+    StopType.DESTINATION -> stringResource(id = R.string.label_select_destination, formattedAddress)
   }
 
   Button(
-    onClick = {},
+    onClick = {
+      when (pickerType) {
+        StopType.ORIGIN -> homeViewModel.setOrigin(address = address)
+        StopType.DESTINATION -> homeViewModel.setDestination(address = address)
+      }
+      navController.popBackStack()
+    },
     modifier = Modifier
       .align(Alignment.BottomCenter)
       .fillMaxWidth()
@@ -193,15 +203,15 @@ fun BoxScope.SelectLocationButton(
   }
 }
 
-fun getAddress(address: Address?, locale: StateFlow<String>): String {
-  address ?: return ""
-  return when (locale.value) {
-    LNG_AM -> "${address.thoroughfare} ${address.featureName}"
-    LNG_EN -> "${address.featureName} ${address.thoroughfare}"
-    LNG_RU -> "${address.thoroughfare} ${address.featureName}"
-    else -> "${address.featureName} ${address.thoroughfare}"
-  }
-}
+//fun getAddress(address: Address?, locale: StateFlow<String>): String {
+//  address ?: return ""
+//  return when (locale.value) {
+//    LNG_AM -> "${address.thoroughfare} ${address.featureName}"
+//    LNG_EN -> "${address.featureName} ${address.thoroughfare}"
+//    LNG_RU -> "${address.thoroughfare} ${address.featureName}"
+//    else -> "${address.featureName} ${address.thoroughfare}"
+//  }
+//}
 
 @Composable
 fun PermissionDialog(

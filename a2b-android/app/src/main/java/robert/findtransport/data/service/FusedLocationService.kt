@@ -5,16 +5,17 @@ import android.content.Context
 import android.location.Location
 import com.google.android.gms.location.*
 import kotlinx.coroutines.CancellableContinuation
-import robert.findtransport.utils.DEFAULT_LATITUDE
-import robert.findtransport.utils.DEFAULT_LONGITUDE
+import robert.findtransport.utils.*
+import java.util.*
+import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FusedLocationService(private val context: Context) {
+class FusedLocationService @Inject constructor(private val context: Context) {
   private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
   @SuppressLint("MissingPermission")
-  suspend fun getCurrentLocation(): Location = suspendCoroutine { locationContinuation ->
+  suspend fun getCurrentLocationAddress(): Location? = suspendCoroutine { locationContinuation ->
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
@@ -43,6 +44,5 @@ class FusedLocationService(private val context: Context) {
       locationCallback,
       context.mainLooper,
     )
-
   }
 }

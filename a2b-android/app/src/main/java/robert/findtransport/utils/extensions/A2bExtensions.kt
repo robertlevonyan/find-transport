@@ -1,6 +1,8 @@
 package robert.findtransport.utils.extensions
 
 import android.content.Context
+import android.location.Address
+import android.location.Location
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.ui.text.AnnotatedString
@@ -16,8 +18,7 @@ import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.presentation.reusables.Text20
-import robert.findtransport.utils.LNG_EN
-import robert.findtransport.utils.LNG_RU
+import robert.findtransport.utils.*
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -148,5 +149,20 @@ fun MapView.disableAllGestures() {
     scrollDecelerationEnabled = false
     increasePinchToZoomThresholdWhenRotating = false
     pinchScrollEnabled = false
+  }
+}
+
+fun Address.toLocation(): Location = Location(featureName).also {
+  it.latitude = if (hasLatitude()) latitude else DEFAULT_LATITUDE
+  it.longitude = if (hasLongitude()) longitude else DEFAULT_LONGITUDE
+}
+
+fun Address.getFormattedAddress(locale: String): String {
+  if (thoroughfare == null || featureName == null) return ""
+  return when (locale) {
+    LNG_AM -> "$thoroughfare $featureName"
+    LNG_EN -> "$featureName $thoroughfare"
+    LNG_RU -> "$thoroughfare $featureName"
+    else -> "$featureName $thoroughfare"
   }
 }

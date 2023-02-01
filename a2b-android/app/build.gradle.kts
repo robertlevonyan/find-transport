@@ -190,8 +190,8 @@ dependencies {
   implementation("com.mapbox.navigation:android:2.9.6") {
     exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
   }
-  implementation("com.google.maps.android:android-maps-utils:2.3.0")
-  implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
+//  implementation("com.google.maps.android:android-maps-utils:2.3.0")
+//  implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
 
 
   //other

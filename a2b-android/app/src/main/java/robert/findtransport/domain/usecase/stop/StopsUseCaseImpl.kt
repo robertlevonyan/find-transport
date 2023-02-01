@@ -1,6 +1,7 @@
 package robert.findtransport.domain.usecase.stop
 
 import android.Manifest
+import android.location.Address
 import android.location.Location
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,10 +14,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import robert.findtransport.data.model.NearbyLocation
-import robert.findtransport.data.model.Result
-import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.*
 import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
@@ -29,7 +27,9 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
+import robert.findtransport.utils.extensions.toLocation
 import javax.inject.Inject
+import robert.findtransport.data.entity.Stop as ApiStop
 
 class StopsUseCaseImpl @Inject constructor(
   private val stopsRepository: StopsRepository,
@@ -54,50 +54,60 @@ class StopsUseCaseImpl @Inject constructor(
       ?: emptyList()
   }
 
-  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> = Pager(config = PagingConfig(pageSize = 50)) {
-    when (locale) {
-      LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
-      LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
-      else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
-    }
-  }
-    .flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
-      value.map { apiStop ->
-        apiStop.toStop()
+  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<StopWithAddress>> =
+    Pager(config = PagingConfig(pageSize = 10)) {
+      when (locale) {
+        LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
+        LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
+        else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
       }
     }
+      .flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
+        value.map { apiStop ->
+          val currentStop = apiStop.toStop(
+            coordinates = getStopCoordinates(apiStop)
+          )
+          val address = getAddress(currentStop)
 
-  override suspend fun getStopsLocations(): List<PointAnnotationOptions> = withContext(Dispatchers.IO) {
-    val iconBitmap = resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()
-    getStops()
-      .asSequence()
-      .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
-      .flatMap { it.coordinates.asSequence() }
-      .map { location ->
-        PointAnnotationOptions()
-          .withPoint(Point.fromLngLat(location.lng, location.lat))
-          .withData(location.parentStop.toApiStop().toJson())
-          .withIconSize(STOP_ICON_SIZE)
-          .withIconImage(iconBitmap)
+          StopWithAddress(currentStop, address)
+        }
       }
-      .toList()
-  }
 
-  override suspend fun getMetroStopsLocations(): List<PointAnnotationOptions> = withContext(Dispatchers.IO) {
-    val iconBitmap = resourcesRepository.getMetroStopIconBitmap() ?: return@withContext emptyList()
-    getStops()
-      .asSequence()
-      .filter { it.nameEn.contains("m/s", ignoreCase = true) }
-      .flatMap { it.coordinates.asSequence() }
-      .map { location ->
-        PointAnnotationOptions()
-          .withPoint(Point.fromLngLat(location.lng, location.lat))
-          .withData(location.parentStop.toApiStop().toJson())
-          .withIconSize(STOP_ICON_SIZE)
-          .withIconImage(iconBitmap)
-      }
-      .toList()
-  }
+  override suspend fun getStopsLocations(): List<PointAnnotationOptions> =
+    withContext(Dispatchers.IO) {
+      val iconBitmap =
+        resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()
+      getStops()
+        .asSequence()
+        .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
+        .flatMap { it.coordinates.asSequence() }
+        .map { location ->
+          PointAnnotationOptions()
+            .withPoint(Point.fromLngLat(location.lng, location.lat))
+            .withData(location.parentStop.toApiStop().toJson())
+            .withIconSize(STOP_ICON_SIZE)
+            .withIconImage(iconBitmap)
+        }
+        .toList()
+    }
+
+  override suspend fun getMetroStopsLocations(): List<PointAnnotationOptions> =
+    withContext(Dispatchers.IO) {
+      val iconBitmap =
+        resourcesRepository.getMetroStopIconBitmap() ?: return@withContext emptyList()
+      getStops()
+        .asSequence()
+        .filter { it.nameEn.contains("m/s", ignoreCase = true) }
+        .flatMap { it.coordinates.asSequence() }
+        .map { location ->
+          PointAnnotationOptions()
+            .withPoint(Point.fromLngLat(location.lng, location.lat))
+            .withData(location.parentStop.toApiStop().toJson())
+            .withIconSize(STOP_ICON_SIZE)
+            .withIconImage(iconBitmap)
+        }
+        .toList()
+    }
 
   override fun getNearbyStop(): Flow<NearbyStopStatus> = channelFlow {
     if (!currentCoroutineContext().isActive ||
@@ -119,7 +129,16 @@ class StopsUseCaseImpl @Inject constructor(
             longitude = coordinate.lng
           }
 
-          nearby.add(NearbyLocation(stop.id, newLocation.latitude, newLocation.longitude, currentLocation.distanceTo(newLocation)))
+          currentLocation?.toLocation()?.distanceTo(newLocation)?.let { distance ->
+            nearby.add(
+              NearbyLocation(
+                stopId = stop.id,
+                latitude = newLocation.latitude,
+                longitude = newLocation.longitude,
+                locationDistance = distance,
+              )
+            )
+          }
         }
       }
 
@@ -169,13 +188,25 @@ class StopsUseCaseImpl @Inject constructor(
     }
   }
 
-  override suspend fun getStopCoordinates(stop: Stop): List<StopLocation> = withContext(Dispatchers.IO) {
-    stopsRepository.getStopLocations(stop.id).map {
-      it.toStopLocation(stop.toApiStop())
+  override suspend fun getStopCoordinates(stop: ApiStop): List<StopLocation> =
+    withContext(Dispatchers.IO) {
+      stopsRepository.getStopLocations(stop.id).map {
+        it.toStopLocation(stop)
+      }
     }
-  }
 
   override fun areLocationsCached(): Boolean = stopsRepository.areLocationsCached
 
   override fun areStopsCached(): Boolean = stopsRepository.areLocationsCached
+
+  override suspend fun getAddress(stop: Stop): Address? {
+    val coordinate = stop.coordinates.firstOrNull() ?: return null
+
+    return Location(stop.nameEn).apply {
+      latitude = coordinate.lat
+      longitude = coordinate.lng
+    }.let {
+      locationRepository.getAddress(it)
+    }
+  }
 }

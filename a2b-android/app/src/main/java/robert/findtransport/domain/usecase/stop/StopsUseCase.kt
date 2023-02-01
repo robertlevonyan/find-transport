@@ -1,18 +1,20 @@
 package robert.findtransport.domain.usecase.stop
 
+import android.location.Address
 import androidx.paging.PagingData
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import kotlinx.coroutines.CoroutineScope
+import robert.findtransport.data.entity.Stop as ApiStop
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.data.model.enums.NearbyStopStatus
 
 interface StopsUseCase {
   suspend fun getStops(): List<Stop>
 
-  fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>>
+  fun getStopsPaged(stop: String, locale: String): Flow<PagingData<StopWithAddress>>
 
   suspend fun getStopsLocations(): List<PointAnnotationOptions>
 
@@ -26,9 +28,11 @@ interface StopsUseCase {
 
   suspend fun downloadLocations(): Result<Unit>
 
-  suspend fun getStopCoordinates(stop: Stop): List<StopLocation>
+  suspend fun getStopCoordinates(stop: ApiStop): List<StopLocation>
 
   fun areStopsCached(): Boolean
 
   fun areLocationsCached(): Boolean
+
+  suspend fun getAddress(stop: Stop): Address?
 }

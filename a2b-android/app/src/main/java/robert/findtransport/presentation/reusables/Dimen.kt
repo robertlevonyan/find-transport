@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.reusables
 
+import android.widget.Toolbar
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -27,7 +28,7 @@ val DialogBoxSize = 320.dp
 val TransportNumberSize = 80.dp
 val TransportInfoSize = 100.dp
 val TransportInfoElevation = 12.dp
-val HomePageMapGradientSize = 55.dp
+val ToolbarSize = 56.dp
 
 val Text10 = 10.sp
 val Text11 = 11.sp
