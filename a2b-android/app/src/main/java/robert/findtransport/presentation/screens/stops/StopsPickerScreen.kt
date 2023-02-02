@@ -63,7 +63,7 @@ fun StopsPickerScreen(
             Icon(
               painter = painterResource(id = R.drawable.ic_search_splash),
               contentDescription = stringResource(id = R.string.hint_search),
-              tint = Color.Unspecified,
+              tint = MaterialTheme.colorScheme.onSurface,
             )
           }
         }
