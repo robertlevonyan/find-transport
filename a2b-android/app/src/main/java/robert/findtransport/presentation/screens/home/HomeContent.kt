@@ -307,7 +307,7 @@ private fun SearchInput(
             .align(Alignment.CenterEnd),
           onClick = { onTrailingIconClick.invoke() },
         ) {
-          Icon(painter = trailingIcon, tint = Color.Unspecified, contentDescription = null)
+          Icon(painter = trailingIcon, tint = MaterialTheme.colorScheme.onSurface, contentDescription = null)
         }
       }
     }
