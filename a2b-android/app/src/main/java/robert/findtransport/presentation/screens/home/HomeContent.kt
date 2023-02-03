@@ -35,6 +35,8 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.BlankButton
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.presentation.screens.search.SearchOpenInitiator
+import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.extensions.*
 
 @Composable
@@ -50,6 +52,12 @@ fun HomeContent(
   val destination by homeViewModel.destinationLabel.collectAsState()
   val locationEnabled by homeViewModel.locationEnabled.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
+
+  val originAddress = homeViewModel.origin.collectAsState()
+  val destinationAddress = homeViewModel.destination.collectAsState()
+
+  val originStop = homeViewModel.originStop.collectAsState()
+  val destinationStop = homeViewModel.destinationStop.collectAsState()
 
   if (locationEnabled) {
     homeViewModel.getCurrentLocation()
@@ -180,9 +188,19 @@ fun HomeContent(
           context.showToast(R.string.error_same_stops)
           return@SearchButton
         }
-//        navController.navigate(
-//          route = NavigationScreens.SearchScreen.name + "?from_id=${selectedFromStop.id}&to_id=${selectedToStop.id}&opened=${SearchOpenInitiator.HOME.name}"
-//        )
+        val navigationRoute = buildString {
+          append("${NavigationScreens.SearchScreen.name}?")
+          append("origin_name=${origin}")
+          append("&origin_latitude=${originAddress.value?.latitude?.toFloat()}")
+          append("&origin_longitude=${originAddress.value?.longitude?.toFloat()}")
+          append("&origin_stop_id=${originStop.value?.id ?: EMPTY_ID}")
+          append("&destination_name=${destination}")
+          append("&destination_latitude=${destinationAddress.value?.latitude}")
+          append("&destination_longitude=${destinationAddress.value?.longitude}")
+          append("&destination_stop_id=${destinationStop.value?.id ?: EMPTY_ID}")
+          append("&opened=${SearchOpenInitiator.HOME.name}")
+        }
+        navController.navigate(route = navigationRoute)
       },
     )
 
@@ -307,7 +325,11 @@ private fun SearchInput(
             .align(Alignment.CenterEnd),
           onClick = { onTrailingIconClick.invoke() },
         ) {
-          Icon(painter = trailingIcon, tint = MaterialTheme.colorScheme.onSurface, contentDescription = null)
+          Icon(
+            painter = trailingIcon,
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = null
+          )
         }
       }
     }

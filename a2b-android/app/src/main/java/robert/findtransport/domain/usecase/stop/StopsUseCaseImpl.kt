@@ -54,7 +54,7 @@ class StopsUseCaseImpl @Inject constructor(
       ?: emptyList()
   }
 
-  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<StopWithAddress>> =
+  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> =
     Pager(config = PagingConfig(pageSize = 10)) {
       when (locale) {
         LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
@@ -67,9 +67,10 @@ class StopsUseCaseImpl @Inject constructor(
           val currentStop = apiStop.toStop(
             coordinates = getStopCoordinates(apiStop)
           )
-          val address = getAddress(currentStop)
-
-          StopWithAddress(currentStop, address)
+//          val address = getAddress(currentStop)
+//
+//          StopWithAddress(currentStop, address)
+          currentStop
         }
       }
 

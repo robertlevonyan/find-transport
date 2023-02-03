@@ -20,7 +20,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import kotlinx.coroutines.launch
 import robert.findtransport.R
+import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.reusables.composables.TextSecondary
@@ -39,6 +41,7 @@ fun StopsPickerScreen(
   val locale by stopsPickerViewModel.locale.collectAsState()
   val stops = stopsPickerViewModel.allStops.collectAsLazyPagingItems()
   var searchBoxState by rememberSaveable { mutableStateOf(false) }
+  val scope = rememberCoroutineScope()
 
   stopsPickerViewModel.findStops("")
 
@@ -62,8 +65,8 @@ fun StopsPickerScreen(
         ) { SearchInput(stopsPickerViewModel::findStops) }
       }
       LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(stops) { stopWithAddress ->
-          stopWithAddress ?: return@items
+        items(stops) { stop ->
+          stop ?: return@items
 
           Column {
             TextSecondary(
@@ -71,14 +74,20 @@ fun StopsPickerScreen(
                 .fillMaxWidth()
                 .clickable {
                   if (isFrom) {
-                    homeViewModel.setOriginStop(stopWithAddress)
+                    scope.launch {
+                      val address = stopsPickerViewModel.getAddress(stop)
+                      homeViewModel.setOriginStop(StopWithAddress(stop, address))
+                    }
                   } else {
-                    homeViewModel.setDestinationStop(stopWithAddress)
+                    scope.launch {
+                      val address = stopsPickerViewModel.getAddress(stop)
+                      homeViewModel.setDestinationStop(StopWithAddress(stop, address))
+                    }
                   }
                   navController.popBackStack()
                 }
                 .padding(HalfPadding),
-              text = stopWithAddress.stop.getCurrentName(locale),
+              text = stop.getCurrentName(locale),
               textAlign = TextAlign.Start,
             )
 

@@ -116,6 +116,7 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = "1.4.0"
   }
+  namespace = "robert.findtransport"
   kapt {
     correctErrorTypes = true
   }

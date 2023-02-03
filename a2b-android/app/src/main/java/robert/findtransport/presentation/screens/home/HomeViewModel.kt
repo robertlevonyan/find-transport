@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
+import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
@@ -34,8 +35,10 @@ class HomeViewModel @Inject constructor(
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
   val origin = MutableStateFlow<Address?>(null)
   val originLabel = MutableStateFlow<String?>(null)
+  val originStop = MutableStateFlow<Stop?>(null)
   val destination = MutableStateFlow<Address?>(null)
   val destinationLabel = MutableStateFlow<String?>(null)
+  val destinationStop = MutableStateFlow<Stop?>(null)
   val showRate = MutableStateFlow(rateUseCase.showDialog())
   val locationEnabled =
     MutableStateFlow(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
@@ -61,6 +64,7 @@ class HomeViewModel @Inject constructor(
     if (stopWithAddress?.address == null) return
     origin.value = stopWithAddress.address
     originLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
+    originStop.value = stopWithAddress.stop
   }
 
   fun setDestination(address: Address?) {
@@ -72,6 +76,7 @@ class HomeViewModel @Inject constructor(
     if (stopWithAddress?.address == null) return
     destination.value = stopWithAddress.address
     destinationLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
+    destinationStop.value = stopWithAddress.stop
   }
 
   fun swap() {
@@ -84,6 +89,11 @@ class HomeViewModel @Inject constructor(
     val selectedDestination = destination.value
     origin.value = selectedDestination
     destination.value = selectedOrigin
+
+    val selectedOriginStop = originStop.value
+    val selectedDestinationStop = destinationStop.value
+    originStop.value = selectedDestinationStop
+    destinationStop.value = selectedOriginStop
   }
 
   fun openRate() {

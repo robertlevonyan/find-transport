@@ -93,17 +93,38 @@ fun Navigation() {
       )
     }
     composable(
-      route = "${NavigationScreens.SearchScreen.name}?from_id={from_id}&to_id={to_id}&opened={opened}",
+      route = "${NavigationScreens.SearchScreen.name}?" +
+          "origin_name={origin_name}" +
+          "&origin_latitude={origin_latitude}" +
+          "&origin_longitude={origin_longitude}" +
+          "&origin_stop_id={origin_stop_id}" +
+          "&destination_name={destination_name}" +
+          "&destination_latitude={destination_latitude}" +
+          "&destination_longitude={destination_longitude}" +
+          "&destination_stop_id={destination_stop_id}" +
+          "&opened={opened}",
       arguments = listOf(
-        navArgument("from_id") { type = NavType.IntType },
-        navArgument("to_id") { type = NavType.IntType },
+        navArgument("origin_name") { type = NavType.StringType },
+        navArgument("origin_latitude") { type = NavType.FloatType },
+        navArgument("origin_longitude") { type = NavType.FloatType },
+        navArgument("origin_stop_id") { type = NavType.IntType },
+        navArgument("destination_name") { type = NavType.StringType },
+        navArgument("destination_latitude") { type = NavType.FloatType },
+        navArgument("destination_longitude") { type = NavType.FloatType },
+        navArgument("destination_stop_id") { type = NavType.IntType },
         navArgument("opened") { type = NavType.StringType },
       ),
     ) { backStackEntry ->
       SearchScreen(
         navController = navController,
-        fromId = backStackEntry.arguments?.getInt("from_id") ?: EMPTY_ID,
-        toId = backStackEntry.arguments?.getInt("to_id") ?: EMPTY_ID,
+        originName = backStackEntry.arguments?.getString("origin_name").orEmpty(),
+        originLatitude = backStackEntry.arguments?.getFloat("origin_latitude") ?: 0f,
+        originLongitude = backStackEntry.arguments?.getFloat("origin_longitude") ?: 0f,
+        originStopId = backStackEntry.arguments?.getInt("origin_stop_id") ?: EMPTY_ID,
+        destinationName = backStackEntry.arguments?.getString("destination_name").orEmpty(),
+        destinationLatitude = backStackEntry.arguments?.getFloat("destination_latitude") ?: 0f,
+        destinationLongitude = backStackEntry.arguments?.getFloat("destination_longitude") ?: 0f,
+        destinationStopId = backStackEntry.arguments?.getInt("destination_stop_id") ?: EMPTY_ID,
         opened = backStackEntry.arguments?.getString("opened").orEmpty(),
       )
     }

@@ -50,7 +50,8 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
-import robert.findtransport.utils.*
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.getFormattedAddress
@@ -202,16 +203,6 @@ fun BoxScope.SelectLocationButton(
     )
   }
 }
-
-//fun getAddress(address: Address?, locale: StateFlow<String>): String {
-//  address ?: return ""
-//  return when (locale.value) {
-//    LNG_AM -> "${address.thoroughfare} ${address.featureName}"
-//    LNG_EN -> "${address.featureName} ${address.thoroughfare}"
-//    LNG_RU -> "${address.thoroughfare} ${address.featureName}"
-//    else -> "${address.featureName} ${address.thoroughfare}"
-//  }
-//}
 
 @Composable
 fun PermissionDialog(

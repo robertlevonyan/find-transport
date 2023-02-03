@@ -14,7 +14,7 @@ import robert.findtransport.data.model.enums.NearbyStopStatus
 interface StopsUseCase {
   suspend fun getStops(): List<Stop>
 
-  fun getStopsPaged(stop: String, locale: String): Flow<PagingData<StopWithAddress>>
+  fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>>
 
   suspend fun getStopsLocations(): List<PointAnnotationOptions>
 

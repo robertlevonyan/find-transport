@@ -24,8 +24,7 @@ class StopsPickerViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val allStops: MutableSharedFlow<PagingData<StopWithAddress>> = MutableSharedFlow()
-  val selectedStop = MutableStateFlow<Address?>(null)
+  val allStops: MutableSharedFlow<PagingData<Stop>> = MutableSharedFlow()
 
   fun findStops(word: String) {
     viewModelScope.launch(Dispatchers.IO) {
@@ -37,10 +36,7 @@ class StopsPickerViewModel @Inject constructor(
     }
   }
 
-  fun getAddress(stop: Stop) {
-    viewModelScope.launch {
-      val address = stopsUseCase.getAddress(stop)
-      selectedStop.value = address
-    }
+  suspend fun getAddress(stop: Stop): Address? {
+      return stopsUseCase.getAddress(stop)
   }
 }
