@@ -1,6 +1,7 @@
 package robert.findtransport.domain.usecase.stop
 
 import android.location.Address
+import android.location.Location
 import androidx.paging.PagingData
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import robert.findtransport.data.entity.Stop as ApiStop
@@ -20,7 +21,7 @@ interface StopsUseCase {
 
   suspend fun getMetroStopsLocations(): List<PointAnnotationOptions>
 
-  fun getNearbyStop(): Flow<NearbyStopStatus>
+  suspend fun getNearbyStop(location: Location): Stop
 
   suspend fun getStop(id: Int): Stop
 

@@ -32,7 +32,6 @@ import robert.findtransport.presentation.reusables.composables.A2bAppBar
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.format
-import robert.findtransport.utils.extensions.getCurrentName
 import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,7 +150,7 @@ private fun HistoryListScreen(
               end.linkTo(imageRemove.start)
             }
             .padding(HalfPadding),
-          text = history.fromStop.getCurrentName(locale),
+          text = history.originName,
           color = MaterialTheme.colorScheme.onPrimary,
           textAlign = TextAlign.Start,
         )
@@ -180,7 +179,7 @@ private fun HistoryListScreen(
               end.linkTo(imageRemove.start)
             }
             .padding(HalfPadding),
-          text = history.toStop.getCurrentName(locale),
+          text = history.destinationName,
           color = MaterialTheme.colorScheme.onPrimary,
           textAlign = TextAlign.Start,
         )
@@ -229,11 +228,20 @@ private fun HistoryListScreen(
             text = stringResource(id = R.string.message_history_dialog_restore),
             onConfirm = {
               showRestoreDialog = false
-              navController.navigate(
-                route = NavigationScreens.SearchScreen.name +
-                    "?from_id=${history.fromStop.id}&to_id=${history.toStop.id}" +
-                    "&opened=${SearchOpenInitiator.HISTORY.name}"
-              )
+
+              val navigationRoute = buildString {
+                append("${NavigationScreens.SearchScreen.name}?")
+                append("origin_name=${history.originName}")
+                append("&origin_latitude=${history.originLatitude}")
+                append("&origin_longitude=${history.originLongitude}")
+                append("&origin_stop_id=${history.fromStop.id}")
+                append("&destination_name=${history.destinationName}")
+                append("&destination_latitude=${history.destinationLatitude}")
+                append("&destination_longitude=${history.destinationLongitude}")
+                append("&destination_stop_id=${history.toStop.id}")
+                append("&opened=${SearchOpenInitiator.HOME.name}")
+              }
+              navController.navigate(route = navigationRoute)
             },
             onDismiss = { showRestoreDialog = false },
           ) { showRestoreDialog = false }
@@ -243,9 +251,11 @@ private fun HistoryListScreen(
   }
 
   Box(modifier = modifier) {
-    LazyColumn(modifier = Modifier
-      .fillMaxSize()
-      .animateContentSize()) {
+    LazyColumn(
+      modifier = Modifier
+        .fillMaxSize()
+        .animateContentSize()
+    ) {
       items(history) { history ->
         HistoryListElement(history = history, locale = locale)
       }

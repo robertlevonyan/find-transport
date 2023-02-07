@@ -52,6 +52,12 @@ fun ApiHistory.toHistory(fromStop: Stop, toStop: Stop) = History(
   toStop = toStop,
   results = results ?: 0,
   timestamp = timestamp ?: 0,
+  originName = originName.orEmpty(),
+  originLatitude = originLatitude ?: 0f,
+  originLongitude = originLongitude ?: 0f,
+  destinationName = destinationName.orEmpty(),
+  destinationLatitude = destinationLatitude ?: 0f,
+  destinationLongitude = destinationLongitude ?: 0f,
 )
 
 fun History.toApiHistory() = ApiHistory(
@@ -59,6 +65,12 @@ fun History.toApiHistory() = ApiHistory(
   toStopId = toStop.id,
   results = results,
   timestamp = timestamp,
+  originName = originName,
+  originLatitude = originLatitude,
+  originLongitude = originLongitude,
+  destinationName = destinationName,
+  destinationLatitude = destinationLatitude,
+  destinationLongitude = destinationLongitude,
 )
 
 inline fun <reified T> T.toJson(): JsonObject {

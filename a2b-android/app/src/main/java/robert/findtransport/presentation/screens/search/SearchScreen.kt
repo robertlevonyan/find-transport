@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,13 +18,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
-import robert.findtransport.data.model.MultiType
+import robert.findtransport.data.model.RouteSearchElementType
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.SearchState
 import robert.findtransport.presentation.navigation.NavigationScreens
@@ -53,11 +51,13 @@ fun SearchScreen(
     searchViewModel.performSearch(
       originStopId = originStopId,
       destinationStopId = destinationStopId,
-      opened = opened,
       originLatitude = originLatitude,
       originLongitude = originLongitude,
       destinationLatitude = destinationLatitude,
       destinationLongitude = destinationLongitude,
+      opened = opened,
+      originName = originName,
+      destinationName = destinationName,
     )
   }
 
@@ -104,29 +104,11 @@ private fun SearchContent(
 
     when (searchResults) {
       SearchState.Searching -> item { Loading() }
-      is SearchState.Single -> {
-        val transports = (searchResults as SearchState.Single).result
-        itemsIndexed(transports) { index, transport ->
-          TransportListElement(transport = transport, locale = locale) {
-            navController.navigate(
-              route = NavigationScreens.TrackRouteScreen.name + "?transport_id=${transport.id}"
-                  + "&from_id=${from.id}" + "&to_id=${to.id}"
-            )
-          }
-
-          if (index < transports.lastIndex) {
-            Divider(
-              color = colorVariantInvertTransparent(),
-              thickness = 0.5.dp,
-            )
-          }
-        }
-      }
-      is SearchState.Multi -> {
-        val result = (searchResults as SearchState.Multi).result
+      is SearchState.Result -> {
+        val result = (searchResults as SearchState.Result).result
         items(result) { multiRouteElement ->
           when (multiRouteElement.type) {
-            MultiType.WALK_FROM -> Column(
+            RouteSearchElementType.WALK_FROM -> Column(
               modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()
@@ -147,11 +129,12 @@ private fun SearchContent(
                 )
                 TextPrimary(
                   modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                  text = multiRouteElement.stop?.getCurrentName(locale).orEmpty(),
+                  text = multiRouteElement.stop?.getCurrentName(locale)
+                    ?: multiRouteElement.walkDestination.orEmpty(),
                 )
               }
             }
-            MultiType.WALK_TO -> Column(
+            RouteSearchElementType.WALK_TO -> Column(
               modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()
@@ -172,11 +155,12 @@ private fun SearchContent(
                 )
                 TextPrimary(
                   modifier = Modifier.align(alignment = Alignment.CenterVertically),
-                  text = multiRouteElement.stop?.getCurrentName(locale).orEmpty(),
+                  text = multiRouteElement.stop?.getCurrentName(locale)
+                    ?: multiRouteElement.walkDestination.orEmpty(),
                 )
               }
             }
-            MultiType.TRANSPORT_TITLE -> Column(
+            RouteSearchElementType.TRANSPORT_TITLE -> Column(
               modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()
@@ -210,7 +194,7 @@ private fun SearchContent(
                 text = stringResource(id = R.string.label_take_transport),
               )
             }
-            MultiType.TRANSPORT -> {
+            RouteSearchElementType.TRANSPORT -> {
               val transport = multiRouteElement.transport ?: Transport.EMPTY
               TransportListElement(transport = transport,
                 locale = locale,
@@ -221,7 +205,7 @@ private fun SearchContent(
                   )
                 })
             }
-            MultiType.INTERCHANGE_FROM -> Column(
+            RouteSearchElementType.INTERCHANGE_FROM -> Column(
               modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()
@@ -257,7 +241,7 @@ private fun SearchContent(
                 )
               }
             }
-            MultiType.INTERCHANGE_TO -> Column(
+            RouteSearchElementType.INTERCHANGE_TO -> Column(
               modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentWidth()

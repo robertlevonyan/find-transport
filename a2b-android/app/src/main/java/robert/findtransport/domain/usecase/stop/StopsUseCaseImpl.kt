@@ -1,6 +1,5 @@
 package robert.findtransport.domain.usecase.stop
 
-import android.Manifest
 import android.location.Address
 import android.location.Location
 import androidx.paging.Pager
@@ -9,13 +8,12 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.*
-import robert.findtransport.data.model.enums.NearbyStopStatus
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
@@ -27,7 +25,6 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
-import robert.findtransport.utils.extensions.toLocation
 import javax.inject.Inject
 import robert.findtransport.data.entity.Stop as ApiStop
 
@@ -110,50 +107,35 @@ class StopsUseCaseImpl @Inject constructor(
         .toList()
     }
 
-  override fun getNearbyStop(): Flow<NearbyStopStatus> = channelFlow {
-    if (!currentCoroutineContext().isActive ||
-      !permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    ) {
-      channel.send(NearbyStopStatus.Failed)
-      return@channelFlow
-    }
-
-    channel.send(NearbyStopStatus.Loading)
+  override suspend fun getNearbyStop(location: Location): Stop = withContext(Dispatchers.IO) {
     val stops = getStops()
-    locationRepository.getCurrentLocation().let { currentLocation ->
-      val nearby = mutableListOf<NearbyLocation>()
 
-      stops.forEach { stop ->
-        stop.coordinates.forEach { coordinate ->
-          val newLocation = Location("next").apply {
-            latitude = coordinate.lat
-            longitude = coordinate.lng
-          }
+    val nearby = mutableListOf<NearbyLocation>()
 
-          currentLocation?.toLocation()?.distanceTo(newLocation)?.let { distance ->
-            nearby.add(
-              NearbyLocation(
-                stopId = stop.id,
-                latitude = newLocation.latitude,
-                longitude = newLocation.longitude,
-                locationDistance = distance,
-              )
-            )
-          }
+    stops.forEach { stop ->
+      stop.coordinates.forEach { coordinate ->
+        val newLocation = Location("next").apply {
+          latitude = coordinate.lat
+          longitude = coordinate.lng
         }
+
+        val distance = location.distanceTo(newLocation)
+
+        nearby.add(
+          NearbyLocation(
+            stopId = stop.id,
+            latitude = newLocation.latitude,
+            longitude = newLocation.longitude,
+            locationDistance = distance,
+          )
+        )
       }
-
-      if (nearby.isEmpty()) {
-        channel.send(NearbyStopStatus.Failed)
-        return@let
-      }
-
-      nearby.sortBy { it.locationDistance }
-
-      stops.find { stop -> stop.id == nearby.first().stopId }
-        ?.let { stop -> channel.send(NearbyStopStatus.NearbyStop(stop)) }
     }
-  }.flowOn(Dispatchers.IO)
+
+    nearby.sortBy { it.locationDistance }
+
+    stops.find { stop -> stop.id == nearby.first().stopId } ?: Stop.EMPTY
+  }
 
   override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {
     stopsRepository.getStopById(id)?.toStop() ?: Stop.EMPTY
