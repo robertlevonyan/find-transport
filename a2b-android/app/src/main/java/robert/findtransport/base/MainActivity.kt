@@ -1,7 +1,5 @@
 package robert.findtransport.base
 
-import android.content.pm.ActivityInfo
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +17,7 @@ import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.navigation.Navigation
 import robert.findtransport.presentation.reusables.A2bTheme
 import robert.findtransport.presentation.reusables.LocalActivity
-import robert.findtransport.utils.extensions.isTablet
+import robert.findtransport.utils.extensions.requestedOrientation
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -27,15 +25,7 @@ class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    requestedOrientation = if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-      if (isTablet()) {
-        ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-      } else {
-        ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-      }
-    } else {
-      ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-    }
+    requestedOrientation()
     installSplashScreen()
     setContent {
       CompositionLocalProvider(LocalActivity provides this) {

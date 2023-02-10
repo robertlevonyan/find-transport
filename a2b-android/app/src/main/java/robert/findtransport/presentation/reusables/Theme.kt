@@ -27,7 +27,7 @@ fun A2bTheme(
       LightColorPalette
     }
   }.also {
-    systemUiController.setSystemBarsColor(color = it.primaryContainer)
+    systemUiController.setSystemBarsColor(color = it.primary)
   }
 
   MaterialTheme(
@@ -48,7 +48,7 @@ fun isAppInDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) 
 @SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColorScheme(
   primary = Black,
-  primaryContainer = Color.Transparent,
+  primaryContainer = BlackPure,
   onPrimary = WhiteVariant,
   secondary = Accent,
   secondaryContainer = AccentVariant,

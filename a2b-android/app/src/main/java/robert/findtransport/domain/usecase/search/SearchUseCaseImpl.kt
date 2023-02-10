@@ -77,14 +77,17 @@ class SearchUseCaseImpl @Inject constructor(
 
       // get routes from origin point to a nearby point of destination
       val (multiDataTo, interchangeStopTo) = tryFindRoutes(toNearby, fromTransports)
-      multiResult.addAll(
-        createToResult(
-          multiDataTo,
-          interchangeStopTo,
-          originStop,
-          destinationStop
-        )
+      val toResults = createToResult(
+        multiDataTo = multiDataTo,
+        interchangeStopTo = interchangeStopTo,
+        originName = originName,
+        originStop = originStop,
+        destinationStop = destinationStop,
+        destinationName = destinationName,
+        currentLocale = currentLocale,
       )
+      multiResult.addAll(toResults)
+
       if (multiResult.isNotEmpty()) {
         checkAndSaveToHistory(
           saveToHistory = saveToHistory,
@@ -103,7 +106,17 @@ class SearchUseCaseImpl @Inject constructor(
 
       // get routes from a nearby point of origin to the destination
       val (multiDataFrom, interchangeStopFrom) = tryFindRoutes(fromNearby, toTransports)
-      multiResult.addAll(createFromResult(multiDataFrom, interchangeStopFrom, originStop))
+      val fromResults = createFromResult(
+        multiDataFrom = multiDataFrom,
+        interchangeStopFrom = interchangeStopFrom,
+        originStop = originStop,
+        originName = originName,
+        destinationStop = destinationStop,
+        destinationName = destinationName,
+        currentLocale = currentLocale,
+      )
+      multiResult.addAll(fromResults)
+
       if (multiResult.isNotEmpty()) {
         checkAndSaveToHistory(
           saveToHistory = saveToHistory,
@@ -137,48 +150,18 @@ class SearchUseCaseImpl @Inject constructor(
               val to3Transports = transportsRepository.getTransportsForStop(destinationStop.id)
               val found3Transports: List<Transport> =
                 searchTransports(from3Transports, to3Transports)
-              if (found3Transports.isNotEmpty()) {
-                multiResult.add(
-                  RouteSearchResult(
-                    type = RouteSearchElementType.TRANSPORT_TITLE,
-                    stop = originStop,
-                    case = RouteSearchCase.FROM_TO
-                  )
-                )
-                for (t in found2Transports) {
-                  multiResult.add(
-                    RouteSearchResult(
-                      type = RouteSearchElementType.TRANSPORT,
-                      transport = t,
-                      case = RouteSearchCase.FROM_TO
-                    )
-                  )
-                }
-                multiResult.add(
-                  RouteSearchResult(
-                    type = RouteSearchElementType.INTERCHANGE_TO,
-                    stop = fromNear,
-                    case = RouteSearchCase.FROM_TO
-                  )
-                )
-                for (t in found3Transports) {
-                  multiResult.add(
-                    RouteSearchResult(
-                      type = RouteSearchElementType.TRANSPORT,
-                      transport = t,
-                      case = RouteSearchCase.FROM_TO
-                    )
-                  )
-                }
-                multiResult.add(
-                  RouteSearchResult(
-                    type = RouteSearchElementType.INTERCHANGE_TO,
-                    stop = destinationStop,
-                    case = RouteSearchCase.FROM_TO
-                  )
-                )
-                break@topFor
-              }
+              val result = createMultiChangeResult(
+                found2Transports = found2Transports,
+                found3Transports = found3Transports,
+                originName = originName,
+                originStop = originStop,
+                destinationName = destinationName,
+                destinationStop = destinationStop,
+                currentLocale = currentLocale,
+                fromNear = fromNear,
+              )
+              multiResult.addAll(result)
+              break@topFor
             }
           }
         }
@@ -209,49 +192,14 @@ class SearchUseCaseImpl @Inject constructor(
         destinationLongitude = destinationLongitude,
       )
 
-      val result = buildList {
-        if (originName != originStop.getCurrentName(currentLocale)) {
-          add(
-            RouteSearchResult(
-              type = RouteSearchElementType.WALK_FROM,
-              walkDestination = originName,
-              case = RouteSearchCase.SINGLE_FROM,
-            )
-          )
-          add(
-            RouteSearchResult(
-              type = RouteSearchElementType.INTERCHANGE_FROM,
-              stop = originStop,
-              case = RouteSearchCase.FROM_TO,
-            )
-          )
-        }
-        foundTransports.forEach { transport ->
-          add(
-            RouteSearchResult(
-              type = RouteSearchElementType.TRANSPORT,
-              transport = transport,
-              case = RouteSearchCase.FROM_TO
-            )
-          )
-        }
-        add(
-          RouteSearchResult(
-            type = RouteSearchElementType.INTERCHANGE_TO,
-            stop = destinationStop,
-            case = RouteSearchCase.SINGLE_TO,
-          )
-        )
-        if (destinationName != destinationStop.getCurrentName(currentLocale)) {
-          add(
-            RouteSearchResult(
-              type = RouteSearchElementType.WALK_TO,
-              walkDestination = destinationName,
-              case = RouteSearchCase.SINGLE_FROM,
-            )
-          )
-        }
-      }
+      val result = createFoundTransportsResult(
+        originName = originName,
+        originStop = originStop,
+        currentLocale = currentLocale,
+        foundTransports = foundTransports,
+        destinationName = destinationName,
+        destinationStop = destinationStop,
+      )
       emit(SearchState.Result(result))
     }
   }.flowOn(Dispatchers.IO)
@@ -259,12 +207,11 @@ class SearchUseCaseImpl @Inject constructor(
   private fun searchTransports(
     fromT: List<robert.findtransport.data.entity.Transport>,
     toT: List<robert.findtransport.data.entity.Transport>
-  ): List<Transport> {
-    val data = arrayListOf<Transport>()
+  ): List<Transport> = buildList {
     for (apiTransport in fromT) {
       val toFormatted = toT.map { it.id }
       if (toFormatted.contains(apiTransport.id)) {
-        data.add(
+        add(
           apiTransport.toTransport(transportsRepository.getTransportStops(
             apiTransport.id
               ?: 0
@@ -272,30 +219,24 @@ class SearchUseCaseImpl @Inject constructor(
         )
       }
     }
-    return data.sortedBy { it.id }
+  }.sortedBy { it.id }
+
+  private fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
+    val coordinates = stop.coordinates
+    val fromLocation = coordinates.first()
+    addAll(getNearbyStops(fromLocation, stops))
   }
 
-  private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> =
-    withContext(Dispatchers.IO) {
-      val nearby = mutableListOf<Stop>()
-      val coordinates = stop.coordinates
-      val fromLocation = coordinates.first()
-      nearby.addAll(getNearbyStops(fromLocation, stops))
-      return@withContext nearby
-    }
+  private fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
+    val coordinates = stop.coordinates
+    val fromLocation = coordinates.first()
+    addAll(getNearbyStops(fromLocation, stops).take(5))
+  }
 
-  private suspend fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> =
-    withContext(Dispatchers.IO) {
-      val nearby = mutableListOf<Stop>()
-      val coordinates = stop.coordinates
-      val fromLocation = coordinates.first()
-      nearby.addAll(getNearbyStops(fromLocation, stops).take(5))
-      return@withContext nearby
-    }
-
-  private fun getNearbyStops(currentStop: StopLocation, stops: List<Stop>): Sequence<Stop> {
-    val nearby = mutableListOf<NearbyLocation>()
-
+  private fun getNearbyStops(
+    currentStop: StopLocation,
+    stops: List<Stop>,
+  ): Sequence<Stop> = buildList {
     for (stop in stops) {
       for (coordinate in stop.coordinates) {
         val newLocation = Location("next").apply {
@@ -303,7 +244,7 @@ class SearchUseCaseImpl @Inject constructor(
           longitude = coordinate.lng
         }
 
-        nearby.add(
+        add(
           NearbyLocation(
             stop.id,
             newLocation.latitude,
@@ -316,11 +257,9 @@ class SearchUseCaseImpl @Inject constructor(
         )
       }
     }
-
-    return nearby.asSequence()
-      .sortedBy { it.locationDistance }
-      .map { runBlocking { stopsUseCase.getStop(it.stopId) } }
-  }
+  }.asSequence()
+    .sortedBy { it.locationDistance }
+    .map { runBlocking { stopsUseCase.getStop(it.stopId) } }
 
   private suspend fun tryFindRoutes(
     nearby: List<Stop>,
@@ -348,79 +287,235 @@ class SearchUseCaseImpl @Inject constructor(
   private fun createToResult(
     multiDataTo: Set<Transport>,
     interchangeStopTo: Stop?,
-    from: Stop,
-    to: Stop,
-  ): Collection<RouteSearchResult> {
-    val multiResult = mutableListOf<RouteSearchResult>()
+    originName: String,
+    originStop: Stop,
+    destinationStop: Stop,
+    destinationName: String,
+    currentLocale: String,
+  ): Collection<RouteSearchResult> = buildList {
+    if (multiDataTo.isEmpty()) return@buildList
+    if (originName != originStop.getCurrentName(currentLocale)) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.WALK_FROM,
+          walkDestination = originName,
+          case = RouteSearchCase.SINGLE_FROM,
+        )
+      )
+    }
 
-    if (multiDataTo.isNotEmpty()) {
-      multiResult.add(
-        RouteSearchResult(
-          type = RouteSearchElementType.TRANSPORT_TITLE,
-          from,
-          case = RouteSearchCase.SINGLE_FROM
-        )
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.TRANSPORT_TITLE,
+        stop = originStop,
+        case = RouteSearchCase.SINGLE_FROM
       )
-      for (t in multiDataTo) {
-        multiResult.add(
-          RouteSearchResult(
-            type = RouteSearchElementType.TRANSPORT,
-            transport = t,
-            case = RouteSearchCase.SINGLE_FROM
-          )
-        )
-      }
-      multiResult.add(
+    )
+    for (t in multiDataTo) {
+      add(
         RouteSearchResult(
-          type = RouteSearchElementType.INTERCHANGE_TO,
-          stop = interchangeStopTo,
-          case = RouteSearchCase.SINGLE_FROM
-        )
-      )
-      multiResult.add(
-        RouteSearchResult(
-          type = RouteSearchElementType.WALK_TO,
-          to,
+          type = RouteSearchElementType.TRANSPORT,
+          transport = t,
           case = RouteSearchCase.SINGLE_FROM
         )
       )
     }
-    return multiResult
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.INTERCHANGE_TO,
+        stop = interchangeStopTo,
+        case = RouteSearchCase.SINGLE_FROM
+      )
+    )
+
+    val walkRoute = if (destinationName != destinationStop.getCurrentName(currentLocale)) {
+      RouteSearchResult(
+        type = RouteSearchElementType.WALK_TO,
+        walkDestination = destinationName,
+        case = RouteSearchCase.SINGLE_FROM,
+      )
+    } else {
+      RouteSearchResult(
+        type = RouteSearchElementType.WALK_TO,
+        stop = destinationStop,
+        case = RouteSearchCase.SINGLE_FROM
+      )
+    }
+    add(walkRoute)
   }
 
   private fun createFromResult(
     multiDataFrom: Set<Transport>,
     interchangeStopFrom: Stop?,
-    from: Stop,
-  ): Collection<RouteSearchResult> {
-    val multiResult = mutableListOf<RouteSearchResult>()
+    originStop: Stop,
+    originName: String,
+    destinationStop: Stop,
+    destinationName: String,
+    currentLocale: String,
+  ): Collection<RouteSearchResult> = buildList {
+    if (multiDataFrom.isEmpty()) return@buildList
+    val walkRoute = if (originName != originStop.getCurrentName(currentLocale)) {
+      RouteSearchResult(
+        type = RouteSearchElementType.WALK_FROM,
+        walkDestination = originName,
+        case = RouteSearchCase.SINGLE_FROM,
+      )
+    } else {
+      RouteSearchResult(
+        type = RouteSearchElementType.WALK_FROM,
+        stop = originStop,
+        case = RouteSearchCase.SINGLE_TO
+      )
+    }
+    add(walkRoute)
 
-    if (multiDataFrom.isNotEmpty()) {
-      multiResult.add(
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.INTERCHANGE_FROM,
+        stop = interchangeStopFrom,
+        case = RouteSearchCase.SINGLE_TO
+      )
+    )
+    for (t in multiDataFrom) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.TRANSPORT,
+          transport = t,
+          case = RouteSearchCase.SINGLE_TO
+        )
+      )
+    }
+    if (destinationName != destinationStop.getCurrentName(currentLocale)) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.WALK_TO,
+          walkDestination = destinationName,
+          case = RouteSearchCase.SINGLE_FROM,
+        )
+      )
+    }
+  }
+
+  private fun createMultiChangeResult(
+    found2Transports: List<Transport>,
+    found3Transports: List<Transport>,
+    originName: String,
+    originStop: Stop,
+    destinationName: String,
+    destinationStop: Stop,
+    currentLocale: String,
+    fromNear: Stop,
+  ) = buildList {
+    if (found3Transports.isEmpty()) return@buildList
+
+    if (originName != originStop.getCurrentName(currentLocale)) {
+      add(
         RouteSearchResult(
           type = RouteSearchElementType.WALK_FROM,
-          from,
-          case = RouteSearchCase.SINGLE_TO
+          walkDestination = originName,
+          case = RouteSearchCase.SINGLE_FROM,
         )
       )
-      multiResult.add(
+    }
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.TRANSPORT_TITLE,
+        stop = originStop,
+        case = RouteSearchCase.FROM_TO
+      )
+    )
+    for (t in found2Transports) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.TRANSPORT,
+          transport = t,
+          case = RouteSearchCase.FROM_TO
+        )
+      )
+    }
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.INTERCHANGE_TO,
+        stop = fromNear,
+        case = RouteSearchCase.FROM_TO
+      )
+    )
+    for (t in found3Transports) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.TRANSPORT,
+          transport = t,
+          case = RouteSearchCase.FROM_TO
+        )
+      )
+    }
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.INTERCHANGE_TO,
+        stop = destinationStop,
+        case = RouteSearchCase.FROM_TO
+      )
+    )
+    if (destinationName != destinationStop.getCurrentName(currentLocale)) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.WALK_TO,
+          walkDestination = destinationName,
+          case = RouteSearchCase.SINGLE_FROM,
+        )
+      )
+    }
+  }
+
+  private fun createFoundTransportsResult(
+    originName: String,
+    originStop: Stop,
+    currentLocale: String,
+    foundTransports: List<Transport>,
+    destinationName: String,
+    destinationStop: Stop
+  ): List<RouteSearchResult> = buildList {
+    if (originName != originStop.getCurrentName(currentLocale)) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.WALK_FROM,
+          walkDestination = originName,
+          case = RouteSearchCase.SINGLE_FROM,
+        )
+      )
+      add(
         RouteSearchResult(
           type = RouteSearchElementType.INTERCHANGE_FROM,
-          stop = interchangeStopFrom,
-          case = RouteSearchCase.SINGLE_TO
+          stop = originStop,
+          case = RouteSearchCase.FROM_TO,
         )
       )
-      for (t in multiDataFrom) {
-        multiResult.add(
-          RouteSearchResult(
-            type = RouteSearchElementType.TRANSPORT,
-            transport = t,
-            case = RouteSearchCase.SINGLE_TO
-          )
-        )
-      }
     }
-    return multiResult
+    foundTransports.forEach { transport ->
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.TRANSPORT,
+          transport = transport,
+          case = RouteSearchCase.FROM_TO
+        )
+      )
+    }
+    add(
+      RouteSearchResult(
+        type = RouteSearchElementType.INTERCHANGE_TO,
+        stop = destinationStop,
+        case = RouteSearchCase.SINGLE_TO,
+      )
+    )
+    if (destinationName != destinationStop.getCurrentName(currentLocale)) {
+      add(
+        RouteSearchResult(
+          type = RouteSearchElementType.WALK_TO,
+          walkDestination = destinationName,
+          case = RouteSearchCase.SINGLE_FROM,
+        )
+      )
+    }
   }
 
   private suspend fun checkAndSaveToHistory(
