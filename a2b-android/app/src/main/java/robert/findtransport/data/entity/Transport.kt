@@ -13,5 +13,9 @@ class Transport(
   val name: String? = null,
   @SerializedName("vehicle_type")
   val type: Int? = null,
+  @SerializedName("route_main")
+  val routeMain: String? = null,
+  @SerializedName("route_secondary")
+  val routeSecondary: String? = null,
   val favorite: Boolean = false,
 )

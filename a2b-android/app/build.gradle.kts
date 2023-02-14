@@ -143,8 +143,8 @@ dependencies {
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.6.1")
-  implementation("androidx.appcompat:appcompat:1.6.0")
-  implementation("androidx.browser:browser:1.4.0")
+  implementation("androidx.appcompat:appcompat:1.6.1")
+  implementation("androidx.browser:browser:1.5.0")
   implementation("androidx.cardview:cardview:1.0.0")
   implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.9.0")
@@ -167,16 +167,16 @@ dependencies {
   //compose
   implementation(platform("androidx.compose:compose-bom:2023.01.00"))
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.0")
-  implementation("androidx.compose.ui:ui:1.4.0-alpha05")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha05")
+  implementation("androidx.compose.compiler:compiler:1.4.2")
+  implementation("androidx.compose.ui:ui:1.4.0-beta01")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-beta01")
   implementation("androidx.compose.material:material:1.3.1")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha05")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha05")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha06")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha06")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")
-  implementation("androidx.paging:paging-compose:1.0.0-alpha17")
+  implementation("androidx.paging:paging-compose:1.0.0-alpha18")
   implementation("io.coil-kt:coil-compose:2.2.2")
 
   //squareup
@@ -185,15 +185,7 @@ dependencies {
   implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //map
-  implementation("com.mapbox.maps:android:10.10.0") {
-    exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
-  }
-  implementation("com.mapbox.navigation:android:2.9.6") {
-    exclude(group = "com.mapbox.mapboxsdk", module = "mapbox-android-core")
-  }
-//  implementation("com.google.maps.android:android-maps-utils:2.3.0")
-//  implementation("com.google.maps.android:maps-utils-ktx:3.4.0")
-
+  implementation("com.mapbox.maps:android:10.11.0")
 
   //other
   implementation("com.airbnb.android:lottie-compose:5.2.0")

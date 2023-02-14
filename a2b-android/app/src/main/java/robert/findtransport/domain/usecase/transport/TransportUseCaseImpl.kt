@@ -5,10 +5,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import com.mapbox.geojson.Point
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import robert.findtransport.data.model.*
+import robert.findtransport.data.model.NearbyLocation
+import robert.findtransport.data.model.Result
+import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.Transport
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.domain.mapper.toStopLocation
@@ -16,7 +18,6 @@ import robert.findtransport.domain.mapper.toTransport
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.domain.repository.TransportsRepository
 import robert.findtransport.utils.extensions.correctStops
-import java.util.*
 import javax.inject.Inject
 
 class TransportUseCaseImpl @Inject constructor(
@@ -131,27 +132,6 @@ class TransportUseCaseImpl @Inject constructor(
   override fun areTransportsCached(): Boolean = transportsRepository.areTransportsCached
 
   override fun areJoinsCached(): Boolean = transportsRepository.areJoinsCached
-
-  override fun getTransportRoute(
-    id: Int,
-    reverse: Boolean,
-    isUnderground: Boolean
-  ): Flow<RouteResult> =
-    getTransportById(id).map { transport ->
-      val stops = if (reverse) transport.stopsReversed else transport.stops
-      stops.flatMap { it.coordinates }
-        .map { Point.fromLngLat(it.lng, it.lat) }
-        .let {
-          if (isUnderground) {
-            RouteResult.Success(null, transport)
-          } else {
-            when (val route = transportsRepository.getTransportRoute(it.toMutableList()).first()) {
-              is Result.Success -> RouteResult.Success(route.data, transport)
-              is Result.Error -> RouteResult.Failed(route.exception.message ?: "")
-            }
-          }
-        }
-    }.flowOn(Dispatchers.IO)
 
   override suspend fun toggleFavorite(transport: Transport) = withContext(Dispatchers.IO) {
     transportsRepository.changeFavorite(transport.id, !transport.isFavorite)

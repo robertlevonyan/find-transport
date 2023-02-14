@@ -2,28 +2,14 @@ package robert.findtransport.data.repository
 
 import android.util.Log
 import androidx.paging.PagingSource
-import com.mapbox.api.directions.v5.models.DirectionsRoute
-import com.mapbox.api.matching.v5.models.MapMatchingResponse
-import com.mapbox.geojson.Point
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import robert.findtransport.R
 import robert.findtransport.data.api.ApiService
 import robert.findtransport.data.cache.TransportsDao
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.entity.TransportStopJoin
 import robert.findtransport.data.model.Result
-import robert.findtransport.data.model.enums.ExceptionType
-import robert.findtransport.data.model.error.A2bException
-import robert.findtransport.data.service.MapboxNavigationService
 import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.repository.TransportsRepository
 import robert.findtransport.utils.PREF_JOINS_ERROR
@@ -35,7 +21,6 @@ import javax.inject.Inject
 class TransportsRepositoryImpl @Inject constructor(
   private val apiService: ApiService,
   private val transportsDao: TransportsDao,
-  private val mapboxNavigationService: MapboxNavigationService,
   private val preferencesService: SharedPreferencesService,
 ) : TransportsRepository {
   override suspend fun getTransportsFromApi(): Result<List<Transport>> =
@@ -78,100 +63,6 @@ class TransportsRepositoryImpl @Inject constructor(
 
   override fun getTransportStopsReversed(transportId: Int?): List<Stop> =
     transportId?.let { id -> transportsDao.getTransportStopsReversed(id) } ?: emptyList()
-
-  @OptIn(ExperimentalCoroutinesApi::class)
-  override suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>> =
-    channelFlow {
-      if (coordinates.size < 2) {
-        if (!channel.isClosedForSend) {
-          launch {
-            channel.send(
-              element = Result.Error(
-                A2bException(
-                  type = ExceptionType.NAVIGATION_EMPTY,
-                  errorMessage = R.string.error_no_routes,
-                  error = Exception("")
-                )
-              )
-            )
-          }
-        }
-        return@channelFlow
-      }
-      val navigation = mapboxNavigationService.getNavigation(coordinates)
-      navigation.enqueueCall(object : Callback<MapMatchingResponse> {
-        override fun onResponse(
-          call: Call<MapMatchingResponse>,
-          response: Response<MapMatchingResponse>
-        ) {
-          if (response.isSuccessful) {
-            response.body()?.matchings()?.run {
-              val route = getOrNull(0)?.toDirectionRoute() ?: return
-              if (!channel.isClosedForSend) {
-                launch { channel.send(element = Result.Success(route)) }
-              }
-            }
-          } else {
-            if (!channel.isClosedForSend) {
-              launch {
-                channel.send(
-                  element = Result.Error(
-                    exception = A2bException(
-                      type = ExceptionType.NAVIGATION_EMPTY,
-                      errorMessage = R.string.error_no_routes,
-                      error = Exception("")
-                    )
-                  )
-                )
-              }
-            }
-          }
-        }
-
-        override fun onFailure(call: Call<MapMatchingResponse>, t: Throwable) {
-          Log.e("Navigation", "Error", t)
-          if (!channel.isClosedForSend) {
-            launch {
-              channel.send(
-                element = Result.Error(
-                  A2bException(
-                    type = ExceptionType.NAVIGATION_ERROR,
-                    errorMessage = R.string.error_no_routes,
-                    error = Exception(t)
-                  )
-                )
-              )
-            }
-          }
-        }
-      })
-//    val directions = mapboxNavigationService.getDirections(coordinates)
-//    directions.forEach { direction ->
-//          direction.enqueueCall(object : Callback<DirectionsResponse> {
-//            override fun onResponse(call: Call<DirectionsResponse>, response: Response<DirectionsResponse>) {
-//              response.takeIf { it.isSuccessful }?.body()?.routes()?.forEach { directionsRoute ->
-//                if (!channel.isClosedForSend) {
-//                  channel.offer(Result.Success(directionsRoute))
-//                }
-//              }
-//            }
-//
-//            override fun onFailure(call: Call<DirectionsResponse>, t: Throwable) {
-//              Timber.tag("Navigation").e(t, "Error")
-//              if (!channel.isClosedForSend) {
-//                channel.offer(Result.Error(A2bException(ExceptionType.NAVIGATION_ERROR, R.string.error_no_routes, Exception(t))))
-//              }
-//            }
-//          })
-//        }
-      awaitClose {
-        navigation.cancelCall()
-//      directions.forEach {
-//        it.cancelCall()
-//    }
-        println("Closed")
-      }
-    }
 
   override suspend fun changeFavorite(id: Int, favorite: Boolean) {
     transportsDao.changeFavorite(id, favorite)

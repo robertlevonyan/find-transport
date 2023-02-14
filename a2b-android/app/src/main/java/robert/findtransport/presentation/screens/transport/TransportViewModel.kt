@@ -1,5 +1,6 @@
 package robert.findtransport.presentation.screens.transport
 
+import android.location.Address
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -7,8 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
+import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
 import javax.inject.Inject
 
@@ -16,6 +19,7 @@ import javax.inject.Inject
 class TransportViewModel @Inject constructor(
   localeUseCase: LocaleUseCase,
   private val transportUseCase: TransportUseCase,
+  private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val selectedTransport = MutableStateFlow(Transport.EMPTY)
@@ -33,5 +37,9 @@ class TransportViewModel @Inject constructor(
       transportUseCase.toggleFavorite(transport)
       toggleFinishAction.invoke()
     }
+  }
+
+  suspend fun getAddress(stop: Stop): Address? {
+    return stopsUseCase.getAddress(stop)
   }
 }

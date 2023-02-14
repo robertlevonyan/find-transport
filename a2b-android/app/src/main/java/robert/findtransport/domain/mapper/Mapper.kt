@@ -3,11 +3,14 @@ package robert.findtransport.domain.mapper
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import com.mapbox.geojson.Point
 import robert.findtransport.data.model.History
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.data.entity.History as ApiHistory
 import robert.findtransport.data.entity.Stop as ApiStop
 import robert.findtransport.data.entity.StopLocation as ApiLocation
@@ -36,7 +39,7 @@ fun Stop.toApiStop(): ApiStop = ApiStop(
 
 fun ApiTransport.toTransport(
   stops: List<Stop>,
-  reversedStops: List<Stop> = emptyList()
+  reversedStops: List<Stop> = emptyList(),
 ): Transport = Transport(
   id = id ?: 0,
   number = name.orEmpty(),
@@ -44,7 +47,16 @@ fun ApiTransport.toTransport(
   stops = stops,
   stopsReversed = reversedStops,
   isFavorite = favorite,
+  route = routeMain.splitToPoints(),
+  routeReversed = routeSecondary.splitToPoints(),
 )
+
+private fun String?.splitToPoints(): List<Point> = this?.split(";")?.map { coordinateString ->
+  val coordinates = coordinateString.split(",")
+  val longitude = coordinates[0].toDoubleOrNull() ?: DEFAULT_LONGITUDE
+  val latitude = coordinates[1].toDoubleOrNull() ?: DEFAULT_LATITUDE
+  Point.fromLngLat(longitude, latitude)
+}.orEmpty()
 
 fun ApiHistory.toHistory(fromStop: Stop, toStop: Stop) = History(
   id = id,

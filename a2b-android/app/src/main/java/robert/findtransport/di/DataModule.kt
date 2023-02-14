@@ -52,26 +52,17 @@ object DataModule {
     context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
   @Provides
-  fun getInMemoryCacheService(): InMemoryCacheService =
-    InMemoryCacheService
+  fun getInMemoryCacheService(): InMemoryCacheService = InMemoryCacheService
 
   @Provides
-  fun getMapboxNavigationService(): MapboxNavigationService =
-    MapboxNavigationService()
+  fun getStopsDao(appDatabase: AppDatabase): StopsDao = appDatabase.stopsDao()
 
   @Provides
-  fun getStopsDao(appDatabase: AppDatabase): StopsDao =
-    appDatabase.stopsDao()
+  fun getTransportsDao(appDatabase: AppDatabase): TransportsDao = appDatabase.transportsDao()
 
   @Provides
-  fun getTransportsDao(appDatabase: AppDatabase): TransportsDao =
-    appDatabase.transportsDao()
+  fun getHistoryDao(appDatabase: AppDatabase): HistoryDao = appDatabase.historyDao()
 
   @Provides
-  fun getHistoryDao(appDatabase: AppDatabase): HistoryDao =
-    appDatabase.historyDao()
-
-  @Provides
-  fun getApiService(): ApiService =
-    RetrofitClient.getClient().create(ApiService::class.java)
+  fun getApiService(): ApiService = RetrofitClient.getClient().create(ApiService::class.java)
 }

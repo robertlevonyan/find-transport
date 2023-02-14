@@ -33,47 +33,47 @@ import robert.findtransport.domain.usecase.transport.TransportUseCaseImpl
 @InstallIn(ViewModelComponent::class, ActivityComponent::class)
 abstract class UseCaseModule {
   @Binds
-  abstract fun bindCheckInternetUseCase(checkInternetUseCaseImpl: CheckInternetUseCaseImpl): CheckInternetUseCase
+  abstract fun bindCheckInternetUseCase(impl: CheckInternetUseCaseImpl): CheckInternetUseCase
 
   @Binds
-  abstract fun bindVersionUseCase(versionUseCaseImpl: VersionUseCaseImpl): VersionUseCase
+  abstract fun bindVersionUseCase(impl: VersionUseCaseImpl): VersionUseCase
 
   @Binds
-  abstract fun bindDatabaseUseCase(databaseUseCaseImpl: DatabaseUseCaseImpl): DatabaseUseCase
+  abstract fun bindDatabaseUseCase(impl: DatabaseUseCaseImpl): DatabaseUseCase
 
   @Binds
-  abstract fun bindThemeUseCase(themeUseCaseImpl: ThemeUseCaseImpl): ThemeUseCase
+  abstract fun bindThemeUseCase(impl: ThemeUseCaseImpl): ThemeUseCase
 
   @Binds
-  abstract fun bindLocaleUseCase(localeUseCaseImpl: LocaleUseCaseImpl): LocaleUseCase
+  abstract fun bindLocaleUseCase(impl: LocaleUseCaseImpl): LocaleUseCase
 
   @Binds
-  abstract fun bindIntroUseCase(introUseCaseImpl: IntroUseCaseImpl): IntroUseCase
+  abstract fun bindIntroUseCase(impl: IntroUseCaseImpl): IntroUseCase
 
   @Binds
-  abstract fun bindFeedbackUseCase(feedbackUseCaseImpl: FeedbackUseCaseImpl): FeedbackUseCase
+  abstract fun bindFeedbackUseCase(impl: FeedbackUseCaseImpl): FeedbackUseCase
 
   @Binds
-  abstract fun bindStopsUseCase(stopsUseCaseImpl: StopsUseCaseImpl): StopsUseCase
+  abstract fun bindStopsUseCase(impl: StopsUseCaseImpl): StopsUseCase
 
   @Binds
-  abstract fun bindTransportUseCase(transportUseCaseImpl: TransportUseCaseImpl): TransportUseCase
+  abstract fun bindTransportUseCase(impl: TransportUseCaseImpl): TransportUseCase
 
   @Binds
-  abstract fun bindSearchUseCase(searchUseCaseImpl: SearchUseCaseImpl): SearchUseCase
+  abstract fun bindSearchUseCase(impl: SearchUseCaseImpl): SearchUseCase
 
   @Binds
-  abstract fun bindPermissionUseCase(permissionUseCaseImpl: PermissionUseCaseImpl): PermissionUseCase
+  abstract fun bindPermissionUseCase(impl: PermissionUseCaseImpl): PermissionUseCase
 
   @Binds
-  abstract fun bindHistoryUseCase(historyUseCaseImpl: HistoryUseCaseImpl): HistoryUseCase
+  abstract fun bindHistoryUseCase(impl: HistoryUseCaseImpl): HistoryUseCase
 
   @Binds
-  abstract fun bindRateUseCase(rateUseCaseImpl: RateUseCaseImpl): RateUseCase
+  abstract fun bindRateUseCase(impl: RateUseCaseImpl): RateUseCase
 
   @Binds
-  abstract fun bindLocationUseCase(locationUseCaseImpl: LocationUseCaseImpl): LocationUseCase
+  abstract fun bindLocationUseCase(impl: LocationUseCaseImpl): LocationUseCase
 
   @Binds
-  abstract fun bindDownloadDataUseCase(downloadDataUseCaseImpl: DownloadDataUseCaseImpl): DownloadDataUseCase
+  abstract fun bindDownloadDataUseCase(impl: DownloadDataUseCaseImpl): DownloadDataUseCase
 }

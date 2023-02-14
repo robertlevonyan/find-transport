@@ -54,13 +54,11 @@ import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
-import robert.findtransport.data.model.RouteResult
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType
 import robert.findtransport.domain.mapper.fromJson
@@ -82,6 +80,7 @@ import robert.findtransport.utils.EMPTY_ID
 import robert.findtransport.utils.STOP_ICON_SIZE
 import robert.findtransport.utils.extensions.*
 import kotlin.math.abs
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -127,10 +126,11 @@ fun TransportScreen(
           locale = locale,
           showOptions = showOptions,
           homeViewModel = homeViewModel,
+          transportViewModel = transportViewModel,
+          previewMapViewModel = previewMapViewModel,
           navController = navController,
           bottomSheetScaffoldState = bottomSheetScaffoldState,
           scope = scope,
-          previewMapViewModel = previewMapViewModel,
         )
       }
     },
@@ -142,7 +142,7 @@ fun TransportScreen(
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       previewMapViewModel = previewMapViewModel,
-      scope = scope,
+      transport = transport,
     )
   }
 
@@ -164,16 +164,15 @@ private fun MapContent(
   locationEnabled: Boolean,
   mapStyle: String,
   previewMapViewModel: PreviewLocationPickerViewModel,
-  scope: CoroutineScope,
+  transport: Transport,
 ) {
   Box(modifier = modifier) {
     MapView(
-      navController = navController,
       locale = locale,
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       previewMapViewModel = previewMapViewModel,
-      scope = scope,
+      transport = transport,
     )
 
     SmallFloatingActionButton(modifier = Modifier.padding(
@@ -191,12 +190,11 @@ private fun MapContent(
 
 @Composable
 private fun MapView(
-  navController: NavController,
   locale: String,
   locationEnabled: Boolean,
   mapStyle: String,
   previewMapViewModel: PreviewLocationPickerViewModel,
-  scope: CoroutineScope,
+  transport: Transport,
 ) {
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
@@ -218,26 +216,21 @@ private fun MapView(
       lineCap = LineCap.ROUND
     }
 
-    map.loadStyleUri(styleUri = mapStyle, onStyleLoaded = {
+    map.loadStyleUri(styleUri = mapStyle, onStyleLoaded = { style ->
       if (locationEnabled) {
         mapView.enableLocationComponent()
       }
 
       map.setCamera(CameraOptions.Builder().zoom(11.0).build())
 
-      scope.launch {
-        previewMapViewModel.route.collectLatest { result ->
-          handleRoute(
-            result = result,
-            reversed = previewMapViewModel.isPrimary.value,
-            context = context,
-            polylineAnnotationManager = polylineAnnotationManager,
-            map = map,
-            pointAnnotationManager = pointAnnotationManager,
-            navController = navController,
-          )
-        }
-      }
+      handleRoute(
+        reversed = previewMapViewModel.isPrimary.value,
+        context = context,
+        map = map,
+        pointAnnotationManager = pointAnnotationManager,
+        polylineAnnotationManager = polylineAnnotationManager,
+        transport = transport,
+      )
     })
   })
 }
@@ -276,8 +269,7 @@ fun TransportInfo(
     ) {
       val icon = transport.getIcon()
 
-      val (transportIcon, transportNumber, startIcon,
-        firstStop, endIcon, lastStop, stopCount, swap) = createRefs()
+      val (transportIcon, transportNumber, startIcon, firstStop, endIcon, lastStop, stopCount, swap) = createRefs()
 
       AsyncImage(
         modifier = Modifier
@@ -432,20 +424,16 @@ private fun StopList(
   locale: String,
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
+  transportViewModel: TransportViewModel,
+  previewMapViewModel: PreviewLocationPickerViewModel,
   navController: NavController,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
   scope: CoroutineScope,
-  previewMapViewModel: PreviewLocationPickerViewModel,
 ) {
   if (transport == Transport.EMPTY) return
   var isPrimary by rememberSaveable { mutableStateOf(true) }
   val stops = if (isPrimary) transport.stops else transport.stopsReversed
   val isMetro = transport.type == TransportType.METRO
-  if (isPrimary) {
-    previewMapViewModel.getReversedTransportRoute(transport.id, isMetro)
-  } else {
-    previewMapViewModel.getTransportRoute(transport.id, isMetro)
-  }
 
   Box(modifier = modifier) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -479,6 +467,7 @@ private fun StopList(
             locale = locale,
             showOptions = showOptions,
             homeViewModel = homeViewModel,
+            transportViewModel = transportViewModel,
             navController = navController,
           )
           stops.lastIndex -> LastStopCard(
@@ -486,6 +475,7 @@ private fun StopList(
             locale = locale,
             showOptions = showOptions,
             homeViewModel = homeViewModel,
+            transportViewModel = transportViewModel,
             navController = navController,
           )
           else -> StopCard(
@@ -493,6 +483,7 @@ private fun StopList(
             locale = locale,
             showOptions = showOptions,
             homeViewModel = homeViewModel,
+            transportViewModel = transportViewModel,
             navController = navController,
           )
         }
@@ -507,6 +498,7 @@ private fun FirstStopCard(
   locale: String,
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
+  transportViewModel: TransportViewModel,
   navController: NavController,
 ) {
   Card(
@@ -591,7 +583,7 @@ private fun FirstStopCard(
             contentDescription = null,
           )
         }
-        PopupMenu(overflowMenuState, homeViewModel, stop, navController) {
+        PopupMenu(overflowMenuState, homeViewModel, transportViewModel, stop, navController) {
           overflowMenuState = false
         }
       }
@@ -605,6 +597,7 @@ private fun StopCard(
   locale: String,
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
+  transportViewModel: TransportViewModel,
   navController: NavController,
 ) {
   ConstraintLayout(
@@ -680,7 +673,7 @@ private fun StopCard(
           tint = MaterialTheme.colorScheme.onPrimary,
           contentDescription = null,
         )
-        PopupMenu(overflowMenuState, homeViewModel, stop, navController) {
+        PopupMenu(overflowMenuState, homeViewModel, transportViewModel, stop, navController) {
           overflowMenuState = false
         }
       }
@@ -694,6 +687,7 @@ private fun LastStopCard(
   locale: String,
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
+  transportViewModel: TransportViewModel,
   navController: NavController,
 ) {
   Box(
@@ -784,7 +778,7 @@ private fun LastStopCard(
               tint = WhiteVariant,
               contentDescription = null,
             )
-            PopupMenu(overflowMenuState, homeViewModel, stop, navController) {
+            PopupMenu(overflowMenuState, homeViewModel, transportViewModel, stop, navController) {
               overflowMenuState = false
             }
           }
@@ -798,10 +792,12 @@ private fun LastStopCard(
 private fun PopupMenu(
   showMenu: Boolean,
   homeViewModel: HomeViewModel,
+  transportViewModel: TransportViewModel,
   stop: Stop,
   navController: NavController,
   onMenuDismiss: () -> Unit,
 ) {
+  val scope = rememberCoroutineScope()
   DropdownMenu(
     modifier = Modifier.background(MaterialTheme.colorScheme.surface),
     expanded = showMenu,
@@ -810,7 +806,10 @@ private fun PopupMenu(
   ) {
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
-//      homeViewModel.setOrigin(stop)
+      scope.launch {
+        val address = transportViewModel.getAddress(stop)
+        homeViewModel.setOriginStop(StopWithAddress(stop, address))
+      }
     }, text = {
       Text(
         text = stringResource(id = R.string.action_set_from),
@@ -819,7 +818,10 @@ private fun PopupMenu(
     })
     DropdownMenuItem(onClick = {
       onMenuDismiss.invoke()
-//      homeViewModel.setDestination(stop)
+      scope.launch {
+        val address = transportViewModel.getAddress(stop)
+        homeViewModel.setDestinationStop(StopWithAddress(stop, address))
+      }
     }, text = {
       Text(
         text = stringResource(id = R.string.action_set_to),
@@ -839,63 +841,48 @@ private fun PopupMenu(
 }
 
 private fun handleRoute(
-  result: RouteResult,
   reversed: Boolean,
   context: Context,
-  polylineAnnotationManager: PolylineAnnotationManager,
   map: MapboxMap,
   pointAnnotationManager: PointAnnotationManager,
-  navController: NavController,
-) {
-  when (result) {
-    is RouteResult.Success -> {
-      val coordinates = result.transport.run {
-        if (reversed) stops else stopsReversed
-      }.flatMap { it.coordinates }
-
-      createRoute(context, coordinates, polylineAnnotationManager)
-
-      val padding = context.getDimenInt(R.dimen.fab_margin).toDouble()
-      val center =
-        coordinates.getOrNull(coordinates.lastIndex / 2)?.run { Point.fromLngLat(lng, lat) }
-          ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
-
-      map.easeTo(
-        cameraOptions = CameraOptions.Builder().zoom(11.0)
-          .padding(EdgeInsets(padding, padding, padding, padding)).center(center).build(),
-        animationOptions = MapAnimationOptions.mapAnimationOptions {
-          duration(200)
-          interpolator(FastOutSlowInInterpolator())
-        },
-      )
-
-      context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->
-        val points = coordinates.map { location ->
-          PointAnnotationOptions().withPoint(Point.fromLngLat(location.lng, location.lat))
-            .withData(location.parentStop.toApiStop().toJson()).withIconSize(STOP_ICON_SIZE)
-            .withIconImage(iconBitmap)
-        }
-        pointAnnotationManager.create(points)
-      }
-    }
-    is RouteResult.Failed -> {
-      context.showToast(result.message)
-      navController.popBackStack()
-    }
-  }
-}
-
-private fun createRoute(
-  context: Context,
-  coordinates: List<StopLocation>,
+  transport: Transport,
   polylineAnnotationManager: PolylineAnnotationManager,
 ) {
-  val points = coordinates.map { Point.fromLngLat(it.lng, it.lat) }
-  val colorRes = R.color.colorAccent300
+  val coordinates = transport.run {
+    if (reversed) stops else stopsReversed
+  }.flatMap { it.coordinates }
 
-  val options =
-    PolylineAnnotationOptions().withLineColor(context.getColorFromRes(colorRes)).withLineWidth(5.0)
-      .withLineJoin(LineJoin.ROUND).withGeometry(LineString.fromLngLats(points))
+  val route = transport.run {
+    if (reversed) route else routeReversed
+  }
+
+  val options = PolylineAnnotationOptions()
+    .withLineColor(context.getColorFromRes(R.color.colorAccent300))
+    .withLineWidth(5.0)
+    .withLineJoin(LineJoin.ROUND)
+    .withGeometry(LineString.fromLngLats(route))
 
   polylineAnnotationManager.create(options)
+
+  val padding = context.getDimenInt(R.dimen.fab_margin).toDouble()
+  val center = coordinates.getOrNull(coordinates.lastIndex / 2)?.run { Point.fromLngLat(lng, lat) }
+    ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
+
+  map.easeTo(
+    cameraOptions = CameraOptions.Builder().zoom(11.0)
+      .padding(EdgeInsets(padding, padding, padding, padding)).center(center).build(),
+    animationOptions = MapAnimationOptions.mapAnimationOptions {
+      duration(200)
+      interpolator(FastOutSlowInInterpolator())
+    },
+  )
+
+  context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->
+    val points = coordinates.map { location ->
+      PointAnnotationOptions().withPoint(Point.fromLngLat(location.lng, location.lat))
+        .withData(location.parentStop.toApiStop().toJson()).withIconSize(STOP_ICON_SIZE)
+        .withIconImage(iconBitmap)
+    }
+    pointAnnotationManager.create(points)
+  }
 }

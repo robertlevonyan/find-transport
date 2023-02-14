@@ -1,8 +1,6 @@
 package robert.findtransport.domain.repository
 
 import androidx.paging.PagingSource
-import com.mapbox.api.directions.v5.models.DirectionsRoute
-import com.mapbox.geojson.Point
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.Transport
@@ -33,8 +31,6 @@ interface TransportsRepository {
   fun getTransportStops(transportId: Int?): List<Stop>
 
   fun getTransportStopsReversed(transportId: Int?): List<Stop>
-
-  suspend fun getTransportRoute(coordinates: MutableList<Point>): Flow<Result<DirectionsRoute>>
 
   suspend fun changeFavorite(id: Int, favorite: Boolean)
 

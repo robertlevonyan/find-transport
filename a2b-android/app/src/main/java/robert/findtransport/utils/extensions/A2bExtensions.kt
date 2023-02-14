@@ -11,6 +11,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
+import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
 import robert.findtransport.R
@@ -166,3 +167,5 @@ fun Address.getFormattedAddress(locale: String): String {
     else -> "$featureName $thoroughfare"
   }
 }
+
+fun Location.toPoint() = Point.fromLngLat(longitude, latitude, altitude)

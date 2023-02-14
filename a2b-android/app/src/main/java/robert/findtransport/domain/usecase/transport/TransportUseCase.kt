@@ -5,10 +5,8 @@ import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
-import robert.findtransport.data.model.RouteResult
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
-import robert.findtransport.data.model.enums.SearchState
 
 interface TransportUseCase {
   fun getTransportById(id: Int?): Flow<Transport>
@@ -30,8 +28,6 @@ interface TransportUseCase {
   fun areTransportsCached(): Boolean
 
   fun areJoinsCached(): Boolean
-
-  fun getTransportRoute(id: Int, reverse: Boolean, isUnderground: Boolean): Flow<RouteResult>
 
   suspend fun toggleFavorite(transport: Transport)
 

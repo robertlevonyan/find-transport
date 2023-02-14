@@ -40,7 +40,6 @@ import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.locationcomponent.location
-import com.mapbox.navigation.utils.internal.toPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import robert.findtransport.BuildConfig
@@ -52,10 +51,7 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
-import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
-import robert.findtransport.utils.extensions.getColorFromRes
-import robert.findtransport.utils.extensions.getFormattedAddress
-import robert.findtransport.utils.extensions.toLocation
+import robert.findtransport.utils.extensions.*
 import java.util.*
 
 @Composable
