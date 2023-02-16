@@ -134,12 +134,12 @@ dependencies {
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
   implementation("com.google.code.gson:gson:2.10.1")
-  implementation("com.google.dagger:hilt-android:2.44.2")
+  implementation("com.google.dagger:hilt-android:2.45")
   releaseImplementation(platform("com.google.firebase:firebase-bom:31.2.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.44.2")
+  kapt("com.google.dagger:hilt-android-compiler:2.45")
 
   //androidx
   implementation("androidx.activity:activity-ktx:1.6.1")
@@ -188,7 +188,7 @@ dependencies {
   implementation("com.mapbox.maps:android:10.11.0")
 
   //other
-  implementation("com.airbnb.android:lottie-compose:5.2.0")
+  implementation("com.airbnb.android:lottie-compose:6.0.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("com.robertlevonyan.compose:materialchip:3.0.5")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")

@@ -92,7 +92,6 @@ fun TransportScreen(
   homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel = hiltViewModel(),
   locationPickerViewModel: LocationPickerViewModel = hiltViewModel(),
-  previewMapViewModel: PreviewLocationPickerViewModel = hiltViewModel(),
 ) {
   if (transportId == EMPTY_ID) {
     navController.popBackStack()
@@ -127,7 +126,6 @@ fun TransportScreen(
           showOptions = showOptions,
           homeViewModel = homeViewModel,
           transportViewModel = transportViewModel,
-          previewMapViewModel = previewMapViewModel,
           navController = navController,
           bottomSheetScaffoldState = bottomSheetScaffoldState,
           scope = scope,
@@ -141,8 +139,8 @@ fun TransportScreen(
       locale = locale,
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
-      previewMapViewModel = previewMapViewModel,
       transport = transport,
+      transportViewModel = transportViewModel,
     )
   }
 
@@ -163,16 +161,16 @@ private fun MapContent(
   locale: String,
   locationEnabled: Boolean,
   mapStyle: String,
-  previewMapViewModel: PreviewLocationPickerViewModel,
   transport: Transport,
+  transportViewModel: TransportViewModel,
 ) {
   Box(modifier = modifier) {
     MapView(
       locale = locale,
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
-      previewMapViewModel = previewMapViewModel,
       transport = transport,
+      transportViewModel = transportViewModel
     )
 
     SmallFloatingActionButton(modifier = Modifier.padding(
@@ -193,9 +191,11 @@ private fun MapView(
   locale: String,
   locationEnabled: Boolean,
   mapStyle: String,
-  previewMapViewModel: PreviewLocationPickerViewModel,
   transport: Transport,
+  transportViewModel: TransportViewModel,
 ) {
+  val isPrimary by transportViewModel.isPrimary.collectAsState()
+
   AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
     ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
     MapView(context = context)
@@ -224,12 +224,12 @@ private fun MapView(
       map.setCamera(CameraOptions.Builder().zoom(11.0).build())
 
       handleRoute(
-        reversed = previewMapViewModel.isPrimary.value,
         context = context,
         map = map,
         pointAnnotationManager = pointAnnotationManager,
         polylineAnnotationManager = polylineAnnotationManager,
         transport = transport,
+        isPrimary = isPrimary,
       )
     })
   })
@@ -239,14 +239,12 @@ private fun MapView(
 @Composable
 fun TransportInfo(
   transport: Transport,
+  isPrimary: Boolean,
   locale: String,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
-  previewMapViewModel: PreviewLocationPickerViewModel,
   onSwapClick: () -> Unit,
   onElementClick: () -> Unit,
 ) {
-  val isPrimary by previewMapViewModel.isPrimary.collectAsState()
-
   Column(modifier = Modifier
     .fillMaxSize()
     .background(color = MaterialTheme.colorScheme.secondary)
@@ -425,13 +423,12 @@ private fun StopList(
   showOptions: Boolean,
   homeViewModel: HomeViewModel,
   transportViewModel: TransportViewModel,
-  previewMapViewModel: PreviewLocationPickerViewModel,
   navController: NavController,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
   scope: CoroutineScope,
 ) {
   if (transport == Transport.EMPTY) return
-  var isPrimary by rememberSaveable { mutableStateOf(true) }
+  val isPrimary by transportViewModel.isPrimary.collectAsState()
   val stops = if (isPrimary) transport.stops else transport.stopsReversed
   val isMetro = transport.type == TransportType.METRO
 
@@ -441,12 +438,11 @@ private fun StopList(
         Card(modifier = Modifier.padding(bottom = FabPadding)) {
           TransportInfo(
             transport = transport,
+            isPrimary = isPrimary,
             locale = locale,
             bottomSheetScaffoldState = bottomSheetScaffoldState,
-            previewMapViewModel = previewMapViewModel,
             onSwapClick = {
-              isPrimary = !isPrimary
-              previewMapViewModel.isPrimary.value = isPrimary
+              transportViewModel.isPrimary.value = !isPrimary
             },
           ) {
             scope.launch {
@@ -841,27 +837,27 @@ private fun PopupMenu(
 }
 
 private fun handleRoute(
-  reversed: Boolean,
   context: Context,
   map: MapboxMap,
   pointAnnotationManager: PointAnnotationManager,
-  transport: Transport,
   polylineAnnotationManager: PolylineAnnotationManager,
+  transport: Transport,
+  isPrimary: Boolean,
 ) {
   val coordinates = transport.run {
-    if (reversed) stops else stopsReversed
+    if (isPrimary) stops else stopsReversed
   }.flatMap { it.coordinates }
 
   val route = transport.run {
-    if (reversed) route else routeReversed
+    if (isPrimary) route else routeReversed
   }
 
+  polylineAnnotationManager.deleteAll()
   val options = PolylineAnnotationOptions()
     .withLineColor(context.getColorFromRes(R.color.colorAccent300))
     .withLineWidth(5.0)
     .withLineJoin(LineJoin.ROUND)
     .withGeometry(LineString.fromLngLats(route))
-
   polylineAnnotationManager.create(options)
 
   val padding = context.getDimenInt(R.dimen.fab_margin).toDouble()
@@ -877,6 +873,7 @@ private fun handleRoute(
     },
   )
 
+  pointAnnotationManager.deleteAll()
   context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->
     val points = coordinates.map { location ->
       PointAnnotationOptions().withPoint(Point.fromLngLat(location.lng, location.lat))

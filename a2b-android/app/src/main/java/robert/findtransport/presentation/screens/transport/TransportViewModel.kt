@@ -23,6 +23,7 @@ class TransportViewModel @Inject constructor(
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val selectedTransport = MutableStateFlow(Transport.EMPTY)
+  val isPrimary = MutableStateFlow(true)
 
   fun getTransport(id: Int) {
     viewModelScope.launch(Dispatchers.IO) {
