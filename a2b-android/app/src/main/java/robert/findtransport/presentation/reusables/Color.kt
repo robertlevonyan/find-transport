@@ -21,10 +21,3 @@ fun colorVariantInvertTransparent() = MaterialTheme.colorScheme.onSurface.copy(a
 @Composable
 fun searchInputBackgroundColor() = if (isAppInDarkMode())
   MaterialTheme.colorScheme.background.copy(alpha = 0.05f) else White.copy(alpha = 0.1f)
-
-@Composable
-fun getMapGradientColor(): Color = if (isAppInDarkMode()) {
-  MaterialTheme.colorScheme.primary
-} else {
-  MaterialTheme.colorScheme.primaryContainer
-}

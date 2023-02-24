@@ -1,6 +1,5 @@
 package robert.findtransport.presentation.reusables
 
-import android.widget.Toolbar
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 

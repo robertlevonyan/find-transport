@@ -13,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +22,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 import robert.findtransport.R
 import robert.findtransport.data.model.History
 import robert.findtransport.presentation.navigation.NavigationScreens
@@ -34,7 +38,6 @@ import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.format
 import java.util.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
   modifier: Modifier = Modifier,
@@ -97,13 +100,24 @@ private fun HistoryListScreen(
   navController: NavController,
   historyViewModel: HistoryViewModel
 ) {
-  val locale by historyViewModel.locale.collectAsState()
   var showClearDialog by rememberSaveable { mutableStateOf(false) }
 
   @Composable
-  fun LazyItemScope.HistoryListElement(history: History, locale: String) {
+  fun LazyItemScope.HistoryListElement(history: History) {
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
     var showRestoreDialog by rememberSaveable { mutableStateOf(false) }
+    val deleteSwipeAction = SwipeAction(
+      icon = {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_delete),
+          contentDescription = null,
+          tint = Color.Black,
+        )
+      },
+      isUndo = true,
+      background = colorResource(id = R.color.colorRemoveRed),
+      onSwipe = { historyViewModel.removeItem(history) },
+    )
 
     Card(
       modifier = Modifier
@@ -114,140 +128,143 @@ private fun HistoryListScreen(
       shape = Shapes.medium,
       colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
-      ConstraintLayout(
-        modifier = Modifier
-          .fillMaxWidth()
-          .wrapContentHeight()
-          .clickable {
-            showRestoreDialog = !showRestoreDialog
-          }
-      ) {
-        val (labelFrom, textFrom, labelTo, textTo, textDate, imageRemove) = createRefs()
-
-        val guide = createGuidelineFromStart(0.35f)
-
-        TextSecondary(
+      SwipeableActionsBox(endActions = listOf(deleteSwipeAction)) {
+        ConstraintLayout(
           modifier = Modifier
-            .constrainAs(labelFrom) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(parent.start)
-              top.linkTo(parent.top)
-              end.linkTo(guide)
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .clickable {
+              showRestoreDialog = !showRestoreDialog
             }
-            .padding(HalfPadding),
-          text = stringResource(id = R.string.label_from),
-          textAlign = TextAlign.Start,
-        )
+        ) {
+          val (labelFrom, textFrom, labelTo, textTo, textDate, imageRemove) = createRefs()
 
-        TextSecondary(
-          modifier = Modifier
-            .constrainAs(textFrom) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(guide)
-              top.linkTo(parent.top)
-              end.linkTo(imageRemove.start)
-            }
-            .padding(HalfPadding),
-          text = history.originName,
-          color = MaterialTheme.colorScheme.onPrimary,
-          textAlign = TextAlign.Start,
-        )
+          val guide = createGuidelineFromStart(0.35f)
 
-        TextSecondary(
-          modifier = Modifier
-            .constrainAs(labelTo) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(parent.start)
-              top.linkTo(textFrom.bottom)
-              end.linkTo(guide)
-            }
-            .padding(HalfPadding),
-          text = stringResource(id = R.string.label_to),
-          textAlign = TextAlign.Start,
-        )
-
-        TextSecondary(
-          modifier = Modifier
-            .constrainAs(textTo) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(guide)
-              top.linkTo(textFrom.bottom)
-              end.linkTo(imageRemove.start)
-            }
-            .padding(HalfPadding),
-          text = history.destinationName,
-          color = MaterialTheme.colorScheme.onPrimary,
-          textAlign = TextAlign.Start,
-        )
-
-        TextSecondary(
-          modifier = Modifier
-            .constrainAs(textDate) {
-              width = Dimension.fillToConstraints
-              height = Dimension.wrapContent
-              start.linkTo(parent.start)
-              top.linkTo(textTo.bottom)
-              end.linkTo(parent.end)
-            }
-            .padding(HalfPadding),
-          text = Date(history.timestamp).format(),
-          textAlign = TextAlign.Start,
-        )
-
-        IconButton(
-          modifier = Modifier
-            .constrainAs(imageRemove) {
-              width = Dimension.wrapContent
-              height = Dimension.wrapContent
-              top.linkTo(parent.top)
-              end.linkTo(parent.end)
-            },
-          onClick = { showDeleteDialog = true }) {
-          Icon(painter = painterResource(id = R.drawable.ic_delete), contentDescription = null)
-        }
-
-        if (showDeleteDialog) {
-          A2bAlertDialog(
-            title = stringResource(id = R.string.title_history),
-            text = stringResource(id = R.string.message_history_dialog_delete),
-            onConfirm = {
-              showDeleteDialog = false
-              historyViewModel.removeItem(history)
-            },
-            onDismiss = { showDeleteDialog = false },
-          ) { showDeleteDialog = false }
-        }
-
-        if (showRestoreDialog) {
-          A2bAlertDialog(
-            title = stringResource(id = R.string.title_history),
-            text = stringResource(id = R.string.message_history_dialog_restore),
-            onConfirm = {
-              showRestoreDialog = false
-
-              val navigationRoute = buildString {
-                append("${NavigationScreens.SearchScreen.name}?")
-                append("origin_name=${history.originName}")
-                append("&origin_latitude=${history.originLatitude}")
-                append("&origin_longitude=${history.originLongitude}")
-                append("&origin_stop_id=${history.fromStop.id}")
-                append("&destination_name=${history.destinationName}")
-                append("&destination_latitude=${history.destinationLatitude}")
-                append("&destination_longitude=${history.destinationLongitude}")
-                append("&destination_stop_id=${history.toStop.id}")
-                append("&opened=${SearchOpenInitiator.HOME.name}")
+          TextSecondary(
+            modifier = Modifier
+              .constrainAs(labelFrom) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
+                start.linkTo(parent.start)
+                top.linkTo(parent.top)
+                end.linkTo(guide)
               }
-              navController.navigate(route = navigationRoute)
-            },
-            onDismiss = { showRestoreDialog = false },
-          ) { showRestoreDialog = false }
+              .padding(HalfPadding),
+            text = stringResource(id = R.string.label_from),
+            textAlign = TextAlign.Start,
+          )
+
+          TextSecondary(
+            modifier = Modifier
+              .constrainAs(textFrom) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
+                start.linkTo(guide)
+                top.linkTo(parent.top)
+                end.linkTo(imageRemove.start)
+              }
+              .padding(HalfPadding),
+            text = history.originName,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Start,
+          )
+
+          TextSecondary(
+            modifier = Modifier
+              .constrainAs(labelTo) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
+                start.linkTo(parent.start)
+                top.linkTo(textFrom.bottom)
+                end.linkTo(guide)
+              }
+              .padding(HalfPadding),
+            text = stringResource(id = R.string.label_to),
+            textAlign = TextAlign.Start,
+          )
+
+          TextSecondary(
+            modifier = Modifier
+              .constrainAs(textTo) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
+                start.linkTo(guide)
+                top.linkTo(textFrom.bottom)
+                end.linkTo(imageRemove.start)
+              }
+              .padding(HalfPadding),
+            text = history.destinationName,
+            color = MaterialTheme.colorScheme.onPrimary,
+            textAlign = TextAlign.Start,
+          )
+
+          TextSecondary(
+            modifier = Modifier
+              .constrainAs(textDate) {
+                width = Dimension.fillToConstraints
+                height = Dimension.wrapContent
+                start.linkTo(parent.start)
+                top.linkTo(textTo.bottom)
+                end.linkTo(parent.end)
+              }
+              .padding(HalfPadding),
+            text = Date(history.timestamp).format(),
+            textAlign = TextAlign.Start,
+          )
+
+          IconButton(
+            modifier = Modifier
+              .constrainAs(imageRemove) {
+                width = Dimension.wrapContent
+                height = Dimension.wrapContent
+                top.linkTo(parent.top)
+                end.linkTo(parent.end)
+              },
+            onClick = { showDeleteDialog = true }) {
+            Icon(painter = painterResource(id = R.drawable.ic_delete), contentDescription = null)
+          }
+
+          if (showDeleteDialog) {
+            A2bAlertDialog(
+              title = stringResource(id = R.string.title_history),
+              text = stringResource(id = R.string.message_history_dialog_delete),
+              onConfirm = {
+                showDeleteDialog = false
+                historyViewModel.removeItem(history)
+              },
+              onDismiss = { showDeleteDialog = false },
+            ) { showDeleteDialog = false }
+          }
+
+          if (showRestoreDialog) {
+            A2bAlertDialog(
+              title = stringResource(id = R.string.title_history),
+              text = stringResource(id = R.string.message_history_dialog_restore),
+              onConfirm = {
+                showRestoreDialog = false
+
+                val navigationRoute = buildString {
+                  append("${NavigationScreens.SearchScreen.name}?")
+                  append("origin_name=${history.originName}")
+                  append("&origin_latitude=${history.originLatitude}")
+                  append("&origin_longitude=${history.originLongitude}")
+                  append("&origin_stop_id=${history.fromStop.id}")
+                  append("&destination_name=${history.destinationName}")
+                  append("&destination_latitude=${history.destinationLatitude}")
+                  append("&destination_longitude=${history.destinationLongitude}")
+                  append("&destination_stop_id=${history.toStop.id}")
+                  append("&opened=${SearchOpenInitiator.HOME.name}")
+                }
+                navController.navigate(route = navigationRoute)
+              },
+              onDismiss = { showRestoreDialog = false },
+            ) { showRestoreDialog = false }
+          }
         }
       }
     }
+
   }
 
   Box(modifier = modifier) {
@@ -257,7 +274,7 @@ private fun HistoryListScreen(
         .animateContentSize()
     ) {
       items(history) { history ->
-        HistoryListElement(history = history, locale = locale)
+        HistoryListElement(history = history)
       }
     }
 

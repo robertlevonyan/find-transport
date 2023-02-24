@@ -16,7 +16,6 @@ import robert.findtransport.utils.DATABASE_NAME
     TransportStopJoin::class],
   version = 25,
 )
-
 abstract class AppDatabase : RoomDatabase() {
   abstract fun stopsDao(): StopsDao
 

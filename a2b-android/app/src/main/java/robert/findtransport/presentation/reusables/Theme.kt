@@ -1,13 +1,11 @@
 package robert.findtransport.presentation.reusables
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
@@ -45,7 +43,6 @@ fun isAppInDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) 
   else -> isSystemInDarkTheme()
 }
 
-@SuppressLint("ConflictingOnColor")
 private val DarkColorPalette = darkColorScheme(
   primary = Black,
   primaryContainer = BlackPure,
@@ -58,7 +55,6 @@ private val DarkColorPalette = darkColorScheme(
   onSurface = WhiteVariant,
 )
 
-@SuppressLint("ConflictingOnColor")
 private val LightColorPalette = lightColorScheme(
   primary = WhitePure,
   primaryContainer = White,

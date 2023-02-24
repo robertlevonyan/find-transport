@@ -12,6 +12,7 @@ plugins {
 
 android {
   compileSdk = 33
+  namespace = "robert.findtransport"
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
@@ -98,7 +99,6 @@ android {
     targetCompatibility = JavaVersion.VERSION_11
   }
   buildFeatures {
-    viewBinding = true
     compose = true
   }
   kotlinOptions {
@@ -116,7 +116,6 @@ android {
   composeOptions {
     kotlinCompilerExtensionVersion = "1.4.2"
   }
-  namespace = "robert.findtransport"
   kapt {
     correctErrorTypes = true
   }
@@ -129,7 +128,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.9.0-alpha01")
+  implementation("com.google.android.material:material:1.9.0-alpha02")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -142,21 +141,10 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.45")
 
   //androidx
-  implementation("androidx.activity:activity-ktx:1.6.1")
-  implementation("androidx.appcompat:appcompat:1.6.1")
   implementation("androidx.browser:browser:1.5.0")
-  implementation("androidx.cardview:cardview:1.0.0")
-  implementation("androidx.constraintlayout:constraintlayout:2.1.4")
   implementation("androidx.core:core-ktx:1.9.0")
   implementation("androidx.core:core-splashscreen:1.0.0")
-  implementation("androidx.fragment:fragment-ktx:1.5.5")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-  implementation("androidx.lifecycle:lifecycle-common-java8:2.5.1")
-  implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.paging:paging-runtime-ktx:3.1.1")
-  implementation("androidx.recyclerview:recyclerview:1.2.1")
   implementation("androidx.room:room-runtime:2.5.0")
   implementation("androidx.room:room-ktx:2.5.0")
   implementation("androidx.room:room-paging:2.5.0")
@@ -165,14 +153,13 @@ dependencies {
   kapt("androidx.room:room-compiler:2.5.0")
 
   //compose
-  implementation(platform("androidx.compose:compose-bom:2023.01.00"))
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.2")
-  implementation("androidx.compose.ui:ui:1.4.0-beta01")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-beta01")
+  implementation("androidx.compose.compiler:compiler:1.4.3")
+  implementation("androidx.compose.ui:ui:1.4.0-beta02")
+  implementation("androidx.compose.ui:ui-tooling:1.4.0-beta02")
   implementation("androidx.compose.material:material:1.3.1")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha06")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha06")
+  implementation("androidx.compose.material3:material3:1.1.0-alpha07")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha07")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")
@@ -190,6 +177,7 @@ dependencies {
   //other
   implementation("com.airbnb.android:lottie-compose:6.0.0")
   implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
-  implementation("com.robertlevonyan.compose:materialchip:3.0.5")
+  implementation("com.robertlevonyan.compose:materialchip:3.0.6")
+  implementation("me.saket.swipe:swipe:1.1.1")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }
