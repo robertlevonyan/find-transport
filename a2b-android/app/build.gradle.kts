@@ -134,7 +134,7 @@ dependencies {
   implementation("com.google.android.gms:play-services-location:21.0.1")
   implementation("com.google.code.gson:gson:2.10.1")
   implementation("com.google.dagger:hilt-android:2.45")
-  releaseImplementation(platform("com.google.firebase:firebase-bom:31.2.0"))
+  releaseImplementation(platform("com.google.firebase:firebase-bom:31.2.3"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 

@@ -857,7 +857,9 @@ private fun handleRoute(
     .withLineColor(context.getColorFromRes(R.color.colorAccent300))
     .withLineWidth(5.0)
     .withLineJoin(LineJoin.ROUND)
-    .withGeometry(LineString.fromLngLats(route))
+    .withGeometry(LineString.fromLngLats(route.ifEmpty {
+      coordinates.map { Point.fromLngLat(it.lng, it.lat) }
+    }))
   polylineAnnotationManager.create(options)
 
   val padding = context.getDimenInt(R.dimen.fab_margin).toDouble()
