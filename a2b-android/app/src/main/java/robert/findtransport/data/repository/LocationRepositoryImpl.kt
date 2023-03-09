@@ -17,7 +17,7 @@ class LocationRepositoryImpl @Inject constructor(
 ) : LocationRepository {
 
   override suspend fun getCurrentLocation(): Address? =
-    fusedLocationService.getCurrentLocationAddress()
+    fusedLocationService.getCurrentLocation()
       ?.let { location ->
         addressProviderService.getAddress(location) ?: Address(Locale.getDefault()).apply {
           latitude = location.latitude

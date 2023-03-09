@@ -15,10 +15,14 @@ class FusedLocationService @Inject constructor(private val context: Context) {
   private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
   @SuppressLint("MissingPermission")
-  suspend fun getCurrentLocationAddress(): Location? = suspendCoroutine { locationContinuation ->
+  suspend fun getCurrentLocation(): Location? = suspendCoroutine { locationContinuation ->
+    var resumed = false
+
     val locationCallback = object : LocationCallback() {
       override fun onLocationResult(locationResult: LocationResult) {
         super.onLocationResult(locationResult)
+        if (resumed) return
+
         val lastLocation = locationResult.lastLocation
 
         Location("current_location").also { currentLocation ->
@@ -34,6 +38,7 @@ class FusedLocationService @Inject constructor(private val context: Context) {
             e.printStackTrace()
           } finally {
             fusedLocationClient.removeLocationUpdates(this)
+            resumed = true
           }
         }
       }
