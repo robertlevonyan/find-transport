@@ -3,7 +3,6 @@ package robert.findtransport.presentation.screens.map
 import android.Manifest
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import android.location.Geocoder
 import android.location.Location
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -49,10 +47,7 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
-import robert.findtransport.utils.DEFAULT_LATITUDE
-import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.extensions.*
-import java.util.*
 
 @Composable
 fun LocationPickerScreen(
@@ -66,8 +61,7 @@ fun LocationPickerScreen(
   val locationEnabled = locationPickerViewModel.locationEnabled.collectAsState()
   var showPermissionDialog by rememberSaveable { mutableStateOf(!locationEnabled.value) }
   val isMapMoving = rememberSaveable { mutableStateOf(false) }
-  val centralPoint =
-    rememberSaveable { mutableStateOf(Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)) }
+  val centralPoint = rememberSaveable { mutableStateOf<Point?>(null) }
 
   val launcher = rememberLauncherForActivityResult(
     ActivityResultContracts.RequestPermission()
@@ -76,14 +70,10 @@ fun LocationPickerScreen(
   }
 
   if (showPermissionDialog) {
-    PermissionDialog(
-      modifier = modifier,
-      onDismiss = { showPermissionDialog = false },
-      onGrant = {
-        launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-        showPermissionDialog = false
-      },
-      onDecline = { showPermissionDialog = false })
+    PermissionDialog(modifier = modifier, onDismiss = { showPermissionDialog = false }, onGrant = {
+      launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+      showPermissionDialog = false
+    }, onDecline = { showPermissionDialog = false })
   }
 
   Box(modifier = modifier.fillMaxSize()) {
@@ -121,6 +111,14 @@ fun LocationPickerScreen(
             centralPoint.value = currentLocation.toPoint()
           }
         }
+        scope.launch {
+          locationPickerViewModel.centralPointStop.collectLatest { stop ->
+            val currentLocation =
+              stop?.coordinates?.firstOrNull()?.toLocation() ?: return@collectLatest
+            map.flyTo(currentLocation)
+            centralPoint.value = currentLocation.toPoint()
+          }
+        }
 
         map.getFreeCameraOptions().position
       }
@@ -135,7 +133,8 @@ fun LocationPickerScreen(
       locationEnabled = locationEnabled,
       centralPoint = centralPoint,
       homeViewModel = homeViewModel,
-      navController = navController
+      navController = navController,
+      locationPickerViewModel = locationPickerViewModel,
     )
 
     if (locationEnabled.value) {
@@ -148,51 +147,53 @@ fun LocationPickerScreen(
 fun BoxScope.SelectLocationButton(
   pickerType: StopType,
   locationEnabled: State<Boolean>,
-  centralPoint: MutableState<Point>,
+  centralPoint: MutableState<Point?>,
   homeViewModel: HomeViewModel,
   navController: NavController,
+  locationPickerViewModel: LocationPickerViewModel,
 ) {
   var buttonText by rememberSaveable { mutableStateOf("") }
   val locale by homeViewModel.locale.collectAsState()
+  val centralStop by locationPickerViewModel.centralPointStop.collectAsState(null)
+  centralPoint.value?.let(locationPickerViewModel::getAddress)
 
-  val geocoder = Geocoder(LocalContext.current, Locale.getDefault())
-  val point = centralPoint.value
-  val address = geocoder.getFromLocation(point.latitude(), point.longitude(), 1)
-    ?.firstOrNull()
-  val formattedAddress = address?.getFormattedAddress(locale = locale).orEmpty()
+  val centralAddress by locationPickerViewModel.centralPointAddress.collectAsState(null)
+  val formattedAddress = centralAddress?.getFormattedAddress(locale = locale)
+    ?: centralStop?.getCurrentName(locale = locale).orEmpty()
 
   buttonText = when (pickerType) {
     StopType.ORIGIN -> stringResource(id = R.string.label_select_origin, formattedAddress)
     StopType.DESTINATION -> stringResource(id = R.string.label_select_destination, formattedAddress)
   }
 
-  Button(
-    onClick = {
-      when (pickerType) {
-        StopType.ORIGIN -> homeViewModel.setOrigin(address = address)
-        StopType.DESTINATION -> homeViewModel.setDestination(address = address)
-      }
-      navController.popBackStack()
-    },
+  Button(onClick = {
+    when (pickerType) {
+      StopType.ORIGIN -> homeViewModel.setOrigin(
+        latitude = centralAddress?.latitude,
+        longitude = centralAddress?.longitude,
+        defaultStop = centralStop,
+      )
+      StopType.DESTINATION -> homeViewModel.setDestination(
+        latitude = centralAddress?.latitude,
+        longitude = centralAddress?.longitude,
+        defaultStop = centralStop,
+      )
+    }
+    navController.popBackStack()
+  },
     modifier = Modifier
       .align(Alignment.BottomCenter)
       .fillMaxWidth()
       .padding(start = FabPadding)
       .padding(vertical = FabPadding)
       .run {
-        val paddingAddition = if (locationEnabled.value) {
-          SmallFabSize + FabPadding
-        } else {
-          0.dp
-        }
+        val paddingAddition = if (locationEnabled.value) SmallFabSize + FabPadding else 0.dp
         padding(end = paddingAddition + FabPadding)
       }
       .height(SmallFabSize),
     colors = ButtonDefaults.buttonColors(
-      containerColor = MaterialTheme.colorScheme.secondary,
-      contentColor = BlackVariant
-    )
-  ) {
+      containerColor = MaterialTheme.colorScheme.secondary, contentColor = BlackVariant
+    )) {
     Text(
       text = buttonText,
       fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
@@ -237,13 +238,10 @@ fun PermissionDialog(
           textAlign = TextAlign.Start,
         )
         Button(
-          modifier = Modifier.fillMaxWidth(),
-          colors = ButtonDefaults.buttonColors(
+          modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
             containerColor = Accent,
             contentColor = Black,
-          ),
-          onClick = onGrant,
-          shape = RectangleShape
+          ), onClick = onGrant, shape = RectangleShape
         ) {
           Text(
             text = stringResource(id = R.string.permission_yes),
@@ -345,9 +343,7 @@ internal fun MapboxMap.flyTo(location: Location) {
   try {
     flyTo(
       cameraOptions = CameraOptions.Builder()
-        .center(Point.fromLngLat(location.longitude, location.latitude))
-        .zoom(15.0)
-        .build(),
+        .center(Point.fromLngLat(location.longitude, location.latitude)).zoom(15.0).build(),
       animationOptions = MapAnimationOptions.mapAnimationOptions {
         duration(duration = 200)
         interpolator(interpolator = FastOutSlowInInterpolator())

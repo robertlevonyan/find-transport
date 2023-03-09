@@ -188,15 +188,24 @@ fun HomeContent(
           context.showToast(R.string.error_same_stops)
           return@SearchButton
         }
+        val originLatitude = originAddress.value?.latitude?.toFloat()
+          ?: originStop.value?.coordinates?.firstOrNull()?.lat ?: return@SearchButton
+        val originLongitude = originAddress.value?.longitude?.toFloat()
+          ?: originStop.value?.coordinates?.firstOrNull()?.lng ?: return@SearchButton
+        val destinationLatitude = destinationAddress.value?.latitude?.toFloat()
+          ?: destinationStop.value?.coordinates?.firstOrNull()?.lat ?: return@SearchButton
+        val destinationLongitude = destinationAddress.value?.longitude?.toFloat()
+          ?: destinationStop.value?.coordinates?.firstOrNull()?.lng ?: return@SearchButton
+
         val navigationRoute = buildString {
           append("${NavigationScreens.SearchScreen.name}?")
           append("origin_name=${origin}")
-          append("&origin_latitude=${originAddress.value?.latitude?.toFloat()}")
-          append("&origin_longitude=${originAddress.value?.longitude?.toFloat()}")
+          append("&origin_latitude=${originLatitude}")
+          append("&origin_longitude=${originLongitude}")
           append("&origin_stop_id=${originStop.value?.id ?: EMPTY_ID}")
           append("&destination_name=${destination}")
-          append("&destination_latitude=${destinationAddress.value?.latitude}")
-          append("&destination_longitude=${destinationAddress.value?.longitude}")
+          append("&destination_latitude=${destinationLatitude}")
+          append("&destination_longitude=${destinationLongitude}")
           append("&destination_stop_id=${destinationStop.value?.id ?: EMPTY_ID}")
           append("&opened=${SearchOpenInitiator.HOME.name}")
         }

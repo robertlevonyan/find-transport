@@ -4,7 +4,6 @@ import android.Manifest
 import android.location.Address
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -48,35 +47,62 @@ class HomeViewModel @Inject constructor(
   }
 
   fun getCurrentLocation() {
-    if (origin.value != null) return
-
-    viewModelScope.launch(Dispatchers.Main) {
-      setOrigin(locationUseCase.getCurrentLocation())
+    viewModelScope.launch {
+      val currentLocation = locationUseCase.getCurrentLocation() ?: return@launch
+      setOrigin(
+        latitude = currentLocation.latitude,
+        longitude = currentLocation.longitude,
+      )
     }
   }
 
-  fun setOrigin(address: Address?) {
-    origin.value = address
-    originLabel.value = address?.getFormattedAddress(locale = locale.value)
+  fun setOrigin(latitude: Double?, longitude: Double?, defaultStop: Stop? = null) {
+    viewModelScope.launch {
+      locationUseCase.getAddress(latitude, longitude)?.let { originAddress ->
+        origin.value = originAddress
+        originLabel.value = originAddress.getFormattedAddress(locale = locale.value)
+      } ?: run {
+        val nearbyStop = defaultStop ?: locationUseCase.getNearbyStop(
+          latitude = latitude ?: return@launch,
+          longitude = longitude ?: return@launch,
+        )
+        originStop.value = nearbyStop
+        originLabel.value = nearbyStop.getCurrentName(locale = locale.value)
+      }
+    }
   }
 
   fun setOriginStop(stopWithAddress: StopWithAddress?) {
     if (stopWithAddress?.address == null) return
+
     origin.value = stopWithAddress.address
     originLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
     originStop.value = stopWithAddress.stop
   }
 
-  fun setDestination(address: Address?) {
-    destination.value = address
-    destinationLabel.value = address?.getFormattedAddress(locale = locale.value)
+  fun setDestination(latitude: Double?, longitude: Double?, defaultStop: Stop? = null) {
+    viewModelScope.launch {
+      locationUseCase.getAddress(latitude, longitude)?.let { destinationAddress ->
+        destination.value = destinationAddress
+        destinationLabel.value = destinationAddress.getFormattedAddress(locale = locale.value)
+      } ?: run {
+        val nearbyStop = defaultStop ?: locationUseCase.getNearbyStop(
+          latitude = latitude ?: return@launch,
+          longitude = longitude ?: return@launch,
+        )
+        destinationStop.value = nearbyStop
+        destinationLabel.value = nearbyStop.getCurrentName(locale = locale.value)
+      }
+    }
   }
 
   fun setDestinationStop(stopWithAddress: StopWithAddress?) {
     if (stopWithAddress?.address == null) return
-    destination.value = stopWithAddress.address
-    destinationLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
-    destinationStop.value = stopWithAddress.stop
+    viewModelScope.launch {
+      destination.value = stopWithAddress.address
+      destinationLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
+      destinationStop.value = stopWithAddress.stop
+    }
   }
 
   fun swap() {

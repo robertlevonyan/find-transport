@@ -16,6 +16,7 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.plugin.gestures.gestures
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType.*
 import robert.findtransport.presentation.reusables.Text20
@@ -158,11 +159,15 @@ fun Address.toLocation(): Location = Location(featureName).also {
   it.longitude = if (hasLongitude()) longitude else DEFAULT_LONGITUDE
 }
 
+fun StopLocation.toLocation(): Location = Location(parentStop.nameEn).also {
+  it.latitude = lat
+  it.longitude = lng
+}
+
 fun Address.getFormattedAddress(locale: String): String {
   if (thoroughfare == null || featureName == null) return ""
   return when (locale) {
     LNG_AM -> "$thoroughfare $featureName"
-    LNG_EN -> "$featureName $thoroughfare"
     LNG_RU -> "$thoroughfare $featureName"
     else -> "$featureName $thoroughfare"
   }

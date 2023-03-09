@@ -25,6 +25,7 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
+import java.util.*
 import javax.inject.Inject
 import robert.findtransport.data.entity.Stop as ApiStop
 
@@ -189,7 +190,10 @@ class StopsUseCaseImpl @Inject constructor(
       latitude = coordinate.lat
       longitude = coordinate.lng
     }.let {
-      locationRepository.getAddress(it)
+      locationRepository.getAddress(it) ?: Address(Locale.getDefault()).apply {
+        latitude = coordinate.lat
+        longitude = coordinate.lng
+      }
     }
   }
 }

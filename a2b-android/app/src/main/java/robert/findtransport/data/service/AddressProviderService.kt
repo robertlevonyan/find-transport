@@ -19,19 +19,35 @@ class AddressProviderService @Inject constructor(private val context: Context) {
         location.latitude,
         location.longitude,
         1,
-      ) { addresses ->
-        val address = addresses.firstOrNull()
+        object : Geocoder.GeocodeListener {
+          override fun onGeocode(addresses: MutableList<Address>) {
+            locationContinuation.resume(addresses.firstOrNull().also {
+              println("ADDR 1 $it")
+            })
+          }
 
-        locationContinuation.resume(address)
-      }
+          override fun onError(errorMessage: String?) {
+            super.onError(errorMessage)
+            println("ADDR 1 $errorMessage")
+            locationContinuation.resume(null)
+          }
+        },
+      )
     } else {
-      val address = geocoder.getFromLocation(
-        location.latitude,
-        location.longitude,
-        1
-      )?.firstOrNull()
+      try {
+        val address = geocoder.getFromLocation(
+          location.latitude,
+          location.longitude,
+          1
+        )?.firstOrNull()
 
-      locationContinuation.resume(address)
+        locationContinuation.resume(address.also {
+          println("ADDR 2 $it")
+        })
+      } catch (e: Exception) {
+        println("ADDR 2 ${e.message}")
+        locationContinuation.resume(null)
+      }
     }
   }
 }

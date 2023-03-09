@@ -31,7 +31,6 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.*
 import robert.findtransport.utils.extensions.getCurrentName
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
   modifier: Modifier = Modifier,

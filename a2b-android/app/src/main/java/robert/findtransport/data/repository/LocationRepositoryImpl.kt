@@ -7,20 +7,26 @@ import robert.findtransport.data.service.AddressProviderService
 import robert.findtransport.data.service.FusedLocationService
 import robert.findtransport.data.service.LocationObserverService
 import robert.findtransport.domain.repository.LocationRepository
+import java.util.*
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
   private val fusedLocationService: FusedLocationService,
   private val locationObserverService: LocationObserverService,
-  private val addressPrService: AddressProviderService,
+  private val addressProviderService: AddressProviderService,
 ) : LocationRepository {
 
   override suspend fun getCurrentLocation(): Address? =
     fusedLocationService.getCurrentLocationAddress()
-      ?.let { addressPrService.getAddress(it) }
+      ?.let { location ->
+        addressProviderService.getAddress(location) ?: Address(Locale.getDefault()).apply {
+          latitude = location.latitude
+          longitude = location.longitude
+        }
+      }
 
   override suspend fun getAddress(location: Location): Address? =
-    addressPrService.getAddress(location)
+    addressProviderService.getAddress(location)
 
   override fun subscribeToLocationUpdates(): Flow<Location> =
     locationObserverService.getLocationUpdates()
