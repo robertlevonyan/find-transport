@@ -13,23 +13,24 @@ import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.entity.TransportStopJoin
 
 interface ApiService {
-  @GET("newstops/")
+  @GET("a2b/newstops/")
   suspend fun getStops(): List<Stop>
 
-  @GET("newlocation/")
+  @GET("a2b/newlocation/")
   suspend fun getStopLocations(): List<StopLocation>
 
-  @GET("newtransport/")
+//  @GET("a2b/newtransport/test/")
+  @GET("a2b/newtransport/")
   suspend fun getTransport(): List<Transport>
 
-  @GET("newtsjoin/")
+  @GET("a2b/newtsjoin/")
   suspend fun getJoins(): List<TransportStopJoin>
 
-  @GET("vernew/")
+  @GET("a2b/vernew/")
   suspend fun getVersion(): String
 
   @FormUrlEncoded
-  @POST("feedb/")
+  @POST("a2b/feedb/")
   suspend fun sendFeedback(
     @Field("mail")
     email: String,

@@ -26,7 +26,6 @@ import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.*
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportsScreen(
   modifier: Modifier = Modifier,

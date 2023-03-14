@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.mapbox.geojson.Point
+import robert.findtransport.data.entity.TransportRoute
 import robert.findtransport.data.model.History
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
@@ -47,8 +48,7 @@ fun ApiTransport.toTransport(
   stops = stops,
   stopsReversed = reversedStops,
   isFavorite = favorite,
-  route = routeMain.splitToPoints(),
-  routeReversed = routeSecondary.splitToPoints(),
+  route = route ?: TransportRoute(emptyList(), emptyList()),
 )
 
 private fun String?.splitToPoints(): List<Point> = this?.split(";")?.map { coordinateString ->

@@ -1,6 +1,7 @@
 package robert.findtransport.utils
 
-const val BASE_URL = "https://a2b2.robertlevonyan.com"
+//const val BASE_URL = "https://a2b2.robertlevonyan.com"
+const val BASE_URL = "https://robertlevonyan.com"
 const val DATABASE_NAME = "a2bDB"
 
 const val PREFERENCES = "sPref"

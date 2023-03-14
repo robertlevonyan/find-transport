@@ -35,7 +35,7 @@ class SettingsViewModel @Inject constructor(
 
   fun checkForUpdate() {
     viewModelScope.launch {
-      dataUseCase.downloadData()
+      dataUseCase.forceDownloadData()
         .catch { e ->
           loaded.value = when (e) {
             is DataDownloadExceptions.VpnException ->

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import robert.findtransport.data.entity.*
 import robert.findtransport.utils.DATABASE_NAME
 
@@ -13,9 +14,12 @@ import robert.findtransport.utils.DATABASE_NAME
     Stop::class,
     StopLocation::class,
     Transport::class,
-    TransportStopJoin::class],
-  version = 25,
+    TransportStopJoin::class,
+//    TransportRoute::class,
+  ],
+  version = 27,
 )
+@TypeConverters(TransportRouteTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
   abstract fun stopsDao(): StopsDao
 

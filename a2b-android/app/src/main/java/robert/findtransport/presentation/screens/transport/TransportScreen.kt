@@ -849,7 +849,9 @@ private fun handleRoute(
   }.flatMap { it.coordinates }
 
   val route = transport.run {
-    if (isPrimary) route else routeReversed
+    if (isPrimary) route.mainRoute else route.reversedRoute
+  }.map { coord ->
+    Point.fromLngLat(coord[0], coord[1])
   }
 
   polylineAnnotationManager.deleteAll()

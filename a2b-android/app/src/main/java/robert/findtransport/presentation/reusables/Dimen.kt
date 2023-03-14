@@ -12,7 +12,6 @@ val BottomPaddingWithFab = 72.dp
 val SmallCornerRadius = 8.dp
 val CornerRadius = 16.dp
 val LargeCornerRadius = 32.dp
-val SearchInputCornerRadius = 12.dp
 
 val SearchElementSize = 50.dp
 val SmallIconSize = 16.dp
@@ -24,7 +23,7 @@ val MenuVerticalOffset = (-52).dp
 val GeneralSettingCardSize = 150.dp
 val FeedbackMessageBoxSize = 120.dp
 val DialogBoxSize = 320.dp
-val TransportNumberSize = 80.dp
+val TransportNumberSize = 90.dp
 val TransportInfoSize = 100.dp
 val TransportInfoElevation = 12.dp
 val ToolbarSize = 56.dp
