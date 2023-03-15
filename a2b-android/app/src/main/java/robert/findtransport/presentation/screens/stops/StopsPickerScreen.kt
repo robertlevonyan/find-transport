@@ -7,13 +7,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,15 +20,16 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import kotlinx.coroutines.launch
-import robert.findtransport.R
 import robert.findtransport.data.model.StopWithAddress
-import robert.findtransport.presentation.reusables.*
-import robert.findtransport.presentation.reusables.composables.A2bAppBar
+import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
+import robert.findtransport.presentation.screens.stops.components.StopSearchInput
+import robert.findtransport.presentation.screens.stops.components.TopBar
 import robert.findtransport.utils.extensions.getCurrentName
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StopsPickerScreen(
   modifier: Modifier = Modifier,
@@ -45,10 +45,11 @@ fun StopsPickerScreen(
 
   stopsPickerViewModel.findStops("")
 
+
   Scaffold(
     modifier = modifier,
     topBar = {
-      TopBar(navController = navController) {
+      TopBar(onBackClick = { navController.popBackStack() }) {
         searchBoxState = !searchBoxState
         if (!searchBoxState) {
           stopsPickerViewModel.findStops("")
@@ -62,7 +63,7 @@ fun StopsPickerScreen(
           modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = FabPadding)
-        ) { SearchInput(stopsPickerViewModel::findStops) }
+        ) { StopSearchInput(stopsPickerViewModel::findStops) }
       }
       LazyColumn(modifier = Modifier.fillMaxSize()) {
         items(stops) { stop ->
@@ -101,64 +102,4 @@ fun StopsPickerScreen(
       }
     }
   }
-}
-
-@Composable
-private fun TopBar(
-  navController: NavController,
-  searchBoxStateToggle: () -> Unit,
-) {
-  A2bAppBar(
-    title = stringResource(id = R.string.label_select_stop),
-    navigationIcon = R.drawable.ic_arrow_back,
-    onNavigationIconClick = { navController.popBackStack() },
-    additionalActions = {
-      IconButton(onClick = searchBoxStateToggle) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_search),
-          contentDescription = stringResource(id = R.string.hint_search),
-          tint = MaterialTheme.colorScheme.onSurface,
-        )
-      }
-    }
-  )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SearchInput(onValueChange: (String) -> Unit) {
-  var inputText by rememberSaveable { mutableStateOf("") }
-
-  OutlinedTextField(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = HalfPadding)
-      .padding(bottom = HalfPadding),
-    value = inputText,
-    onValueChange = {
-      inputText = it
-      onValueChange.invoke(it)
-    },
-    singleLine = true,
-    shape = Shapes.medium,
-    label = {
-      Text(
-        text = stringResource(id = R.string.hint_search),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    },
-    colors = TextFieldDefaults.outlinedTextFieldColors(
-      containerColor = searchInputBackgroundColor(),
-      focusedBorderColor = MaterialTheme.colorScheme.surface,
-      unfocusedBorderColor = MaterialTheme.colorScheme.surface,
-      disabledBorderColor = MaterialTheme.colorScheme.surface,
-      errorBorderColor = MaterialTheme.colorScheme.error,
-      cursorColor = MaterialTheme.colorScheme.onSurface,
-      focusedLabelColor = MaterialTheme.colorScheme.onSurface,
-    ),
-    textStyle = TextStyle(
-      color = MaterialTheme.colorScheme.onSurface,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    ),
-  )
 }

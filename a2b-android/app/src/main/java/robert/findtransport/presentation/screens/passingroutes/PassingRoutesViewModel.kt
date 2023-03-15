@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.screens.passing
+package robert.findtransport.presentation.screens.passingroutes
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

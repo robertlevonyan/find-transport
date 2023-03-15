@@ -23,8 +23,8 @@ import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.ColumnToggleButtonGroup
+import robert.findtransport.presentation.screens.intro.components.TitleAndLogo
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IntroScreen(
   modifier: Modifier = Modifier,
@@ -146,30 +146,3 @@ fun IntroScreen(
     }
   }
 }
-
-@Composable
-private fun TitleAndLogo(
-  modifier: Modifier,
-) {
-  Row(modifier = modifier.wrapContentSize()) {
-    Image(
-      modifier = Modifier
-        .scale(0.75f)
-        .align(CenterVertically),
-      painter = painterResource(id = R.drawable.ic_logo),
-      contentDescription = null,
-    )
-    Text(
-      modifier = modifier
-        .padding(HalfPadding)
-        .align(CenterVertically),
-      text = stringResource(id = R.string.app_name),
-      color = MaterialTheme.colorScheme.onSurface,
-      fontSize = TextIntroLabel,
-      fontWeight = FontWeight.Bold,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    )
-  }
-}
-
-

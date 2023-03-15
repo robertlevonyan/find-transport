@@ -1,6 +1,8 @@
 package robert.findtransport.utils.extensions
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.location.Address
 import android.location.Location
 import androidx.browser.customtabs.CustomTabColorSchemeParams
@@ -11,9 +13,16 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
 import androidx.compose.ui.text.withStyle
 import androidx.core.net.toUri
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxMap
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.location
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
@@ -173,4 +182,31 @@ fun Address.getFormattedAddress(locale: String): String {
   }
 }
 
-fun Location.toPoint() = Point.fromLngLat(longitude, latitude, altitude)
+fun Location.toPoint(): Point = Point.fromLngLat(longitude, latitude, altitude)
+
+fun MapView.enableLocationComponent() {
+  location.updateSettings {
+    enabled = true
+    pulsingEnabled = false
+    pulsingColor = context?.getColorFromRes(R.color.colorAccent300) ?: Color.YELLOW
+    locationPuck = LocationPuck2D().apply {
+      topImage =
+        BitmapDrawable(resources, context?.getBitmapFromVectorDrawable(R.drawable.ic_bearing))
+    }
+  }
+}
+
+fun MapboxMap.flyTo(location: Location) {
+  try {
+    flyTo(
+      cameraOptions = CameraOptions.Builder()
+        .center(Point.fromLngLat(location.longitude, location.latitude)).zoom(15.0).build(),
+      animationOptions = MapAnimationOptions.mapAnimationOptions {
+        duration(duration = 200)
+        interpolator(interpolator = FastOutSlowInInterpolator())
+      },
+    )
+  } catch (e: Exception) {
+    e.printStackTrace()
+  }
+}

@@ -1,43 +1,35 @@
 package robert.findtransport.presentation.screens.home
 
-import android.app.Activity
-import android.util.Log
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import com.google.android.play.core.review.ReviewManagerFactory
 import robert.findtransport.R
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.*
-import robert.findtransport.presentation.reusables.composables.BlankButton
-import robert.findtransport.presentation.reusables.composables.RegularButton
-import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.presentation.reusables.DoublePadding
+import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.SearchElementSize
+import robert.findtransport.presentation.screens.data.CheckDataScreen
+import robert.findtransport.presentation.screens.home.components.*
 import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.EMPTY_ID
-import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.extensions.showToast
 
 @Composable
 fun HomeContent(
@@ -64,7 +56,28 @@ fun HomeContent(
   }
 
   ConstraintLayout(modifier = modifier) {
-    val (appBar, fromCard, swap, toCard, search, allTransports, rate) = createRefs()
+    val (appBar, dataCheck, fromCard, swap, toCard, search, allTransports, rate) = createRefs()
+    HomeAppBar(
+      modifier = Modifier.constrainAs(appBar) {
+        start.linkTo(parent.start)
+        top.linkTo(parent.top)
+        end.linkTo(parent.end)
+      },
+      containerColor = Color.Transparent,
+      onHistoryButtonClicked = { navController.navigate(NavigationScreens.HistoryScreen.name) },
+      onSettingsScreenClicked = { navController.navigate(NavigationScreens.SettingsScreen.name) },
+      onFeedbackScreenClicked = { navController.navigate(NavigationScreens.FeedbackScreen.name) }
+    )
+
+    CheckDataScreen(modifier = Modifier.constrainAs(dataCheck) {
+      width = Dimension.fillToConstraints
+      height = Dimension.wrapContent
+      top.linkTo(appBar.bottom)
+      start.linkTo(parent.start)
+      end.linkTo(parent.end)
+    }) {
+      // vpn
+    }
 
     AnimatedVisibility(
       modifier = Modifier
@@ -72,25 +85,18 @@ fun HomeContent(
         .constrainAs(rate) {
           width = Dimension.fillToConstraints
           height = Dimension.wrapContent
-          top.linkTo(parent.top)
+          top.linkTo(dataCheck.bottom)
           start.linkTo(parent.start)
           end.linkTo(parent.end)
           bottom.linkTo(fromCard.top)
         },
       visible = showRate,
     ) {
-      RateDialog(homeViewModel = homeViewModel)
+      RateDialog(
+        onPositiveClick = homeViewModel::openRate,
+        onNegativeClick = homeViewModel::dismissRate,
+      )
     }
-
-    HomeAppBar(
-      modifier = Modifier.constrainAs(appBar) {
-        start.linkTo(parent.start)
-        top.linkTo(parent.top)
-        end.linkTo(parent.end)
-      },
-      navController = navController,
-      containerColor = Color.Transparent,
-    )
 
     SearchInput(
       modifier = Modifier
@@ -120,22 +126,13 @@ fun HomeContent(
       },
     )
 
-    FloatingActionButton(
-      modifier = Modifier
-        .padding(top = FabPadding)
-        .size(SmallFabSize)
-        .padding(bottom = FabPadding)
-        .padding(end = FabPadding)
-        .constrainAs(swap) {
-          end.linkTo(parent.end)
-          bottom.linkTo(toCard.top)
-        },
-      containerColor = MaterialTheme.colorScheme.surface,
-      shape = Shapes.medium,
+    SwapButton(
+      modifier = Modifier.constrainAs(swap) {
+        end.linkTo(parent.end)
+        bottom.linkTo(toCard.top)
+      },
       onClick = { homeViewModel.swap() },
-    ) {
-      Icon(painter = painterResource(id = R.drawable.ic_swap), contentDescription = null)
-    }
+    )
 
     SearchInput(
       modifier = Modifier
@@ -226,193 +223,5 @@ fun HomeContent(
         },
       onClick = { navController.navigate(NavigationScreens.TransportsScreen.name) },
     )
-  }
-}
-
-@Composable
-private fun RateDialog(homeViewModel: HomeViewModel) {
-  Card {
-    Column(
-      modifier = Modifier
-        .padding(HalfPadding)
-        .fillMaxWidth()
-    ) {
-      TextSecondary(
-        text = stringResource(id = R.string.message_rate),
-        textAlign = TextAlign.Start,
-      )
-
-      Row(modifier = Modifier.align(Alignment.End)) {
-        val activity = LocalActivity.current
-        RegularButton(text = stringResource(id = R.string.label_yes)) {
-          homeViewModel.openRate()
-          rate(activity)
-        }
-        BlankButton(text = stringResource(id = R.string.label_no)) {
-          homeViewModel.dismissRate()
-        }
-      }
-    }
-  }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun SearchInput(
-  modifier: Modifier,
-  @StringRes label: Int,
-  @StringRes hint: Int,
-  trailingIcon: Painter,
-  text: String = "",
-  keyboardOptions: KeyboardOptions,
-  keyboardActions: KeyboardActions,
-  onDropdownClick: () -> Unit,
-  onTrailingIconClick: () -> Unit,
-) {
-  Column(modifier = modifier) {
-    Text(
-      modifier = Modifier.padding(HalfPadding),
-      text = stringResource(id = label),
-      fontWeight = FontWeight.W600,
-      fontSize = Text20,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    )
-
-    Card(
-      shape = Shapes.medium,
-      elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-      colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.surface),
-    ) {
-      Box(
-        modifier = Modifier.clickable { onDropdownClick.invoke() },
-      ) {
-        TextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = BarIconSize)
-            .padding(start = SmallPadding)
-            .padding(vertical = SmallPadding),
-          value = text,
-          onValueChange = {},
-          label = {
-            Text(
-              text = stringResource(id = hint),
-              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-            )
-          },
-          trailingIcon = {
-            IconButton(onClick = { onDropdownClick.invoke() }) {
-              Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_drop_down),
-                contentDescription = null
-              )
-            }
-          },
-          singleLine = true,
-          shape = Shapes.medium,
-          colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = searchInputBackgroundColor(),
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            disabledBorderColor = Color.Transparent,
-            errorBorderColor = Color.Transparent,
-            cursorColor = MaterialTheme.colorScheme.onSurface,
-          ),
-          keyboardOptions = keyboardOptions,
-          keyboardActions = keyboardActions,
-          readOnly = true,
-          enabled = false,
-          textStyle = TextStyle(
-            color = MaterialTheme.colorScheme.onSurface,
-            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-          ),
-        )
-
-        IconButton(
-          modifier = Modifier
-            .size(BarIconSize)
-            .align(Alignment.CenterEnd),
-          onClick = { onTrailingIconClick.invoke() },
-        ) {
-          Icon(
-            painter = trailingIcon,
-            tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = null
-          )
-        }
-      }
-    }
-  }
-}
-
-@Composable
-private fun SearchButton(
-  modifier: Modifier,
-  onClick: () -> Unit,
-) {
-  ExtendedFloatingActionButton(
-    modifier = modifier,
-    icon = {
-      Image(
-        painter = painterResource(id = R.drawable.ic_search_colored),
-        contentDescription = stringResource(id = R.string.label_search),
-      )
-    },
-    text = {
-      Text(
-        text = stringResource(id = R.string.label_search),
-        fontWeight = FontWeight.W400,
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    },
-    shape = Shapes.medium,
-    containerColor = MaterialTheme.colorScheme.surface,
-    onClick = { onClick.invoke() },
-  )
-}
-
-@Composable
-private fun AllTransportsButton(
-  modifier: Modifier,
-  onClick: () -> Unit,
-) {
-  Button(
-    modifier = modifier,
-    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
-    shape = Shapes.medium,
-    onClick = { onClick.invoke() },
-  ) {
-    Column(
-      modifier = Modifier
-        .padding(horizontal = HalfPadding)
-        .padding(bottom = SmallPadding),
-      horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-      Image(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
-      Text(
-        text = stringResource(id = R.string.label_all_transports),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    }
-  }
-}
-
-private fun rate(activity: Activity) {
-  val reviewManager = ReviewManagerFactory.create(activity)
-  val requestReviewFlow = reviewManager.requestReviewFlow()
-  requestReviewFlow.addOnCompleteListener { request ->
-    if (request.isSuccessful) {
-      val reviewInfo = request.result
-      val flow = reviewManager.launchReviewFlow(activity, reviewInfo)
-      flow.addOnCompleteListener {
-        if (it.isSuccessful) {
-          Log.d("Rate: ", request.result.toString())
-        } else {
-          Log.e("Error: ", it.exception.toString())
-        }
-      }
-    } else {
-      Log.e("Error: ", request.exception.toString())
-    }
   }
 }

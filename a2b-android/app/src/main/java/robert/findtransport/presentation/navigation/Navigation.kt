@@ -16,7 +16,7 @@ import robert.findtransport.presentation.screens.home.HomeScreen
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.intro.IntroScreen
 import robert.findtransport.presentation.screens.map.LocationPickerScreen
-import robert.findtransport.presentation.screens.passing.PassingRoutesScreen
+import robert.findtransport.presentation.screens.passingroutes.PassingRoutesScreen
 import robert.findtransport.presentation.screens.search.SearchScreen
 import robert.findtransport.presentation.screens.settings.SettingsScreen
 import robert.findtransport.presentation.screens.stops.StopsPickerScreen
