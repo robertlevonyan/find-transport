@@ -21,14 +21,11 @@ class AddressProviderService @Inject constructor(private val context: Context) {
         1,
         object : Geocoder.GeocodeListener {
           override fun onGeocode(addresses: MutableList<Address>) {
-            locationContinuation.resume(addresses.firstOrNull().also {
-              println("ADDR 1 $it")
-            })
+            locationContinuation.resume(addresses.firstOrNull())
           }
 
           override fun onError(errorMessage: String?) {
             super.onError(errorMessage)
-            println("ADDR 1 $errorMessage")
             locationContinuation.resume(null)
           }
         },
@@ -41,11 +38,8 @@ class AddressProviderService @Inject constructor(private val context: Context) {
           1
         )?.firstOrNull()
 
-        locationContinuation.resume(address.also {
-          println("ADDR 2 $it")
-        })
+        locationContinuation.resume(address)
       } catch (e: Exception) {
-        println("ADDR 2 ${e.message}")
         locationContinuation.resume(null)
       }
     }
