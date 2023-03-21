@@ -101,6 +101,8 @@ fun TransportInfo(
       )
 
       val stops = transport.stops
+      if (stops.isEmpty()) return@ConstraintLayout
+
       val first = stops.first()
       val last = stops.last()
 
