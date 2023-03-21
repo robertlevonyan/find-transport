@@ -70,8 +70,8 @@ class SearchUseCaseImpl @Inject constructor(
 
     if (foundTransports.isEmpty()) {
       val stops = stopsUseCase.getStops()
-      val fromNearby: List<Stop> = getNearbyLimitedFor(originStop, stops)
-      val toNearby: List<Stop> = getNearbyLimitedFor(destinationStop, stops)
+      val fromNearby: List<Stop> = getNearbyFor(originStop, stops)
+      val toNearby: List<Stop> = getNearbyFor(destinationStop, stops)
 
       val multiResult = mutableListOf<RouteSearchResult>()
 
@@ -225,12 +225,6 @@ class SearchUseCaseImpl @Inject constructor(
     val coordinates = stop.coordinates
     val fromLocation = coordinates.first()
     addAll(getNearbyStops(fromLocation, stops))
-  }
-
-  private fun getNearbyLimitedFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
-    val coordinates = stop.coordinates
-    val fromLocation = coordinates.first()
-    addAll(getNearbyStops(fromLocation, stops).take(5))
   }
 
   private fun getNearbyStops(

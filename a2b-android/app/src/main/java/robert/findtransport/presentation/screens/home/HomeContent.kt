@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import kotlinx.coroutines.flow.collectLatest
 import robert.findtransport.R
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.DoublePadding
@@ -42,7 +44,6 @@ fun HomeContent(
 
   val origin by homeViewModel.originLabel.collectAsState()
   val destination by homeViewModel.destinationLabel.collectAsState()
-  val locationEnabled by homeViewModel.locationEnabled.collectAsState()
   val showRate by homeViewModel.showRate.collectAsState()
 
   val originAddress = homeViewModel.origin.collectAsState()
@@ -51,8 +52,12 @@ fun HomeContent(
   val originStop = homeViewModel.originStop.collectAsState()
   val destinationStop = homeViewModel.destinationStop.collectAsState()
 
-  if (locationEnabled) {
-    homeViewModel.getCurrentLocation()
+  LaunchedEffect(key1 = Unit) {
+    homeViewModel.locationEnabled.collectLatest { locationEnabled ->
+      if (locationEnabled) {
+        homeViewModel.getCurrentLocation()
+      }
+    }
   }
 
   ConstraintLayout(modifier = modifier) {

@@ -4,8 +4,11 @@ import android.Manifest
 import android.location.Address
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
@@ -39,10 +42,13 @@ class HomeViewModel @Inject constructor(
   val destinationLabel = MutableStateFlow<String?>(null)
   val destinationStop = MutableStateFlow<Stop?>(null)
   val showRate = MutableStateFlow(rateUseCase.showDialog())
-  val locationEnabled =
-    MutableStateFlow(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+  private val locationEnabledChannel = Channel<Boolean>()
+  val locationEnabled: Flow<Boolean> get() = locationEnabledChannel.consumeAsFlow()
 
   init {
+    viewModelScope.launch {
+      locationEnabledChannel.send(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+    }
     rateUseCase.updateInterval()
   }
 
