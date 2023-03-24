@@ -11,7 +11,6 @@ import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.*
 import robert.findtransport.domain.mapper.toApiStop
@@ -43,10 +42,9 @@ class StopsUseCaseImpl @Inject constructor(
       .takeIf { it.isNotEmpty() }
       ?.let { cachedStops ->
         cachedStops.map { apiStop ->
-          apiStop.toStop(runBlocking {
+          apiStop.toStop(
             stopsRepository.getStopLocations(apiStop.id ?: 0)
-              .map { it.toStopLocation(apiStop) }
-          })
+              .map { it.toStopLocation(apiStop) })
         }
       }
       ?: emptyList()

@@ -1,13 +1,11 @@
 package robert.findtransport.domain.usecase.search
 
 import android.location.Location
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import robert.findtransport.data.entity.History
 import robert.findtransport.data.model.*
 import robert.findtransport.data.model.enums.SearchState
@@ -221,7 +219,7 @@ class SearchUseCaseImpl @Inject constructor(
     }
   }.sortedBy { it.id }
 
-  private fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
+  private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
     val coordinates = stop.coordinates
     val fromLocation = coordinates.first()
     addAll(getNearbyStops(fromLocation, stops))

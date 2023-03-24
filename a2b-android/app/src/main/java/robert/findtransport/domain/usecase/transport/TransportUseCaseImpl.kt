@@ -5,8 +5,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.NearbyLocation
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
@@ -70,20 +73,16 @@ class TransportUseCaseImpl @Inject constructor(
     transportsRepository.getTransportById(id).map { apiTransport ->
       val stops = transportsRepository.getTransportStops(apiTransport.id).map { apiStop ->
         apiStop.toStop(
-          runBlocking {
-            stopsRepository.getStopLocations(apiStop.id)
-              .map { it.toStopLocation(apiStop) }
-          }
+          stopsRepository.getStopLocations(apiStop.id)
+            .map { it.toStopLocation(apiStop) }
         )
       }
       val stopsReversed =
         transportsRepository.getTransportStopsReversed(apiTransport.id).map { apiStop ->
           apiStop.toStop(
-            runBlocking {
-              stopsRepository.getStopLocations(apiStop.id)
-                .map { it.toStopLocation(apiStop) }
-                .reversed()
-            }
+            stopsRepository.getStopLocations(apiStop.id)
+              .map { it.toStopLocation(apiStop) }
+              .reversed()
           )
         }
       apiTransport.toTransport(stops, stopsReversed)
