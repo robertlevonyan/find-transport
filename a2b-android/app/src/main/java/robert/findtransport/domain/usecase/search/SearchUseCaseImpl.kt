@@ -219,7 +219,7 @@ class SearchUseCaseImpl @Inject constructor(
     }
   }.sortedBy { it.id }
 
-  private suspend fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
+  private fun getNearbyFor(stop: Stop, stops: List<Stop>): List<Stop> = buildList {
     val coordinates = stop.coordinates
     val fromLocation = coordinates.first()
     addAll(getNearbyStops(fromLocation, stops))

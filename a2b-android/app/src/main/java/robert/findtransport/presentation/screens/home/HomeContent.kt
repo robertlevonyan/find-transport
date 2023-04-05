@@ -190,14 +190,14 @@ fun HomeContent(
           context.showToast(R.string.error_same_stops)
           return@SearchButton
         }
-        val originLatitude = originAddress.value?.latitude?.toFloat()
-          ?: originStop.value?.coordinates?.firstOrNull()?.lat ?: return@SearchButton
-        val originLongitude = originAddress.value?.longitude?.toFloat()
-          ?: originStop.value?.coordinates?.firstOrNull()?.lng ?: return@SearchButton
-        val destinationLatitude = destinationAddress.value?.latitude?.toFloat()
-          ?: destinationStop.value?.coordinates?.firstOrNull()?.lat ?: return@SearchButton
-        val destinationLongitude = destinationAddress.value?.longitude?.toFloat()
-          ?: destinationStop.value?.coordinates?.firstOrNull()?.lng ?: return@SearchButton
+        val originLatitude = originStop.value?.coordinates?.firstOrNull()?.lat
+          ?: originAddress.value?.latitude?.toFloat() ?: return@SearchButton
+        val originLongitude = originStop.value?.coordinates?.firstOrNull()?.lng
+          ?: originAddress.value?.longitude?.toFloat() ?: return@SearchButton
+        val destinationLatitude = destinationStop.value?.coordinates?.firstOrNull()?.lat
+          ?: destinationAddress.value?.latitude?.toFloat() ?: return@SearchButton
+        val destinationLongitude = destinationStop.value?.coordinates?.firstOrNull()?.lng
+          ?: destinationAddress.value?.longitude?.toFloat() ?: return@SearchButton
 
         val navigationRoute = buildString {
           append("${NavigationScreens.SearchScreen.name}?")

@@ -63,9 +63,6 @@ class StopsUseCaseImpl @Inject constructor(
           val currentStop = apiStop.toStop(
             coordinates = getStopCoordinates(apiStop)
           )
-//          val address = getAddress(currentStop)
-//
-//          StopWithAddress(currentStop, address)
           currentStop
         }
       }
@@ -108,6 +105,7 @@ class StopsUseCaseImpl @Inject constructor(
 
   override suspend fun getNearbyStop(location: Location): Stop = withContext(Dispatchers.IO) {
     val stops = getStops()
+    if (stops.isEmpty()) return@withContext Stop.EMPTY
 
     val nearby = mutableListOf<NearbyLocation>()
 
