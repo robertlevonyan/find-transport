@@ -21,7 +21,7 @@ interface StopsUseCase {
 
   suspend fun getMetroStopsLocations(): List<PointAnnotationOptions>
 
-  suspend fun getNearbyStop(location: Location): Stop
+  suspend fun getNearbyStop(location: Location): Stop?
 
   suspend fun getStop(id: Int): Stop
 

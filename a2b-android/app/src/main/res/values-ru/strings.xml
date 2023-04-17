@@ -6,7 +6,7 @@
     <string name="title_settings">Настройки</string>
     <string name="title_feedback">Обратная связь</string>
     <string name="title_history">История поисков</string>
-    <string name="title_transports">Транспорты</string>
+    <string name="title_transports">Транспорт</string>
 
     <!--messages-->
     <string name="message_slider_welcome">Привет!</string>
@@ -39,7 +39,7 @@
     <string name="label_interchange_from">Садитесь в транспорт отсюда</string>
     <string name="label_interchange_to">Выходите здесь</string>
     <string name="label_take_transport">Воспользуетесь каким либо транспортом из списка</string>
-    <string name="label_selected_stop">Транспорты останавливающиеся у остановки "%1$s"</string>
+    <string name="label_selected_stop">Транспорт останавливающийся у остановки "%1$s"</string>
     <string name="label_stop_tracker">Остановка трекера</string>
     <string name="label_tracker_transport">Вы выбрали</string>
     <string name="label_current_stop">Текущая остановка</string>
@@ -58,7 +58,7 @@
     <string name="hint_from">откуда</string>
     <string name="hint_to">куда</string>
     <string name="hint_enter_email">Ваш адрес эл. почты</string>
-    <string name="hint_subject">Загаловок</string>
+    <string name="hint_subject">Заголовок</string>
     <string name="hint_message">Сообщение</string>
     <string name="hint_search">Поиск остановки</string>
 

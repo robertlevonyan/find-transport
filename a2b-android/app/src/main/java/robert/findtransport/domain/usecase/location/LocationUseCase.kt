@@ -13,5 +13,5 @@ interface LocationUseCase {
 
   suspend fun getAddress(latitude: Double?, longitude: Double?): Address?
 
-  suspend fun getNearbyStop(latitude: Double, longitude: Double): Stop
+  suspend fun getNearbyStop(latitude: Double, longitude: Double): Stop?
 }

@@ -1,13 +1,21 @@
 package robert.findtransport.domain.usecase.search
 
 import android.location.Location
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import robert.findtransport.data.entity.History
-import robert.findtransport.data.model.*
+import robert.findtransport.data.model.NearbyLocation
+import robert.findtransport.data.model.RouteSearchCase
+import robert.findtransport.data.model.RouteSearchElementType
+import robert.findtransport.data.model.RouteSearchResult
+import robert.findtransport.data.model.Stop
+import robert.findtransport.data.model.StopLocation
+import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.SearchState
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.domain.mapper.toTransport
@@ -17,7 +25,7 @@ import robert.findtransport.domain.repository.TransportsRepository
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.presentation.screens.search.SearchOpenInitiator
 import robert.findtransport.utils.extensions.getCurrentName
-import java.util.*
+import java.util.Date
 import javax.inject.Inject
 
 class SearchUseCaseImpl @Inject constructor(
@@ -61,15 +69,17 @@ class SearchUseCaseImpl @Inject constructor(
       false
     }
 
-    val fromTransports = transportsRepository.getTransportsForStop(originStop.id)
-    val toTransports = transportsRepository.getTransportsForStop(destinationStop.id)
+    val fromTransports =
+      originStop?.id?.let { transportsRepository.getTransportsForStop(it) }.orEmpty()
+    val toTransports =
+      destinationStop?.id?.let { transportsRepository.getTransportsForStop(it) }.orEmpty()
 
     val foundTransports: List<Transport> = searchTransports(fromTransports, toTransports)
 
     if (foundTransports.isEmpty()) {
       val stops = stopsUseCase.getStops()
-      val fromNearby: List<Stop> = getNearbyFor(originStop, stops)
-      val toNearby: List<Stop> = getNearbyFor(destinationStop, stops)
+      val fromNearby: List<Stop> = originStop?.let { getNearbyFor(it, stops) }.orEmpty()
+      val toNearby: List<Stop> = destinationStop?.let { getNearbyFor(it, stops) }.orEmpty()
 
       val multiResult = mutableListOf<RouteSearchResult>()
 
@@ -79,8 +89,8 @@ class SearchUseCaseImpl @Inject constructor(
         multiDataTo = multiDataTo,
         interchangeStopTo = interchangeStopTo,
         originName = originName,
-        originStop = originStop,
-        destinationStop = destinationStop,
+        originStop = originStop ?: return@flow,
+        destinationStop = destinationStop ?: return@flow,
         destinationName = destinationName,
         currentLocale = currentLocale,
       )
@@ -180,8 +190,8 @@ class SearchUseCaseImpl @Inject constructor(
       //return routes found
       checkAndSaveToHistory(
         saveToHistory = saveToHistory,
-        originId = originStop.id,
-        destinationId = destinationStop.id,
+        originId = originStop?.id ?: return@flow,
+        destinationId = destinationStop?.id ?: return@flow,
         originName = originName,
         destinationName = destinationName,
         originLatitude = originLatitude,

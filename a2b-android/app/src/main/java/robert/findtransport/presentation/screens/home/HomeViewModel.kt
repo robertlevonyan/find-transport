@@ -73,7 +73,7 @@ class HomeViewModel @Inject constructor(
           longitude = longitude ?: return@launch,
         )
         originStop.value = nearbyStop
-        originLabel.value = nearbyStop.getCurrentName(locale = locale.value)
+        originLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
       }
     }
   }
@@ -97,7 +97,7 @@ class HomeViewModel @Inject constructor(
           longitude = longitude ?: return@launch,
         )
         destinationStop.value = nearbyStop
-        destinationLabel.value = nearbyStop.getCurrentName(locale = locale.value)
+        destinationLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
       }
     }
   }

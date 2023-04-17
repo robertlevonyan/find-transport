@@ -33,7 +33,7 @@ class LocationUseCaseImpl @Inject constructor(
       })
     }
 
-  override suspend fun getNearbyStop(latitude: Double, longitude: Double): Stop =
+  override suspend fun getNearbyStop(latitude: Double, longitude: Double): Stop? =
     withContext(Dispatchers.IO) {
       stopsUseCase.getNearbyStop(Location("point").apply {
         this.latitude = latitude

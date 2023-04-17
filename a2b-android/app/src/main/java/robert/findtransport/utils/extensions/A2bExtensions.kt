@@ -27,9 +27,25 @@ import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
 import robert.findtransport.data.model.Transport
-import robert.findtransport.data.model.enums.TransportType.*
+import robert.findtransport.data.model.enums.TransportType.BUS_BOGDAN
+import robert.findtransport.data.model.enums.TransportType.BUS_HYUNDAI
+import robert.findtransport.data.model.enums.TransportType.BUS_JONGTONG
+import robert.findtransport.data.model.enums.TransportType.BUS_MAN
+import robert.findtransport.data.model.enums.TransportType.BUS_PAZ
+import robert.findtransport.data.model.enums.TransportType.BUS_VIOLET
+import robert.findtransport.data.model.enums.TransportType.METRO
+import robert.findtransport.data.model.enums.TransportType.MICROBUS_NEW
+import robert.findtransport.data.model.enums.TransportType.MICROBUS_OLD
+import robert.findtransport.data.model.enums.TransportType.MICROBUS_SPRINTER
+import robert.findtransport.data.model.enums.TransportType.TROLLEYBUS_NEW
+import robert.findtransport.data.model.enums.TransportType.TROLLEYBUS_OLD
+import robert.findtransport.data.model.enums.TransportType.UNDEFINED
 import robert.findtransport.presentation.reusables.Text20
-import robert.findtransport.utils.*
+import robert.findtransport.utils.DEFAULT_LATITUDE
+import robert.findtransport.utils.DEFAULT_LONGITUDE
+import robert.findtransport.utils.LNG_AM
+import robert.findtransport.utils.LNG_EN
+import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -210,3 +226,7 @@ fun MapboxMap.flyTo(location: Location) {
     e.printStackTrace()
   }
 }
+
+fun Transport?.orEmpty() = Transport.EMPTY
+
+fun Stop?.orEmpty() = Stop.EMPTY

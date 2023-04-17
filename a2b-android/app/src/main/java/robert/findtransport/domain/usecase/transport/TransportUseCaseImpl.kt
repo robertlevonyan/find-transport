@@ -7,7 +7,11 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.NearbyLocation
@@ -21,6 +25,7 @@ import robert.findtransport.domain.mapper.toTransport
 import robert.findtransport.domain.repository.StopsRepository
 import robert.findtransport.domain.repository.TransportsRepository
 import robert.findtransport.utils.extensions.correctStops
+import robert.findtransport.utils.extensions.orEmpty
 import javax.inject.Inject
 
 class TransportUseCaseImpl @Inject constructor(
@@ -32,8 +37,10 @@ class TransportUseCaseImpl @Inject constructor(
       transportsRepository.getBusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
-        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-          .map { it.toStop() })
+        apiTransport.id?.let { id ->
+          apiTransport.toTransport(transportsRepository.getTransportStops(id)
+            .map { it.toStop() })
+        }.orEmpty()
       }
     }
 
@@ -42,8 +49,10 @@ class TransportUseCaseImpl @Inject constructor(
       transportsRepository.getMicrobusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
-        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-          .map { it.toStop() })
+        apiTransport.id?.let { id ->
+          apiTransport.toTransport(transportsRepository.getTransportStops(id)
+            .map { it.toStop() })
+        }.orEmpty()
       }
     }
 
@@ -52,8 +61,10 @@ class TransportUseCaseImpl @Inject constructor(
       transportsRepository.getTrolleybusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
-        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-          .map { it.toStop() })
+        apiTransport.id?.let { id ->
+          apiTransport.toTransport(transportsRepository.getTransportStops(id)
+            .map { it.toStop() })
+        }.orEmpty()
       }
     }
 
@@ -62,8 +73,10 @@ class TransportUseCaseImpl @Inject constructor(
       transportsRepository.getMetroPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
-        apiTransport.toTransport(transportsRepository.getTransportStops(apiTransport.id)
-          .map { it.toStop() })
+        apiTransport.id?.let { id ->
+          apiTransport.toTransport(transportsRepository.getTransportStops(id)
+            .map { it.toStop() })
+        }.orEmpty()
       }
     }
 
@@ -72,19 +85,23 @@ class TransportUseCaseImpl @Inject constructor(
   } else {
     transportsRepository.getTransportById(id).map { apiTransport ->
       val stops = transportsRepository.getTransportStops(apiTransport.id).map { apiStop ->
-        apiStop.toStop(
-          stopsRepository.getStopLocations(apiStop.id)
+        apiStop.id?.let { id ->
+          apiStop.toStop(stopsRepository.getStopLocations(id)
             .map { it.toStopLocation(apiStop) }
-        )
-      }
-      val stopsReversed =
-        transportsRepository.getTransportStopsReversed(apiTransport.id).map { apiStop ->
-          apiStop.toStop(
-            stopsRepository.getStopLocations(apiStop.id)
-              .map { it.toStopLocation(apiStop) }
-              .reversed()
           )
+        }.orEmpty()
+      }
+      val stopsReversed = apiTransport.id?.let { id ->
+        transportsRepository.getTransportStopsReversed(id).map { apiStop ->
+          apiStop.id?.let { id ->
+            apiStop.toStop(
+              stopsRepository.getStopLocations(id)
+                .map { it.toStopLocation(apiStop) }
+                .reversed()
+            )
+          }.orEmpty()
         }
+      }.orEmpty()
       apiTransport.toTransport(stops, stopsReversed)
     }.flowOn(Dispatchers.IO)
   }
@@ -92,9 +109,10 @@ class TransportUseCaseImpl @Inject constructor(
   override suspend fun getTransportsForStop(id: Int): List<Transport> =
     withContext(Dispatchers.IO) {
       transportsRepository.getTransportsForStop(id).map { apiTransport ->
-        apiTransport
-          .toTransport(transportsRepository.getTransportStops(apiTransport.id)
+        apiTransport.id?.let { id ->
+          apiTransport.toTransport(transportsRepository.getTransportStops(id)
             .map { it.toStop() })
+        }.orEmpty()
       }
     }
 
@@ -105,6 +123,7 @@ class TransportUseCaseImpl @Inject constructor(
         transportsRepository.areTransportsCached = true
         Result.Success(Unit)
       }
+
       is Result.Error -> {
         transportsRepository.cacheTransports(emptyList())
         transportsRepository.areTransportsCached = false
@@ -120,6 +139,7 @@ class TransportUseCaseImpl @Inject constructor(
         transportsRepository.areJoinsCached = true
         Result.Success(Unit)
       }
+
       is Result.Error -> {
         transportsRepository.cacheJoins(emptyList())
         transportsRepository.areJoinsCached = false

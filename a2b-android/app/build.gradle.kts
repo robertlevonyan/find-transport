@@ -12,13 +12,14 @@ plugins {
 
 android {
   compileSdk = 33
+  compileSdkPreview = "UpsideDownCake"
   namespace = "robert.findtransport"
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 297
-    versionName = "4.0.5"
+    versionCode = 298
+    versionName = "4.0.6"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -95,14 +96,14 @@ android {
     abortOnError = false
   }
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
   }
   buildFeatures {
     compose = true
   }
   kotlinOptions {
-    jvmTarget = "11"
+    jvmTarget = "17"
     freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
       add("-opt-in=kotlin.RequiresOptIn")
       add("-Xcontext-receivers")
@@ -128,7 +129,7 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.9.0-alpha02")
+  implementation("com.google.android.material:material:1.10.0-alpha01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -142,24 +143,24 @@ dependencies {
 
   //androidx
   implementation("androidx.browser:browser:1.5.0")
-  implementation("androidx.core:core-ktx:1.9.0")
+  implementation("androidx.core:core-ktx:1.10.0")
   implementation("androidx.core:core-splashscreen:1.0.0")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.room:room-runtime:2.5.0")
-  implementation("androidx.room:room-ktx:2.5.0")
-  implementation("androidx.room:room-paging:2.5.0")
+  implementation("androidx.room:room-runtime:2.5.1")
+  implementation("androidx.room:room-ktx:2.5.1")
+  implementation("androidx.room:room-paging:2.5.1")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.5.0")
+  kapt("androidx.room:room-compiler:2.5.1")
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.3")
-  implementation("androidx.compose.ui:ui:1.4.0-beta02")
-  implementation("androidx.compose.ui:ui-tooling:1.4.0-beta02")
-  implementation("androidx.compose.material:material:1.3.1")
-  implementation("androidx.compose.material3:material3:1.1.0-alpha07")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-alpha07")
+  implementation("androidx.compose.compiler:compiler:1.4.5")
+  implementation("androidx.compose.ui:ui:1.5.0-alpha02")
+  implementation("androidx.compose.ui:ui-tooling:1.5.0-alpha02")
+  implementation("androidx.compose.material:material:1.4.1")
+  implementation("androidx.compose.material3:material3:1.1.0-beta02")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-beta02")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")

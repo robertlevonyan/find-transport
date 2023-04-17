@@ -24,6 +24,7 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
+import robert.findtransport.utils.extensions.orEmpty
 import java.util.*
 import javax.inject.Inject
 import robert.findtransport.data.entity.Stop as ApiStop
@@ -103,9 +104,9 @@ class StopsUseCaseImpl @Inject constructor(
         .toList()
     }
 
-  override suspend fun getNearbyStop(location: Location): Stop = withContext(Dispatchers.IO) {
+  override suspend fun getNearbyStop(location: Location): Stop? = withContext(Dispatchers.IO) {
     val stops = getStops()
-    if (stops.isEmpty()) return@withContext Stop.EMPTY
+    if (stops.isEmpty()) return@withContext null
 
     val nearby = mutableListOf<NearbyLocation>()
 
@@ -131,7 +132,7 @@ class StopsUseCaseImpl @Inject constructor(
 
     nearby.sortBy { it.locationDistance }
 
-    stops.find { stop -> stop.id == nearby.first().stopId } ?: Stop.EMPTY
+    stops.find { stop -> stop.id == nearby.first().stopId }
   }
 
   override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {

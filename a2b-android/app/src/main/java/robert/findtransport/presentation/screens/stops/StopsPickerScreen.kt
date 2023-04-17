@@ -45,7 +45,6 @@ fun StopsPickerScreen(
 
   stopsPickerViewModel.findStops("")
 
-
   Scaffold(
     modifier = modifier,
     topBar = {
