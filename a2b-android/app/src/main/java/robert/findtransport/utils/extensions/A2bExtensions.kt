@@ -227,6 +227,6 @@ fun MapboxMap.flyTo(location: Location) {
   }
 }
 
-fun Transport?.orEmpty() = Transport.EMPTY
+fun Transport?.orEmpty() = this ?: Transport.EMPTY
 
-fun Stop?.orEmpty() = Stop.EMPTY
+fun Stop?.orEmpty() = this ?: Stop.EMPTY

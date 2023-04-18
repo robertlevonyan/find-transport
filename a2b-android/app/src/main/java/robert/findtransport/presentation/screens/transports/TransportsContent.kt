@@ -28,7 +28,7 @@ fun TransportsContent(
       items = transports,
       itemContent = { index, item ->
         item ?: return@itemsIndexed
-
+        println("$index $item")
         TransportListElement(
           transport = item,
           locale = locale,

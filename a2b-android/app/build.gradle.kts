@@ -12,14 +12,14 @@ plugins {
 
 android {
   compileSdk = 33
-  compileSdkPreview = "UpsideDownCake"
+//  compileSdkPreview = "UpsideDownCake"
   namespace = "robert.findtransport"
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 298
-    versionName = "4.0.6"
+    versionCode = 299
+    versionName = "4.0.7"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -129,13 +129,13 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
 
   //google
-  implementation("com.google.android.material:material:1.10.0-alpha01")
+  implementation("com.google.android.material:material:1.9.0-rc01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
   implementation("com.google.code.gson:gson:2.10.1")
   implementation("com.google.dagger:hilt-android:2.45")
-  releaseImplementation(platform("com.google.firebase:firebase-bom:31.2.3"))
+  implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 

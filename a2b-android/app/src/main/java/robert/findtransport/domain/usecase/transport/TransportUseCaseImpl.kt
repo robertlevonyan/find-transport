@@ -33,7 +33,7 @@ class TransportUseCaseImpl @Inject constructor(
   private val stopsRepository: StopsRepository,
 ) : TransportUseCase {
   override fun getBusesPaged(): Flow<PagingData<Transport>> =
-    Pager(config = PagingConfig(pageSize = 10)) {
+    Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getBusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
@@ -45,7 +45,7 @@ class TransportUseCaseImpl @Inject constructor(
     }
 
   override fun getMicrobusesPaged(): Flow<PagingData<Transport>> =
-    Pager(config = PagingConfig(pageSize = 10)) {
+    Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getMicrobusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
@@ -57,7 +57,7 @@ class TransportUseCaseImpl @Inject constructor(
     }
 
   override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> =
-    Pager(config = PagingConfig(pageSize = 10)) {
+    Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getTrolleybusesPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
@@ -69,7 +69,7 @@ class TransportUseCaseImpl @Inject constructor(
     }
 
   override fun getMetroPaged(): Flow<PagingData<Transport>> =
-    Pager(config = PagingConfig(pageSize = 10)) {
+    Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getMetroPaged()
     }.flow.map { value ->
       value.map { apiTransport ->
