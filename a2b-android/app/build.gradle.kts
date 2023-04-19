@@ -4,6 +4,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
+  kotlin("plugin.serialization") version "1.8.20"
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
@@ -18,8 +19,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 299
-    versionName = "4.0.7"
+    versionCode = 301
+    versionName = "4.0.9"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -65,7 +66,7 @@ android {
       isMinifyEnabled = true
       proguardFiles(
         getDefaultProguardFile("proguard-android-optimize.txt"),
-        "$project.rootDir/tools/proguard-rules.pro"
+        "proguard-rules.pro"
       )
       ndk {
         debugSymbolLevel = "FULL"
@@ -127,13 +128,19 @@ dependencies {
   kotlin("stdlib")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.20")
+  implementation("io.ktor:ktor-client-android:2.2.4")
+  implementation("io.ktor:ktor-client-serialization:2.2.4")
+  implementation("io.ktor:ktor-client-cio:2.2.4")
+  implementation("io.ktor:ktor-client-logging-jvm:2.2.4")
+  implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
 
   //google
   implementation("com.google.android.material:material:1.9.0-rc01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
-  implementation("com.google.code.gson:gson:2.10.1")
   implementation("com.google.dagger:hilt-android:2.45")
   implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
@@ -166,11 +173,6 @@ dependencies {
   implementation("androidx.navigation:navigation-compose:2.5.3")
   implementation("androidx.paging:paging-compose:1.0.0-alpha18")
   implementation("io.coil-kt:coil-compose:2.2.2")
-
-  //squareup
-  implementation("com.squareup.retrofit2:retrofit:2.9.0")
-  implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-  implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
   //map
   implementation("com.mapbox.maps:android:10.11.0")

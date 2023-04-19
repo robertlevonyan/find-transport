@@ -6,9 +6,7 @@ import okhttp3.ConnectionSpec
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import robert.findtransport.BuildConfig
 import robert.findtransport.data.entity.TransportStopJoin
 import robert.findtransport.utils.BASE_URL
@@ -24,7 +22,7 @@ class RetrofitClient private constructor() {
 
     fun getClient(): Retrofit = retrofit ?: Retrofit.Builder().run {
       baseUrl(BASE_URL)
-      addConverterFactory(GsonConverterFactory.create(getGson()))
+//      addConverterFactory(GsonConverterFactory.create(getGson()))
       client(getOkHttpClient())
       build().also { retrofit = it }
     }
@@ -81,11 +79,11 @@ class RetrofitClient private constructor() {
 
         chain.proceed(newRequest)
       })
-      if (BuildConfig.DEBUG) {
-        addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply {
-          level = HttpLoggingInterceptor.Level.BODY
-        })
-      }
+//      if (BuildConfig.DEBUG) {
+//        addInterceptor(HttpLoggingInterceptor(HttpLoggingInterceptor.Logger.DEFAULT).apply {
+//          level = HttpLoggingInterceptor.Level.BODY
+//        })
+//      }
       build()
     }
   }

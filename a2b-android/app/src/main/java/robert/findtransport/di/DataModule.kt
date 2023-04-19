@@ -8,13 +8,30 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import robert.findtransport.data.api.ApiService
-import robert.findtransport.data.api.RetrofitClient
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 import robert.findtransport.data.cache.AppDatabase
 import robert.findtransport.data.cache.HistoryDao
 import robert.findtransport.data.cache.StopsDao
 import robert.findtransport.data.cache.TransportsDao
-import robert.findtransport.data.service.*
+import robert.findtransport.data.entity.Transport
+import robert.findtransport.data.model.enums.ExceptionType
+import robert.findtransport.data.model.error.A2bException
+import robert.findtransport.data.service.AddressProviderService
+import robert.findtransport.data.service.ApplicationContextProvider
+import robert.findtransport.data.service.FusedLocationService
+import robert.findtransport.data.service.InMemoryCacheService
+import robert.findtransport.data.service.LocationObserverService
+import robert.findtransport.data.service.ResourcesService
+import robert.findtransport.data.service.SharedPreferencesService
 
 @Module
 @InstallIn(ViewModelComponent::class, ServiceComponent::class)
@@ -64,5 +81,36 @@ object DataModule {
   fun getHistoryDao(appDatabase: AppDatabase): HistoryDao = appDatabase.historyDao()
 
   @Provides
-  fun getApiService(): ApiService = RetrofitClient.getClient().create(ApiService::class.java)
+  fun jsonFeature() = Json {
+    prettyPrint = true
+    isLenient = true
+    ignoreUnknownKeys = true
+  }
+
+  @Provides
+  fun getHttpClient(json: Json) = HttpClient(Android) {
+    engine {
+      connectTimeout = 100_000
+      socketTimeout = 100_000
+    }
+    install(ContentNegotiation) {
+      json(json)
+    }
+    expectSuccess = true
+    HttpResponseValidator {
+      handleResponseExceptionWithRequest { exception, request ->
+        val clientException =
+          exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
+        val exceptionResponse = clientException.response
+        if (exceptionResponse.status == HttpStatusCode.NotFound) {
+          throw A2bException(ExceptionType.API, -1, clientException)
+        }
+      }
+    }
+  }
+//
+//  @Provides
+//  fun getApiService(): ApiService = RetrofitClient.getClient().create(ApiService::class.java)
+
+
 }

@@ -5,6 +5,9 @@ import android.content.res.Resources
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.viewModelScope
+import io.ktor.client.call.body
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,6 +19,7 @@ import robert.findtransport.data.model.error.A2bException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.sqrt
+import robert.findtransport.BuildConfig
 
 fun String.isEmail() = Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
@@ -25,6 +29,13 @@ suspend fun <R> makeApiCall(call: suspend () -> R) = try {
 } catch (e: Exception) {
   Log.e("A2B", "ERROR", e)
   Result.Error(A2bException(ExceptionType.API, -1, e))
+}
+
+fun getHeader(): String {
+  val date = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).apply {
+    timeZone = TimeZone.getTimeZone("UTC")
+  }.format(Date())
+  return md5(BuildConfig.KEY_PREFIX, date)
 }
 
 fun isTablet(): Boolean {

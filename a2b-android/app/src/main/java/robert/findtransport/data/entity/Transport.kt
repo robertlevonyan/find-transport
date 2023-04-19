@@ -3,27 +3,30 @@ package robert.findtransport.data.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import robert.findtransport.data.cache.TransportRouteTypeConverter
 
 @Entity
+@Serializable
 class Transport(
   @PrimaryKey
-  @SerializedName("id")
+  @SerialName("id")
   val id: Int? = null,
-  @SerializedName("name")
+  @SerialName("name")
   val name: String? = null,
-  @SerializedName("vehicle_type")
+  @SerialName("vehicle_type")
   val type: Int? = null,
   @TypeConverters(TransportRouteTypeConverter::class)
-  @SerializedName("route")
+  @SerialName("route")
   val route: TransportRoute? = null,
   val favorite: Boolean = false,
 )
 
+@Serializable
 class TransportRoute(
-  @SerializedName("main_route")
+  @SerialName("main_route")
   val mainRoute: List<List<Double>>,
-  @SerializedName("reversed_route")
+  @SerialName("reversed_route")
   val reversedRoute: List<List<Double>>,
 )

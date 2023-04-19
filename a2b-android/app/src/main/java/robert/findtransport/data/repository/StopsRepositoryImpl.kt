@@ -1,32 +1,74 @@
 package robert.findtransport.data.repository
 
+import android.util.Log
 import androidx.paging.PagingSource
-import robert.findtransport.data.api.ApiService
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.http.URLProtocol
+import io.ktor.http.path
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import robert.findtransport.data.cache.StopsDao
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.StopLocation
 import robert.findtransport.data.model.Result
+import robert.findtransport.data.model.enums.ExceptionType
+import robert.findtransport.data.model.error.A2bException
 import robert.findtransport.data.service.InMemoryCacheService
 import robert.findtransport.data.service.SharedPreferencesService
 import robert.findtransport.domain.repository.StopsRepository
+import robert.findtransport.utils.BASE_URL
 import robert.findtransport.utils.MEM_CACHE_STOP
 import robert.findtransport.utils.PREF_LOCATIONS_ERROR
 import robert.findtransport.utils.PREF_STOPS_ERROR
-import robert.findtransport.utils.extensions.makeApiCall
+import robert.findtransport.utils.extensions.getHeader
 import javax.inject.Inject
 
 
 class StopsRepositoryImpl @Inject constructor(
-  private val apiService: ApiService,
+  private val httpClient: HttpClient,
+  private val json: Json,
   private val stopsDao: StopsDao,
   private val inMemoryCacheService: InMemoryCacheService,
   private val preferencesService: SharedPreferencesService,
 ) : StopsRepository {
   override suspend fun getStopsFromApi(): Result<List<Stop>> =
-    makeApiCall { apiService.getStops() }
+    try {
+      val httpResponse = httpClient.get {
+        url {
+          protocol = URLProtocol.HTTPS
+          host = BASE_URL
+          path("a2b/newstops/")
+          header("a2bkey", "Bearer ${getHeader()}")
+        }
+      }
+      httpResponse.body<String?>()?.let { jsonString ->
+        Result.Success(json.decodeFromString(ListSerializer(Stop.serializer()), jsonString))
+      } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
+    } catch (e: Exception) {
+      Log.e("A2B", "ERROR", e)
+      Result.Error(A2bException(ExceptionType.API, -1, e))
+    }
 
   override suspend fun getStopLocationsFromApi(): Result<List<StopLocation>> =
-    makeApiCall { apiService.getStopLocations() }
+    try {
+      val httpResponse = httpClient.get {
+        url {
+          protocol = URLProtocol.HTTPS
+          host = BASE_URL
+          path("a2b/newlocation/")
+          header("a2bkey", "Bearer ${getHeader()}")
+        }
+      }
+      httpResponse.body<String?>()?.let { jsonString ->
+        Result.Success(json.decodeFromString(ListSerializer(StopLocation.serializer()), jsonString))
+      } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
+    } catch (e: Exception) {
+      Log.e("A2B", "ERROR", e)
+      Result.Error(A2bException(ExceptionType.API, -1, e))
+    }
 
   override suspend fun cacheStops(stops: List<Stop>) {
     stopsDao.saveStop(stops)
