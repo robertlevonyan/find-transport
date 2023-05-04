@@ -12,7 +12,7 @@ class VersionUseCaseImpl @Inject constructor(private val versionRepository: Vers
       when (val remoteVersion = versionRepository.getVersionFromApi()) {
         is Result.Success -> {
           versionRepository.cacheVersion(remoteVersion.data)
-          localVersion.toDouble() < remoteVersion.data.toDouble()
+          localVersion.replace("\"", "").toDouble() < remoteVersion.data.replace("\"", "").toDouble()
         }
         is Result.Error -> false
       }

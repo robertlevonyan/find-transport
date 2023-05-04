@@ -84,13 +84,15 @@ class TransportUseCaseImpl @Inject constructor(
     emptyFlow()
   } else {
     transportsRepository.getTransportById(id).map { apiTransport ->
-      val stops = transportsRepository.getTransportStops(apiTransport.id).map { apiStop ->
-        apiStop.id?.let { id ->
-          apiStop.toStop(stopsRepository.getStopLocations(id)
-            .map { it.toStopLocation(apiStop) }
-          )
-        }.orEmpty()
-      }
+      val stops = apiTransport.id?.let { id ->
+        transportsRepository.getTransportStops(id).map { apiStop ->
+          apiStop.id?.let { id ->
+            apiStop.toStop(stopsRepository.getStopLocations(id)
+              .map { it.toStopLocation(apiStop) }
+            )
+          }.orEmpty()
+        }
+      }.orEmpty()
       val stopsReversed = apiTransport.id?.let { id ->
         transportsRepository.getTransportStopsReversed(id).map { apiStop ->
           apiStop.id?.let { id ->

@@ -9,8 +9,6 @@ import io.ktor.http.URLProtocol
 import io.ktor.http.path
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import robert.findtransport.data.api.ApiService
-import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
@@ -19,7 +17,6 @@ import robert.findtransport.domain.repository.VersionRepository
 import robert.findtransport.utils.BASE_URL
 import robert.findtransport.utils.PREF_VERSION
 import robert.findtransport.utils.extensions.getHeader
-import robert.findtransport.utils.extensions.makeApiCall
 import javax.inject.Inject
 
 class VersionRepositoryImpl @Inject constructor(

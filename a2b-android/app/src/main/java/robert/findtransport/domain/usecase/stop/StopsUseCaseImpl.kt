@@ -132,7 +132,7 @@ class StopsUseCaseImpl @Inject constructor(
 
     nearby.sortBy { it.locationDistance }
 
-    stops.find { stop -> stop.id == nearby.first().stopId }
+    stops.find { stop -> stop.id == nearby.firstOrNull()?.stopId }
   }
 
   override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {

@@ -119,7 +119,7 @@ fun Transport.getIcon(): Int = when (type) {
   BUS_JONGTONG -> R.drawable.ic_bus_jongtong
   BUS_MAN -> R.drawable.ic_bus_man
   TROLLEYBUS_OLD -> R.drawable.ic_trolleybus
-  TROLLEYBUS_NEW -> R.drawable.ic_trolleybus
+  TROLLEYBUS_NEW -> R.drawable.ic_trolleybus_youtong
   METRO -> R.drawable.ic_metro
   BUS_HYUNDAI -> R.drawable.ic_bus_hyundai
   BUS_PAZ -> R.drawable.ic_bus_paz

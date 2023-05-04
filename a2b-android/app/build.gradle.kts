@@ -13,14 +13,13 @@ plugins {
 
 android {
   compileSdk = 33
-//  compileSdkPreview = "UpsideDownCake"
   namespace = "robert.findtransport"
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 301
-    versionName = "4.0.9"
+    versionCode = 306
+    versionName = "4.0.13"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -128,13 +127,13 @@ dependencies {
   kotlin("stdlib")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.20")
-  implementation("io.ktor:ktor-client-android:2.2.4")
-  implementation("io.ktor:ktor-client-serialization:2.2.4")
-  implementation("io.ktor:ktor-client-cio:2.2.4")
-  implementation("io.ktor:ktor-client-logging-jvm:2.2.4")
-  implementation("io.ktor:ktor-client-content-negotiation:2.2.4")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:2.2.4")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.21")
+  implementation("io.ktor:ktor-client-android:2.3.0")
+  implementation("io.ktor:ktor-client-serialization:2.3.0")
+  implementation("io.ktor:ktor-client-cio:2.3.0")
+  implementation("io.ktor:ktor-client-logging-jvm:2.3.0")
+  implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
 
   //google
   implementation("com.google.android.material:material:1.9.0-rc01")
@@ -151,7 +150,7 @@ dependencies {
   //androidx
   implementation("androidx.browser:browser:1.5.0")
   implementation("androidx.core:core-ktx:1.10.0")
-  implementation("androidx.core:core-splashscreen:1.0.0")
+  implementation("androidx.core:core-splashscreen:1.0.1")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.room:room-runtime:2.5.1")
   implementation("androidx.room:room-ktx:2.5.1")
@@ -162,24 +161,22 @@ dependencies {
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.5")
-  implementation("androidx.compose.ui:ui:1.5.0-alpha02")
-  implementation("androidx.compose.ui:ui-tooling:1.5.0-alpha02")
-  implementation("androidx.compose.material:material:1.4.1")
-  implementation("androidx.compose.material3:material3:1.1.0-beta02")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-beta02")
+  implementation("androidx.compose.compiler:compiler:1.4.6")
+  implementation("androidx.compose.ui:ui:1.5.0-alpha03")
+  implementation("androidx.compose.ui:ui-tooling:1.5.0-alpha03")
+  implementation("androidx.compose.material3:material3:1.1.0-rc01")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-rc01")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.5.3")
   implementation("androidx.paging:paging-compose:1.0.0-alpha18")
-  implementation("io.coil-kt:coil-compose:2.2.2")
+  implementation("io.coil-kt:coil-compose:2.3.0")
 
   //map
   implementation("com.mapbox.maps:android:10.11.0")
 
   //other
   implementation("com.airbnb.android:lottie-compose:6.0.0")
-  implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
   implementation("com.robertlevonyan.compose:materialchip:3.0.6")
   implementation("me.saket.swipe:swipe:1.1.1")
   implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")

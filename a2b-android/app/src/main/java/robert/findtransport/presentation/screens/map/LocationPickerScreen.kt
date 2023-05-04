@@ -8,9 +8,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -43,14 +52,19 @@ fun LocationPickerScreen(
   var showPermissionDialog by rememberSaveable { mutableStateOf(!locationEnabled.value) }
 
   val launcher = rememberLauncherForActivityResult(
-    ActivityResultContracts.RequestPermission()
-  ) { isGranted: Boolean ->
-    locationPickerViewModel.setLocationEnabled(isGranted)
+    ActivityResultContracts.RequestMultiplePermissions()
+  ) { results ->
+    locationPickerViewModel.setLocationEnabled(results.values.all { it })
   }
 
   if (showPermissionDialog) {
     PermissionDialog(modifier = modifier, onDismiss = { showPermissionDialog = false }, onGrant = {
-      launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+      launcher.launch(
+        arrayOf(
+          Manifest.permission.ACCESS_FINE_LOCATION,
+          Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+      )
       showPermissionDialog = false
     }, onDecline = { showPermissionDialog = false })
   }

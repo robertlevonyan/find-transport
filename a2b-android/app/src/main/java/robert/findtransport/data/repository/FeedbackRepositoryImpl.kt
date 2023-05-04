@@ -3,14 +3,11 @@ package robert.findtransport.data.repository
 import android.util.Log
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.http.URLProtocol
 import io.ktor.http.path
-import robert.findtransport.data.api.ApiService
-import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
