@@ -23,6 +23,8 @@ interface StopsUseCase {
 
   suspend fun getNearbyStop(location: Location): Stop?
 
+  suspend fun getNearbyStops(location: Location): List<Stop>
+
   suspend fun getStop(id: Int): Stop
 
   suspend fun downloadStops(): Result<Unit>

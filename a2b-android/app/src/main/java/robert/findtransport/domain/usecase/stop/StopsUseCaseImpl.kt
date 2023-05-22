@@ -121,7 +121,7 @@ class StopsUseCaseImpl @Inject constructor(
 
         nearby.add(
           NearbyLocation(
-            stopId = stop.id,
+            stop = stop,
             latitude = newLocation.latitude,
             longitude = newLocation.longitude,
             locationDistance = distance,
@@ -132,7 +132,39 @@ class StopsUseCaseImpl @Inject constructor(
 
     nearby.sortBy { it.locationDistance }
 
-    stops.find { stop -> stop.id == nearby.firstOrNull()?.stopId }
+//    stops.find { stop -> stop.id == nearby.firstOrNull()?.stop?.id }
+    nearby.firstOrNull()?.stop
+  }
+
+  override suspend fun getNearbyStops(location: Location): List<Stop> = withContext(Dispatchers.IO) {
+    val stops = getStops()
+    if (stops.isEmpty()) return@withContext emptyList<Stop>()
+
+    val nearby = mutableListOf<NearbyLocation>()
+
+    stops.forEach { stop ->
+      stop.coordinates.forEach { coordinate ->
+        val newLocation = Location("next").apply {
+          latitude = coordinate.lat
+          longitude = coordinate.lng
+        }
+
+        val distance = location.distanceTo(newLocation)
+
+        nearby.add(
+          NearbyLocation(
+            stop = stop,
+            latitude = newLocation.latitude,
+            longitude = newLocation.longitude,
+            locationDistance = distance,
+          )
+        )
+      }
+    }
+
+    nearby.sortBy { it.locationDistance }
+
+    return@withContext nearby.map { it.stop }
   }
 
   override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {

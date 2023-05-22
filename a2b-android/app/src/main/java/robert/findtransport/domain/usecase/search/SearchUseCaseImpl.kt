@@ -248,7 +248,7 @@ class SearchUseCaseImpl @Inject constructor(
 
         add(
           NearbyLocation(
-            stop.id,
+            stop,
             newLocation.latitude,
             newLocation.longitude,
             Location("stop").apply {
@@ -261,7 +261,7 @@ class SearchUseCaseImpl @Inject constructor(
     }
   }.asSequence()
     .sortedBy { it.locationDistance }
-    .map { runBlocking { stopsUseCase.getStop(it.stopId) } }
+    .map { runBlocking { stopsUseCase.getStop(it.stop.id) } }
 
   private suspend fun tryFindRoutes(
     nearby: List<Stop>,

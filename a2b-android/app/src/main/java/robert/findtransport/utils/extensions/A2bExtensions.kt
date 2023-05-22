@@ -48,6 +48,7 @@ import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
+import robert.findtransport.data.entity.Transport as TransportEntity
 
 fun Transport.getTypeName() = when (type) {
   MICROBUS_OLD, MICROBUS_NEW, MICROBUS_SPRINTER -> R.string.label_microbus
@@ -230,3 +231,10 @@ fun MapboxMap.flyTo(location: Location) {
 fun Transport?.orEmpty() = this ?: Transport.EMPTY
 
 fun Stop?.orEmpty() = this ?: Stop.EMPTY
+
+fun Collection<Transport>.intersectTransports(otherList: Collection<Transport>): List<Transport> {
+  val list = this.toMutableSet()
+  val otherSet = otherList.toSet()
+  list.retainAll { transport -> otherSet.map { it.id }.contains(transport.id) }
+  return list.toSet().toList()
+}

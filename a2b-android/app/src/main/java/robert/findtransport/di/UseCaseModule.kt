@@ -22,6 +22,8 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCaseImpl
 import robert.findtransport.domain.usecase.preference.*
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCaseImpl
+import robert.findtransport.domain.usecase.search.NewSearchUseCase
+import robert.findtransport.domain.usecase.search.NewSearchUseCaseImpl
 import robert.findtransport.domain.usecase.search.SearchUseCase
 import robert.findtransport.domain.usecase.search.SearchUseCaseImpl
 import robert.findtransport.domain.usecase.stop.StopsUseCase
@@ -61,6 +63,9 @@ abstract class UseCaseModule {
 
   @Binds
   abstract fun bindSearchUseCase(impl: SearchUseCaseImpl): SearchUseCase
+
+  @Binds
+  abstract fun bindNewSearchUseCase(impl: NewSearchUseCaseImpl): NewSearchUseCase
 
   @Binds
   abstract fun bindPermissionUseCase(impl: PermissionUseCaseImpl): PermissionUseCase

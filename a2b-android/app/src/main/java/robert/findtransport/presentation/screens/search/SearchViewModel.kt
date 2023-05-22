@@ -14,6 +14,7 @@ import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.SearchState
 import robert.findtransport.data.model.error.A2bException
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import robert.findtransport.domain.usecase.search.NewSearchUseCase
 import robert.findtransport.domain.usecase.search.SearchUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import robert.findtransport.domain.usecase.transport.TransportUseCase
@@ -25,6 +26,7 @@ class SearchViewModel @Inject constructor(
   private val stopsUseCase: StopsUseCase,
   private val transportUseCase: TransportUseCase,
   private val searchUseCase: SearchUseCase,
+  private val newSearchUseCase: NewSearchUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val fromStop = MutableStateFlow(Stop.EMPTY)
@@ -40,24 +42,25 @@ class SearchViewModel @Inject constructor(
     destinationStopId: Int,
     destinationLatitude: Float,
     destinationLongitude: Float,
-    opened: String) {
+    opened: String
+  ) {
     viewModelScope.launch {
       fromStop.value = stopsUseCase.getStop(originStopId)
       toStop.value = stopsUseCase.getStop(destinationStopId)
 
-      searchUseCase.search(
+      newSearchUseCase.invoke(
         originName,
         originLatitude,
         originLongitude,
         destinationName,
         destinationLatitude,
         destinationLongitude,
-        opened)
-        .catch { e ->
-          if (e is A2bException) {
-            searchResults.value = SearchState.Failed(e.type)
-          }
+        opened
+      ).catch { e ->
+        if (e is A2bException) {
+          searchResults.value = SearchState.Failed(e.type)
         }
+      }
         .collectLatest { searchState -> searchResults.value = searchState }
     }
   }

@@ -192,7 +192,7 @@ class TransportUseCaseImpl @Inject constructor(
 
         nearby.add(
           NearbyLocation(
-            stop.id,
+            stop,
             newLocation.latitude,
             newLocation.longitude,
             location.distanceTo(newLocation)
@@ -200,7 +200,7 @@ class TransportUseCaseImpl @Inject constructor(
         )
         nearbyDestination.add(
           NearbyLocation(
-            stop.id,
+            stop,
             newLocation.latitude,
             newLocation.longitude,
             destinationLocation.distanceTo(newLocation)
@@ -217,9 +217,9 @@ class TransportUseCaseImpl @Inject constructor(
     nearby.sortBy { it.locationDistance }
     nearbyDestination.sortBy { it.locationDistance }
 
-    val nearbyStop = stops.find { stop -> stop.id == nearby.first().stopId } ?: Stop.EMPTY
+    val nearbyStop = stops.find { stop -> stop.id == nearby.first().stop.id } ?: Stop.EMPTY
     val preDestination =
-      stops.findLast { stop -> stop.id == nearbyDestination[1].stopId } ?: Stop.EMPTY
+      stops.findLast { stop -> stop.id == nearbyDestination[1].stop.id } ?: Stop.EMPTY
 
     emit(nearbyStop to preDestination)
   }.flowOn(Dispatchers.IO)
