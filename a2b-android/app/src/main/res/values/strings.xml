@@ -28,10 +28,10 @@
     <string name="label_yes">Yes</string>
     <string name="label_no">No</string>
     <string name="label_ok" translatable="false">OK</string>
-    <string name="label_from_long">I am going</string>
+    <string name="label_from_long">My location is</string>
     <string name="label_from">From:</string>
     <string name="label_from2">From</string>
-    <string name="label_to_long">and want to reach</string>
+    <string name="label_to_long">I want to reach</string>
     <string name="label_to">To:</string>
     <string name="label_all_transports">See all transports</string>
     <string name="label_search">Search</string>

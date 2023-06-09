@@ -19,7 +19,13 @@ import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.animation.easeTo
 import com.mapbox.maps.plugin.annotation.annotations
-import com.mapbox.maps.plugin.annotation.generated.*
+import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PolylineAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPolylineAnnotationManager
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.data.entity.Stop
@@ -28,11 +34,16 @@ import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
+import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.screens.transport.TransportViewModel
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.STOP_ICON_SIZE
-import robert.findtransport.utils.extensions.*
+import robert.findtransport.utils.extensions.enableLocationComponent
+import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
+import robert.findtransport.utils.extensions.getColorFromRes
+import robert.findtransport.utils.extensions.getCurrentName
+import robert.findtransport.utils.extensions.showToast
 
 @Composable
 fun MapView(
@@ -110,7 +121,7 @@ private fun handleRoute(
       }))
   polylineAnnotationManager.create(options)
 
-  val padding = context.getDimenInt(R.dimen.fab_margin).toDouble()
+  val padding = FabPadding.value.toDouble()
   val center = coordinates.getOrNull(coordinates.lastIndex / 2)?.run { Point.fromLngLat(lng, lat) }
     ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
 

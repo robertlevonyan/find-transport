@@ -18,8 +18,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 33
-    versionCode = 308
-    versionName = "4.1.0"
+    versionCode = 309
+    versionName = "4.1.1"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -115,7 +115,7 @@ android {
     storeArchive.enable = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.2"
+    kotlinCompilerExtensionVersion = "1.4.7"
   }
   kapt {
     correctErrorTypes = true
@@ -125,31 +125,31 @@ android {
 dependencies {
   //kotlin
   kotlin("stdlib")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.21")
-  implementation("io.ktor:ktor-client-android:2.3.0")
-  implementation("io.ktor:ktor-client-serialization:2.3.0")
-  implementation("io.ktor:ktor-client-cio:2.3.0")
-  implementation("io.ktor:ktor-client-logging-jvm:2.3.0")
-  implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+  implementation("io.ktor:ktor-client-android:2.3.1")
+  implementation("io.ktor:ktor-client-serialization:2.3.1")
+  implementation("io.ktor:ktor-client-cio:2.3.1")
+  implementation("io.ktor:ktor-client-logging-jvm:2.3.1")
+  implementation("io.ktor:ktor-client-content-negotiation:2.3.1")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.1")
 
   //google
   implementation("com.google.android.material:material:1.9.0-rc01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
-  implementation("com.google.dagger:hilt-android:2.45")
-  implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
+  implementation("com.google.dagger:hilt-android:2.46.1")
+  implementation(platform("com.google.firebase:firebase-bom:32.1.0"))
   releaseImplementation("com.google.firebase:firebase-analytics-ktx")
   releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
 
-  kapt("com.google.dagger:hilt-android-compiler:2.45")
+  kapt("com.google.dagger:hilt-android-compiler:2.46.1")
 
   //androidx
   implementation("androidx.browser:browser:1.5.0")
-  implementation("androidx.core:core-ktx:1.10.0")
+  implementation("androidx.core:core-ktx:1.10.1")
   implementation("androidx.core:core-splashscreen:1.0.1")
   implementation("androidx.multidex:multidex:2.0.1")
   implementation("androidx.room:room-runtime:2.5.1")
@@ -161,16 +161,16 @@ dependencies {
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.6")
-  implementation("androidx.compose.ui:ui:1.5.0-alpha03")
-  implementation("androidx.compose.ui:ui-tooling:1.5.0-alpha03")
-  implementation("androidx.compose.material3:material3:1.1.0-rc01")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.0-rc01")
+  implementation("androidx.compose.compiler:compiler:1.4.7")
+  implementation("androidx.compose.ui:ui:1.5.0-beta02")
+  implementation("androidx.compose.ui:ui-tooling:1.5.0-beta02")
+  implementation("androidx.compose.material3:material3:1.2.0-alpha02")
+  implementation("androidx.compose.material3:material3-window-size-class:1.2.0-alpha02")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-  implementation("androidx.navigation:navigation-compose:2.5.3")
-  implementation("androidx.paging:paging-compose:1.0.0-alpha18")
-  implementation("io.coil-kt:coil-compose:2.3.0")
+  implementation("androidx.navigation:navigation-compose:2.6.0")
+  implementation("androidx.paging:paging-compose:1.0.0-alpha20")
+  implementation("io.coil-kt:coil-compose:2.4.0")
 
   //map
   implementation("com.mapbox.maps:android:10.11.0")
@@ -179,5 +179,4 @@ dependencies {
   implementation("com.airbnb.android:lottie-compose:6.0.0")
   implementation("com.robertlevonyan.compose:materialchip:3.0.6")
   implementation("me.saket.swipe:swipe:1.1.1")
-  implementation("net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.3.0")
 }

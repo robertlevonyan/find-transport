@@ -5,11 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -24,7 +27,12 @@ import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.Accent
+import robert.findtransport.presentation.reusables.Black
+import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.Padding85
+import robert.findtransport.presentation.reusables.TextTrackerLabel
 import robert.findtransport.presentation.reusables.composables.A2bDialog
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextPrimary
@@ -32,7 +40,7 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getTypeName
 import robert.findtransport.utils.extensions.showToast
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun TrackRouteContent(
@@ -89,7 +97,7 @@ fun TrackRouteContent(
 
       TextPrimary(
         modifier = Modifier
-          .padding(top = dimensionResource(id = R.dimen.margin_85))
+          .padding(top = Padding85)
           .constrainAs(labelSelected) {
             width = Dimension.wrapContent
             height = Dimension.wrapContent
@@ -148,7 +156,7 @@ fun TrackRouteContent(
 
       RegularButton(
         modifier = Modifier
-          .padding(bottom = dimensionResource(id = R.dimen.margin_85))
+          .padding(bottom = Padding85)
           .constrainAs(stopButton) {
             width = Dimension.wrapContent
             height = Dimension.wrapContent

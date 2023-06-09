@@ -94,6 +94,7 @@ fun StopCard(
       text = stop.getCurrentName(locale),
       fontSize = Text11,
       fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      color = MaterialTheme.colorScheme.onPrimary
     )
 
     if (showOptions) {

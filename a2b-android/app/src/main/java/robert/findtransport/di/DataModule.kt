@@ -108,9 +108,4 @@ object DataModule {
       }
     }
   }
-//
-//  @Provides
-//  fun getApiService(): ApiService = RetrofitClient.getClient().create(ApiService::class.java)
-
-
 }
