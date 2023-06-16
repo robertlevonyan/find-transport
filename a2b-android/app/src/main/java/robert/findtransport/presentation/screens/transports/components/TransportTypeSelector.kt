@@ -3,6 +3,10 @@ package robert.findtransport.presentation.screens.transports.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -14,6 +18,7 @@ fun TransportTypeSelector(
   transportCategory: TransportCategory,
   onTransportCategoryClick: (TransportCategory) -> Unit,
 ) {
+  var selectedCategory by remember { mutableStateOf(TransportCategory.BUS) }
   ConstraintLayout(
     modifier = Modifier
       .fillMaxWidth()
@@ -30,7 +35,11 @@ fun TransportTypeSelector(
         end.linkTo(microbusCard.start)
       },
       transportCategory = transportCategory,
-      onTransportCategoryClick = onTransportCategoryClick,
+      isSelected = selectedCategory == TransportCategory.BUS,
+      onTransportCategoryClick = {
+        selectedCategory = it
+        onTransportCategoryClick(it)
+      },
     )
 
     TransportTypeMicrobus(
@@ -42,7 +51,11 @@ fun TransportTypeSelector(
         end.linkTo(parent.end)
       },
       transportCategory = transportCategory,
-      onTransportCategoryClick = onTransportCategoryClick,
+      isSelected = selectedCategory == TransportCategory.MICROBUS,
+      onTransportCategoryClick = {
+        selectedCategory = it
+        onTransportCategoryClick(it)
+      },
     )
 
     TransportTypeTrolleybus(
@@ -54,7 +67,11 @@ fun TransportTypeSelector(
         end.linkTo(metroCard.start)
       },
       transportCategory = transportCategory,
-      onTransportCategoryClick = onTransportCategoryClick,
+      isSelected = selectedCategory == TransportCategory.TROLLEYBUS,
+      onTransportCategoryClick = {
+        selectedCategory = it
+        onTransportCategoryClick(it)
+      },
     )
 
     TransportTypeMetro(
@@ -66,7 +83,11 @@ fun TransportTypeSelector(
         end.linkTo(parent.end)
       },
       transportCategory = transportCategory,
-      onTransportCategoryClick = onTransportCategoryClick,
+      isSelected = selectedCategory == TransportCategory.METRO,
+      onTransportCategoryClick = {
+        selectedCategory = it
+        onTransportCategoryClick(it)
+      },
     )
   }
 }
