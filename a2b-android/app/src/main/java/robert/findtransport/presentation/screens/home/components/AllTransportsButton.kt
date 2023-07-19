@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,9 @@ fun AllTransportsButton(
     elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
     shape = Shapes.medium,
     onClick = { onClick.invoke() },
+    colors = ButtonDefaults.buttonColors(
+      containerColor = MaterialTheme.colorScheme.surface
+    ),
   ) {
     Column(
       modifier = Modifier
@@ -35,10 +39,15 @@ fun AllTransportsButton(
         .padding(bottom = SmallPadding),
       horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      Image(painter = painterResource(id = R.drawable.ic_arrow_up), contentDescription = null)
+      Image(
+        painter = painterResource(id = R.drawable.ic_arrow_up),
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+      )
       Text(
         text = stringResource(id = R.string.label_all_transports),
         fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+        color = MaterialTheme.colorScheme.onPrimary,
       )
     }
   }

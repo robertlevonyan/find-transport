@@ -4,7 +4,7 @@ plugins {
   id("com.android.application")
   kotlin("android")
   kotlin("kapt")
-  kotlin("plugin.serialization") version "1.8.20"
+  kotlin("plugin.serialization") version "1.8.22"
   id("kotlin-parcelize")
   id("com.google.gms.google-services")
   id("com.google.firebase.crashlytics")
@@ -12,14 +12,14 @@ plugins {
 }
 
 android {
-  compileSdk = 33
+  compileSdk = 34
   namespace = "robert.findtransport"
   defaultConfig {
     applicationId = "robert.findtransport"
     minSdk = 23
-    targetSdk = 33
-    versionCode = 310
-    versionName = "4.1.1"
+    targetSdk = 34
+    versionCode = 312
+    versionName = "4.1.3"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -115,7 +115,7 @@ android {
     storeArchive.enable = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.4.7"
+    kotlinCompilerExtensionVersion = "1.4.8"
   }
   kapt {
     correctErrorTypes = true
@@ -127,7 +127,7 @@ dependencies {
   kotlin("stdlib")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.21")
+  implementation("org.jetbrains.kotlin:kotlin-reflect:1.8.22")
   implementation("io.ktor:ktor-client-android:2.3.1")
   implementation("io.ktor:ktor-client-serialization:2.3.1")
   implementation("io.ktor:ktor-client-cio:2.3.1")
@@ -136,7 +136,7 @@ dependencies {
   implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.1")
 
   //google
-  implementation("com.google.android.material:material:1.9.0-rc01")
+  implementation("com.google.android.material:material:1.11.0-alpha01")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -152,24 +152,24 @@ dependencies {
   implementation("androidx.core:core-ktx:1.10.1")
   implementation("androidx.core:core-splashscreen:1.0.1")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.room:room-runtime:2.5.1")
-  implementation("androidx.room:room-ktx:2.5.1")
-  implementation("androidx.room:room-paging:2.5.1")
+  implementation("androidx.room:room-runtime:2.5.2")
+  implementation("androidx.room:room-ktx:2.5.2")
+  implementation("androidx.room:room-paging:2.5.2")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  kapt("androidx.room:room-compiler:2.5.1")
+  kapt("androidx.room:room-compiler:2.5.2")
 
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.4.7")
-  implementation("androidx.compose.ui:ui:1.5.0-beta02")
-  implementation("androidx.compose.ui:ui-tooling:1.5.0-beta02")
-  implementation("androidx.compose.material3:material3:1.2.0-alpha02")
-  implementation("androidx.compose.material3:material3-window-size-class:1.2.0-alpha02")
+  implementation("androidx.compose.compiler:compiler:1.4.8")
+  implementation("androidx.compose.ui:ui:1.6.0-alpha01")
+  implementation("androidx.compose.ui:ui-tooling:1.6.0-alpha01")
+  implementation("androidx.compose.material3:material3:1.2.0-alpha03")
+  implementation("androidx.compose.material3:material3-window-size-class:1.2.0-alpha03")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.6.0")
-  implementation("androidx.paging:paging-compose:1.0.0-alpha20")
+  implementation("androidx.paging:paging-compose:3.2.0-rc01")
   implementation("io.coil-kt:coil-compose:2.4.0")
 
   //map

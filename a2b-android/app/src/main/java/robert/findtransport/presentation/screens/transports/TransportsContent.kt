@@ -6,7 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.itemsIndexed
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportCategory
 import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
@@ -24,24 +25,25 @@ fun TransportsContent(
 ) {
   LazyColumn(modifier = modifier) {
     item { TransportTypeSelector(transportCategory, onTransportCategoryClick) }
-    itemsIndexed(
-      items = transports,
-      itemContent = { index, item ->
-        item ?: return@itemsIndexed
-        println("$index $item")
-        TransportListElement(
-          transport = item,
-          locale = locale,
-          onElementClick = onTransportClick,
-        )
+    items(
+      count = transports.itemCount,
+      key = transports.itemKey { it.id },
+      contentType = transports.itemContentType { it.number },
+    ) { index ->
+      val item = transports[index] ?: return@items
+      println("$index $item")
+      TransportListElement(
+        transport = item,
+        locale = locale,
+        onElementClick = onTransportClick,
+      )
 
-        if (index < transports.itemCount - 1) {
-          Divider(
-            color = colorVariantInvertTransparent(),
-            thickness = 0.5.dp,
-          )
-        }
-      },
-    )
+      if (index < transports.itemCount - 1) {
+        Divider(
+          color = colorVariantInvertTransparent(),
+          thickness = 0.5.dp,
+        )
+      }
+    }
   }
 }

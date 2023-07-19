@@ -4,7 +4,7 @@ plugins {
   id("com.google.dagger.hilt.android") version "2.45" apply false
   id("com.google.gms.google-services") version "4.3.15" apply false
   id("com.google.firebase.crashlytics") version "2.9.5" apply false
-  kotlin("android") version "1.8.21" apply false
+  kotlin("android") version "1.8.22" apply false
 }
 
 buildscript {

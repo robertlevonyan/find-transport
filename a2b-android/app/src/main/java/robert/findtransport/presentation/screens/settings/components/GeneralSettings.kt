@@ -1,7 +1,17 @@
 package robert.findtransport.presentation.screens.settings.components
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -10,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.integerArrayResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +35,7 @@ import robert.findtransport.presentation.reusables.GeneralSettingCardSize
 import robert.findtransport.presentation.reusables.Shapes
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 
+
 @Composable
 fun GeneralSettings(modifier: Modifier) {
   Column(
@@ -32,6 +44,7 @@ fun GeneralSettings(modifier: Modifier) {
       .wrapContentHeight()
   ) {
     TextSecondary(text = stringResource(id = R.string.settings_general))
+    val context = LocalContext.current
 
     Row(
       modifier = modifier
@@ -50,6 +63,24 @@ fun GeneralSettings(modifier: Modifier) {
           modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight()
+            .clickable {
+              val packageName = context.packageName.replace(".debug", "")
+              try {
+                context.startActivity(
+                  Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$packageName")
+                  )
+                )
+              } catch (e: ActivityNotFoundException) {
+                context.startActivity(
+                  Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                  )
+                )
+              }
+            }
         ) {
           Image(
             modifier = modifier

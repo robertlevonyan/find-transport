@@ -220,7 +220,7 @@ fun HomeContent(
         .padding(horizontal = DoublePadding)
         .padding(vertical = FabPadding)
         .constrainAs(allTransports) {
-          width = Dimension.wrapContent
+          width = Dimension.matchParent
           height = Dimension.wrapContent
           end.linkTo(parent.end)
           start.linkTo(parent.start)

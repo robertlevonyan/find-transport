@@ -10,7 +10,7 @@ class SharedPreferencesService private constructor(context: Context) {
 
   init {
     preferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
-      if (sharedPreferences.contains(key)) {
+      if (key != null && sharedPreferences.contains(key)) {
         sharedPreferences.all[key]?.let { value -> preferencesChangeFlow.value = key to value }
       }
     }

@@ -11,6 +11,7 @@ import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
 import robert.findtransport.domain.usecase.data.DownloadDataUseCase
+import robert.findtransport.domain.usecase.feedback.FeedbackUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.preference.ThemeUseCase
 import javax.inject.Inject
@@ -20,28 +21,35 @@ class DataViewModel @Inject constructor(
   themeUseCase: ThemeUseCase,
   localeUseCase: LocaleUseCase,
   private val downloadDataUseCase: DownloadDataUseCase,
+  private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
   val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
 
   fun checkData() {
-    if (loaded.value == DataLoading.Loaded || loaded.value == DataLoading.Loading) {
+    val loadedValue = loaded.value
+    if (loadedValue == DataLoading.Loaded || loadedValue == DataLoading.Loading) {
       return
     }
 
     viewModelScope.launch {
       downloadDataUseCase.downloadData()
         .catch { e ->
+          feedbackUseCase.sendFeedback("error@a2b.com", "Data download", "$e")
           loaded.value = when (e) {
             is DataDownloadExceptions.VpnException ->
               DataLoading.Failed(DataDownloadExceptions.VpnException())
+
             is DataDownloadExceptions.NoInternetException ->
               DataLoading.Failed(DataDownloadExceptions.NoInternetException())
+
             is DataDownloadExceptions.NotEnoughSpaceException ->
               DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
+
             is DataDownloadExceptions.NotDownloadedException ->
               DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
+
             else -> return@catch
           }
         }
