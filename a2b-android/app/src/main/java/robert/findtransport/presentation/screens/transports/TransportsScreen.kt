@@ -26,8 +26,10 @@ fun TransportsScreen(
   Scaffold(modifier = modifier, topBar = {
     A2bAppBar(
       title = stringResource(id = R.string.title_transports),
+      hasFeedbackButton = true,
       navigationIcon = R.drawable.ic_arrow_back,
       onNavigationIconClick = { navController.popBackStack() },
+      onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
     )
   }) { contentPadding ->
     val transports = when (transportCategory) {

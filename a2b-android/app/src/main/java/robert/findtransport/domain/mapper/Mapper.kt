@@ -23,11 +23,11 @@ fun ApiLocation.toStopLocation(apiStop: ApiStop): StopLocation = StopLocation(
   parentStop = apiStop.toStop(),
 )
 
-fun ApiStop.toStop(coordinates: List<StopLocation> = emptyList()): Stop = Stop(
-  id = id ?: 0,
-  nameAm = nameAm.orEmpty(),
-  nameEn = nameEn.orEmpty(),
-  nameRu = nameRu.orEmpty(),
+fun ApiStop?.toStop(coordinates: List<StopLocation> = emptyList()): Stop = Stop(
+  id = this?.id ?: 0,
+  nameAm = this?.nameAm.orEmpty(),
+  nameEn = this?.nameEn.orEmpty(),
+  nameRu = this?.nameRu.orEmpty(),
   coordinates = coordinates,
 )
 

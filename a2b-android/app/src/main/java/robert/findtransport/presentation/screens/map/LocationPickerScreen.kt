@@ -58,15 +58,19 @@ fun LocationPickerScreen(
   }
 
   if (showPermissionDialog) {
-    PermissionDialog(modifier = modifier, onDismiss = { showPermissionDialog = false }, onGrant = {
-      launcher.launch(
-        arrayOf(
-          Manifest.permission.ACCESS_FINE_LOCATION,
-          Manifest.permission.ACCESS_COARSE_LOCATION
+    PermissionDialog(
+      modifier = modifier,
+      onDismiss = { showPermissionDialog = false },
+      onGrant = {
+        launcher.launch(
+          arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+          )
         )
-      )
-      showPermissionDialog = false
-    }, onDecline = { showPermissionDialog = false })
+        showPermissionDialog = false
+      },
+      onDecline = { showPermissionDialog = false })
   }
 
   LocationPickerContent(

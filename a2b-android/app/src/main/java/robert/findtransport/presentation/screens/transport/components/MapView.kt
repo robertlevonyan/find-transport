@@ -55,43 +55,47 @@ fun MapView(
 ) {
   val isPrimary by transportViewModel.isPrimary.collectAsState()
 
-  AndroidView(modifier = Modifier.fillMaxSize(), factory = { context ->
-    ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
-    com.mapbox.maps.MapView(context = context)
-  }, update = { mapView ->
-    val map = mapView.getMapboxMap()
-    val context = mapView.context
+  AndroidView(
+    modifier = Modifier.fillMaxSize(),
+    factory = { context ->
+      ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
+      com.mapbox.maps.MapView(context = context)
+    },
+    update = { mapView ->
+      val map = mapView.getMapboxMap()
+      val context = mapView.context
 
-    val pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
-      addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
-        pointAnnotation.getData()?.let { data ->
-          val stop = data.fromJson<Stop>().toStop()
-          context.showToast(stop.getCurrentName(locale))
-        }
-        true
-      })
-    }
-    val polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
-      lineCap = LineCap.ROUND
-    }
-
-    map.loadStyleUri(styleUri = mapStyle, onStyleLoaded = { style ->
-      if (locationEnabled) {
-        mapView.enableLocationComponent()
+      val pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
+        addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+          pointAnnotation.getData()?.let { data ->
+            val stop = data.fromJson<Stop>().toStop()
+            context.showToast(stop.getCurrentName(locale))
+          }
+          true
+        })
+      }
+      val polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
+        lineCap = LineCap.ROUND
       }
 
-      map.setCamera(CameraOptions.Builder().zoom(11.0).build())
+      map.loadStyleUri(styleUri = mapStyle, onStyleLoaded = { style ->
+        if (locationEnabled) {
+          mapView.enableLocationComponent()
+        }
 
-      handleRoute(
-        context = context,
-        map = map,
-        pointAnnotationManager = pointAnnotationManager,
-        polylineAnnotationManager = polylineAnnotationManager,
-        transport = transport,
-        isPrimary = isPrimary,
-      )
-    })
-  })
+        map.setCamera(CameraOptions.Builder().zoom(11.0).build())
+
+        handleRoute(
+          context = context,
+          map = map,
+          pointAnnotationManager = pointAnnotationManager,
+          polylineAnnotationManager = polylineAnnotationManager,
+          transport = transport,
+          isPrimary = isPrimary,
+        )
+      })
+    },
+  )
 }
 
 private fun handleRoute(

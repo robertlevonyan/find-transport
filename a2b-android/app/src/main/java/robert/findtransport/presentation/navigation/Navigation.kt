@@ -159,16 +159,16 @@ fun Navigation() {
 }
 
 sealed class NavigationScreens(val name: String) {
-  object IntroScreen : NavigationScreens("intro_screen")
-  object HomeScreen : NavigationScreens("home_screen")
-  object TransportsScreen : NavigationScreens("transports_screen")
-  object TransportScreen : NavigationScreens("transport_screen")
-  object StopsPickerScreen : NavigationScreens("stops_picker_screen")
-  object SettingsScreen : NavigationScreens("settings_screen")
-  object FeedbackScreen : NavigationScreens("feedback_screen")
-  object HistoryScreen : NavigationScreens("history_screen")
-  object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
-  object SearchScreen : NavigationScreens("search_screen")
-  object TrackRouteScreen : NavigationScreens("track_route_screen")
-  object LocationPicker : NavigationScreens("location_picker")
+  data object IntroScreen : NavigationScreens("intro_screen")
+  data object HomeScreen : NavigationScreens("home_screen")
+  data object TransportsScreen : NavigationScreens("transports_screen")
+  data object TransportScreen : NavigationScreens("transport_screen")
+  data object StopsPickerScreen : NavigationScreens("stops_picker_screen")
+  data object SettingsScreen : NavigationScreens("settings_screen")
+  data object FeedbackScreen : NavigationScreens("feedback_screen")
+  data object HistoryScreen : NavigationScreens("history_screen")
+  data object PassingRoutesScreen : NavigationScreens("passing_routes_screen")
+  data object SearchScreen : NavigationScreens("search_screen")
+  data object TrackRouteScreen : NavigationScreens("track_route_screen")
+  data object LocationPicker : NavigationScreens("location_picker")
 }

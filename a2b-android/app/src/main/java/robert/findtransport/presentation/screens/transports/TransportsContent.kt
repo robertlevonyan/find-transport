@@ -1,7 +1,9 @@
 package robert.findtransport.presentation.screens.transports
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,19 +32,21 @@ fun TransportsContent(
       key = transports.itemKey { it.id },
       contentType = transports.itemContentType { it.number },
     ) { index ->
-      val item = transports[index] ?: return@items
-      println("$index $item")
-      TransportListElement(
-        transport = item,
-        locale = locale,
-        onElementClick = onTransportClick,
-      )
-
-      if (index < transports.itemCount - 1) {
-        Divider(
-          color = colorVariantInvertTransparent(),
-          thickness = 0.5.dp,
+      val item = transports[index]
+      if (item == null) {
+        Box(modifier = Modifier.size(0.dp)) {}
+      } else {
+        TransportListElement(
+          transport = item,
+          locale = locale,
+          onElementClick = onTransportClick,
         )
+        if (index < transports.itemCount - 1) {
+          HorizontalDivider(
+            color = colorVariantInvertTransparent(),
+            thickness = 0.5.dp,
+          )
+        }
       }
     }
   }

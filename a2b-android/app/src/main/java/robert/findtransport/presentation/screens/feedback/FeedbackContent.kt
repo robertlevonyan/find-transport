@@ -2,15 +2,28 @@ package robert.findtransport.presentation.screens.feedback
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -32,7 +45,6 @@ import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.feedback.components.FeedbackInput
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FeedbackContent(
   modifier: Modifier,
@@ -59,6 +71,7 @@ fun FeedbackContent(
         duration = SnackbarDuration.Indefinite,
       )
     }
+
     FeedbackSendingStatus.Sent -> LaunchedEffect(key1 = null) {
       snackbarHostState.currentSnackbarData?.dismiss()
       snackbarHostState.showSnackbar(
@@ -66,17 +79,21 @@ fun FeedbackContent(
         duration = SnackbarDuration.Short,
       )
     }
+
     is FeedbackSendingStatus.Failure -> {
       snackbarHostState.currentSnackbarData?.dismiss()
       when ((feedbackState as FeedbackSendingStatus.Failure).type) {
         ExceptionType.ERROR_EMAIL,
         ExceptionType.WRONG_EMAIL -> errorEmail =
           (feedbackState as FeedbackSendingStatus.Failure).message
+
         ExceptionType.ERROR_SUBJECT -> errorSubject =
           (feedbackState as FeedbackSendingStatus.Failure).message
+
         ExceptionType.ERROR_MESSAGE,
         ExceptionType.SHORT_MESSAGE -> errorMessage =
           (feedbackState as FeedbackSendingStatus.Failure).message
+
         else -> Unit
       }
     }

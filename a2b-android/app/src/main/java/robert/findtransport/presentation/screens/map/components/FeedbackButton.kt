@@ -8,21 +8,26 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
 
 @Composable
-fun BackButton(onClick: () -> Unit) {
-  SmallFloatingActionButton(modifier = Modifier.padding(
-    vertical = FabPadding, horizontal = HalfPadding
-  ),
+fun FeedbackButton(
+  modifier: Modifier,
+  onClick: () -> Unit,
+) {
+  SmallFloatingActionButton(
+    modifier = modifier.padding(
+      vertical = FabPadding,
+      horizontal = HalfPadding,
+    ),
     containerColor = MaterialTheme.colorScheme.secondary,
-    onClick = onClick) {
+    onClick = onClick
+  ) {
     Icon(
-      painter = painterResource(id = R.drawable.ic_arrow_back),
-      contentDescription = stringResource(id = R.string.cd_current_location),
+      painter = painterResource(id = R.drawable.ic_feedback),
+      contentDescription = stringResource(id = R.string.action_feedback),
     )
   }
 }

@@ -18,15 +18,16 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.MenuVerticalOffset
-import robert.findtransport.presentation.reusables.SmallPadding
 import robert.findtransport.utils.extensions.openPrivacyPolicy
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun A2bAppBar(
   title: String,
+  hasFeedbackButton: Boolean,
   @DrawableRes navigationIcon: Int,
   onNavigationIconClick: () -> Unit,
+  onFeedbackClick: () -> Unit,
   additionalActions: @Composable RowScope.() -> Unit = {},
 ) {
   var overflowMenuState by rememberSaveable { mutableStateOf(false) }
@@ -50,6 +51,15 @@ fun A2bAppBar(
     actions = {
       additionalActions.invoke(this)
 
+      if (hasFeedbackButton) {
+        IconButton(onClick = { onFeedbackClick() }) {
+          Icon(
+            painter = painterResource(id = R.drawable.ic_feedback),
+            contentDescription = stringResource(id = R.string.action_feedback),
+            tint = MaterialTheme.colorScheme.onSurface,
+          )
+        }
+      }
       IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
         Icon(
           painter = painterResource(id = R.drawable.ic_more),

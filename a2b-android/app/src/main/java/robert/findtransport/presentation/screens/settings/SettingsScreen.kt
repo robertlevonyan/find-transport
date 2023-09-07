@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
+import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.composables.A2bAppBar
 
 @Composable
@@ -22,8 +23,10 @@ fun SettingsScreen(
     topBar = {
       A2bAppBar(
         title = stringResource(id = R.string.title_settings),
+        hasFeedbackButton = true,
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = { navController.popBackStack() },
+        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
       )
     }
   ) { contentPadding ->

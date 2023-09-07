@@ -2,10 +2,12 @@ package robert.findtransport.presentation.screens.stops
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
@@ -27,6 +29,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.StopWithAddress
+import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
 import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
@@ -54,12 +57,16 @@ fun StopsPickerScreen(
   Scaffold(
     modifier = modifier,
     topBar = {
-      TopBar(onBackClick = { navController.popBackStack() }) {
-        searchBoxState = !searchBoxState
-        if (!searchBoxState) {
-          stopsPickerViewModel.findStops("")
-        }
-      }
+      TopBar(
+        onBackClick = { navController.popBackStack() },
+        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
+        searchBoxStateToggle = {
+          searchBoxState = !searchBoxState
+          if (!searchBoxState) {
+            stopsPickerViewModel.findStops("")
+          }
+        },
+      )
     }
   ) { contentPadding ->
     Column(modifier = Modifier.padding(contentPadding)) {
@@ -76,36 +83,40 @@ fun StopsPickerScreen(
           key = stops.itemKey { it.id },
           contentType = stops.itemContentType { it.nameEn },
         ) { index ->
-          val stop = stops[index] ?: return@items
+          val stop = stops[index]
 
-          Column {
-            TextSecondary(
-              modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                  if (isFrom) {
-                    scope.launch {
-                      val address = stopsPickerViewModel.getAddress(stop)
-                      homeViewModel.setOriginStop(StopWithAddress(stop, address))
+          if (stop == null) {
+            Box(modifier = Modifier.size(0.dp)) {}
+          } else {
+            Column {
+              TextSecondary(
+                modifier = Modifier
+                  .fillMaxWidth()
+                  .clickable {
+                    if (isFrom) {
+                      scope.launch {
+                        val address = stopsPickerViewModel.getAddress(stop)
+                        homeViewModel.setOriginStop(StopWithAddress(stop, address))
+                      }
+                    } else {
+                      scope.launch {
+                        val address = stopsPickerViewModel.getAddress(stop)
+                        homeViewModel.setDestinationStop(StopWithAddress(stop, address))
+                      }
                     }
-                  } else {
-                    scope.launch {
-                      val address = stopsPickerViewModel.getAddress(stop)
-                      homeViewModel.setDestinationStop(StopWithAddress(stop, address))
-                    }
+                    navController.popBackStack()
                   }
-                  navController.popBackStack()
-                }
-                .padding(HalfPadding),
-              text = stop.getCurrentName(locale),
-              textAlign = TextAlign.Start,
-            )
+                  .padding(HalfPadding),
+                text = stop.getCurrentName(locale),
+                textAlign = TextAlign.Start,
+              )
 
-            Divider(
-              modifier.padding(start = FabPadding),
-              color = colorVariantInvertTransparent(),
-              thickness = 0.5.dp,
-            )
+              Divider(
+                modifier.padding(start = FabPadding),
+                color = colorVariantInvertTransparent(),
+                thickness = 0.5.dp,
+              )
+            }
           }
         }
       }

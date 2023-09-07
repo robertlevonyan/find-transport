@@ -3,7 +3,7 @@ package robert.findtransport.presentation.screens.passingroutes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,7 +53,7 @@ fun PassingRoutesContent(
       )
 
       if (index < transports.lastIndex) {
-        Divider(
+        HorizontalDivider(
           color = colorVariantInvertTransparent(),
           thickness = 0.5.dp,
         )

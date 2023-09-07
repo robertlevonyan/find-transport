@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
@@ -30,6 +31,7 @@ class StopsPickerViewModel @Inject constructor(
     viewModelScope.launch(Dispatchers.IO) {
       stopsUseCase.getStopsPaged(word, locale.value)
         .cachedIn(scope = this)
+        .filterNotNull()
         .collectLatest {
           allStops.emit(it)
         }

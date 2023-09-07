@@ -57,7 +57,6 @@ fun CheckDataScreen(
       colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
       shape = Shapes.medium,
     ) {
-
       when (loadingState) {
         DataLoading.NotStarted, DataLoading.Loading -> {
           Column {

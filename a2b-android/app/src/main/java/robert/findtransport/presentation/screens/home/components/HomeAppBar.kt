@@ -38,6 +38,13 @@ fun HomeAppBar(
           tint = MaterialTheme.colorScheme.onSurface,
         )
       }
+      IconButton(onClick = onFeedbackScreenClicked) {
+        Icon(
+          painter = painterResource(id = R.drawable.ic_feedback),
+          contentDescription = stringResource(id = R.string.action_feedback),
+          tint = MaterialTheme.colorScheme.onSurface,
+        )
+      }
       IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
         Icon(
           painter = painterResource(id = R.drawable.ic_more),
@@ -48,7 +55,6 @@ fun HomeAppBar(
       HomeOptionsMenu(
         overflowMenuState = overflowMenuState,
         onSettingsScreenClicked = onSettingsScreenClicked,
-        onFeedbackScreenClicked = onFeedbackScreenClicked,
       ) { overflowMenuState = false }
     },
     colors = TopAppBarDefaults.topAppBarColors(containerColor = containerColor),

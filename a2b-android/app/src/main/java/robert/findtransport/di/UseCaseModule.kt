@@ -19,7 +19,14 @@ import robert.findtransport.domain.usecase.network.CheckInternetUseCase
 import robert.findtransport.domain.usecase.network.CheckInternetUseCaseImpl
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCaseImpl
-import robert.findtransport.domain.usecase.preference.*
+import robert.findtransport.domain.usecase.preference.IntroUseCase
+import robert.findtransport.domain.usecase.preference.IntroUseCaseImpl
+import robert.findtransport.domain.usecase.preference.LocaleUseCase
+import robert.findtransport.domain.usecase.preference.LocaleUseCaseImpl
+import robert.findtransport.domain.usecase.preference.ThemeUseCase
+import robert.findtransport.domain.usecase.preference.ThemeUseCaseImpl
+import robert.findtransport.domain.usecase.preference.VersionUseCase
+import robert.findtransport.domain.usecase.preference.VersionUseCaseImpl
 import robert.findtransport.domain.usecase.rate.RateUseCase
 import robert.findtransport.domain.usecase.rate.RateUseCaseImpl
 import robert.findtransport.domain.usecase.search.NewSearchUseCase

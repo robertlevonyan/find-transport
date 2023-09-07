@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
+import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.composables.A2bAppBar
 
 @Composable
@@ -28,8 +29,10 @@ fun FeedbackScreen(
     topBar = {
       A2bAppBar(
         title = stringResource(id = R.string.title_feedback),
+        hasFeedbackButton = false,
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = { navController.popBackStack() },
+        onFeedbackClick = { },
       )
     },
     snackbarHost = {

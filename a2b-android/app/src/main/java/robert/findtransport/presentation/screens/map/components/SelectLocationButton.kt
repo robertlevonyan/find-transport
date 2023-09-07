@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mapbox.geojson.Point
 import robert.findtransport.R
+import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.reusables.BlackVariant
 import robert.findtransport.presentation.reusables.FabPadding

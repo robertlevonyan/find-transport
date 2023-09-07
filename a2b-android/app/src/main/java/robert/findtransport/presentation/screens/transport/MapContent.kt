@@ -6,14 +6,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
+import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.screens.map.components.FeedbackButton
 import robert.findtransport.presentation.screens.transport.components.MapView
 
 @Composable
@@ -42,8 +45,11 @@ fun MapContent(
       onClick = { navController.popBackStack() }) {
       Icon(
         painter = painterResource(id = R.drawable.ic_arrow_back),
-        contentDescription = stringResource(id = R.string.cd_current_location),
+        contentDescription = stringResource(id = R.string.label_close),
       )
+    }
+    FeedbackButton(modifier = Modifier.align(Alignment.TopEnd)) {
+      navController.navigate(NavigationScreens.FeedbackScreen.name)
     }
   }
 }

@@ -19,7 +19,6 @@ import robert.findtransport.utils.extensions.openPrivacyPolicy
 fun HomeOptionsMenu(
   overflowMenuState: Boolean,
   onSettingsScreenClicked: () -> Unit,
-  onFeedbackScreenClicked: () -> Unit,
   onMenuDismiss: () -> Unit,
 ) {
   val context = LocalContext.current
@@ -36,15 +35,6 @@ fun HomeOptionsMenu(
     }, text = {
       Text(
         text = stringResource(id = R.string.action_settings),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    })
-    DropdownMenuItem(onClick = {
-      onFeedbackScreenClicked()
-      onMenuDismiss.invoke()
-    }, text = {
-      Text(
-        text = stringResource(id = R.string.action_feedback),
         fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
       )
     })
