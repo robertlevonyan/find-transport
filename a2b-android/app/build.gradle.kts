@@ -19,8 +19,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 34
-    versionCode = 316
-    versionName = "4.1.6"
+    versionCode = 317
+    versionName = "4.1.7"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -137,7 +137,7 @@ dependencies {
   implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
 
   //google
-  implementation("com.google.android.material:material:1.11.0-alpha02")
+  implementation("com.google.android.material:material:1.9.0")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -163,14 +163,14 @@ dependencies {
   //compose
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
   implementation("androidx.compose.compiler:compiler:1.5.3")
-  implementation("androidx.compose.ui:ui:1.6.0-alpha04")
-  implementation("androidx.compose.ui:ui-tooling:1.6.0-alpha04")
-  implementation("androidx.compose.material3:material3:1.2.0-alpha06")
-  implementation("androidx.compose.material3:material3-window-size-class:1.2.0-alpha06")
+  implementation("androidx.compose.ui:ui:1.5.1")
+  implementation("androidx.compose.ui:ui-tooling:1.5.1")
+  implementation("androidx.compose.material3:material3:1.1.1")
+  implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
   implementation("androidx.navigation:navigation-compose:2.7.1")
-  implementation("androidx.paging:paging-compose:3.2.0")
+  implementation("androidx.paging:paging-compose:3.2.1")
   implementation("io.coil-kt:coil-compose:2.4.0")
 
   //map

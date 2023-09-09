@@ -3,7 +3,7 @@ package robert.findtransport.presentation.screens.transports
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -42,7 +42,7 @@ fun TransportsContent(
           onElementClick = onTransportClick,
         )
         if (index < transports.itemCount - 1) {
-          HorizontalDivider(
+          Divider(
             color = colorVariantInvertTransparent(),
             thickness = 0.5.dp,
           )

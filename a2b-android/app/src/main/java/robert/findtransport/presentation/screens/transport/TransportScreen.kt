@@ -47,7 +47,7 @@ fun TransportScreen(
       initialValue = SheetValue.PartiallyExpanded,
       skipPartiallyExpanded = false,
       skipHiddenState = true,
-      density = LocalDensity.current,
+//      density = LocalDensity.current,
     )
   )
 

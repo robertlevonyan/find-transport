@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,7 @@ import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.feedback.components.FeedbackInput
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun FeedbackContent(
   modifier: Modifier,
