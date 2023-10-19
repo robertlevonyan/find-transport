@@ -10,10 +10,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.viewinterop.NoOpUpdate
 import androidx.navigation.NavController
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
@@ -34,6 +36,7 @@ import robert.findtransport.utils.extensions.flyTo
 import robert.findtransport.utils.extensions.toLocation
 import robert.findtransport.utils.extensions.toPoint
 
+@OptIn(MapboxExperimental::class)
 @Composable
 fun LocationPickerContent(
   modifier: Modifier,
@@ -96,6 +99,7 @@ fun LocationPickerContent(
 
           map.getFreeCameraOptions().position
         }
+        NoOpUpdate
       },
     )
 

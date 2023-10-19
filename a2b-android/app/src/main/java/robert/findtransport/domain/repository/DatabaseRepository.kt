@@ -10,5 +10,4 @@ interface DatabaseRepository {
   suspend fun getLocationsCount(): Int
 
   suspend fun clearDb()
-
 }

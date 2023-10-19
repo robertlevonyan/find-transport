@@ -48,7 +48,6 @@ import robert.findtransport.utils.LNG_EN
 import robert.findtransport.utils.LNG_RU
 import java.math.BigInteger
 import java.security.MessageDigest
-import robert.findtransport.data.entity.Transport as TransportEntity
 
 fun Transport.getTypeName() = when (type) {
   MICROBUS_OLD, MICROBUS_NEW, MICROBUS_SPRINTER -> R.string.label_microbus

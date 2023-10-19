@@ -19,8 +19,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 34
-    versionCode = 317
-    versionName = "4.1.7"
+    versionCode = 318
+    versionName = "4.1.8"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -129,15 +129,15 @@ dependencies {
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
   implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
-  implementation("io.ktor:ktor-client-android:2.3.3")
+  implementation("io.ktor:ktor-client-android:2.3.5")
   implementation("io.ktor:ktor-client-serialization:2.3.3")
   implementation("io.ktor:ktor-client-cio:2.3.3")
   implementation("io.ktor:ktor-client-logging-jvm:2.3.3")
-  implementation("io.ktor:ktor-client-content-negotiation:2.3.3")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.3")
+  implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
 
   //google
-  implementation("com.google.android.material:material:1.9.0")
+  implementation("com.google.android.material:material:1.10.0")
   implementation("com.google.android.play:core:1.10.3")
   implementation("com.google.android.play:core-ktx:1.8.1")
   implementation("com.google.android.gms:play-services-location:21.0.1")
@@ -150,31 +150,36 @@ dependencies {
 
   //androidx
   implementation("androidx.browser:browser:1.6.0")
-  implementation("androidx.core:core-ktx:1.10.1")
+  implementation("androidx.core:core-ktx:1.12.0")
   implementation("androidx.core:core-splashscreen:1.0.1")
   implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.room:room-runtime:2.5.2")
-  implementation("androidx.room:room-ktx:2.5.2")
-  implementation("androidx.room:room-paging:2.5.2")
+  implementation("androidx.room:room-runtime:2.6.0")
+  implementation("androidx.room:room-ktx:2.6.0")
+  implementation("androidx.room:room-paging:2.6.0")
   implementation("androidx.vectordrawable:vectordrawable:1.1.0")
 
-  ksp("androidx.room:room-compiler:2.5.2")
+  ksp("androidx.room:room-compiler:2.6.0")
 
   //compose
+  val composeBom = platform("androidx.compose:compose-bom:2023.10.00")
+  implementation(composeBom)
+  implementation("androidx.compose.material3:material3")
+  implementation("androidx.compose.material3:material3-window-size-class")
+  implementation("androidx.compose.foundation:foundation")
+  implementation("androidx.compose.ui:ui")
+  implementation("androidx.compose.ui:ui-tooling")
+
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
   implementation("androidx.compose.compiler:compiler:1.5.3")
-  implementation("androidx.compose.ui:ui:1.5.1")
-  implementation("androidx.compose.ui:ui-tooling:1.5.1")
-  implementation("androidx.compose.material3:material3:1.1.1")
-  implementation("androidx.compose.material3:material3-window-size-class:1.1.1")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
   implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-  implementation("androidx.navigation:navigation-compose:2.7.1")
+  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+  implementation("androidx.navigation:navigation-compose:2.7.4")
   implementation("androidx.paging:paging-compose:3.2.1")
   implementation("io.coil-kt:coil-compose:2.4.0")
 
   //map
-  implementation("com.mapbox.maps:android:10.15.1")
+  implementation("com.mapbox.maps:android:10.16.1")
 
   //other
   implementation("com.airbnb.android:lottie-compose:6.1.0")
