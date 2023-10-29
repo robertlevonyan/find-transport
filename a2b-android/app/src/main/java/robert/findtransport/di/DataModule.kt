@@ -15,14 +15,11 @@ import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
 import robert.findtransport.data.cache.AppDatabase
 import robert.findtransport.data.cache.HistoryDao
 import robert.findtransport.data.cache.StopsDao
 import robert.findtransport.data.cache.TransportsDao
-import robert.findtransport.data.entity.Transport
 import robert.findtransport.data.model.enums.ExceptionType
 import robert.findtransport.data.model.error.A2bException
 import robert.findtransport.data.service.AddressProviderService
