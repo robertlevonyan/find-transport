@@ -4,14 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
@@ -35,16 +33,12 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
 import robert.findtransport.utils.extensions.getNameFormatted
-import java.lang.Exception
-import kotlin.math.abs
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 inline fun TransportInfo(
   transport: Transport,
   isPrimary: Boolean,
   locale: String,
-  bottomSheetScaffoldState: BottomSheetScaffoldState,
   crossinline onSwapClick: () -> Unit,
   crossinline onElementClick: () -> Unit,
 ) {
@@ -120,9 +114,9 @@ inline fun TransportInfo(
     IconButton(
       modifier = Modifier
         .constrainAs(swap) {
-          end.linkTo(parent.end)
-          top.linkTo(stopCount.bottom)
-          bottom.linkTo(parent.bottom)
+          end.linkTo(stopCount.start)
+          top.linkTo(stopCount.top)
+          bottom.linkTo(stopCount.bottom)
         },
       onClick = { onSwapClick.invoke() },
     ) {
@@ -153,7 +147,7 @@ inline fun TransportInfo(
           width = Dimension.fillToConstraints
           height = Dimension.wrapContent
           start.linkTo(startIcon.end)
-          end.linkTo(swap.start)
+          end.linkTo(parent.end)
           top.linkTo(transportIcon.bottom)
           bottom.linkTo(lastStop.top)
         },
@@ -182,7 +176,7 @@ inline fun TransportInfo(
           width = Dimension.fillToConstraints
           height = Dimension.wrapContent
           start.linkTo(endIcon.end)
-          end.linkTo(swap.start)
+          end.linkTo(parent.end)
           top.linkTo(firstStop.bottom)
           bottom.linkTo(parent.bottom)
         },

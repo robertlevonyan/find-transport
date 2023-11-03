@@ -76,7 +76,7 @@ fun CheckDataScreen(
             when (reason) {
               is DataDownloadExceptions.NoInternetException -> NoInternetScreen()
               is DataDownloadExceptions.NotDownloadedException -> NotDownloadedScreen {
-                dataViewModel.checkData()
+                dataViewModel.checkData(isPreviouslyFailed = true)
               }
               is DataDownloadExceptions.NotEnoughSpaceException -> NotEnoughSpaceScreen()
               is DataDownloadExceptions.VpnException -> onVpnError.invoke()

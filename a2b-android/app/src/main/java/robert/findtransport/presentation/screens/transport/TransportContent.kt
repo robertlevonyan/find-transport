@@ -26,6 +26,7 @@ fun TransportContent(
   navController: NavController,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
   scope: CoroutineScope,
+  isPrimary: Boolean,
 ) {
   Column(
     modifier = modifier
@@ -41,6 +42,7 @@ fun TransportContent(
       navController = navController,
       bottomSheetScaffoldState = bottomSheetScaffoldState,
       scope = scope,
+      isPrimary = isPrimary,
     )
   }
 }

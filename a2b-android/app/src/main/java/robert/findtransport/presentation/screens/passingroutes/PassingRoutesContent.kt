@@ -52,12 +52,11 @@ fun PassingRoutesContent(
         },
       )
 
-      if (index < transports.lastIndex) {
-        Divider(
-          color = colorVariantInvertTransparent(),
-          thickness = 0.5.dp,
-        )
-      }
+      val thickness = if (index < transports.lastIndex) 0.5.dp else 0.dp
+      Divider(
+        color = colorVariantInvertTransparent(),
+        thickness = thickness,
+      )
     }
   }
 }

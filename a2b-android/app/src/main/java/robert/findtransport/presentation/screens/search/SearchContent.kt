@@ -1,6 +1,8 @@
 package robert.findtransport.presentation.screens.search
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -8,12 +10,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.RouteSearchElementType
 import robert.findtransport.data.model.enums.SearchState
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.screens.search.components.*
+import robert.findtransport.presentation.screens.search.components.InterchangeFromElement
+import robert.findtransport.presentation.screens.search.components.InterchangeToElement
+import robert.findtransport.presentation.screens.search.components.Loading
+import robert.findtransport.presentation.screens.search.components.SearchHeader
+import robert.findtransport.presentation.screens.search.components.TransportElement
+import robert.findtransport.presentation.screens.search.components.TransportTitleElement
+import robert.findtransport.presentation.screens.search.components.WalkFromElement
+import robert.findtransport.presentation.screens.search.components.WalkToElement
 
 @Composable
 fun SearchContent(
@@ -47,6 +57,7 @@ fun SearchContent(
               multiRouteElement = multiRouteElement,
               locale = locale,
             )
+
             RouteSearchElementType.TRANSPORT -> TransportElement(
               multiRouteElement = multiRouteElement,
               locale = locale,
@@ -56,10 +67,12 @@ fun SearchContent(
                     + "&show_options=${false}"
               )
             }
+
             RouteSearchElementType.INTERCHANGE_FROM -> InterchangeFromElement(
               multiRouteElement = multiRouteElement,
               locale = locale,
             )
+
             RouteSearchElementType.INTERCHANGE_TO -> InterchangeToElement(
               multiRouteElement = multiRouteElement,
               locale = locale,
@@ -67,11 +80,14 @@ fun SearchContent(
           }
         }
       }
+
       is SearchState.Failed -> {
         Toast.makeText(currentContext, R.string.error_no_routes, Toast.LENGTH_SHORT).show()
         navController.popBackStack()
+        item { Box(modifier = Modifier.size(0.dp)) }
       }
-      SearchState.NotStarted -> return@LazyColumn
+
+      SearchState.NotStarted -> item { Box(modifier = Modifier.size(0.dp)) }
     }
   }
 }

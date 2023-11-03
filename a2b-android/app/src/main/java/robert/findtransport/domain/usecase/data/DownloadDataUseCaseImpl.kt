@@ -25,7 +25,6 @@ class DownloadDataUseCaseImpl @Inject constructor(
 ) : DownloadDataUseCase {
   override fun downloadData(): Flow<DataLoading> = flow {
     emit(DataLoading.Loading)
-    delay(1000)
 
     if (checkInternetUseCase.isVpnConnected()) {
       throw DataDownloadExceptions.VpnException()
@@ -36,14 +35,12 @@ class DownloadDataUseCaseImpl @Inject constructor(
         throw DataDownloadExceptions.NoInternetException()
       } else {
         emit(DataLoading.Loaded)
-        delay(1000)
         return@flow
       }
     }
 
     if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
       emit(DataLoading.Loaded)
-      delay(1000)
       return@flow
     }
 
@@ -97,7 +94,7 @@ class DownloadDataUseCaseImpl @Inject constructor(
     }
   }.flowOn(Dispatchers.IO)
 
-  private suspend fun checkForException(result: Result<Unit>) {
+  private fun checkForException(result: Result<Unit>) {
     if (result is Result.Error) {
       if (result.exception.error is EOFException) {
         throw DataDownloadExceptions.NotDownloadedException()

@@ -27,7 +27,7 @@ fun MapContent(
   locationEnabled: Boolean,
   mapStyle: String,
   transport: Transport,
-  transportViewModel: TransportViewModel,
+  isPrimary: Boolean,
 ) {
   Box(modifier = modifier) {
     MapView(
@@ -35,7 +35,7 @@ fun MapContent(
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       transport = transport,
-      transportViewModel = transportViewModel
+      isPrimary = isPrimary
     )
 
     SmallFloatingActionButton(modifier = Modifier.padding(

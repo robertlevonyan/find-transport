@@ -35,6 +35,7 @@ fun TransportScreen(
     return
   }
   transportViewModel.getTransport(transportId)
+  val isPrimary by transportViewModel.isPrimary.collectAsState()
 
   val locale by transportViewModel.locale.collectAsState()
   val transport by transportViewModel.selectedTransport.collectAsState()
@@ -47,7 +48,6 @@ fun TransportScreen(
       initialValue = SheetValue.PartiallyExpanded,
       skipPartiallyExpanded = false,
       skipHiddenState = true,
-//      density = LocalDensity.current,
     )
   )
 
@@ -69,6 +69,7 @@ fun TransportScreen(
         navController = navController,
         bottomSheetScaffoldState = bottomSheetScaffoldState,
         scope = scope,
+        isPrimary = isPrimary,
       )
     },
     sheetDragHandle = {
@@ -90,7 +91,7 @@ fun TransportScreen(
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,
       transport = transport,
-      transportViewModel = transportViewModel,
+      isPrimary = isPrimary,
     )
   }
 

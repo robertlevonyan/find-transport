@@ -34,9 +34,9 @@ fun StopList(
   navController: NavController,
   bottomSheetScaffoldState: BottomSheetScaffoldState,
   scope: CoroutineScope,
+  isPrimary: Boolean,
 ) {
   if (transport == Transport.EMPTY) return
-  val isPrimary by transportViewModel.isPrimary.collectAsState()
   val stops = if (isPrimary) transport.stops else transport.stopsReversed
   val isMetro = transport.type == TransportType.METRO
 
@@ -45,17 +45,15 @@ fun StopList(
   ) {
     item {
       Card(
-        modifier = Modifier
-          .padding(bottom = FabPadding),
+        modifier = Modifier.padding(bottom = FabPadding),
         shape = RoundedCornerShape(bottomEnd = CornerRadius, bottomStart = CornerRadius),
       ) {
         TransportInfo(
           transport = transport,
           isPrimary = isPrimary,
           locale = locale,
-          bottomSheetScaffoldState = bottomSheetScaffoldState,
           onSwapClick = {
-            transportViewModel.isPrimary.value = !isPrimary
+            transportViewModel.isPrimary.value = !transportViewModel.isPrimary.value
           },
         ) {
           scope.launch {

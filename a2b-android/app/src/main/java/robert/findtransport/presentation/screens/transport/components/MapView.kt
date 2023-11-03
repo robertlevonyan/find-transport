@@ -51,10 +51,8 @@ fun MapView(
   locationEnabled: Boolean,
   mapStyle: String,
   transport: Transport,
-  transportViewModel: TransportViewModel,
+  isPrimary: Boolean,
 ) {
-  val isPrimary by transportViewModel.isPrimary.collectAsState()
-
   AndroidView(
     modifier = Modifier.fillMaxSize(),
     factory = { context ->
@@ -115,6 +113,8 @@ private fun handleRoute(
   }.map { coord ->
     Point.fromLngLat(coord[0], coord[1])
   }
+
+  println("Route $route")
 
   polylineAnnotationManager.deleteAll()
   val options =

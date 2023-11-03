@@ -34,19 +34,18 @@ fun TransportsContent(
     ) { index ->
       val item = transports[index]
       if (item == null) {
-        Box(modifier = Modifier.size(0.dp)) {}
+        Box(modifier = Modifier.size(0.dp))
       } else {
         TransportListElement(
           transport = item,
           locale = locale,
           onElementClick = onTransportClick,
         )
-        if (index < transports.itemCount - 1) {
-          Divider(
-            color = colorVariantInvertTransparent(),
-            thickness = 0.5.dp,
-          )
-        }
+        val thickness = if (index < transports.itemCount - 1) 0.5.dp else 0.dp
+        Divider(
+          color = colorVariantInvertTransparent(),
+          thickness = thickness,
+        )
       }
     }
   }
