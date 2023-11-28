@@ -19,8 +19,8 @@ android {
     applicationId = "robert.findtransport"
     minSdk = 23
     targetSdk = 34
-    versionCode = 319
-    versionName = "4.1.9"
+    versionCode = 320
+    versionName = "4.2.0"
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled = true
@@ -116,7 +116,7 @@ android {
     storeArchive.enable = true
   }
   composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.3"
+    kotlinCompilerExtensionVersion = "1.5.4"
   }
   kapt {
     correctErrorTypes = true
@@ -149,7 +149,7 @@ dependencies {
   kapt("com.google.dagger:hilt-android-compiler:2.48")
 
   //androidx
-  implementation("androidx.browser:browser:1.6.0")
+  implementation("androidx.browser:browser:1.7.0")
   implementation("androidx.core:core-ktx:1.12.0")
   implementation("androidx.core:core-splashscreen:1.0.1")
   implementation("androidx.multidex:multidex:2.0.1")
@@ -170,11 +170,11 @@ dependencies {
   implementation("androidx.compose.ui:ui-tooling")
 
   implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.5.3")
+  implementation("androidx.compose.compiler:compiler:1.5.4")
   implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-  implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+  implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
   implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-  implementation("androidx.navigation:navigation-compose:2.7.4")
+  implementation("androidx.navigation:navigation-compose:2.7.5")
   implementation("androidx.paging:paging-compose:3.2.1")
   implementation("io.coil-kt:coil-compose:2.4.0")
 

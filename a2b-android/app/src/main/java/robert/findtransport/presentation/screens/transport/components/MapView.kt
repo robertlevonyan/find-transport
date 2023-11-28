@@ -3,8 +3,6 @@ package robert.findtransport.presentation.screens.transport.components
 import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
@@ -35,7 +33,6 @@ import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
 import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.screens.transport.TransportViewModel
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.STOP_ICON_SIZE
@@ -44,6 +41,9 @@ import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.showToast
+
+private var pointAnnotationManager: PointAnnotationManager? = null
+private var polylineAnnotationManager: PolylineAnnotationManager? = null
 
 @Composable
 fun MapView(
@@ -63,17 +63,21 @@ fun MapView(
       val map = mapView.getMapboxMap()
       val context = mapView.context
 
-      val pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
-        addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
-          pointAnnotation.getData()?.let { data ->
-            val stop = data.fromJson<Stop>().toStop()
-            context.showToast(stop.getCurrentName(locale))
-          }
-          true
-        })
+      if (pointAnnotationManager == null) {
+        pointAnnotationManager = mapView.annotations.createPointAnnotationManager().apply {
+          addClickListener(OnPointAnnotationClickListener { pointAnnotation ->
+            pointAnnotation.getData()?.let { data ->
+              val stop = data.fromJson<Stop>().toStop()
+              context.showToast(stop.getCurrentName(locale))
+            }
+            true
+          })
+        }
       }
-      val polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
-        lineCap = LineCap.ROUND
+      if (polylineAnnotationManager == null) {
+        polylineAnnotationManager = mapView.annotations.createPolylineAnnotationManager().apply {
+          lineCap = LineCap.ROUND
+        }
       }
 
       map.loadStyleUri(styleUri = mapStyle, onStyleLoaded = { style ->
@@ -86,8 +90,6 @@ fun MapView(
         handleRoute(
           context = context,
           map = map,
-          pointAnnotationManager = pointAnnotationManager,
-          polylineAnnotationManager = polylineAnnotationManager,
           transport = transport,
           isPrimary = isPrimary,
         )
@@ -99,8 +101,6 @@ fun MapView(
 private fun handleRoute(
   context: Context,
   map: MapboxMap,
-  pointAnnotationManager: PointAnnotationManager,
-  polylineAnnotationManager: PolylineAnnotationManager,
   transport: Transport,
   isPrimary: Boolean,
 ) {
@@ -114,19 +114,18 @@ private fun handleRoute(
     Point.fromLngLat(coord[0], coord[1])
   }
 
-  println("Route $route")
-
-  polylineAnnotationManager.deleteAll()
   val options =
     PolylineAnnotationOptions().withLineColor(context.getColorFromRes(R.color.colorAccent300))
       .withLineWidth(5.0).withLineJoin(LineJoin.ROUND)
       .withGeometry(LineString.fromLngLats(route.ifEmpty {
         coordinates.map { Point.fromLngLat(it.lng, it.lat) }
       }))
-  polylineAnnotationManager.create(options)
+  polylineAnnotationManager?.deleteAll()
+  polylineAnnotationManager?.create(options)
 
   val padding = FabPadding.value.toDouble()
-  val center = coordinates.getOrNull(coordinates.lastIndex / 2)?.run { Point.fromLngLat(lng, lat) }
+  val center = coordinates.getOrNull(coordinates.lastIndex / 2)
+    ?.run { Point.fromLngLat(lng, lat) }
     ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
 
   map.easeTo(
@@ -138,13 +137,13 @@ private fun handleRoute(
     },
   )
 
-  pointAnnotationManager.deleteAll()
   context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->
     val points = coordinates.map { location ->
       PointAnnotationOptions().withPoint(Point.fromLngLat(location.lng, location.lat))
         .withData(location.parentStop.toApiStop().toJson()).withIconSize(STOP_ICON_SIZE)
         .withIconImage(iconBitmap)
     }
-    pointAnnotationManager.create(points)
+    pointAnnotationManager?.deleteAll()
+    pointAnnotationManager?.create(points)
   }
 }
