@@ -16,7 +16,7 @@ import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.MapView
 import com.mapbox.maps.MapboxExperimental
-import com.mapbox.maps.ResourceOptionsManager
+//import com.mapbox.maps.ResourceOptionsManager
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import kotlinx.coroutines.flow.collectLatest
@@ -31,8 +31,8 @@ import robert.findtransport.presentation.screens.map.components.CentralPointer
 import robert.findtransport.presentation.screens.map.components.CurrentLocationButton
 import robert.findtransport.presentation.screens.map.components.FeedbackButton
 import robert.findtransport.presentation.screens.map.components.SelectLocationButton
-import robert.findtransport.utils.extensions.enableLocationComponent
-import robert.findtransport.utils.extensions.flyTo
+//import robert.findtransport.utils.extensions.enableLocationComponent
+//import robert.findtransport.utils.extensions.flyTo
 import robert.findtransport.utils.extensions.toLocation
 import robert.findtransport.utils.extensions.toPoint
 
@@ -53,55 +53,55 @@ fun LocationPickerContent(
   Box(modifier = modifier.fillMaxSize()) {
     val scope = rememberCoroutineScope()
 
-    AndroidView(
-      modifier = Modifier.fillMaxSize(),
-      factory = { context ->
-        ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
-        MapView(context = context)
-      },
-      update = { mapView ->
-        val map = mapView.getMapboxMap()
-
-        map.addOnMoveListener(object : OnMoveListener {
-          override fun onMove(detector: MoveGestureDetector): Boolean = false
-
-          override fun onMoveBegin(detector: MoveGestureDetector) {
-            isMapMoving.value = true
-          }
-
-          override fun onMoveEnd(detector: MoveGestureDetector) {
-            isMapMoving.value = false
-            centralPoint.value = map.cameraState.center
-          }
-        })
-
-        map.loadStyleUri(mapStyle) {
-          if (locationEnabled.value) {
-            mapView.enableLocationComponent()
-            locationPickerViewModel.getCurrentLocation()
-          }
-
-          scope.launch {
-            locationPickerViewModel.currentLocation.collectLatest { address ->
-              val currentLocation = address?.toLocation() ?: return@collectLatest
-              map.flyTo(currentLocation)
-              centralPoint.value = currentLocation.toPoint()
-            }
-          }
-          scope.launch {
-            locationPickerViewModel.centralPointStop.collectLatest { stop ->
-              val currentLocation =
-                stop?.coordinates?.firstOrNull()?.toLocation() ?: return@collectLatest
-              map.flyTo(currentLocation)
-              centralPoint.value = currentLocation.toPoint()
-            }
-          }
-
-          map.getFreeCameraOptions().position
-        }
-        NoOpUpdate
-      },
-    )
+//    AndroidView(
+//      modifier = Modifier.fillMaxSize(),
+//      factory = { context ->
+//        ResourceOptionsManager.getDefault(context, BuildConfig.MAPBOX_TOKEN)
+//        MapView(context = context)
+//      },
+//      update = { mapView ->
+//        val map = mapView.getMapboxMap()
+//
+//        map.addOnMoveListener(object : OnMoveListener {
+//          override fun onMove(detector: MoveGestureDetector): Boolean = false
+//
+//          override fun onMoveBegin(detector: MoveGestureDetector) {
+//            isMapMoving.value = true
+//          }
+//
+//          override fun onMoveEnd(detector: MoveGestureDetector) {
+//            isMapMoving.value = false
+//            centralPoint.value = map.cameraState.center
+//          }
+//        })
+//
+//        map.loadStyleUri(mapStyle) {
+//          if (locationEnabled.value) {
+//            mapView.enableLocationComponent()
+//            locationPickerViewModel.getCurrentLocation()
+//          }
+//
+//          scope.launch {
+//            locationPickerViewModel.currentLocation.collectLatest { address ->
+//              val currentLocation = address?.toLocation() ?: return@collectLatest
+//              map.flyTo(currentLocation)
+//              centralPoint.value = currentLocation.toPoint()
+//            }
+//          }
+//          scope.launch {
+//            locationPickerViewModel.centralPointStop.collectLatest { stop ->
+//              val currentLocation =
+//                stop?.coordinates?.firstOrNull()?.toLocation() ?: return@collectLatest
+//              map.flyTo(currentLocation)
+//              centralPoint.value = currentLocation.toPoint()
+//            }
+//          }
+//
+//          map.getFreeCameraOptions().position
+//        }
+//        NoOpUpdate
+//      },
+//    )
 
     CentralPointer(isMapMoving = isMapMoving)
     BackButton { navController.popBackStack() }
