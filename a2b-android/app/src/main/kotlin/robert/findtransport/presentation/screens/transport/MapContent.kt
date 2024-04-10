@@ -17,7 +17,7 @@ import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
 import robert.findtransport.presentation.screens.map.components.FeedbackButton
-import robert.findtransport.presentation.screens.transport.components.MapView
+import robert.findtransport.presentation.screens.transport.components.MapComponent
 
 @Composable
 fun MapContent(
@@ -30,7 +30,7 @@ fun MapContent(
   isPrimary: Boolean,
 ) {
   Box(modifier = modifier) {
-    MapView(
+    MapComponent(
       locale = locale,
       locationEnabled = locationEnabled,
       mapStyle = mapStyle,

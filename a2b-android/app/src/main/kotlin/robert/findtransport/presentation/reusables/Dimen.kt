@@ -25,7 +25,7 @@ val GeneralSettingCardSize = 150.dp
 val FeedbackMessageBoxSize = 120.dp
 val DialogBoxSize = 320.dp
 val TransportNumberSize = 80.dp
-val TransportInfoSize = 100.dp
+val TransportInfoSize = 90.dp
 val TransportInfoElevation = 12.dp
 val ToolbarSize = 56.dp
 
