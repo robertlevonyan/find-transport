@@ -181,7 +181,6 @@ dependencies {
     //map
     implementation("com.mapbox.maps:android:11.2.2")
     implementation("com.mapbox.extension:maps-compose:11.2.2")
-    implementation("com.mapbox.navigation:android:2.19.0")
 
     //other
     implementation("com.airbnb.android:lottie-compose:6.4.0")
