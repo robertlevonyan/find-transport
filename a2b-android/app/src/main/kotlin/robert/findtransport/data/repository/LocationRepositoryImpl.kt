@@ -3,6 +3,7 @@ package robert.findtransport.data.repository
 import android.location.Address
 import android.location.Location
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNotNull
 import robert.findtransport.data.service.AddressProviderService
 import robert.findtransport.data.service.FusedLocationService
 import robert.findtransport.data.service.LocationObserverService
@@ -29,5 +30,5 @@ class LocationRepositoryImpl @Inject constructor(
     addressProviderService.getAddress(location)
 
   override fun subscribeToLocationUpdates(): Flow<Location> =
-    locationObserverService.getLocationUpdates()
+    locationObserverService.getLocationUpdates().filterNotNull()
 }
