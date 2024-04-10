@@ -2,11 +2,12 @@ package robert.findtransport.data.service
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.LOCATION_SERVICE
 import android.location.Location
+import android.location.LocationManager
 import com.google.android.gms.location.*
 import kotlinx.coroutines.CancellableContinuation
 import robert.findtransport.utils.*
-import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -45,7 +46,7 @@ class FusedLocationService @Inject constructor(private val context: Context) {
     }
 
     fusedLocationClient.requestLocationUpdates(
-      LocationRequest.create(),
+      LocationRequest.Builder(1000L).build(),
       locationCallback,
       context.mainLooper,
     )

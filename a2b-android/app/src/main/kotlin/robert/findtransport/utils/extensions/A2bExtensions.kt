@@ -245,6 +245,8 @@ fun getLocationComponent(context: Context, locationEnabled: Boolean) = LocationC
 //  }
 //}
 
+fun Point?.orDefault(): Point = this ?: Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE)
+
 fun Transport?.orEmpty() = this ?: Transport.EMPTY
 
 fun Stop?.orEmpty() = this ?: Stop.EMPTY

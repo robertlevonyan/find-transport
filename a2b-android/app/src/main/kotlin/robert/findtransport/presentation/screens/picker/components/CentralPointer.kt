@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.screens.map.components
+package robert.findtransport.presentation.screens.picker.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image

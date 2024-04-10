@@ -7,7 +7,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -16,7 +15,7 @@ import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.BackPressHandler
 import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.screens.home.HomeViewModel
-import robert.findtransport.presentation.screens.map.LocationPickerViewModel
+import robert.findtransport.presentation.screens.picker.LocationPickerViewModel
 import robert.findtransport.utils.EMPTY_ID
 
 @OptIn(ExperimentalMaterial3Api::class)

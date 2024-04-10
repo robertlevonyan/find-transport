@@ -1,10 +1,10 @@
-package robert.findtransport.presentation.screens.map.search
+package robert.findtransport.presentation.screens.picker.search
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import robert.findtransport.domain.usecase.location.LocationUseCase
 import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
-import robert.findtransport.presentation.screens.map.LocationPickerViewModel
+import robert.findtransport.presentation.screens.picker.LocationPickerViewModel
 import javax.inject.Inject
 
 @HiltViewModel

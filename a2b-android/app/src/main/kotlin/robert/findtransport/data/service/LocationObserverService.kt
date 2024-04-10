@@ -2,47 +2,34 @@ package robert.findtransport.data.service
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.location.Location
-//import android.util.Log
-//import com.mapbox.android.core.location.LocationEngineCallback
-//import com.mapbox.android.core.location.LocationEngineProvider
-//import com.mapbox.android.core.location.LocationEngineRequest
-//import com.mapbox.android.core.location.LocationEngineResult
+import android.location.LocationListener
+import android.location.LocationManager
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 
 class LocationObserverService(private val context: Context) {
-  @SuppressLint("MissingPermission")
-  @Suppress("EXPERIMENTAL_API_USAGE")
-  fun getLocationUpdates() = callbackFlow {
-    launch { send(Location("A")) }
-//    val locationEngineCallback = object : LocationEngineCallback<LocationEngineResult> {
-//      override fun onSuccess(locationEngineResult: LocationEngineResult?) {
-//        if (locationEngineResult == null) return
-//
-//        locationEngineResult.lastLocation?.let {
-//          launch { send(it) }
-//        }
-//      }
-//
-//      override fun onFailure(error: Exception) {
-//        Log.e("Location", "error", error)
-//      }
-//    }
 
-//    val locationEngine = LocationEngineProvider.getBestLocationEngine(context)
-//    val locationEngineRequest = LocationEngineRequest.Builder(100)
-//      .setPriority(LocationEngineRequest.PRIORITY_HIGH_ACCURACY)
-//      .setMaxWaitTime(10)
-//      .build()
-//
-//    locationEngine.requestLocationUpdates(locationEngineRequest, locationEngineCallback, context.mainLooper)
-//    locationEngine.getLastLocation(locationEngineCallback)
+    @SuppressLint("MissingPermission")
+    @Suppress("EXPERIMENTAL_API_USAGE")
+    fun getLocationUpdates() = callbackFlow {
+        val locationManager = context.getSystemService(LocationManager::class.java)
+        val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val networkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        val provider = when {
+            gpsEnabled -> LocationManager.GPS_PROVIDER
+            networkEnabled -> LocationManager.NETWORK_PROVIDER
+            else -> {
+                send(null)
+                return@callbackFlow
+            }
+        }
 
-//    awaitClose {
-//      locationEngine.removeLocationUpdates(locationEngineCallback)
-//    }
-    awaitClose()
-  }
+        val onLocationListener = LocationListener { location -> launch { send(location) } }
+        locationManager.requestLocationUpdates(provider, 100L, 1f, onLocationListener)
+
+        awaitClose {
+            locationManager.removeUpdates(onLocationListener)
+        }
+    }
 }

@@ -62,13 +62,13 @@ class HomeViewModel @Inject constructor(
     }
   }
 
-  fun setOrigin(latitude: Double?, longitude: Double?, defaultStop: Stop? = null) {
+  fun setOrigin(latitude: Double?, longitude: Double?) {
     viewModelScope.launch {
       locationUseCase.getAddress(latitude, longitude)?.let { originAddress ->
         origin.value = originAddress
         originLabel.value = originAddress.getFormattedAddress(locale = locale.value)
       } ?: run {
-        val nearbyStop = defaultStop ?: locationUseCase.getNearbyStop(
+        val nearbyStop = locationUseCase.getNearbyStop(
           latitude = latitude ?: return@launch,
           longitude = longitude ?: return@launch,
         )
@@ -86,13 +86,13 @@ class HomeViewModel @Inject constructor(
     originStop.value = stopWithAddress.stop
   }
 
-  fun setDestination(latitude: Double?, longitude: Double?, defaultStop: Stop? = null) {
+  fun setDestination(latitude: Double?, longitude: Double?) {
     viewModelScope.launch {
       locationUseCase.getAddress(latitude, longitude)?.let { destinationAddress ->
         destination.value = destinationAddress
         destinationLabel.value = destinationAddress.getFormattedAddress(locale = locale.value)
       } ?: run {
-        val nearbyStop = defaultStop ?: locationUseCase.getNearbyStop(
+        val nearbyStop = locationUseCase.getNearbyStop(
           latitude = latitude ?: return@launch,
           longitude = longitude ?: return@launch,
         )

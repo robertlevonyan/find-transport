@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.screens.map
+package robert.findtransport.presentation.screens.picker
 
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -75,7 +75,6 @@ fun LocationPickerScreen(
 
   LocationPickerContent(
     modifier = modifier,
-    locationEnabled = locationEnabled,
     locationPickerViewModel = locationPickerViewModel,
     homeViewModel = homeViewModel,
     navController = navController,

@@ -16,7 +16,7 @@ import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.screens.map.components.FeedbackButton
+import robert.findtransport.presentation.screens.picker.components.FeedbackButton
 import robert.findtransport.presentation.screens.transport.components.MapComponent
 
 @Composable

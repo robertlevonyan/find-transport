@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.screens.map.components
+package robert.findtransport.presentation.screens.picker.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
