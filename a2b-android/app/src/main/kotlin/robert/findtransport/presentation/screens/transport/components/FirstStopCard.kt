@@ -12,29 +12,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import kotlinx.coroutines.launch
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.StopWithAddress
-import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.*
-import robert.findtransport.presentation.screens.home.HomeViewModel
-import robert.findtransport.presentation.screens.transport.TransportViewModel
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
-fun FirstStopCard(
+inline fun FirstStopCard(
   stop: Stop,
   locale: String,
   showOptions: Boolean,
-  homeViewModel: HomeViewModel,
-  transportViewModel: TransportViewModel,
-  navController: NavController,
+  crossinline onPassingRoutesClick: (Stop) -> Unit,
+  crossinline onOriginSelected: (Stop) -> Unit,
+  crossinline onDestinationSelected: (Stop) -> Unit,
 ) {
-  val scope = rememberCoroutineScope()
-
   Card(
     modifier = Modifier
       .padding(horizontal = FabPadding)
@@ -119,21 +111,9 @@ fun FirstStopCard(
         }
         PopupMenu(
           overflowMenuState,
-          onOriginSelected = {
-            scope.launch {
-              val address = transportViewModel.getAddress(stop)
-              homeViewModel.setOriginStop(StopWithAddress(stop, address))
-            }
-          },
-          onDestinationSelected = {
-            scope.launch {
-              val address = transportViewModel.getAddress(stop)
-              homeViewModel.setDestinationStop(StopWithAddress(stop, address))
-            }
-          },
-          onPassingRoutesClick = {
-            navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
-          },
+          onOriginSelected = { onOriginSelected(stop) },
+          onDestinationSelected = { onDestinationSelected(stop) },
+          onPassingRoutesClick = { onPassingRoutesClick(stop) },
         ) {
           overflowMenuState = false
         }

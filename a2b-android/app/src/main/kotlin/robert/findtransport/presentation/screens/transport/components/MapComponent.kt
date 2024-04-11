@@ -22,6 +22,7 @@ import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
+import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.STOP_ICON_SIZE
@@ -35,12 +36,12 @@ import robert.findtransport.utils.extensions.showToast
 fun MapComponent(
     locale: String,
     locationEnabled: Boolean,
-    mapStyle: String,
     transport: Transport,
     isPrimary: Boolean,
 ) {
     val context = LocalContext.current
     val locationComponentSettings = getLocationComponent(context, locationEnabled)
+    val mapStyle = getMapStyle()
 
     MapboxMap(
         modifier = Modifier.fillMaxSize(),

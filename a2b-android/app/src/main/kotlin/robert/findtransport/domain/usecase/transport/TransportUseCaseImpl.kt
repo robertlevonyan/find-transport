@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.NearbyLocation
@@ -35,7 +36,7 @@ class TransportUseCaseImpl @Inject constructor(
   override fun getBusesPaged(): Flow<PagingData<Transport>> =
     Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getBusesPaged()
-    }.flow.map { value ->
+    }.flow.mapNotNull { value ->
       value.map { apiTransport ->
         apiTransport.id?.let { id ->
           apiTransport.toTransport(transportsRepository.getTransportStops(id)
@@ -47,7 +48,7 @@ class TransportUseCaseImpl @Inject constructor(
   override fun getMicrobusesPaged(): Flow<PagingData<Transport>> =
     Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getMicrobusesPaged()
-    }.flow.map { value ->
+    }.flow.mapNotNull { value ->
       value.map { apiTransport ->
         apiTransport.id?.let { id ->
           apiTransport.toTransport(transportsRepository.getTransportStops(id)
@@ -59,7 +60,7 @@ class TransportUseCaseImpl @Inject constructor(
   override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> =
     Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getTrolleybusesPaged()
-    }.flow.map { value ->
+    }.flow.mapNotNull { value ->
       value.map { apiTransport ->
         apiTransport.id?.let { id ->
           apiTransport.toTransport(transportsRepository.getTransportStops(id)
@@ -71,7 +72,7 @@ class TransportUseCaseImpl @Inject constructor(
   override fun getMetroPaged(): Flow<PagingData<Transport>> =
     Pager(config = PagingConfig(pageSize = 20)) {
       transportsRepository.getMetroPaged()
-    }.flow.map { value ->
+    }.flow.mapNotNull { value ->
       value.map { apiTransport ->
         apiTransport.id?.let { id ->
           apiTransport.toTransport(transportsRepository.getTransportStops(id)
@@ -83,7 +84,7 @@ class TransportUseCaseImpl @Inject constructor(
   override fun getTransportById(id: Int?): Flow<Transport> = if (id == null) {
     emptyFlow()
   } else {
-    transportsRepository.getTransportById(id).map { apiTransport ->
+    transportsRepository.getTransportById(id).mapNotNull { apiTransport ->
       val stops = apiTransport.id?.let { transportId ->
         transportsRepository.getTransportStops(transportId).map { apiStop ->
           apiStop.id?.let { stopId ->

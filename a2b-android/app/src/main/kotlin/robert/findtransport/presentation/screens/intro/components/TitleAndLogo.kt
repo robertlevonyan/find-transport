@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.HalfPadding
 import robert.findtransport.presentation.reusables.TextIntroLabel
@@ -36,6 +37,7 @@ fun TitleAndLogo(modifier: Modifier) {
       fontSize = TextIntroLabel,
       fontWeight = FontWeight.Bold,
       fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+      textAlign = TextAlign.Center,
     )
   }
 }

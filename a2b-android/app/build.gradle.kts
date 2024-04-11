@@ -19,8 +19,8 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 23
         targetSdk = 34
-        versionCode = 321
-        versionName = "4.2.1"
+        versionCode = 322
+        versionName = "4.2.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true

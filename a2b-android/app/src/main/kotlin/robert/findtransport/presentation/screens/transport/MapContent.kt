@@ -13,7 +13,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
-import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.HalfPadding
 import robert.findtransport.presentation.screens.picker.components.FeedbackButton
@@ -21,35 +20,35 @@ import robert.findtransport.presentation.screens.transport.components.MapCompone
 
 @Composable
 fun MapContent(
-  modifier: Modifier,
-  navController: NavController,
-  locale: String,
-  locationEnabled: Boolean,
-  mapStyle: String,
-  transport: Transport,
-  isPrimary: Boolean,
+    modifier: Modifier,
+    locale: String,
+    locationEnabled: Boolean,
+    transport: Transport,
+    isPrimary: Boolean,
+    onBackClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
 ) {
-  Box(modifier = modifier) {
-    MapComponent(
-      locale = locale,
-      locationEnabled = locationEnabled,
-      mapStyle = mapStyle,
-      transport = transport,
-      isPrimary = isPrimary
-    )
+    Box(modifier = modifier) {
+        MapComponent(
+            locale = locale,
+            locationEnabled = locationEnabled,
+            transport = transport,
+            isPrimary = isPrimary
+        )
 
-    SmallFloatingActionButton(modifier = Modifier.padding(
-      vertical = FabPadding, horizontal = HalfPadding
-    ),
-      containerColor = MaterialTheme.colorScheme.secondary,
-      onClick = { navController.popBackStack() }) {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_arrow_back),
-        contentDescription = stringResource(id = R.string.label_close),
-      )
+        SmallFloatingActionButton(modifier = Modifier.padding(
+            vertical = FabPadding, horizontal = HalfPadding
+        ),
+            containerColor = MaterialTheme.colorScheme.secondary,
+            onClick = onBackClick) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_arrow_back),
+                contentDescription = stringResource(id = R.string.label_close),
+            )
+        }
+        FeedbackButton(
+            modifier = Modifier.align(Alignment.TopEnd),
+            onClick = onFeedbackClick,
+        )
     }
-    FeedbackButton(modifier = Modifier.align(Alignment.TopEnd)) {
-      navController.navigate(NavigationScreens.FeedbackScreen.name)
-    }
-  }
 }

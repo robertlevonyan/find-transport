@@ -34,6 +34,7 @@ import robert.findtransport.presentation.reusables.FabPadding
 import robert.findtransport.presentation.reusables.GeneralSettingCardSize
 import robert.findtransport.presentation.reusables.Shapes
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.utils.extensions.showToast
 
 
 @Composable
@@ -73,12 +74,16 @@ fun GeneralSettings(modifier: Modifier) {
                   )
                 )
               } catch (e: ActivityNotFoundException) {
-                context.startActivity(
-                  Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                try {
+                  context.startActivity(
+                    Intent(
+                      Intent.ACTION_VIEW,
+                      Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    )
                   )
-                )
+                } catch (e: Exception) {
+                  e.printStackTrace()
+                }
               }
             }
         ) {
