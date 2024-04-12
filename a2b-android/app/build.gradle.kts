@@ -4,7 +4,7 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    kotlin("plugin.serialization") version "1.9.10"
+    kotlin("plugin.serialization") version "1.9.23"
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
@@ -19,8 +19,8 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 23
         targetSdk = 34
-        versionCode = 322
-        versionName = "4.2.2"
+        versionCode = 323
+        versionName = "4.2.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -161,7 +161,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
 
     //compose
-    val composeBom = platform("androidx.compose:compose-bom:2023.10.00")
     implementation("androidx.compose:compose-bom:2024.04.00")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
@@ -170,6 +169,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling")
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.compose.compiler:compiler:1.5.11")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")

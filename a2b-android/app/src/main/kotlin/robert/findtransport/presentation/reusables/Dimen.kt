@@ -9,6 +9,8 @@ val FabPadding = 16.dp
 val DoublePadding = 32.dp
 val BottomPaddingWithFab = 72.dp
 val Padding85 = 85.dp
+val CompassTopPadding = 192.dp
+val CompassEndPadding = 24.dp
 
 val SmallCornerRadius = 8.dp
 val CornerRadius = 16.dp

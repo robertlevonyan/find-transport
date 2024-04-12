@@ -28,6 +28,7 @@ import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.STOP_ICON_SIZE
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
+import robert.findtransport.utils.extensions.getCompass
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getLocationComponent
 import robert.findtransport.utils.extensions.showToast
@@ -41,6 +42,7 @@ fun MapComponent(
 ) {
     val context = LocalContext.current
     val locationComponentSettings = getLocationComponent(context, locationEnabled)
+    val compassSettings = getCompass()
     val mapStyle = getMapStyle()
 
     MapboxMap(
@@ -60,6 +62,7 @@ fun MapComponent(
             }
         },
         locationComponentSettings = locationComponentSettings,
+        compassSettings = compassSettings,
         content = {
             if (transport == Transport.EMPTY) return@MapboxMap
 

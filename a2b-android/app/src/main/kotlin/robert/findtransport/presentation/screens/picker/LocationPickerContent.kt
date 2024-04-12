@@ -22,6 +22,7 @@ import com.mapbox.maps.extension.compose.DisposableMapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
+import com.mapbox.maps.plugin.compass.generated.CompassSettings
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.gestures.removeOnMoveListener
@@ -29,6 +30,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.navigation.NavigationScreens
+import robert.findtransport.presentation.reusables.CompassEndPadding
+import robert.findtransport.presentation.reusables.CompassTopPadding
 import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.components.BackButton
@@ -38,6 +41,7 @@ import robert.findtransport.presentation.screens.picker.components.FeedbackButto
 import robert.findtransport.presentation.screens.picker.components.SelectLocationButton
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
+import robert.findtransport.utils.extensions.getCompass
 import robert.findtransport.utils.extensions.getLocationComponent
 
 @OptIn(MapboxExperimental::class)
@@ -86,6 +90,7 @@ fun LocationPickerContent(
     Box(modifier = modifier.fillMaxSize()) {
         val context = LocalContext.current
         val locationComponentSettings = getLocationComponent(context, locationEnabled)
+        val compassSettings = getCompass()
 
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
@@ -97,6 +102,7 @@ fun LocationPickerContent(
             },
             mapViewportState = mapViewportState,
             locationComponentSettings = locationComponentSettings,
+            compassSettings = compassSettings,
             content = {
                 DisposableMapEffect(key1 = this) { mapView ->
                     val map = mapView.mapboxMap
