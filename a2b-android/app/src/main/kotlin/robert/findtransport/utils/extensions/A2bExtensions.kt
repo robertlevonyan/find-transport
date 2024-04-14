@@ -171,7 +171,7 @@ fun getLocationComponent(context: Context, locationEnabled: Boolean) = LocationC
     pulsingMaxRadius *= context.resources.displayMetrics.density
     puckBearingEnabled = true
     pulsingEnabled = true
-//    pulsingColor = context.getColorFromRes(R.color.colorAccent300)
+    pulsingColor = context.getColorFromRes(R.color.colorAccent300)
     setPuckBearing(PuckBearing.HEADING)
 }
 
