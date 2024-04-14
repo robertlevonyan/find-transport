@@ -1,15 +1,14 @@
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("kapt")
-    kotlin("plugin.serialization") version "1.9.23"
-    id("kotlin-parcelize")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
-    id("com.google.devtools.ksp")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -30,10 +29,8 @@ android {
             debugSymbolLevel = "SYMBOL_TABLE"
         }
 
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-            }
+        ksp {
+            arguments.toMutableMap()["room.schemaLocation"] = "$projectDir/schemas"
         }
     }
     buildTypes {
@@ -118,72 +115,63 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.11"
     }
-    kapt {
-        correctErrorTypes = true
-    }
 }
 
 dependencies {
     //kotlin
-    kotlin("stdlib")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.23")
-    implementation("io.ktor:ktor-client-android:2.3.10")
-    implementation("io.ktor:ktor-client-serialization:2.3.10")
-    implementation("io.ktor:ktor-client-cio:2.3.10")
-    implementation("io.ktor:ktor-client-logging-jvm:2.3.10")
-    implementation("io.ktor:ktor-client-content-negotiation:2.3.10")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.10")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging.jvm)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     //google
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("com.google.android.play:core:1.10.3")
-    implementation("com.google.android.play:core-ktx:1.8.1")
-    implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("com.google.dagger:hilt-android:2.51.1")
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    releaseImplementation("com.google.firebase:firebase-analytics-ktx")
-    releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation(libs.material)
+    implementation(libs.play.core)
+    implementation(libs.play.core.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.hilt.android)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
 
-    kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+    ksp(libs.hilt.android.compiler)
 
     //androidx
-    implementation("androidx.browser:browser:1.8.0")
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.multidex:multidex:2.0.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.room:room-paging:2.6.1")
-    implementation("androidx.vectordrawable:vectordrawable:1.1.0")
+    implementation(libs.browser)
+    implementation(libs.core.ktx)
+    implementation(libs.core.splashscreen)
+    implementation(libs.multidex)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    implementation(libs.vectordrawable)
 
-    ksp("androidx.room:room-compiler:2.6.1")
+    ksp(libs.room.compiler)
 
     //compose
-    implementation("androidx.compose:compose-bom:2024.04.00")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.material3:material3-window-size-class")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling")
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
 
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation("androidx.compose.compiler:compiler:1.5.11")
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.paging:paging-compose:3.2.1")
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.activity.compose)
+    implementation(libs.compose.compiler)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.paging)
+    implementation(libs.compose.coil)
+    implementation(libs.constraintlayout.compose)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
 
     //map
-    implementation("com.mapbox.maps:android:11.2.2")
-    implementation("com.mapbox.extension:maps-compose:11.2.2")
+    implementation(libs.mapbox.android)
+    implementation(libs.mapbox.android.compose)
 
     //other
-    implementation("com.airbnb.android:lottie-compose:6.4.0")
-    implementation("com.robertlevonyan.compose:materialchip:3.0.8")
-    implementation("me.saket.swipe:swipe:1.3.0")
+    implementation(libs.compose.lottie)
+    implementation(libs.materialchip)
+    implementation(libs.swipe)
 }
