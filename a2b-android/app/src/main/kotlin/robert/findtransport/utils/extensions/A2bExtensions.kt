@@ -175,18 +175,6 @@ fun getLocationComponent(context: Context, locationEnabled: Boolean) = LocationC
     setPuckBearing(PuckBearing.HEADING)
 }
 
-@Composable
-fun getCompass(): CompassSettings {
-    val compassTopPadding = CompassTopPadding.value
-    val compassEndPadding = CompassEndPadding.value
-
-    return CompassSettings {
-        marginTop = compassTopPadding
-        marginRight = compassEndPadding
-        image = ImageHolder.Companion.from(R.drawable.ic_compass)
-    }
-}
-
 fun Transport?.orEmpty() = this ?: Transport.EMPTY
 
 fun Stop?.orEmpty() = this ?: Stop.EMPTY
