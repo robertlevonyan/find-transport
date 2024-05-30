@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.Shapes
+import robert.findtransport.presentation.reusables.theme.Shapes
 
 @Composable
 fun SearchButton(

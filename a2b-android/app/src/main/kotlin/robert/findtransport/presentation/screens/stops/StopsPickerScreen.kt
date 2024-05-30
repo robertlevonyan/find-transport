@@ -30,9 +30,9 @@ import androidx.paging.compose.itemKey
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.colorVariantInvertTransparent
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.stops.components.StopSearchInput

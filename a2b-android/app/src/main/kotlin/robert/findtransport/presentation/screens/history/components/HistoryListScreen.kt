@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
 import robert.findtransport.data.model.History
-import robert.findtransport.presentation.reusables.Black
-import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.theme.Black
+import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.composables.A2bAlertDialog
 
 @Composable

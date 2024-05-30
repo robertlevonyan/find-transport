@@ -15,8 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.TextIntroLabel
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.TextIntroLabel
 
 @Composable
 fun TitleAndLogo(modifier: Modifier) {

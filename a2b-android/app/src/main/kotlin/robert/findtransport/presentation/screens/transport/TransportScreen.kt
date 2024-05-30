@@ -27,10 +27,10 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.CornerRadius
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.TransportInfoElevation
-import robert.findtransport.presentation.reusables.TransportInfoSize
+import robert.findtransport.presentation.reusables.theme.CornerRadius
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.TransportInfoElevation
+import robert.findtransport.presentation.reusables.theme.TransportInfoSize
 import robert.findtransport.presentation.reusables.composables.BackPressHandler
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.LocationPickerViewModel

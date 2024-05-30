@@ -7,8 +7,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.SmallPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.SmallPadding
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 

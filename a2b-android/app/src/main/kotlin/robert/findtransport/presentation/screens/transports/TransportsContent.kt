@@ -12,7 +12,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportCategory
-import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
+import robert.findtransport.presentation.reusables.theme.colorVariantInvertTransparent
 import robert.findtransport.presentation.reusables.composables.TransportListElement
 import robert.findtransport.presentation.screens.transports.components.TransportTypeSelector
 

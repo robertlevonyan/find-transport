@@ -119,4 +119,6 @@
 
   <!--content description strings-->
   <string name="cd_current_location">Go to current location</string>
+    <string name="message_exception">Oh no! Something bad happened 😳</string>
+  <string name="label_restart_app">Restart app</string>
 </resources>

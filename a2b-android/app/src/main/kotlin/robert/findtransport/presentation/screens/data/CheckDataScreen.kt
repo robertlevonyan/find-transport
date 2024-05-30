@@ -19,10 +19,10 @@ import androidx.lifecycle.Lifecycle
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.DataLoading
 import robert.findtransport.data.model.error.DataDownloadExceptions
-import robert.findtransport.presentation.reusables.Accent
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.Shapes
-import robert.findtransport.presentation.reusables.ToolbarSize
+import robert.findtransport.presentation.reusables.theme.Accent
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.ToolbarSize
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.screens.data.components.NoInternetScreen
 import robert.findtransport.presentation.screens.data.components.NotDownloadedScreen

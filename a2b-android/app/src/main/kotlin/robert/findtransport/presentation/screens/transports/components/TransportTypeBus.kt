@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.TransportCategory
-import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable

@@ -21,7 +21,12 @@ import coil.request.ImageRequest
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType
-import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.theme.BarIconSize
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.IconSize
+import robert.findtransport.presentation.reusables.theme.SmallPadding
+import robert.findtransport.presentation.reusables.theme.TextTransportNumber
+import robert.findtransport.presentation.reusables.theme.TransportNumberSize
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
 import robert.findtransport.utils.extensions.getNameFormatted

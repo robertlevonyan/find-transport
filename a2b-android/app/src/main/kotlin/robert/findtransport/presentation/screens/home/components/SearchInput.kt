@@ -17,7 +17,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.theme.BarIconSize
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.SmallPadding
+import robert.findtransport.presentation.reusables.theme.Text20
+import robert.findtransport.presentation.reusables.theme.searchInputBackgroundColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

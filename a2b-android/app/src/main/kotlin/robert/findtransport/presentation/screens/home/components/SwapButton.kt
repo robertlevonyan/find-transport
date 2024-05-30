@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.Shapes
-import robert.findtransport.presentation.reusables.SmallFabSize
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.SmallFabSize
 
 @Composable
 fun SwapButton(modifier: Modifier, onClick: () -> Unit) {

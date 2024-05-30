@@ -39,9 +39,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.ExceptionType
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.FeedbackMessageBoxSize
-import robert.findtransport.presentation.reusables.SmallPadding
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.FeedbackMessageBoxSize
+import robert.findtransport.presentation.reusables.theme.SmallPadding
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.feedback.components.FeedbackInput

@@ -15,8 +15,8 @@ import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.colorVariantInvertTransparent
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.colorVariantInvertTransparent
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.reusables.composables.TransportListElement
 import robert.findtransport.utils.extensions.getCurrentName

@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -30,15 +29,15 @@ import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
-import robert.findtransport.presentation.reusables.BlackVariant
-import robert.findtransport.presentation.reusables.BottomPaddingWithFab
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.IconSize
-import robert.findtransport.presentation.reusables.RouteWidth
-import robert.findtransport.presentation.reusables.Shapes
-import robert.findtransport.presentation.reusables.Text13
-import robert.findtransport.presentation.reusables.WhiteVariant
+import robert.findtransport.presentation.reusables.theme.BlackVariant
+import robert.findtransport.presentation.reusables.theme.BottomPaddingWithFab
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.IconSize
+import robert.findtransport.presentation.reusables.theme.RouteWidth
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.Text13
+import robert.findtransport.presentation.reusables.theme.WhiteVariant
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable

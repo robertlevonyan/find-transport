@@ -29,12 +29,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import robert.findtransport.BuildConfig
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.BlackVariant
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.GeneralSettingCardSize
-import robert.findtransport.presentation.reusables.Shapes
+import robert.findtransport.presentation.reusables.theme.BlackVariant
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.GeneralSettingCardSize
+import robert.findtransport.presentation.reusables.theme.Shapes
 import robert.findtransport.presentation.reusables.composables.TextSecondary
-import robert.findtransport.utils.extensions.showToast
 
 
 @Composable

@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -21,8 +19,11 @@ import kotlinx.coroutines.flow.collectLatest
 import robert.findtransport.R
 import robert.findtransport.data.service.LocaleService
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.ColumnToggleButtonGroup
+import robert.findtransport.presentation.reusables.theme.Accent
+import robert.findtransport.presentation.reusables.theme.Black
+import robert.findtransport.presentation.reusables.theme.DoublePadding
+import robert.findtransport.presentation.reusables.theme.Text24
 import robert.findtransport.presentation.screens.intro.components.TitleAndLogo
 
 @Composable

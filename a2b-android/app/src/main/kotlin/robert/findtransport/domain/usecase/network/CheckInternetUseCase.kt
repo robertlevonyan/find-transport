@@ -1,7 +1,7 @@
 package robert.findtransport.domain.usecase.network
 
 interface CheckInternetUseCase {
-  fun isResolveIp(): Boolean
+  suspend fun isResolveIp(): Boolean
 
   fun isInternetConnected(): Boolean
 

@@ -10,7 +10,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun TextPrimary(

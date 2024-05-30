@@ -26,8 +26,8 @@ import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
-import robert.findtransport.presentation.reusables.CompassEndPadding
-import robert.findtransport.presentation.reusables.CompassTopPadding
+import robert.findtransport.presentation.reusables.theme.CompassEndPadding
+import robert.findtransport.presentation.reusables.theme.CompassTopPadding
 import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE

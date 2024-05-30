@@ -32,10 +32,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
-import robert.findtransport.presentation.reusables.Accent
-import robert.findtransport.presentation.reusables.Black
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.Shapes
+import robert.findtransport.presentation.reusables.theme.Accent
+import robert.findtransport.presentation.reusables.theme.Black
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.Shapes
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel

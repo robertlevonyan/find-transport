@@ -16,7 +16,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import robert.findtransport.R
 import robert.findtransport.data.model.History
-import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.utils.extensions.format
 import java.util.*

@@ -9,8 +9,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
 import robert.findtransport.data.model.RouteSearchResult
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.utils.extensions.getCurrentName

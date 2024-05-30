@@ -15,9 +15,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.Shapes
-import robert.findtransport.presentation.reusables.SmallPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.SmallPadding
 
 @Composable
 fun AllTransportsButton(

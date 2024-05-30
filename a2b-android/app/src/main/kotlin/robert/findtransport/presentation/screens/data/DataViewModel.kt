@@ -18,46 +18,46 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DataViewModel @Inject constructor(
-  themeUseCase: ThemeUseCase,
-  localeUseCase: LocaleUseCase,
-  private val downloadDataUseCase: DownloadDataUseCase,
-  private val feedbackUseCase: FeedbackUseCase,
+    themeUseCase: ThemeUseCase,
+    localeUseCase: LocaleUseCase,
+    private val downloadDataUseCase: DownloadDataUseCase,
+    private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
   val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
   val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
   val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
 
-  fun checkData(isPreviouslyFailed: Boolean = false) {
-    val loadedValue = loaded.value
-    if (loadedValue == DataLoading.Loaded || loadedValue == DataLoading.Loading) {
-      return
-    }
-
-    viewModelScope.launch {
-      val dataFlow = if (isPreviouslyFailed) {
-        downloadDataUseCase.forceDownloadData()
-      } else {
-        downloadDataUseCase.downloadData()
-      }
-      dataFlow.catch { e ->
-        feedbackUseCase.sendFeedback("error@a2b.com", "Data download", "$e")
-        loaded.value = when (e) {
-          is DataDownloadExceptions.VpnException ->
-            DataLoading.Failed(DataDownloadExceptions.VpnException())
-
-          is DataDownloadExceptions.NoInternetException ->
-            DataLoading.Failed(DataDownloadExceptions.NoInternetException())
-
-          is DataDownloadExceptions.NotEnoughSpaceException ->
-            DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
-
-          is DataDownloadExceptions.NotDownloadedException ->
-            DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
-
-          else -> return@catch
+    fun checkData(isPreviouslyFailed: Boolean = false) {
+        val loadedValue = loaded.value
+        if (loadedValue == DataLoading.Loaded || loadedValue == DataLoading.Loading) {
+            return
         }
-      }
-        .collectLatest { loaded.value = it }
+
+        viewModelScope.launch {
+            val dataFlow = if (isPreviouslyFailed) {
+                downloadDataUseCase.forceDownloadData()
+            } else {
+                downloadDataUseCase.downloadData()
+            }
+            dataFlow.catch { e ->
+                feedbackUseCase.sendFeedback("error@a2b.com", "Data download", "$e")
+                loaded.value = when (e) {
+                    is DataDownloadExceptions.VpnException ->
+                        DataLoading.Failed(DataDownloadExceptions.VpnException())
+
+                    is DataDownloadExceptions.NoInternetException ->
+                        DataLoading.Failed(DataDownloadExceptions.NoInternetException())
+
+                    is DataDownloadExceptions.NotEnoughSpaceException ->
+                        DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
+
+                    is DataDownloadExceptions.NotDownloadedException ->
+                        DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
+
+                    else -> return@catch
+                }
+            }
+                .collectLatest { loaded.value = it }
+        }
     }
-  }
 }

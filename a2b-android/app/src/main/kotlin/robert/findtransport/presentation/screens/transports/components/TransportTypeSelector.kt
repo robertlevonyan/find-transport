@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import robert.findtransport.data.model.enums.TransportCategory
-import robert.findtransport.presentation.reusables.HalfPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun TransportTypeSelector(

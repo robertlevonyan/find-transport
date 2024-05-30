@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.reusables
+package robert.findtransport.presentation.reusables.theme
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +30,7 @@ val TransportNumberSize = 80.dp
 val TransportInfoSize = 90.dp
 val TransportInfoElevation = 12.dp
 val ToolbarSize = 56.dp
+val IllustrationSize = 200.dp
 
 val Text10 = 10.sp
 val Text11 = 11.sp

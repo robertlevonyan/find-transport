@@ -34,8 +34,8 @@ import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.CompassEndPadding
-import robert.findtransport.presentation.reusables.CompassTopPadding
+import robert.findtransport.presentation.reusables.theme.CompassEndPadding
+import robert.findtransport.presentation.reusables.theme.CompassTopPadding
 import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.components.BackButton

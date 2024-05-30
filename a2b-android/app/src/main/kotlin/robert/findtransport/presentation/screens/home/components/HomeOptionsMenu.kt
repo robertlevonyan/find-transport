@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.MenuVerticalOffset
+import robert.findtransport.presentation.reusables.theme.MenuVerticalOffset
 import robert.findtransport.utils.extensions.openPrivacyPolicy
 
 @Composable

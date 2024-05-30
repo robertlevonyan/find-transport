@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.Text20
+import robert.findtransport.presentation.reusables.theme.Text20
 
 @Composable
 fun A2bTitle() {

@@ -21,12 +21,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import robert.findtransport.R
 import robert.findtransport.presentation.navigation.NavigationScreens
-import robert.findtransport.presentation.reusables.DoublePadding
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.SearchElementSize
+import robert.findtransport.presentation.reusables.theme.DoublePadding
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.SearchElementSize
 import robert.findtransport.presentation.screens.data.CheckDataScreen
 import robert.findtransport.presentation.screens.home.components.AllTransportsButton
 import robert.findtransport.presentation.screens.home.components.HomeAppBar

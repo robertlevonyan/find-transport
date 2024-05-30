@@ -11,8 +11,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.DialogBoxSize
-import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.theme.DialogBoxSize
+import robert.findtransport.presentation.reusables.theme.FabPadding
 
 @Composable
 fun A2bDialog(

@@ -4,9 +4,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import robert.findtransport.presentation.reusables.Accent
-import robert.findtransport.presentation.reusables.Black
-import robert.findtransport.presentation.reusables.Shapes
+import robert.findtransport.presentation.reusables.theme.Accent
+import robert.findtransport.presentation.reusables.theme.Black
+import robert.findtransport.presentation.reusables.theme.Shapes
 
 @Composable
 fun RegularButton(

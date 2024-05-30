@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.Card
@@ -18,8 +17,8 @@ import kotlinx.coroutines.launch
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.data.model.enums.TransportType
-import robert.findtransport.presentation.reusables.CornerRadius
-import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.theme.CornerRadius
+import robert.findtransport.presentation.reusables.theme.FabPadding
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

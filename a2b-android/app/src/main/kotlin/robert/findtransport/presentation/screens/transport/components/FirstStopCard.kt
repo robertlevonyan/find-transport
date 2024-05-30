@@ -15,7 +15,14 @@ import androidx.core.content.ContextCompat
 import coil.compose.rememberAsyncImagePainter
 import robert.findtransport.R
 import robert.findtransport.data.model.Stop
-import robert.findtransport.presentation.reusables.*
+import robert.findtransport.presentation.reusables.theme.BlackVariant
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.IconSize
+import robert.findtransport.presentation.reusables.theme.RouteWidth
+import robert.findtransport.presentation.reusables.theme.Shapes
+import robert.findtransport.presentation.reusables.theme.Text13
+import robert.findtransport.presentation.reusables.theme.WhiteVariant
 import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable

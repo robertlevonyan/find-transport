@@ -12,7 +12,7 @@ import androidx.compose.ui.res.integerArrayResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.Shapes
+import robert.findtransport.presentation.reusables.theme.Shapes
 import robert.findtransport.presentation.reusables.composables.IconPosition
 import robert.findtransport.presentation.reusables.composables.RowToggleButtonGroup
 import robert.findtransport.presentation.reusables.composables.TextSecondary

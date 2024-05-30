@@ -1,3 +1,4 @@
+import com.android.build.api.variant.BuildConfigField
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.gms)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -18,8 +20,8 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 23
         targetSdk = 34
-        versionCode = 327
-        versionName = "4.2.7"
+        versionCode = 328
+        versionName = "4.2.8"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -36,25 +38,6 @@ android {
     buildTypes {
         debug {
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
-
-            val localProperties = Properties()
-            localProperties.load(project.rootProject.file("local.properties").inputStream())
-
-            val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
-            buildConfigField("String", "MAPBOX_TOKEN", mapboxToken)
-
-            val ipAddress = localProperties.getProperty("IP_ADDRESS")
-            buildConfigField("String", "IP_ADDRESS", ipAddress)
-
-            val keyPrefix = localProperties.getProperty("KEY_PREFIX")
-            buildConfigField("String", "KEY_PREFIX", keyPrefix)
-
-            val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
-            buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
-
-            val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
-            buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
-
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
         }
@@ -69,24 +52,6 @@ android {
                 debugSymbolLevel = "FULL"
             }
             addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
-
-            val localProperties = Properties()
-            localProperties.load(project.rootProject.file("local.properties").inputStream())
-
-            val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
-            buildConfigField("String", "MAPBOX_TOKEN", mapboxToken)
-
-            val ipAddress = localProperties.getProperty("IP_ADDRESS")
-            buildConfigField("String", "IP_ADDRESS", ipAddress)
-
-            val keyPrefix = localProperties.getProperty("KEY_PREFIX")
-            buildConfigField("String", "KEY_PREFIX", keyPrefix)
-
-            val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
-            buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
-
-            val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
-            buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
         }
     }
     lint {
@@ -99,6 +64,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -112,8 +78,32 @@ android {
         abi { enableSplit = false }
         storeArchive.enable = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+}
+
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature("ExplicitBackingFields")
+    }
+}
+
+androidComponents {
+    onVariants {
+        val localProperties = Properties()
+        localProperties.load(project.rootProject.file("local.properties").inputStream())
+
+        val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
+        val ipAddress = localProperties.getProperty("IP_ADDRESS")
+        val keyPrefix = localProperties.getProperty("KEY_PREFIX")
+        val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
+        val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
+
+        with(it.buildConfigFields) {
+            put("MAPBOX_TOKEN", BuildConfigField("String", mapboxToken, "MAPBOX_TOKEN"))
+            put("IP_ADDRESS", BuildConfigField("String", ipAddress, "IP_ADDRESS"))
+            put("KEY_PREFIX", BuildConfigField("String", keyPrefix, "KEY_PREFIX"))
+            put("MAPBOX_STYLE_LIGHT", BuildConfigField("String", mapboxStyleLight, "MAPBOX_STYLE_LIGHT"))
+            put("MAPBOX_STYLE_NIGHT", BuildConfigField("String", mapboxStyleNight, "MAPBOX_STYLE_NIGHT"))
+        }
     }
 }
 
@@ -158,7 +148,6 @@ dependencies {
 
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.activity.compose)
-    implementation(libs.compose.compiler)
     implementation(libs.compose.navigation)
     implementation(libs.compose.paging)
     implementation(libs.compose.coil)

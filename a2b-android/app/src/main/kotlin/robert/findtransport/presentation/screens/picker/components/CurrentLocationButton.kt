@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.Black
-import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.theme.Black
+import robert.findtransport.presentation.reusables.theme.FabPadding
 
 @Composable
 fun BoxScope.CurrentLocationButton(onClick: () -> Unit) {

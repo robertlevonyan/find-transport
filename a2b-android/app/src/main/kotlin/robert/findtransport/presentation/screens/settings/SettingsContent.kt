@@ -12,7 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import robert.findtransport.presentation.reusables.FabPadding
+import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.screens.settings.components.GeneralSettings
 import robert.findtransport.presentation.screens.settings.components.LanguageSetting
 import robert.findtransport.presentation.screens.settings.components.ThemeSetting

@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.reusables
+package robert.findtransport.presentation.reusables.activity
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.staticCompositionLocalOf

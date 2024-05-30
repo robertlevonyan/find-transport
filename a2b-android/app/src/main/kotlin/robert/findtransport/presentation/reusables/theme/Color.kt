@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.reusables
+package robert.findtransport.presentation.reusables.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable

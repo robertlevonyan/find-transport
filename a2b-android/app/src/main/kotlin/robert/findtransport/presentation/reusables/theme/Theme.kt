@@ -1,4 +1,4 @@
-package robert.findtransport.presentation.reusables
+package robert.findtransport.presentation.reusables.theme
 
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme

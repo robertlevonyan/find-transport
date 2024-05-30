@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,9 +26,15 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import robert.findtransport.R
 import robert.findtransport.data.model.Transport
-import robert.findtransport.presentation.reusables.*
 import robert.findtransport.presentation.reusables.composables.TextPrimary
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.presentation.reusables.theme.BarIconSize
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.IconSize
+import robert.findtransport.presentation.reusables.theme.Text12
+import robert.findtransport.presentation.reusables.theme.Text24
+import robert.findtransport.presentation.reusables.theme.TextTransportNumber
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getIcon
 import robert.findtransport.utils.extensions.getNameFormatted

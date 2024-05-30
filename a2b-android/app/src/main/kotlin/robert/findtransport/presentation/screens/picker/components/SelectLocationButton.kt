@@ -18,9 +18,9 @@ import androidx.navigation.NavController
 import com.mapbox.geojson.Point
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
-import robert.findtransport.presentation.reusables.BlackVariant
-import robert.findtransport.presentation.reusables.FabPadding
-import robert.findtransport.presentation.reusables.SmallFabSize
+import robert.findtransport.presentation.reusables.theme.BlackVariant
+import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.SmallFabSize
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.LocationPickerViewModel
 import robert.findtransport.utils.extensions.getFormattedAddress

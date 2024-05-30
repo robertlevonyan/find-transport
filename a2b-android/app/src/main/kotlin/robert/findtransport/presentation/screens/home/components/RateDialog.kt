@@ -14,12 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.google.android.play.core.review.ReviewManagerFactory
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.HalfPadding
-import robert.findtransport.presentation.reusables.LocalActivity
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.activity.LocalActivity
 import robert.findtransport.presentation.reusables.composables.BlankButton
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
-import robert.findtransport.presentation.screens.home.HomeViewModel
 
 @Composable
 fun RateDialog(
