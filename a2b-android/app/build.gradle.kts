@@ -37,9 +37,13 @@ android {
     }
     buildTypes {
         debug {
-            addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-DEBUG"
+            with(manifestPlaceholders) {
+                set("crashlyticsCollectionEnabled", false)
+                set("appIcon", "@mipmap/ic_launcher_debug")
+                set("appIconRound", "@mipmap/ic_launcher_round_debug")
+            }
         }
 
         release {
@@ -51,7 +55,11 @@ android {
             ndk {
                 debugSymbolLevel = "FULL"
             }
-            addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
+            with(manifestPlaceholders) {
+                set("crashlyticsCollectionEnabled", false)
+                set("appIcon", "@mipmap/ic_launcher")
+                set("appIconRound", "@mipmap/ic_launcher")
+            }
         }
     }
     lint {
@@ -101,8 +109,14 @@ androidComponents {
             put("MAPBOX_TOKEN", BuildConfigField("String", mapboxToken, "MAPBOX_TOKEN"))
             put("IP_ADDRESS", BuildConfigField("String", ipAddress, "IP_ADDRESS"))
             put("KEY_PREFIX", BuildConfigField("String", keyPrefix, "KEY_PREFIX"))
-            put("MAPBOX_STYLE_LIGHT", BuildConfigField("String", mapboxStyleLight, "MAPBOX_STYLE_LIGHT"))
-            put("MAPBOX_STYLE_NIGHT", BuildConfigField("String", mapboxStyleNight, "MAPBOX_STYLE_NIGHT"))
+            put(
+                "MAPBOX_STYLE_LIGHT",
+                BuildConfigField("String", mapboxStyleLight, "MAPBOX_STYLE_LIGHT")
+            )
+            put(
+                "MAPBOX_STYLE_NIGHT",
+                BuildConfigField("String", mapboxStyleNight, "MAPBOX_STYLE_NIGHT")
+            )
         }
     }
 }
