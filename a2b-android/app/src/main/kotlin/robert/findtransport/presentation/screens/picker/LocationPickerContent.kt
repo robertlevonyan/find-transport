@@ -142,7 +142,7 @@ fun LocationPickerContent(
         CentralPointer(isMapMoving = isMapMoving)
         BackButton { navController.popBackStack() }
         FeedbackButton(modifier = Modifier.align(Alignment.TopEnd)) {
-            navController.navigate(NavigationScreens.FeedbackScreen.name)
+            navController.navigate(NavigationScreens.FeedbackScreen)
         }
 
         SelectLocationButton(

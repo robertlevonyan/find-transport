@@ -25,117 +25,118 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  introUseCase: IntroUseCase,
-  themeUseCase: ThemeUseCase,
-  permissionUseCase: PermissionUseCase,
-  private val locationUseCase: LocationUseCase,
-  private val rateUseCase: RateUseCase,
+    localeUseCase: LocaleUseCase,
+    introUseCase: IntroUseCase,
+    themeUseCase: ThemeUseCase,
+    permissionUseCase: PermissionUseCase,
+    private val locationUseCase: LocationUseCase,
+    private val rateUseCase: RateUseCase,
 ) : BaseViewModel() {
-  val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-  val origin = MutableStateFlow<Address?>(null)
-  val originLabel = MutableStateFlow<String?>(null)
-  val originStop = MutableStateFlow<Stop?>(null)
-  val destination = MutableStateFlow<Address?>(null)
-  val destinationLabel = MutableStateFlow<String?>(null)
-  val destinationStop = MutableStateFlow<Stop?>(null)
-  val showRate = MutableStateFlow(rateUseCase.showDialog())
-  private val locationEnabledChannel = Channel<Boolean>()
-  val locationEnabled: Flow<Boolean> get() = locationEnabledChannel.consumeAsFlow()
+    val introPassed = MutableStateFlow(introUseCase.isIntroPassed).asStateFlow()
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
+    val origin = MutableStateFlow<Address?>(null)
+    val originLabel = MutableStateFlow<String?>(null)
+    val originStop = MutableStateFlow<Stop?>(null)
+    val destination = MutableStateFlow<Address?>(null)
+    val destinationLabel = MutableStateFlow<String?>(null)
+    val destinationStop = MutableStateFlow<Stop?>(null)
+    val showRate = MutableStateFlow(rateUseCase.showDialog())
+    private val locationEnabledChannel = Channel<Boolean>()
+    val locationEnabled: Flow<Boolean> get() = locationEnabledChannel.consumeAsFlow()
 
-  init {
-    viewModelScope.launch {
-      locationEnabledChannel.send(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+    init {
+        viewModelScope.launch {
+            locationEnabledChannel.send(permissionUseCase.hasPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+        }
+        rateUseCase.updateInterval()
     }
-    rateUseCase.updateInterval()
-  }
 
-  fun getCurrentLocation() {
-    viewModelScope.launch {
-      val currentLocation = locationUseCase.getCurrentLocation() ?: return@launch
-      setOrigin(
-        latitude = currentLocation.latitude,
-        longitude = currentLocation.longitude,
-      )
+    fun getCurrentLocation() {
+        viewModelScope.launch {
+            val currentLocation = locationUseCase.getCurrentLocation() ?: return@launch
+            setOrigin(
+                latitude = currentLocation.latitude,
+                longitude = currentLocation.longitude,
+            )
+        }
     }
-  }
 
-  fun setOrigin(latitude: Double?, longitude: Double?) {
-    viewModelScope.launch {
-      locationUseCase.getAddress(latitude, longitude)?.let { originAddress ->
-        origin.value = originAddress
-        originLabel.value = originAddress.getFormattedAddress(locale = locale.value)
-      } ?: run {
-        val nearbyStop = locationUseCase.getNearbyStop(
-          latitude = latitude ?: return@launch,
-          longitude = longitude ?: return@launch,
-        )
-        originStop.value = nearbyStop
-        originLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
-      }
+    fun setOrigin(latitude: Double?, longitude: Double?) {
+        viewModelScope.launch {
+            locationUseCase.getAddress(latitude, longitude)?.let { originAddress ->
+                origin.value = originAddress
+                originLabel.value = originAddress.getFormattedAddress(locale = locale.value)
+            } ?: run {
+                val nearbyStop = locationUseCase.getNearbyStop(
+                    latitude = latitude ?: return@launch,
+                    longitude = longitude ?: return@launch,
+                )
+                originStop.value = nearbyStop
+                originLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
+            }
+        }
     }
-  }
 
-  fun setOriginStop(stopWithAddress: StopWithAddress?) {
-    if (stopWithAddress?.address == null) return
+    fun setOriginStop(stopWithAddress: StopWithAddress?) {
+        if (stopWithAddress?.address == null) return
 
-    origin.value = stopWithAddress.address
-    originLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
-    originStop.value = stopWithAddress.stop
-  }
-
-  fun setDestination(latitude: Double?, longitude: Double?) {
-    viewModelScope.launch {
-      locationUseCase.getAddress(latitude, longitude)?.let { destinationAddress ->
-        destination.value = destinationAddress
-        destinationLabel.value = destinationAddress.getFormattedAddress(locale = locale.value)
-      } ?: run {
-        val nearbyStop = locationUseCase.getNearbyStop(
-          latitude = latitude ?: return@launch,
-          longitude = longitude ?: return@launch,
-        )
-        destinationStop.value = nearbyStop
-        destinationLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
-      }
+        origin.value = stopWithAddress.address
+        originLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
+        originStop.value = stopWithAddress.stop
     }
-  }
 
-  fun setDestinationStop(stopWithAddress: StopWithAddress?) {
-    if (stopWithAddress?.address == null) return
-    viewModelScope.launch {
-      destination.value = stopWithAddress.address
-      destinationLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
-      destinationStop.value = stopWithAddress.stop
+    fun setDestination(latitude: Double?, longitude: Double?) {
+        viewModelScope.launch {
+            locationUseCase.getAddress(latitude, longitude)?.let { destinationAddress ->
+                destination.value = destinationAddress
+                destinationLabel.value =
+                    destinationAddress.getFormattedAddress(locale = locale.value)
+            } ?: run {
+                val nearbyStop = locationUseCase.getNearbyStop(
+                    latitude = latitude ?: return@launch,
+                    longitude = longitude ?: return@launch,
+                )
+                destinationStop.value = nearbyStop
+                destinationLabel.value = nearbyStop?.getCurrentName(locale = locale.value)
+            }
+        }
     }
-  }
 
-  fun swap() {
-    val selectedOriginLabel = originLabel.value
-    val selectedDestinationLabel = destinationLabel.value
-    originLabel.value = selectedDestinationLabel
-    destinationLabel.value = selectedOriginLabel
-
-    val selectedOrigin = origin.value
-    val selectedDestination = destination.value
-    origin.value = selectedDestination
-    destination.value = selectedOrigin
-
-    val selectedOriginStop = originStop.value
-    val selectedDestinationStop = destinationStop.value
-    originStop.value = selectedDestinationStop
-    destinationStop.value = selectedOriginStop
-  }
-
-  fun openRate() {
-    viewModelScope.launch {
-      rateUseCase.setRate()
-      showRate.value = false
+    fun setDestinationStop(stopWithAddress: StopWithAddress?) {
+        if (stopWithAddress?.address == null) return
+        viewModelScope.launch {
+            destination.value = stopWithAddress.address
+            destinationLabel.value = stopWithAddress.stop.getCurrentName(locale.value)
+            destinationStop.value = stopWithAddress.stop
+        }
     }
-  }
 
-  fun dismissRate() {
-    showRate.value = false
-  }
+    fun swap() {
+        val selectedOriginLabel = originLabel.value
+        val selectedDestinationLabel = destinationLabel.value
+        originLabel.value = selectedDestinationLabel
+        destinationLabel.value = selectedOriginLabel
+
+        val selectedOrigin = origin.value
+        val selectedDestination = destination.value
+        origin.value = selectedDestination
+        destination.value = selectedOrigin
+
+        val selectedOriginStop = originStop.value
+        val selectedDestinationStop = destinationStop.value
+        originStop.value = selectedDestinationStop
+        destinationStop.value = selectedOriginStop
+    }
+
+    fun openRate() {
+        viewModelScope.launch {
+            rateUseCase.setRate()
+            showRate.value = false
+        }
+    }
+
+    fun dismissRate() {
+        showRate.value = false
+    }
 }

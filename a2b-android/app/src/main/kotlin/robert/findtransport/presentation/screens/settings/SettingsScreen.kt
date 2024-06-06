@@ -14,27 +14,27 @@ import robert.findtransport.presentation.reusables.composables.A2bAppBar
 
 @Composable
 fun SettingsScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  settingsViewModel: SettingsViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    settingsViewModel: SettingsViewModel = hiltViewModel(),
 ) {
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      A2bAppBar(
-        title = stringResource(id = R.string.title_settings),
-        hasFeedbackButton = true,
-        navigationIcon = R.drawable.ic_arrow_back,
-        onNavigationIconClick = { navController.popBackStack() },
-        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
-      )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            A2bAppBar(
+                title = stringResource(id = R.string.title_settings),
+                hasFeedbackButton = true,
+                navigationIcon = R.drawable.ic_arrow_back,
+                onNavigationIconClick = { navController.popBackStack() },
+                onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
+            )
+        }
+    ) { contentPadding ->
+        SettingsContent(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize(),
+            settingsViewModel = settingsViewModel,
+        )
     }
-  ) { contentPadding ->
-    SettingsContent(
-      modifier = Modifier
-        .padding(contentPadding)
-        .fillMaxSize(),
-      settingsViewModel = settingsViewModel,
-    )
-  }
 }

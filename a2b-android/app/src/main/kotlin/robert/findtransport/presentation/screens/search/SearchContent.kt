@@ -28,67 +28,73 @@ import robert.findtransport.presentation.screens.search.components.WalkToElement
 
 @Composable
 fun SearchContent(
-  modifier: Modifier,
-  navController: NavController,
-  searchViewModel: SearchViewModel,
-  originName: String,
-  destinationName: String,
+    modifier: Modifier,
+    navController: NavController,
+    searchViewModel: SearchViewModel,
+    originName: String,
+    destinationName: String,
 ) {
-  val searchResults by searchViewModel.searchResults.collectAsState()
-  val locale by searchViewModel.locale.collectAsState()
-  val currentContext = LocalContext.current.applicationContext
+    val searchResults by searchViewModel.searchResults.collectAsState()
+    val locale by searchViewModel.locale.collectAsState()
+    val currentContext = LocalContext.current.applicationContext
 
-  LazyColumn(modifier = modifier) {
-    item {
-      SearchHeader(
-        originName = originName,
-        destinationName = destinationName,
-      )
-    }
-
-    when (searchResults) {
-      SearchState.Searching -> item { Loading() }
-      is SearchState.Result -> {
-        val result = (searchResults as SearchState.Result).result
-        items(result) { multiRouteElement ->
-          when (multiRouteElement.type) {
-            RouteSearchElementType.WALK_FROM -> WalkFromElement(multiRouteElement, locale)
-            RouteSearchElementType.WALK_TO -> WalkToElement(multiRouteElement, locale)
-            RouteSearchElementType.TRANSPORT_TITLE -> TransportTitleElement(
-              multiRouteElement = multiRouteElement,
-              locale = locale,
+    LazyColumn(modifier = modifier) {
+        item {
+            SearchHeader(
+                originName = originName,
+                destinationName = destinationName,
             )
+        }
 
-            RouteSearchElementType.TRANSPORT -> TransportElement(
-              multiRouteElement = multiRouteElement,
-              locale = locale,
-            ) { transport ->
-              navController.navigate(
-                route = NavigationScreens.TransportScreen.name + "?transport_id=${transport.id}"
-                    + "&show_options=${false}"
-              )
+        when (searchResults) {
+            SearchState.Searching -> item { Loading() }
+            is SearchState.Result -> {
+                val result = (searchResults as SearchState.Result).result
+                items(result) { multiRouteElement ->
+                    when (multiRouteElement.type) {
+                        RouteSearchElementType.WALK_FROM -> WalkFromElement(
+                            multiRouteElement,
+                            locale
+                        )
+
+                        RouteSearchElementType.WALK_TO -> WalkToElement(multiRouteElement, locale)
+                        RouteSearchElementType.TRANSPORT_TITLE -> TransportTitleElement(
+                            multiRouteElement = multiRouteElement,
+                            locale = locale,
+                        )
+
+                        RouteSearchElementType.TRANSPORT -> TransportElement(
+                            multiRouteElement = multiRouteElement,
+                            locale = locale,
+                        ) { transport ->
+                            navController.navigate(
+                                route = NavigationScreens.TransportScreen(
+                                    transportId = transport.id,
+                                    showOptions = false,
+                                )
+                            )
+                        }
+
+                        RouteSearchElementType.INTERCHANGE_FROM -> InterchangeFromElement(
+                            multiRouteElement = multiRouteElement,
+                            locale = locale,
+                        )
+
+                        RouteSearchElementType.INTERCHANGE_TO -> InterchangeToElement(
+                            multiRouteElement = multiRouteElement,
+                            locale = locale,
+                        )
+                    }
+                }
             }
 
-            RouteSearchElementType.INTERCHANGE_FROM -> InterchangeFromElement(
-              multiRouteElement = multiRouteElement,
-              locale = locale,
-            )
+            is SearchState.Failed -> {
+                Toast.makeText(currentContext, R.string.error_no_routes, Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
+                item { Box(modifier = Modifier.size(0.dp)) }
+            }
 
-            RouteSearchElementType.INTERCHANGE_TO -> InterchangeToElement(
-              multiRouteElement = multiRouteElement,
-              locale = locale,
-            )
-          }
+            SearchState.NotStarted -> item { Box(modifier = Modifier.size(0.dp)) }
         }
-      }
-
-      is SearchState.Failed -> {
-        Toast.makeText(currentContext, R.string.error_no_routes, Toast.LENGTH_SHORT).show()
-        navController.popBackStack()
-        item { Box(modifier = Modifier.size(0.dp)) }
-      }
-
-      SearchState.NotStarted -> item { Box(modifier = Modifier.size(0.dp)) }
     }
-  }
 }

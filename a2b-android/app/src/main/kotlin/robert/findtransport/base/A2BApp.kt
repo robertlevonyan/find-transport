@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.multidex.MultiDexApplication
 import com.google.android.play.core.missingsplits.MissingSplitsManagerFactory
 import dagger.hilt.android.HiltAndroidApp
+import robert.findtransport.BuildConfig
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.ExceptionListener
 import robert.findtransport.presentation.reusables.activity.ExceptionActivity
@@ -19,7 +20,9 @@ class A2BApp : MultiDexApplication(), ExceptionListener {
             Toast.makeText(this, R.string.error_app, Toast.LENGTH_SHORT).show()
             return
         }
-        setupExceptionHandler()
+        if (!BuildConfig.DEBUG) {
+            setupExceptionHandler()
+        }
         super.onCreate()
     }
 

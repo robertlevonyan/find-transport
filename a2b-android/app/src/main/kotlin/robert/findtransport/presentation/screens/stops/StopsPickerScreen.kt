@@ -41,85 +41,95 @@ import robert.findtransport.utils.extensions.getCurrentName
 
 @Composable
 fun StopsPickerScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  stopsPickerViewModel: StopsPickerViewModel = hiltViewModel(),
-  homeViewModel: HomeViewModel,
-  isFrom: Boolean,
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    stopsPickerViewModel: StopsPickerViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
+    isFrom: Boolean,
 ) {
-  val locale by stopsPickerViewModel.locale.collectAsState()
-  val stops = stopsPickerViewModel.allStops.collectAsLazyPagingItems()
-  var searchBoxState by rememberSaveable { mutableStateOf(false) }
-  val scope = rememberCoroutineScope()
+    val locale by stopsPickerViewModel.locale.collectAsState()
+    val stops = stopsPickerViewModel.allStops.collectAsLazyPagingItems()
+    var searchBoxState by rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
-  stopsPickerViewModel.findStops("")
+    stopsPickerViewModel.findStops("")
 
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      TopBar(
-        onBackClick = { navController.popBackStack() },
-        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
-        searchBoxStateToggle = {
-          searchBoxState = !searchBoxState
-          if (!searchBoxState) {
-            stopsPickerViewModel.findStops("")
-          }
-        },
-      )
-    }
-  ) { contentPadding ->
-    Column(modifier = Modifier.padding(contentPadding)) {
-      AnimatedVisibility(visible = searchBoxState) {
-        Card(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = FabPadding)
-        ) { StopSearchInput(stopsPickerViewModel::findStops) }
-      }
-      LazyColumn(modifier = Modifier.fillMaxSize()) {
-        items(
-          count = stops.itemCount,
-          key = stops.itemKey { it.id },
-          contentType = stops.itemContentType { it.nameEn },
-        ) { index ->
-          val stop = stops[index]
-
-          if (stop == null) {
-            Box(modifier = Modifier.size(0.dp)) {}
-          } else {
-            Column {
-              TextSecondary(
-                modifier = Modifier
-                  .fillMaxWidth()
-                  .clickable {
-                    if (isFrom) {
-                      scope.launch {
-                        val address = stopsPickerViewModel.getAddress(stop)
-                        homeViewModel.setOriginStop(StopWithAddress(stop, address))
-                      }
-                    } else {
-                      scope.launch {
-                        val address = stopsPickerViewModel.getAddress(stop)
-                        homeViewModel.setDestinationStop(StopWithAddress(stop, address))
-                      }
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopBar(
+                onBackClick = { navController.popBackStack() },
+                onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
+                searchBoxStateToggle = {
+                    searchBoxState = !searchBoxState
+                    if (!searchBoxState) {
+                        stopsPickerViewModel.findStops("")
                     }
-                    navController.popBackStack()
-                  }
-                  .padding(HalfPadding),
-                text = stop.getCurrentName(locale),
-                textAlign = TextAlign.Start,
-              )
-
-              Divider(
-                modifier.padding(start = FabPadding),
-                color = colorVariantInvertTransparent(),
-                thickness = 0.5.dp,
-              )
-            }
-          }
+                },
+            )
         }
-      }
+    ) { contentPadding ->
+        Column(modifier = Modifier.padding(contentPadding)) {
+            AnimatedVisibility(visible = searchBoxState) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = FabPadding)
+                ) { StopSearchInput(stopsPickerViewModel::findStops) }
+            }
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(
+                    count = stops.itemCount,
+                    key = stops.itemKey { it.id },
+                    contentType = stops.itemContentType { it.nameEn },
+                ) { index ->
+                    val stop = stops[index]
+
+                    if (stop == null) {
+                        Box(modifier = Modifier.size(0.dp)) {}
+                    } else {
+                        Column {
+                            TextSecondary(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        if (isFrom) {
+                                            scope.launch {
+                                                val address = stopsPickerViewModel.getAddress(stop)
+                                                homeViewModel.setOriginStop(
+                                                    StopWithAddress(
+                                                        stop,
+                                                        address
+                                                    )
+                                                )
+                                            }
+                                        } else {
+                                            scope.launch {
+                                                val address = stopsPickerViewModel.getAddress(stop)
+                                                homeViewModel.setDestinationStop(
+                                                    StopWithAddress(
+                                                        stop,
+                                                        address
+                                                    )
+                                                )
+                                            }
+                                        }
+                                        navController.popBackStack()
+                                    }
+                                    .padding(HalfPadding),
+                                text = stop.getCurrentName(locale),
+                                textAlign = TextAlign.Start,
+                            )
+
+                            Divider(
+                                modifier.padding(start = FabPadding),
+                                color = colorVariantInvertTransparent(),
+                                thickness = 0.5.dp,
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
 }

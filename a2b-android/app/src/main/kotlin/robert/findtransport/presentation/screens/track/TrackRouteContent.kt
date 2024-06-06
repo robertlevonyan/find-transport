@@ -44,134 +44,134 @@ import java.util.Locale
 
 @Composable
 fun TrackRouteContent(
-  modifier: Modifier,
-  navController: NavController,
-  trackRouteViewModel: TrackRouteViewModel,
+    modifier: Modifier,
+    navController: NavController,
+    trackRouteViewModel: TrackRouteViewModel,
 ) {
-  val locale by trackRouteViewModel.locale.collectAsState()
-  val currentStop by trackRouteViewModel.currentStop.collectAsState()
-  val selectedTransport by trackRouteViewModel.selectedTransport.collectAsState(initial = Transport.EMPTY)
-  val arrived by trackRouteViewModel.notifyArrived.collectAsState()
-  val nextStop by trackRouteViewModel.notifyNextStop.collectAsState()
-  var showNextStopDialog by rememberSaveable { mutableStateOf(nextStop != Stop.EMPTY) }
+    val locale by trackRouteViewModel.locale.collectAsState()
+    val currentStop by trackRouteViewModel.currentStop.collectAsState()
+    val selectedTransport by trackRouteViewModel.selectedTransport.collectAsState(initial = Transport.EMPTY)
+    val arrived by trackRouteViewModel.notifyArrived.collectAsState()
+    val nextStop by trackRouteViewModel.notifyNextStop.collectAsState()
+    var showNextStopDialog by rememberSaveable { mutableStateOf(nextStop != Stop.EMPTY) }
 
-  if (arrived) {
-    LocalContext.current.showToast(R.string.message_arrived)
-    navController.popBackStack(route = NavigationScreens.HomeScreen.name, inclusive = false)
-  }
-
-  if (showNextStopDialog) {
-    A2bDialog(
-      title = stringResource(id = R.string.label_arriving),
-      text = stringResource(id = R.string.message_next_stop),
-      image = painterResource(id = R.drawable.il_transport_arriving),
-      onConfirm = { showNextStopDialog = false }) {
-      showNextStopDialog = false
+    if (arrived) {
+        LocalContext.current.showToast(R.string.message_arrived)
+        navController.popBackStack(route = NavigationScreens.HomeScreen, inclusive = false)
     }
-  }
 
-  ConstraintLayout(
-    modifier = modifier
-      .fillMaxSize()
-      .background(color = Accent)
-  ) {
-    val (labelSelected, labelStopName, stopName, stopButton, progress) = createRefs()
-    val guide = createGuidelineFromTop(fraction = 0.5f)
-
-    if (selectedTransport != Transport.EMPTY) {
-      val label = stringResource(id = R.string.label_tracker_transport)
-      val typeNameRes = selectedTransport.getTypeName()
-      val typeName =
-        if (typeNameRes == -1) "" else stringResource(typeNameRes).lowercase(Locale.ROOT)
-      val selectedTransportString = buildAnnotatedString {
-        withStyle(SpanStyle(fontWeight = FontWeight.Normal)) {
-          append(label)
+    if (showNextStopDialog) {
+        A2bDialog(
+            title = stringResource(id = R.string.label_arriving),
+            text = stringResource(id = R.string.message_next_stop),
+            image = painterResource(id = R.drawable.il_transport_arriving),
+            onConfirm = { showNextStopDialog = false }) {
+            showNextStopDialog = false
         }
-        withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-          append(" ")
-          append(typeName)
-          append(" ")
-          append(selectedTransport.number)
+    }
+
+    ConstraintLayout(
+        modifier = modifier
+          .fillMaxSize()
+          .background(color = Accent)
+    ) {
+        val (labelSelected, labelStopName, stopName, stopButton, progress) = createRefs()
+        val guide = createGuidelineFromTop(fraction = 0.5f)
+
+        if (selectedTransport != Transport.EMPTY) {
+            val label = stringResource(id = R.string.label_tracker_transport)
+            val typeNameRes = selectedTransport.getTypeName()
+            val typeName =
+                if (typeNameRes == -1) "" else stringResource(typeNameRes).lowercase(Locale.ROOT)
+            val selectedTransportString = buildAnnotatedString {
+                withStyle(SpanStyle(fontWeight = FontWeight.Normal)) {
+                    append(label)
+                }
+                withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append(" ")
+                    append(typeName)
+                    append(" ")
+                    append(selectedTransport.number)
+                }
+            }
+
+            TextPrimary(
+                modifier = Modifier
+                  .padding(top = Padding85)
+                  .constrainAs(labelSelected) {
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                  },
+                text = selectedTransportString,
+                color = Black,
+            )
         }
-      }
 
-      TextPrimary(
-        modifier = Modifier
-          .padding(top = Padding85)
-          .constrainAs(labelSelected) {
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-            end.linkTo(parent.end)
-            start.linkTo(parent.start)
-            top.linkTo(parent.top)
-          },
-        text = selectedTransportString,
-        color = Black,
-      )
+        if (currentStop == Stop.EMPTY) {
+            CircularProgressIndicator(
+                modifier = modifier.constrainAs(progress) {
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                    top.linkTo(parent.top)
+                },
+                color = Black,
+            )
+        } else {
+            TextSecondary(
+                modifier = Modifier
+                  .padding(bottom = HalfPadding)
+                  .constrainAs(labelStopName) {
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                    bottom.linkTo(guide)
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                  },
+                text = stringResource(id = R.string.label_current_stop),
+                color = Black,
+            )
+
+            TextPrimary(
+                modifier = Modifier
+                  .padding(top = HalfPadding)
+                  .padding(horizontal = FabPadding)
+                  .constrainAs(stopName) {
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                    top.linkTo(guide)
+                  },
+                text = currentStop.getCurrentName(locale),
+                fontSize = TextTrackerLabel,
+                color = Black,
+                textAlign = TextAlign.Center,
+            )
+
+            RegularButton(
+                modifier = Modifier
+                  .padding(bottom = Padding85)
+                  .constrainAs(stopButton) {
+                    width = Dimension.wrapContent
+                    height = Dimension.wrapContent
+                    bottom.linkTo(parent.bottom)
+                    end.linkTo(parent.end)
+                    start.linkTo(parent.start)
+                  },
+                text = stringResource(id = R.string.label_stop_tracker),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Black,
+                    contentColor = Accent,
+                )
+            ) {
+                navController.popBackStack()
+            }
+        }
     }
-
-    if (currentStop == Stop.EMPTY) {
-      CircularProgressIndicator(
-        modifier = modifier.constrainAs(progress) {
-          width = Dimension.wrapContent
-          height = Dimension.wrapContent
-          bottom.linkTo(parent.bottom)
-          end.linkTo(parent.end)
-          start.linkTo(parent.start)
-          top.linkTo(parent.top)
-        },
-        color = Black,
-      )
-    } else {
-      TextSecondary(
-        modifier = Modifier
-          .padding(bottom = HalfPadding)
-          .constrainAs(labelStopName) {
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-            bottom.linkTo(guide)
-            end.linkTo(parent.end)
-            start.linkTo(parent.start)
-          },
-        text = stringResource(id = R.string.label_current_stop),
-        color = Black,
-      )
-
-      TextPrimary(
-        modifier = Modifier
-          .padding(top = HalfPadding)
-          .padding(horizontal = FabPadding)
-          .constrainAs(stopName) {
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-            end.linkTo(parent.end)
-            start.linkTo(parent.start)
-            top.linkTo(guide)
-          },
-        text = currentStop.getCurrentName(locale),
-        fontSize = TextTrackerLabel,
-        color = Black,
-        textAlign = TextAlign.Center,
-      )
-
-      RegularButton(
-        modifier = Modifier
-          .padding(bottom = Padding85)
-          .constrainAs(stopButton) {
-            width = Dimension.wrapContent
-            height = Dimension.wrapContent
-            bottom.linkTo(parent.bottom)
-            end.linkTo(parent.end)
-            start.linkTo(parent.start)
-          },
-        text = stringResource(id = R.string.label_stop_tracker),
-        colors = ButtonDefaults.buttonColors(
-          containerColor = Black,
-          contentColor = Accent,
-        )
-      ) {
-        navController.popBackStack()
-      }
-    }
-  }
 }

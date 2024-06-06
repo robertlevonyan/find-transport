@@ -86,7 +86,7 @@ fun TransportScreen(
                 lazyColumnState = lazyColumnState,
                 isPrimary = isPrimary,
                 onPassingRoutesClick = { stop ->
-                    navController.navigate(route = "${NavigationScreens.PassingRoutesScreen.name}/${stop.id}")
+                    navController.navigate(route = NavigationScreens.PassingRoutesScreen(stop.id))
                 },
                 onSwapClick = {
                     transportViewModel.isPrimary.value = !transportViewModel.isPrimary.value
@@ -126,7 +126,7 @@ fun TransportScreen(
             transport = transport,
             isPrimary = isPrimary,
             onBackClick = { navController.popBackStack() },
-            onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
+            onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
         )
     }
 

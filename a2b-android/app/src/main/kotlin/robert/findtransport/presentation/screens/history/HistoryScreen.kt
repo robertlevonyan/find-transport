@@ -14,28 +14,28 @@ import robert.findtransport.presentation.reusables.composables.A2bAppBar
 
 @Composable
 fun HistoryScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  historyViewModel: HistoryViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    historyViewModel: HistoryViewModel = hiltViewModel(),
 ) {
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      A2bAppBar(
-        title = stringResource(id = R.string.title_history),
-        hasFeedbackButton = true,
-        navigationIcon = R.drawable.ic_arrow_back,
-        onNavigationIconClick = { navController.popBackStack() },
-        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
-      )
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            A2bAppBar(
+                title = stringResource(id = R.string.title_history),
+                hasFeedbackButton = true,
+                navigationIcon = R.drawable.ic_arrow_back,
+                onNavigationIconClick = { navController.popBackStack() },
+                onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
+            )
+        }
+    ) { contentPadding ->
+        HistoryContent(
+            modifier = Modifier
+              .padding(contentPadding)
+              .fillMaxSize(),
+            navController = navController,
+            historyViewModel = historyViewModel,
+        )
     }
-  ) { contentPadding ->
-    HistoryContent(
-      modifier = Modifier
-        .padding(contentPadding)
-        .fillMaxSize(),
-      navController = navController,
-      historyViewModel = historyViewModel,
-    )
-  }
 }

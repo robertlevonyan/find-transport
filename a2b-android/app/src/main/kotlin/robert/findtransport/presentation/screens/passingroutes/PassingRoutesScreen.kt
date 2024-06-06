@@ -16,35 +16,35 @@ import robert.findtransport.utils.EMPTY_ID
 
 @Composable
 fun PassingRoutesScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  stopId: Int,
-  passingRoutesViewModel: PassingRoutesViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    stopId: Int,
+    passingRoutesViewModel: PassingRoutesViewModel = hiltViewModel(),
 ) {
-  if (stopId == EMPTY_ID) {
-    navController.popBackStack()
-    return
-  }
-  passingRoutesViewModel.getStopAndTransports(stopId)
-
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      A2bAppBar(
-        title = stringResource(id = R.string.title_details),
-        hasFeedbackButton = true,
-        navigationIcon = R.drawable.ic_arrow_back,
-        onNavigationIconClick = { navController.popBackStack() },
-        onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen.name) },
-      )
+    if (stopId == EMPTY_ID) {
+        navController.popBackStack()
+        return
     }
-  ) { contentPadding ->
-    PassingRoutesContent(
-      modifier = Modifier
-        .padding(contentPadding)
-        .fillMaxSize(),
-      navController = navController,
-      passingRoutesViewModel = passingRoutesViewModel,
-    )
-  }
+    passingRoutesViewModel.getStopAndTransports(stopId)
+
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            A2bAppBar(
+                title = stringResource(id = R.string.title_details),
+                hasFeedbackButton = true,
+                navigationIcon = R.drawable.ic_arrow_back,
+                onNavigationIconClick = { navController.popBackStack() },
+                onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
+            )
+        }
+    ) { contentPadding ->
+        PassingRoutesContent(
+            modifier = Modifier
+              .padding(contentPadding)
+              .fillMaxSize(),
+            navController = navController,
+            passingRoutesViewModel = passingRoutesViewModel,
+        )
+    }
 }
