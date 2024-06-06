@@ -18,6 +18,7 @@ import robert.findtransport.utils.DATABASE_NAME
 //    TransportRoute::class,
   ],
   version = 27,
+  exportSchema = true
 )
 @TypeConverters(TransportRouteTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {

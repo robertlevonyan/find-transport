@@ -32,7 +32,7 @@ android {
         }
 
         ksp {
-            arguments.toMutableMap()["room.schemaLocation"] = "$projectDir/schemas"
+            arg("room.schemaLocation", "$projectDir/schemas")
         }
     }
     buildTypes {
