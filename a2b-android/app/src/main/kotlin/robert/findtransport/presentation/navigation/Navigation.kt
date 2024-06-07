@@ -30,15 +30,10 @@ fun Navigation() {
     val homeViewModel = hiltViewModel<HomeViewModel>()
 
     val isIntroPassed by homeViewModel.introPassed.collectAsState()
-    val startDestination = if (isIntroPassed) {
-        NavigationScreens.HomeScreen
-    } else {
-        NavigationScreens.IntroScreen
-    }
 
     NavHost(
         navController = navController,
-        startDestination = startDestination,
+        startDestination = if (isIntroPassed) NavigationScreens.HomeScreen else NavigationScreens.IntroScreen,
     ) {
         composable<NavigationScreens.IntroScreen> {
             IntroScreen(navController = navController)
