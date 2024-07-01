@@ -1,188 +1,179 @@
+import com.android.build.api.variant.BuildConfigField
 import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
-  id("com.android.application")
-  kotlin("android")
-  kotlin("kapt")
-  kotlin("plugin.serialization") version "1.9.10"
-  id("kotlin-parcelize")
-  id("com.google.gms.google-services")
-  id("com.google.firebase.crashlytics")
-  id("com.google.devtools.ksp")
-  id("dagger.hilt.android.plugin")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-  compileSdk = 34
-  namespace = "robert.findtransport"
-  defaultConfig {
-    applicationId = "robert.findtransport"
-    minSdk = 23
-    targetSdk = 34
-    versionCode = 320
-    versionName = "4.2.0"
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    vectorDrawables.useSupportLibrary = true
-    multiDexEnabled = true
+    compileSdk = 34
+    namespace = "robert.findtransport"
+    defaultConfig {
+        applicationId = "robert.findtransport"
+        minSdk = 26
+        targetSdk = 34
+        versionCode = 331
+        versionName = "4.3.1"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled = true
 
-    ndk {
-      abiFilters.addAll(mutableSetOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
-      debugSymbolLevel = "SYMBOL_TABLE"
+        ndk {
+            abiFilters.addAll(mutableSetOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+            debugSymbolLevel = "SYMBOL_TABLE"
+        }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
+            with(manifestPlaceholders) {
+                set("crashlyticsCollectionEnabled", false)
+                set("appIcon", "@mipmap/ic_launcher_debug")
+                set("appIconRound", "@mipmap/ic_launcher_round_debug")
+            }
+        }
 
-    kapt {
-      arguments {
-        arg("room.schemaLocation", "$projectDir/schemas")
-      }
+        release {
+            isMinifyEnabled = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+            with(manifestPlaceholders) {
+                set("crashlyticsCollectionEnabled", false)
+                set("appIcon", "@mipmap/ic_launcher")
+                set("appIconRound", "@mipmap/ic_launcher")
+            }
+        }
     }
-  }
-  buildTypes {
-    debug {
-      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to false))
-
-      val localProperties = Properties()
-      localProperties.load(project.rootProject.file("local.properties").inputStream())
-
-      val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
-      buildConfigField("String", "MAPBOX_TOKEN", mapboxToken)
-
-      val ipAddress = localProperties.getProperty("IP_ADDRESS")
-      buildConfigField("String", "IP_ADDRESS", ipAddress)
-
-      val keyPrefix = localProperties.getProperty("KEY_PREFIX")
-      buildConfigField("String", "KEY_PREFIX", keyPrefix)
-
-      val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
-      buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
-
-      val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
-      buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
-
-      applicationIdSuffix = ".debug"
-      versionNameSuffix = "-DEBUG"
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
     }
-
-    release {
-      isMinifyEnabled = true
-      proguardFiles(
-        getDefaultProguardFile("proguard-android-optimize.txt"),
-        "proguard-rules.pro"
-      )
-      ndk {
-        debugSymbolLevel = "FULL"
-      }
-      addManifestPlaceholders(mapOf("crashlyticsCollectionEnabled" to true))
-
-      val localProperties = Properties()
-      localProperties.load(project.rootProject.file("local.properties").inputStream())
-
-      val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
-      buildConfigField("String", "MAPBOX_TOKEN", mapboxToken)
-
-      val ipAddress = localProperties.getProperty("IP_ADDRESS")
-      buildConfigField("String", "IP_ADDRESS", ipAddress)
-
-      val keyPrefix = localProperties.getProperty("KEY_PREFIX")
-      buildConfigField("String", "KEY_PREFIX", keyPrefix)
-
-      val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
-      buildConfigField("String", "MAPBOX_STYLE_LIGHT", mapboxStyleLight)
-
-      val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
-      buildConfigField("String", "MAPBOX_STYLE_NIGHT", mapboxStyleNight)
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-  }
-  lint {
-    checkReleaseBuilds = false
-    abortOnError = false
-  }
-  compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-  }
-  buildFeatures {
-    compose = true
-  }
-  kotlinOptions {
-    jvmTarget = "17"
-    freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
-      add("-opt-in=kotlin.RequiresOptIn")
-      add("-Xcontext-receivers")
+    buildFeatures {
+        compose = true
+        buildConfig = true
     }
-  }
-  bundle {
-    language { enableSplit = false }
-    abi { enableSplit = false }
-    storeArchive.enable = true
-  }
-  composeOptions {
-    kotlinCompilerExtensionVersion = "1.5.4"
-  }
-  kapt {
-    correctErrorTypes = true
-  }
+    kotlinOptions {
+        jvmTarget = "17"
+        freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
+            add("-opt-in=kotlin.RequiresOptIn")
+            add("-Xcontext-receivers")
+        }
+    }
+    bundle {
+        language { enableSplit = false }
+        abi { enableSplit = false }
+        storeArchive.enable = true
+    }
+}
+
+kotlin {
+    sourceSets.all {
+        languageSettings.enableLanguageFeature("ExplicitBackingFields")
+    }
+}
+
+androidComponents {
+    onVariants {
+        val localProperties = Properties()
+        localProperties.load(project.rootProject.file("local.properties").inputStream())
+
+        val mapboxToken = localProperties.getProperty("MAPBOX_TOKEN")
+        val ipAddress = localProperties.getProperty("IP_ADDRESS")
+        val keyPrefix = localProperties.getProperty("KEY_PREFIX")
+        val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
+        val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
+
+        with(it.buildConfigFields) {
+            put("MAPBOX_TOKEN", BuildConfigField("String", mapboxToken, "MAPBOX_TOKEN"))
+            put("IP_ADDRESS", BuildConfigField("String", ipAddress, "IP_ADDRESS"))
+            put("KEY_PREFIX", BuildConfigField("String", keyPrefix, "KEY_PREFIX"))
+            put(
+                "MAPBOX_STYLE_LIGHT",
+                BuildConfigField("String", mapboxStyleLight, "MAPBOX_STYLE_LIGHT")
+            )
+            put(
+                "MAPBOX_STYLE_NIGHT",
+                BuildConfigField("String", mapboxStyleNight, "MAPBOX_STYLE_NIGHT")
+            )
+        }
+    }
 }
 
 dependencies {
-  //kotlin
-  kotlin("stdlib")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-  implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.10")
-  implementation("io.ktor:ktor-client-android:2.3.5")
-  implementation("io.ktor:ktor-client-serialization:2.3.3")
-  implementation("io.ktor:ktor-client-cio:2.3.3")
-  implementation("io.ktor:ktor-client-logging-jvm:2.3.3")
-  implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
-  implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+    //kotlin
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.logging.jvm)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
-  //google
-  implementation("com.google.android.material:material:1.10.0")
-  implementation("com.google.android.play:core:1.10.3")
-  implementation("com.google.android.play:core-ktx:1.8.1")
-  implementation("com.google.android.gms:play-services-location:21.0.1")
-  implementation("com.google.dagger:hilt-android:2.48")
-  implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
-  releaseImplementation("com.google.firebase:firebase-analytics-ktx")
-  releaseImplementation("com.google.firebase:firebase-crashlytics-ktx")
+    //google
+    implementation(libs.material)
+    implementation(libs.play.core.ktx)
+    implementation(libs.play.services.location)
+    implementation(libs.hilt.android)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
 
-  kapt("com.google.dagger:hilt-android-compiler:2.48")
+    ksp(libs.hilt.android.compiler)
 
-  //androidx
-  implementation("androidx.browser:browser:1.7.0")
-  implementation("androidx.core:core-ktx:1.12.0")
-  implementation("androidx.core:core-splashscreen:1.0.1")
-  implementation("androidx.multidex:multidex:2.0.1")
-  implementation("androidx.room:room-runtime:2.6.0")
-  implementation("androidx.room:room-ktx:2.6.0")
-  implementation("androidx.room:room-paging:2.6.0")
-  implementation("androidx.vectordrawable:vectordrawable:1.1.0")
+    //androidx
+    implementation(libs.browser)
+    implementation(libs.core.ktx)
+    implementation(libs.core.splashscreen)
+    implementation(libs.multidex)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    implementation(libs.room.paging)
+    implementation(libs.vectordrawable)
 
-  ksp("androidx.room:room-compiler:2.6.0")
+    ksp(libs.room.compiler)
 
-  //compose
-  val composeBom = platform("androidx.compose:compose-bom:2023.10.00")
-  implementation(composeBom)
-  implementation("androidx.compose.material3:material3")
-  implementation("androidx.compose.material3:material3-window-size-class")
-  implementation("androidx.compose.foundation:foundation")
-  implementation("androidx.compose.ui:ui")
-  implementation("androidx.compose.ui:ui-tooling")
+    //compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
 
-  implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
-  implementation("androidx.compose.compiler:compiler:1.5.4")
-  implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-  implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
-  implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-  implementation("androidx.navigation:navigation-compose:2.7.5")
-  implementation("androidx.paging:paging-compose:3.2.1")
-  implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.accompanist.systemuicontroller)
+    implementation(libs.activity.compose)
+    implementation(libs.compose.navigation)
+    implementation(libs.compose.paging)
+    implementation(libs.compose.coil)
+    implementation(libs.constraintlayout.compose)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
 
-  //map
-  implementation("com.mapbox.maps:android:10.16.1")
+    //map
+    implementation(libs.mapbox.android)
+    implementation(libs.mapbox.android.compose)
 
-  //other
-  implementation("com.airbnb.android:lottie-compose:6.1.0")
-  implementation("com.robertlevonyan.compose:materialchip:3.0.6")
-  implementation("me.saket.swipe:swipe:1.2.0")
+    //other
+    implementation(libs.compose.lottie)
+    implementation(libs.materialchip)
+    implementation(libs.swipe)
 }

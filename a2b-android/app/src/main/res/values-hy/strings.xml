@@ -109,4 +109,6 @@
 
   <!--content description strings-->
   <string name="cd_current_location">Տեղափոխվել գտնվելու վայրի վրա</string>
+    <string name="message_exception">Oh no! Something bad happened 😳</string>
+  <string name="label_restart_app">Restart app</string>
 </resources>

@@ -1,5 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_name" translatable="false" tools:ignore="PrivateResource">A2B Transport</string>
+  <string name="mapbox_access_token" translatable="false" tools:ignore="UnusedResources">pk.eyJ1Ijoicm9iZXJ0bGV2b255YW4iLCJhIjoiY2oxajVyajJ3MDFjZjJ5cGRnOXV5a2FpbyJ9.lsKprBvsy308ZzjQQJojLg</string>
 
   <!--titles-->
   <string name="title_search">Search</string>
@@ -118,4 +119,6 @@
 
   <!--content description strings-->
   <string name="cd_current_location">Go to current location</string>
+    <string name="message_exception">Oh no! Something bad happened 😳</string>
+  <string name="label_restart_app">Restart app</string>
 </resources>
