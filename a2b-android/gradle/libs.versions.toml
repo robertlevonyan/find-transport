@@ -1,33 +1,32 @@
 [versions]
-androidGradlePlugin = "8.4.1"
+androidGradlePlugin = "8.5.0"
 hilt = "2.51.1"
-gmsPlugin = "4.4.1"
-firebaseCrashlyticsPlugin = "3.0.1"
-ksp = "2.0.0-1.0.21"
+gmsPlugin = "4.4.2"
+firebaseCrashlyticsPlugin = "3.0.2"
+ksp = "2.0.0-1.0.22"
 kotlin = "2.0.0"
 kotlinxCoroutines = "1.8.1"
 ktor = "2.3.10"
 material = "1.12.0"
-playCore = "1.10.3"
 playCoreKtx = "1.8.1"
-playServicesLocation = "21.2.0"
-firebaseBom = "33.0.0"
+playServicesLocation = "21.3.0"
+firebaseBom = "33.1.1"
 browser = "1.8.0"
 coreKtx = "1.13.1"
 coreSplashscreen = "1.0.1"
 multidex = "2.0.1"
 room = "2.6.1"
 vectorDrawable = "1.2.0"
-androidxComposeBom = "2024.05.00"
+androidxComposeBom = "2024.06.00"
 accompanist = "0.34.0"
 activityKtx = "1.9.0"
-composeNavigation = "2.8.0-beta02"
+composeNavigation = "2.8.0-beta04"
 composePaging = "3.3.0"
 composeCoil = "2.6.0"
-composeLottie = "6.4.0"
+composeLottie = "6.4.1"
 constraintLayout = "1.0.1"
 hiltNavigation = "1.2.0"
-livecycleViewModel = "2.8.0"
+livecycleViewModel = "2.8.2"
 mapbox = "11.3.1"
 materialchip = "3.0.8"
 swipe = "1.3.0"
@@ -43,7 +42,6 @@ ktor-client-logging-jvm = { group = "io.ktor", name = "ktor-client-logging-jvm",
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-play-core = { group = "com.google.android.play", name = "core", version.ref = "playCore" }
 play-core-ktx = { group = "com.google.android.play", name = "core-ktx", version.ref = "playCoreKtx" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
