@@ -35,7 +35,7 @@ fun IntroScreen(
 
     val currentLanguageIndex by introViewModel.currentLanguageIndex.collectAsState()
     val context = LocalContext.current
-    var welcomeMessage by rememberSaveable { mutableStateOf(R.string.message_slider_welcome) }
+    var welcomeMessage by rememberSaveable { mutableIntStateOf(R.string.message_slider_welcome) }
 
     LaunchedEffect(key1 = null) {
         introViewModel.locale.collectLatest { language ->

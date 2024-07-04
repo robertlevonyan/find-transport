@@ -10,15 +10,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.mapbox.geojson.Point
+import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.ComposeMapInitOptions
+import com.mapbox.maps.extension.compose.DisposableMapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotationGroup
 import com.mapbox.maps.extension.compose.annotation.generated.PolylineAnnotation
 import com.mapbox.maps.extension.compose.style.GenericStyle
 import com.mapbox.maps.extension.style.layers.properties.generated.LineJoin
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.locationcomponent.location
 import robert.findtransport.R
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.model.Transport
@@ -46,7 +51,6 @@ fun MapComponent(
     isPrimary: Boolean,
 ) {
     val context = LocalContext.current
-    val locationComponentSettings = getLocationComponent(context, locationEnabled)
     val mapStyle = getMapStyle()
 
     MapboxMap(
@@ -62,7 +66,6 @@ fun MapComponent(
                 bearing(0.0)
             }
         },
-        locationComponentSettings = locationComponentSettings,
         compass = {
             Compass(
                 contentPadding = PaddingValues(top = CompassTopPadding, end = CompassEndPadding),
@@ -113,6 +116,21 @@ fun MapComponent(
                         true
                     }
                 )
+            }
+
+            DisposableMapEffect(key1 = this) { mapView ->
+                mapView.location.updateSettings {
+                    enabled = true
+                    pulsingEnabled = true
+                    pulsingMaxRadius = 100f
+                    puckBearingEnabled = true
+                    puckBearing = PuckBearing.HEADING
+                    locationPuck = LocationPuck2D().apply {
+                        topImage = ImageHolder.from(R.drawable.ic_bearing)
+                    }
+                    pulsingColor = context.getColorFromRes(R.color.colorAccent300)
+                }
+                onDispose {  }
             }
         }
     )

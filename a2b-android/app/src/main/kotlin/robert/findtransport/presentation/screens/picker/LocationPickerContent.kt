@@ -19,16 +19,21 @@ import androidx.navigation.NavController
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.ImageHolder
 import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.ComposeMapInitOptions
 import com.mapbox.maps.extension.compose.DisposableMapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.style.GenericStyle
+import com.mapbox.maps.extension.style.expressions.dsl.generated.image
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMoveListener
 import com.mapbox.maps.plugin.gestures.removeOnMoveListener
+import com.mapbox.maps.plugin.locationcomponent.location
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
@@ -45,6 +50,7 @@ import robert.findtransport.presentation.screens.picker.components.FeedbackButto
 import robert.findtransport.presentation.screens.picker.components.SelectLocationButton
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
+import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.getLocationComponent
 
 @OptIn(MapboxExperimental::class)
@@ -92,16 +98,12 @@ fun LocationPickerContent(
 
     Box(modifier = modifier.fillMaxSize()) {
         val context = LocalContext.current
-        val locationComponentSettings = getLocationComponent(context, locationEnabled)
 
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
-            composeMapInitOptions = ComposeMapInitOptions(
-                pixelRatio = 1f,
-            ),
+            composeMapInitOptions = ComposeMapInitOptions(pixelRatio = 1f),
             style = { GenericStyle(style = mapStyle) },
             mapViewportState = mapViewportState,
-            locationComponentSettings = locationComponentSettings,
             compass = {
                 Compass(
                     contentPadding = PaddingValues(
@@ -118,6 +120,17 @@ fun LocationPickerContent(
             },
             content = {
                 DisposableMapEffect(key1 = this) { mapView ->
+                    mapView.location.updateSettings {
+                        enabled = locationEnabled
+                        pulsingEnabled = true
+                        pulsingMaxRadius = 100f
+                        puckBearingEnabled = true
+                        puckBearing = PuckBearing.HEADING
+                        locationPuck = LocationPuck2D().apply {
+                            topImage = ImageHolder.from(R.drawable.ic_bearing)
+                        }
+                        pulsingColor = context.getColorFromRes(R.color.colorAccent300)
+                    }
                     val map = mapView.mapboxMap
                     val onMoveListener = object : OnMoveListener {
                         override fun onMove(detector: MoveGestureDetector): Boolean = false
@@ -136,7 +149,8 @@ fun LocationPickerContent(
                         map.removeOnMoveListener(onMoveListener)
                     }
                 }
-            }
+            },
+
         )
 
         CentralPointer(isMapMoving = isMapMoving)

@@ -9,7 +9,7 @@ import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 
 interface TransportUseCase {
-  fun getTransportById(id: Int?): Flow<Transport>
+  fun getTransportById(id: Int): Flow<Transport>
 
   fun getBusesPaged(): Flow<PagingData<Transport>>
 

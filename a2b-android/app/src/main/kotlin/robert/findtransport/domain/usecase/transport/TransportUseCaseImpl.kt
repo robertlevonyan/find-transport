@@ -81,9 +81,7 @@ class TransportUseCaseImpl @Inject constructor(
       }
     }
 
-  override fun getTransportById(id: Int?): Flow<Transport> = if (id == null) {
-    emptyFlow()
-  } else {
+  override fun getTransportById(id: Int): Flow<Transport> =
     transportsRepository.getTransportById(id).mapNotNull { apiTransport ->
       val stops = apiTransport.id?.let { transportId ->
         transportsRepository.getTransportStops(transportId).map { apiStop ->
@@ -107,7 +105,6 @@ class TransportUseCaseImpl @Inject constructor(
       }.orEmpty()
       apiTransport.toTransport(stops, stopsReversed)
     }.flowOn(Dispatchers.IO)
-  }
 
   override suspend fun getTransportsForStop(id: Int): List<Transport> =
     withContext(Dispatchers.IO) {
