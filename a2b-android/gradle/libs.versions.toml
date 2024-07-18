@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin = "8.5.0"
+androidGradlePlugin = "8.5.1"
 hilt = "2.51.1"
 gmsPlugin = "4.4.2"
 firebaseCrashlyticsPlugin = "3.0.2"

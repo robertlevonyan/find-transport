@@ -21,9 +21,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filterNotNull
 import robert.findtransport.R
 import robert.findtransport.presentation.navigation.NavigationScreens
 import robert.findtransport.presentation.reusables.theme.DoublePadding
@@ -68,7 +66,9 @@ fun HomeContent(
     }
 
     ConstraintLayout(modifier = modifier) {
-        val (appBar, dataCheck, fromCard, swap, toCard, search, allTransports, rate) = createRefs()
+        val (appBar, dataCheck, fromCard,
+            swap, toCard, search,
+            allTransports, rate) = createRefs()
         HomeAppBar(modifier = Modifier.constrainAs(appBar) {
             start.linkTo(parent.start)
             top.linkTo(parent.top)

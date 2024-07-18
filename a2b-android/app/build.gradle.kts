@@ -41,8 +41,6 @@ android {
             versionNameSuffix = "-DEBUG"
             with(manifestPlaceholders) {
                 set("crashlyticsCollectionEnabled", false)
-                set("appIcon", "@mipmap/ic_launcher_debug")
-                set("appIconRound", "@mipmap/ic_launcher_round_debug")
             }
         }
 
@@ -57,8 +55,6 @@ android {
             }
             with(manifestPlaceholders) {
                 set("crashlyticsCollectionEnabled", false)
-                set("appIcon", "@mipmap/ic_launcher")
-                set("appIconRound", "@mipmap/ic_launcher")
             }
         }
     }
