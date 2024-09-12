@@ -2,15 +2,9 @@ package robert.findtransport.domain.usecase.stop
 
 import android.location.Address
 import android.location.Location
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
 import com.mapbox.geojson.Point
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import robert.findtransport.data.model.*
 import robert.findtransport.domain.mapper.toApiStop
@@ -20,7 +14,6 @@ import robert.findtransport.domain.mapper.toStopLocation
 import robert.findtransport.domain.repository.LocationRepository
 import robert.findtransport.domain.repository.ResourcesRepository
 import robert.findtransport.domain.repository.StopsRepository
-import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
@@ -32,7 +25,6 @@ class StopsUseCaseImpl @Inject constructor(
     private val stopsRepository: StopsRepository,
     private val locationRepository: LocationRepository,
     private val resourcesRepository: ResourcesRepository,
-    private val permissionUseCase: PermissionUseCase,
 ) : StopsUseCase {
 
     override suspend fun getStops(): List<Stop> = withContext(Dispatchers.IO) {
@@ -50,22 +42,17 @@ class StopsUseCaseImpl @Inject constructor(
             ?: emptyList()
     }
 
-    override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> =
-        Pager(config = PagingConfig(pageSize = 10)) {
-            when (locale) {
-                LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
-                LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
-                else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
-            }
+    override suspend fun getStops(stop: String, locale: String): List<Stop> {
+        return when (locale) {
+            LNG_AM -> stopsRepository.getAllStopsAm(stop.replace("'", ""))
+            LNG_RU -> stopsRepository.getAllStopsRu(stop.replace("'", ""))
+            else -> stopsRepository.getAllStopsEn(stop.replace("'", ""))
+        }.map { apiStop ->
+            apiStop.toStop(
+                stopsRepository.getStopLocations(apiStop.id ?: 0)
+                    .map { it.toStopLocation(apiStop) })
         }
-            .flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
-                value.map { apiStop ->
-                    val currentStop = apiStop.toStop(
-                        coordinates = getStopCoordinates(apiStop)
-                    )
-                    currentStop
-                }
-            }
+    }
 
     override suspend fun getStopsLocations(): List<PointAnnotationOptions> =
         withContext(Dispatchers.IO) {
@@ -174,6 +161,7 @@ class StopsUseCaseImpl @Inject constructor(
     override suspend fun downloadStops(): Result<Unit> = withContext(Dispatchers.IO) {
         when (val apiStopsResult = stopsRepository.getStopsFromApi()) {
             is Result.Success -> {
+                stopsRepository.deleteStops()
                 stopsRepository.cacheStops(apiStopsResult.data)
                 stopsRepository.areStopsCached = true
                 Result.Success(Unit)

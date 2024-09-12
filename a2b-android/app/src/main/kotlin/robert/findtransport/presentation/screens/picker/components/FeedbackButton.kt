@@ -18,10 +18,7 @@ fun FeedbackButton(
     onClick: () -> Unit,
 ) {
     SmallFloatingActionButton(
-        modifier = modifier.padding(
-            vertical = FabPadding,
-            horizontal = HalfPadding,
-        ),
+        modifier = modifier.padding(horizontal = HalfPadding),
         containerColor = MaterialTheme.colorScheme.secondary,
         onClick = onClick
     ) {

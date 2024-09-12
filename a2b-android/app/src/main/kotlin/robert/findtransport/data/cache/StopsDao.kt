@@ -1,6 +1,5 @@
 package robert.findtransport.data.cache
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -35,17 +34,20 @@ interface StopsDao {
     suspend fun getLocationsCount(): Int
 
     @Query("SELECT * FROM Stop WHERE nameEn LIKE '%'||:word||'%' ORDER BY nameEn ASC")
-    fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
+    suspend fun getAllStopsEn(word: String): List<Stop>
 
     @Query("SELECT * FROM Stop WHERE nameAm LIKE '%'||:word||'%' ORDER BY nameAm ASC")
-    fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
+    suspend fun getAllStopsAm(word: String): List<Stop>
 
     @Query("SELECT * FROM Stop WHERE nameRu LIKE '%'||:word||'%' ORDER BY nameRu ASC")
-    fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
+    suspend fun getAllStopsRu(word: String): List<Stop>
 
     @Query("SELECT * FROM StopLocation WHERE stopId = :stopId")
     suspend fun getStopLocations(stopId: Int): List<StopLocation>
 
     @Query("SELECT * FROM StopLocation")
     suspend fun getAllStopLocation(): List<StopLocation>
+
+    @Query("DELETE FROM Stop")
+    suspend fun deleteStops()
 }

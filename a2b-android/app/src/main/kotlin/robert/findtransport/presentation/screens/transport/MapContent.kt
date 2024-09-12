@@ -2,6 +2,7 @@ package robert.findtransport.presentation.screens.transport
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SmallFloatingActionButton
@@ -36,9 +37,9 @@ fun MapContent(
         )
 
         SmallFloatingActionButton(
-            modifier = Modifier.padding(
-                vertical = FabPadding, horizontal = HalfPadding
-            ),
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(horizontal = HalfPadding),
             containerColor = MaterialTheme.colorScheme.secondary,
             onClick = onBackClick
         ) {
@@ -48,7 +49,9 @@ fun MapContent(
             )
         }
         FeedbackButton(
-            modifier = Modifier.align(Alignment.TopEnd),
+            modifier = Modifier
+                .statusBarsPadding()
+                .align(Alignment.TopEnd),
             onClick = onFeedbackClick,
         )
     }

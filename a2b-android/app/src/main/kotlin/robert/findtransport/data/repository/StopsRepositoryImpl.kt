@@ -1,7 +1,6 @@
 package robert.findtransport.data.repository
 
 import android.util.Log
-import androidx.paging.PagingSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -89,14 +88,14 @@ class StopsRepositoryImpl @Inject constructor(
     override suspend fun getStopsFromCache(): List<Stop> =
         stopsDao.getAllStops()
 
-    override fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop> =
-        stopsDao.getAllStopsPagedEn(word)
+    override suspend fun getAllStopsEn(word: String): List<Stop> =
+        stopsDao.getAllStopsEn(word)
 
-    override fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop> =
-        stopsDao.getAllStopsPagedAm(word)
+    override suspend fun getAllStopsAm(word: String): List<Stop> =
+        stopsDao.getAllStopsAm(word)
 
-    override fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop> =
-        stopsDao.getAllStopsPagedRu(word)
+    override suspend fun getAllStopsRu(word: String): List<Stop> =
+        stopsDao.getAllStopsRu(word)
 
     override fun getStopsFromInMemoryCache(): List<Stop> =
         inMemoryCacheService.get<List<Stop>>(MEM_CACHE_STOP) ?: emptyList()
@@ -109,6 +108,10 @@ class StopsRepositoryImpl @Inject constructor(
 
     override suspend fun getStopLocationsFromCache(): List<StopLocation> =
         stopsDao.getAllStopLocation()
+
+    override suspend fun deleteStops() {
+        stopsDao.deleteStops()
+    }
 
     override var areStopsCached: Boolean
         get() = preferencesService.getBoolean(PREF_STOPS_ERROR, false)

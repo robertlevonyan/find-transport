@@ -14,14 +14,14 @@ plugins {
 }
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     namespace = "robert.findtransport"
     defaultConfig {
         applicationId = "robert.findtransport"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 335
-        versionName = "4.3.5"
+        targetSdk = 35
+        versionCode = 336
+        versionName = "4.3.6"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -147,7 +147,6 @@ dependencies {
     implementation(libs.multidex)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    implementation(libs.room.paging)
     implementation(libs.vectordrawable)
 
     ksp(libs.room.compiler)
@@ -156,10 +155,8 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
 
-    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.activity.compose)
     implementation(libs.compose.navigation)
-    implementation(libs.compose.paging)
     implementation(libs.compose.coil)
     implementation(libs.constraintlayout.compose)
     implementation(libs.hilt.navigation.compose)

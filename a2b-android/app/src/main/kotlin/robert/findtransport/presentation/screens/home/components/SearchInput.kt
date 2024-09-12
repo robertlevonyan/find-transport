@@ -15,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -90,8 +91,9 @@ fun SearchInput(
                     },
                     singleLine = true,
                     shape = Shapes.medium,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = searchInputBackgroundColor(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedContainerColor = searchInputBackgroundColor(),
+                        focusedContainerColor = searchInputBackgroundColor(),
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent,
                         disabledBorderColor = Color.Transparent,

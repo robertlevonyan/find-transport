@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.mapbox.geojson.Point
@@ -55,9 +56,7 @@ fun MapComponent(
 
     MapboxMap(
         modifier = Modifier.fillMaxSize(),
-        composeMapInitOptions = ComposeMapInitOptions(
-            pixelRatio = 1f
-        ),
+        composeMapInitOptions = ComposeMapInitOptions(pixelRatio = 2.5f),
         mapViewportState = MapViewportState().apply {
             setCameraOptions {
                 zoom(13.0)
@@ -93,9 +92,11 @@ fun MapComponent(
 
             PolylineAnnotation(
                 points = coordinates.map { coord -> Point.fromLngLat(coord.lng, coord.lat) },
-                lineColorInt = context.getColorFromRes(R.color.colorAccent300),
-                lineWidth = 5.0,
-                lineJoin = LineJoin.ROUND,
+                init = {
+                    lineColor = Color(context.getColorFromRes(R.color.colorAccent300))
+                    lineWidth = 5.0
+                    lineJoin = LineJoin.ROUND
+                },
             )
 
             context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->

@@ -8,8 +8,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -56,8 +56,9 @@ fun FeedbackInput(
                 fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
             )
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = searchInputBackgroundColor(),
+        colors = OutlinedTextFieldDefaults.colors(
+            unfocusedContainerColor = searchInputBackgroundColor(),
+            focusedContainerColor = searchInputBackgroundColor(),
             focusedBorderColor = MaterialTheme.colorScheme.surface,
             unfocusedBorderColor = MaterialTheme.colorScheme.surface,
             disabledBorderColor = MaterialTheme.colorScheme.surface,

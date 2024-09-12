@@ -1,6 +1,7 @@
 package robert.findtransport.presentation.screens.picker.components
 
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -13,16 +14,19 @@ import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
 import robert.findtransport.presentation.reusables.theme.Black
 import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun BoxScope.CurrentLocationButton(onClick: () -> Unit) {
     FloatingActionButton(
         modifier = Modifier
             .align(Alignment.BottomEnd)
-            .padding(FabPadding),
+            .navigationBarsPadding()
+            .padding(bottom = HalfPadding)
+            .padding(horizontal = FabPadding),
         containerColor = MaterialTheme.colorScheme.secondary,
         contentColor = Black,
-        onClick = onClick
+        onClick = onClick,
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_current_location),

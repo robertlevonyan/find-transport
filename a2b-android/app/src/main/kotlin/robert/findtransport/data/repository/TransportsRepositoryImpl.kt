@@ -1,7 +1,6 @@
 package robert.findtransport.data.repository
 
 import android.util.Log
-import androidx.paging.PagingSource
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -94,17 +93,17 @@ class TransportsRepositoryImpl @Inject constructor(
         Log.d("A2B Join", "${saved.size}")
     }
 
-    override fun getBusesPaged(): PagingSource<Int, Transport> =
-        transportsDao.getBusesPaged()
+    override suspend fun getBuses(): List<Transport> =
+        transportsDao.getBuses()
 
-    override fun getMicrobusesPaged(): PagingSource<Int, Transport> =
-        transportsDao.getMicrobusesPaged()
+    override suspend fun getMicrobuses(): List<Transport> =
+        transportsDao.getMicrobuses()
 
-    override fun getTrolleybusesPaged(): PagingSource<Int, Transport> =
-        transportsDao.getTrolleybusesPaged()
+    override suspend fun getTrolleybuses(): List<Transport> =
+        transportsDao.getTrolleybuses()
 
-    override fun getMetroPaged(): PagingSource<Int, Transport> =
-        transportsDao.getMetroPaged()
+    override suspend fun getMetro(): List<Transport> =
+        transportsDao.getMetro()
 
     override fun getTransportById(id: Int): Flow<Transport> =
         transportsDao.getTransportById(id)

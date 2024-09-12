@@ -3,6 +3,7 @@ package robert.findtransport.presentation.screens.picker.components
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,6 +25,7 @@ import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.reusables.theme.BlackVariant
 import robert.findtransport.presentation.reusables.theme.FabPadding
+import robert.findtransport.presentation.reusables.theme.HalfPadding
 import robert.findtransport.presentation.reusables.theme.SmallFabSize
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.LocationPickerViewModel
@@ -70,8 +72,8 @@ fun BoxScope.SelectLocationButton(
         modifier = Modifier
             .align(Alignment.BottomCenter)
             .fillMaxWidth()
-            .padding(start = FabPadding)
-            .padding(vertical = FabPadding)
+            .padding(start = FabPadding, bottom = HalfPadding)
+            .navigationBarsPadding()
             .run {
                 val paddingAddition = if (locationEnabled) SmallFabSize + FabPadding else 0.dp
                 padding(end = paddingAddition + FabPadding)

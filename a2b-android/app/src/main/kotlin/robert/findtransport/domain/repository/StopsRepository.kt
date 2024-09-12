@@ -1,6 +1,5 @@
 package robert.findtransport.domain.repository
 
-import androidx.paging.PagingSource
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.StopLocation
 import robert.findtransport.data.model.Result
@@ -18,11 +17,12 @@ interface StopsRepository {
 
     suspend fun getStopsFromCache(): List<Stop>
 
-    fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
 
-    fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
+    suspend fun getAllStopsEn(word: String): List<Stop>
 
-    fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
+    suspend fun getAllStopsAm(word: String): List<Stop>
+
+    suspend fun getAllStopsRu(word: String): List<Stop>
 
     fun getStopsFromInMemoryCache(): List<Stop>
 
@@ -31,6 +31,8 @@ interface StopsRepository {
     suspend fun getStopLocations(stopId: Int?): List<StopLocation>
 
     suspend fun getStopLocationsFromCache(): List<StopLocation>
+
+    suspend fun deleteStops()
 
     var areStopsCached: Boolean
 

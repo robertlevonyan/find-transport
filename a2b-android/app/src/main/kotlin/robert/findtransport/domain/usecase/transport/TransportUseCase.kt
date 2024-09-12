@@ -1,7 +1,6 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
-import androidx.paging.PagingData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
@@ -11,13 +10,13 @@ import robert.findtransport.data.model.Transport
 interface TransportUseCase {
     fun getTransportById(id: Int): Flow<Transport>
 
-    fun getBusesPaged(): Flow<PagingData<Transport>>
+    suspend fun getBuses(): List<Transport>
 
-    fun getMicrobusesPaged(): Flow<PagingData<Transport>>
+    suspend fun getMicrobuses(): List<Transport>
 
-    fun getTrolleybusesPaged(): Flow<PagingData<Transport>>
+    suspend fun getTrolleybuses(): List<Transport>
 
-    fun getMetroPaged(): Flow<PagingData<Transport>>
+    suspend fun getMetro(): List<Transport>
 
     suspend fun getTransportsForStop(id: Int): List<Transport>
 

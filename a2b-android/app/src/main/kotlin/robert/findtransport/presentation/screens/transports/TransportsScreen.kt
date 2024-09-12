@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.paging.compose.collectAsLazyPagingItems
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.TransportCategory
 import robert.findtransport.presentation.navigation.NavigationScreens
@@ -32,12 +31,12 @@ fun TransportsScreen(
             onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
         )
     }) { contentPadding ->
-        val transports = when (transportCategory) {
+        val transports by when (transportCategory) {
             TransportCategory.BUS -> transportsViewModel.buses
             TransportCategory.MICROBUS -> transportsViewModel.microbuses
             TransportCategory.TROLLEYBUS -> transportsViewModel.trolleybuses
             TransportCategory.METRO -> transportsViewModel.metro
-        }.collectAsLazyPagingItems()
+        }.collectAsState()
 
         TransportsContent(
             modifier = Modifier

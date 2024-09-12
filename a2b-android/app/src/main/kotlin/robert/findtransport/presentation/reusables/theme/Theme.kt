@@ -6,7 +6,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun A2bTheme(
@@ -14,7 +13,6 @@ fun A2bTheme(
     content: @Composable () -> Unit
 ) {
     AppCompatDelegate.setDefaultNightMode(theme)
-    val systemUiController = rememberSystemUiController()
 
     val colors = when (theme) {
         AppCompatDelegate.MODE_NIGHT_NO -> LightColorPalette
@@ -25,7 +23,7 @@ fun A2bTheme(
             LightColorPalette
         }
     }.also {
-        systemUiController.setSystemBarsColor(color = it.primary)
+//        systemUiController.setSystemBarsColor(color = it.primary)
     }
 
     MaterialTheme(

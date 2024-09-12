@@ -13,7 +13,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
@@ -29,7 +28,6 @@ import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.theme.SearchElementSize
 import robert.findtransport.presentation.screens.data.CheckDataScreen
 import robert.findtransport.presentation.screens.home.components.AllTransportsButton
-import robert.findtransport.presentation.screens.home.components.HomeAppBar
 import robert.findtransport.presentation.screens.home.components.RateDialog
 import robert.findtransport.presentation.screens.home.components.SearchButton
 import robert.findtransport.presentation.screens.home.components.SearchInput
@@ -64,20 +62,10 @@ fun HomeContent(
             }
         }
     }
-
     ConstraintLayout(modifier = modifier) {
         val (appBar, dataCheck, fromCard,
             swap, toCard, search,
             allTransports, rate) = createRefs()
-        HomeAppBar(modifier = Modifier.constrainAs(appBar) {
-            start.linkTo(parent.start)
-            top.linkTo(parent.top)
-            end.linkTo(parent.end)
-        },
-            containerColor = Color.Transparent,
-            onHistoryButtonClicked = { navController.navigate(NavigationScreens.HistoryScreen) },
-            onSettingsScreenClicked = { navController.navigate(NavigationScreens.SettingsScreen) },
-            onFeedbackScreenClicked = { navController.navigate(NavigationScreens.FeedbackScreen) })
 
         CheckDataScreen(modifier = Modifier.constrainAs(dataCheck) {
             width = Dimension.fillToConstraints

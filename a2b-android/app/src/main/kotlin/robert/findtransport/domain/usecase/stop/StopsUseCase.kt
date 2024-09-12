@@ -2,9 +2,7 @@ package robert.findtransport.domain.usecase.stop
 
 import android.location.Address
 import android.location.Location
-import androidx.paging.PagingData
 import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
-import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.model.Result
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.StopLocation
@@ -13,7 +11,7 @@ import robert.findtransport.data.entity.Stop as ApiStop
 interface StopsUseCase {
     suspend fun getStops(): List<Stop>
 
-    fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>>
+    suspend fun getStops(stop: String, locale: String): List<Stop>
 
     suspend fun getStopsLocations(): List<PointAnnotationOptions>
 

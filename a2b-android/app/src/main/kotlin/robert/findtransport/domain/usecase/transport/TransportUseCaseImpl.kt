@@ -1,10 +1,6 @@
 package robert.findtransport.domain.usecase.transport
 
 import android.location.Location
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.map
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -31,53 +27,41 @@ class TransportUseCaseImpl @Inject constructor(
     private val transportsRepository: TransportsRepository,
     private val stopsRepository: StopsRepository,
 ) : TransportUseCase {
-    override fun getBusesPaged(): Flow<PagingData<Transport>> =
-        Pager(config = PagingConfig(pageSize = 20)) {
-            transportsRepository.getBusesPaged()
-        }.flow.mapNotNull { value ->
-            value.map { apiTransport ->
-                apiTransport.id?.let { id ->
-                    apiTransport.toTransport(transportsRepository.getTransportStops(id)
-                        .map { it.toStop() })
-                }.orEmpty()
-            }
+    override suspend fun getBuses(): List<Transport> = withContext(Dispatchers.IO) {
+        transportsRepository.getBuses().map { apiTransport ->
+            apiTransport.id?.let { id ->
+                apiTransport.toTransport(transportsRepository.getTransportStops(id)
+                    .map { it.toStop() })
+            }.orEmpty()
         }
+    }
 
-    override fun getMicrobusesPaged(): Flow<PagingData<Transport>> =
-        Pager(config = PagingConfig(pageSize = 20)) {
-            transportsRepository.getMicrobusesPaged()
-        }.flow.mapNotNull { value ->
-            value.map { apiTransport ->
-                apiTransport.id?.let { id ->
-                    apiTransport.toTransport(transportsRepository.getTransportStops(id)
-                        .map { it.toStop() })
-                }.orEmpty()
-            }
+    override suspend fun getMicrobuses(): List<Transport> = withContext(Dispatchers.IO) {
+        transportsRepository.getMicrobuses().map { apiTransport ->
+            apiTransport.id?.let { id ->
+                apiTransport.toTransport(transportsRepository.getTransportStops(id)
+                    .map { it.toStop() })
+            }.orEmpty()
         }
+    }
 
-    override fun getTrolleybusesPaged(): Flow<PagingData<Transport>> =
-        Pager(config = PagingConfig(pageSize = 20)) {
-            transportsRepository.getTrolleybusesPaged()
-        }.flow.mapNotNull { value ->
-            value.map { apiTransport ->
-                apiTransport.id?.let { id ->
-                    apiTransport.toTransport(transportsRepository.getTransportStops(id)
-                        .map { it.toStop() })
-                }.orEmpty()
-            }
+    override suspend fun getTrolleybuses(): List<Transport> = withContext(Dispatchers.IO) {
+        transportsRepository.getTrolleybuses().map { apiTransport ->
+            apiTransport.id?.let { id ->
+                apiTransport.toTransport(transportsRepository.getTransportStops(id)
+                    .map { it.toStop() })
+            }.orEmpty()
         }
+    }
 
-    override fun getMetroPaged(): Flow<PagingData<Transport>> =
-        Pager(config = PagingConfig(pageSize = 20)) {
-            transportsRepository.getMetroPaged()
-        }.flow.mapNotNull { value ->
-            value.map { apiTransport ->
-                apiTransport.id?.let { id ->
-                    apiTransport.toTransport(transportsRepository.getTransportStops(id)
-                        .map { it.toStop() })
-                }.orEmpty()
-            }
+    override suspend fun getMetro(): List<Transport> = withContext(Dispatchers.IO) {
+        transportsRepository.getMetro().map { apiTransport ->
+            apiTransport.id?.let { id ->
+                apiTransport.toTransport(transportsRepository.getTransportStops(id)
+                    .map { it.toStop() })
+            }.orEmpty()
         }
+    }
 
     override fun getTransportById(id: Int): Flow<Transport> =
         transportsRepository.getTransportById(id).mapNotNull { apiTransport ->

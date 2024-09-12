@@ -1,6 +1,5 @@
 package robert.findtransport.domain.repository
 
-import androidx.paging.PagingSource
 import kotlinx.coroutines.flow.Flow
 import robert.findtransport.data.entity.Stop
 import robert.findtransport.data.entity.Transport
@@ -16,13 +15,13 @@ interface TransportsRepository {
 
     suspend fun cacheJoins(joins: List<TransportStopJoin>)
 
-    fun getBusesPaged(): PagingSource<Int, Transport>
+    suspend fun getBuses(): List<Transport>
 
-    fun getMicrobusesPaged(): PagingSource<Int, Transport>
+    suspend fun getMicrobuses(): List<Transport>
 
-    fun getTrolleybusesPaged(): PagingSource<Int, Transport>
+    suspend fun getTrolleybuses(): List<Transport>
 
-    fun getMetroPaged(): PagingSource<Int, Transport>
+    suspend fun getMetro(): List<Transport>
 
     fun getTransportById(id: Int): Flow<Transport>
 

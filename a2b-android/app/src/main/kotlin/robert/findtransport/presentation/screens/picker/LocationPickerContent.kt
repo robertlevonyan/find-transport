@@ -3,6 +3,7 @@ package robert.findtransport.presentation.screens.picker
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -99,7 +100,7 @@ fun LocationPickerContent(
 
         MapboxMap(
             modifier = Modifier.fillMaxSize(),
-            composeMapInitOptions = ComposeMapInitOptions(pixelRatio = 1f),
+            composeMapInitOptions = ComposeMapInitOptions(pixelRatio = 2.5f),
             style = { GenericStyle(style = mapStyle) },
             mapViewportState = mapViewportState,
             compass = {
@@ -153,7 +154,7 @@ fun LocationPickerContent(
 
         CentralPointer(isMapMoving = isMapMoving)
         BackButton { navController.popBackStack() }
-        FeedbackButton(modifier = Modifier.align(Alignment.TopEnd)) {
+        FeedbackButton(modifier = Modifier.statusBarsPadding().align(Alignment.TopEnd)) {
             navController.navigate(NavigationScreens.FeedbackScreen)
         }
 
