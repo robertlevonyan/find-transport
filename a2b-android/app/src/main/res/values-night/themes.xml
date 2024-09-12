@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <style name="AppSplash" parent="Theme.SplashScreen">
-    <item name="windowSplashScreenBackground">@color/colorPrimary</item>
-    <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
-    <item name="windowSplashScreenIconBackgroundColor">@color/colorPrimaryVariant</item>
-    <item name="windowSplashScreenAnimationDuration">1000</item>
-    <item name="postSplashScreenTheme">@style/AppTheme</item>
-    <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-    <item name="android:navigationBarColor">@color/colorPrimaryVariant</item>
-    <item name="android:windowLightStatusBar">false</item>
-  </style>
+    <style name="AppSplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/colorPrimary</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_splash</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/colorPrimaryVariant</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+        <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryVariant</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
 
-  <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
-    <item name="colorAccent">@color/colorAccent500</item>
-    <item name="android:fontFamily">@font/dejavu</item>
-    <item name="android:progressTint">@color/colorAccent500</item>
-    <item name="thumbTint">@color/colorAccent500</item>
-    <item name="trackTint">@color/colorAccent100</item>
-  </style>
+    <style name="AppTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryVariantTransparent</item>
+        <item name="colorAccent">@color/colorAccent500</item>
+        <item name="android:fontFamily">@font/dejavu</item>
+        <item name="android:progressTint">@color/colorAccent500</item>
+        <item name="thumbTint">@color/colorAccent500</item>
+        <item name="trackTint">@color/colorAccent100</item>
+    </style>
 </resources>

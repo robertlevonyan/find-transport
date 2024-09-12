@@ -9,18 +9,18 @@ import androidx.lifecycle.LifecycleEventObserver
 
 @Composable
 fun OnLifecycleEvent(onEvent: (Lifecycle.Event) -> Unit) {
-  val eventHandler = rememberUpdatedState(onEvent)
-  val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
+    val eventHandler = rememberUpdatedState(onEvent)
+    val lifecycleOwner = rememberUpdatedState(LocalLifecycleOwner.current)
 
-  DisposableEffect(lifecycleOwner.value) {
-    val lifecycle = lifecycleOwner.value.lifecycle
-    val observer = LifecycleEventObserver { _, event ->
-      eventHandler.value(event)
-    }
+    DisposableEffect(lifecycleOwner.value) {
+        val lifecycle = lifecycleOwner.value.lifecycle
+        val observer = LifecycleEventObserver { _, event ->
+            eventHandler.value(event)
+        }
 
-    lifecycle.addObserver(observer)
-    onDispose {
-      lifecycle.removeObserver(observer)
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+        }
     }
-  }
 }

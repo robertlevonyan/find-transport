@@ -14,42 +14,42 @@ import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun TextPrimary(
-  modifier: Modifier = Modifier,
-  text: String,
-  color: Color = MaterialTheme.colorScheme.onSurface,
-  fontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
-  textAlign: TextAlign = TextAlign.Start,
-  overflow: TextOverflow = TextOverflow.Clip,
-  maxLines: Int = Int.MAX_VALUE,
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    fontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
+    textAlign: TextAlign = TextAlign.Start,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = fontSize,
-    fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
-    fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
-    color = color,
-    textAlign = textAlign,
-    overflow = overflow,
-    maxLines = maxLines,
-  )
+    Text(
+        modifier = modifier.padding(HalfPadding),
+        text = text,
+        fontSize = fontSize,
+        fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
+        fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
+        color = color,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines,
+    )
 }
 
 @Composable
 fun TextPrimary(
-  modifier: Modifier = Modifier,
-  text: AnnotatedString,
-  color: Color = MaterialTheme.colorScheme.onSurface,
-  fontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
-  textAlign: TextAlign = TextAlign.Start,
+    modifier: Modifier = Modifier,
+    text: AnnotatedString,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    fontSize: TextUnit = MaterialTheme.typography.displayLarge.fontSize,
+    textAlign: TextAlign = TextAlign.Start,
 ) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = fontSize,
-    fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
-    fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
-    color = color,
-    textAlign = textAlign,
-  )
+    Text(
+        modifier = modifier.padding(HalfPadding),
+        text = text,
+        fontSize = fontSize,
+        fontWeight = MaterialTheme.typography.displayLarge.fontWeight,
+        fontFamily = MaterialTheme.typography.displayLarge.fontFamily,
+        color = color,
+        textAlign = textAlign,
+    )
 }

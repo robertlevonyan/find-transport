@@ -17,41 +17,45 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-  private val themeUseCase: ThemeUseCase,
-  private val localeUseCase: LocaleUseCase,
-  private val dataUseCase: DownloadDataUseCase,
+    private val themeUseCase: ThemeUseCase,
+    private val localeUseCase: LocaleUseCase,
+    private val dataUseCase: DownloadDataUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-  val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
+    val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
 
-  fun changeLanguage(language: String) {
-    viewModelScope.launch { localeUseCase.saveLanguage(language) }
-  }
+    fun changeLanguage(language: String) {
+        viewModelScope.launch { localeUseCase.saveLanguage(language) }
+    }
 
-  fun changeTheme(theme: Int) {
-    viewModelScope.launch { themeUseCase.saveTheme(theme) }
-  }
+    fun changeTheme(theme: Int) {
+        viewModelScope.launch { themeUseCase.saveTheme(theme) }
+    }
 
-  fun checkForUpdate() {
-    viewModelScope.launch {
-      dataUseCase.forceDownloadData()
-        .catch { e ->
-          loaded.value = when (e) {
-            is DataDownloadExceptions.VpnException ->
-              DataLoading.Failed(DataDownloadExceptions.VpnException())
-            is DataDownloadExceptions.NoInternetException ->
-              DataLoading.Failed(DataDownloadExceptions.NoInternetException())
-            is DataDownloadExceptions.NotEnoughSpaceException ->
-              DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
-            is DataDownloadExceptions.NotDownloadedException ->
-              DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
-            else -> return@catch
-          }
-        }
-        .collectLatest { loadingState ->
-          loaded.value = loadingState
+    fun checkForUpdate() {
+        viewModelScope.launch {
+            dataUseCase.forceDownloadData()
+                .catch { e ->
+                    loaded.value = when (e) {
+                        is DataDownloadExceptions.VpnException ->
+                            DataLoading.Failed(DataDownloadExceptions.VpnException())
+
+                        is DataDownloadExceptions.NoInternetException ->
+                            DataLoading.Failed(DataDownloadExceptions.NoInternetException())
+
+                        is DataDownloadExceptions.NotEnoughSpaceException ->
+                            DataLoading.Failed(DataDownloadExceptions.NotEnoughSpaceException())
+
+                        is DataDownloadExceptions.NotDownloadedException ->
+                            DataLoading.Failed(DataDownloadExceptions.NotDownloadedException())
+
+                        else -> return@catch
+                    }
+                }
+                .collectLatest { loadingState ->
+                    loaded.value = loadingState
+                }
         }
     }
-  }
 }

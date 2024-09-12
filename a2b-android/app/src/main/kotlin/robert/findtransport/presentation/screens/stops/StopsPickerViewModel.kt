@@ -14,31 +14,30 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import robert.findtransport.base.BaseViewModel
 import robert.findtransport.data.model.Stop
-import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.domain.usecase.preference.LocaleUseCase
 import robert.findtransport.domain.usecase.stop.StopsUseCase
 import javax.inject.Inject
 
 @HiltViewModel
 class StopsPickerViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  private val stopsUseCase: StopsUseCase,
+    localeUseCase: LocaleUseCase,
+    private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val allStops: MutableSharedFlow<PagingData<Stop>> = MutableSharedFlow()
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val allStops: MutableSharedFlow<PagingData<Stop>> = MutableSharedFlow()
 
-  fun findStops(word: String) {
-    viewModelScope.launch(Dispatchers.IO) {
-      stopsUseCase.getStopsPaged(word, locale.value)
-        .cachedIn(scope = this)
-        .filterNotNull()
-        .collectLatest {
-          allStops.emit(it)
+    fun findStops(word: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            stopsUseCase.getStopsPaged(word, locale.value)
+                .cachedIn(scope = this)
+                .filterNotNull()
+                .collectLatest {
+                    allStops.emit(it)
+                }
         }
     }
-  }
 
-  suspend fun getAddress(stop: Stop): Address? {
-      return stopsUseCase.getAddress(stop)
-  }
+    suspend fun getAddress(stop: Stop): Address? {
+        return stopsUseCase.getAddress(stop)
+    }
 }

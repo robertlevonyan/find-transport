@@ -33,76 +33,77 @@ import robert.findtransport.data.service.SharedPreferencesService
 @Module
 @InstallIn(ViewModelComponent::class, ServiceComponent::class)
 object DataModule {
-  @Provides
-  fun getSharedPreferencesService(@ApplicationContext context: Context): SharedPreferencesService =
-    SharedPreferencesService.getPreferences(context = context)
+    @Provides
+    fun getSharedPreferencesService(@ApplicationContext context: Context): SharedPreferencesService =
+        SharedPreferencesService.getPreferences(context = context)
 
-  @Provides
-  fun getAppDatabase(@ApplicationContext context: Context): AppDatabase =
-    AppDatabase.getInstance(context = context)
+    @Provides
+    fun getAppDatabase(@ApplicationContext context: Context): AppDatabase =
+        AppDatabase.getInstance(context = context)
 
-  @Provides
-  fun getResourcesService(@ApplicationContext context: Context): ResourcesService =
-    ResourcesService(context = context)
+    @Provides
+    fun getResourcesService(@ApplicationContext context: Context): ResourcesService =
+        ResourcesService(context = context)
 
-  @Provides
-  fun getFusedLocationService(@ApplicationContext context: Context): FusedLocationService =
-    FusedLocationService(context = context)
+    @Provides
+    fun getFusedLocationService(@ApplicationContext context: Context): FusedLocationService =
+        FusedLocationService(context = context)
 
-  @Provides
-  fun getAddressProviderService(@ApplicationContext context: Context): AddressProviderService =
-    AddressProviderService(context = context)
+    @Provides
+    fun getAddressProviderService(@ApplicationContext context: Context): AddressProviderService =
+        AddressProviderService(context = context)
 
-  @Provides
-  fun getLocationObserverService(@ApplicationContext context: Context): LocationObserverService =
-    LocationObserverService(context = context)
+    @Provides
+    fun getLocationObserverService(@ApplicationContext context: Context): LocationObserverService =
+        LocationObserverService(context = context)
 
-  @Provides
-  fun getApplicationContextProvider(@ApplicationContext context: Context): ApplicationContextProvider =
-    ApplicationContextProvider(context = context)
+    @Provides
+    fun getApplicationContextProvider(@ApplicationContext context: Context): ApplicationContextProvider =
+        ApplicationContextProvider(context = context)
 
-  @Provides
-  fun getConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
-    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    @Provides
+    fun getConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-  @Provides
-  fun getInMemoryCacheService(): InMemoryCacheService = InMemoryCacheService
+    @Provides
+    fun getInMemoryCacheService(): InMemoryCacheService = InMemoryCacheService
 
-  @Provides
-  fun getStopsDao(appDatabase: AppDatabase): StopsDao = appDatabase.stopsDao()
+    @Provides
+    fun getStopsDao(appDatabase: AppDatabase): StopsDao = appDatabase.stopsDao()
 
-  @Provides
-  fun getTransportsDao(appDatabase: AppDatabase): TransportsDao = appDatabase.transportsDao()
+    @Provides
+    fun getTransportsDao(appDatabase: AppDatabase): TransportsDao = appDatabase.transportsDao()
 
-  @Provides
-  fun getHistoryDao(appDatabase: AppDatabase): HistoryDao = appDatabase.historyDao()
+    @Provides
+    fun getHistoryDao(appDatabase: AppDatabase): HistoryDao = appDatabase.historyDao()
 
-  @Provides
-  fun jsonFeature() = Json {
-    prettyPrint = true
-    isLenient = true
-    ignoreUnknownKeys = true
-  }
-
-  @Provides
-  fun getHttpClient(json: Json) = HttpClient(Android) {
-    engine {
-      connectTimeout = 100_000
-      socketTimeout = 100_000
+    @Provides
+    fun jsonFeature() = Json {
+        prettyPrint = true
+        isLenient = true
+        ignoreUnknownKeys = true
     }
-    install(ContentNegotiation) {
-      json(json)
-    }
-    expectSuccess = true
-    HttpResponseValidator {
-      handleResponseExceptionWithRequest { exception, request ->
-        val clientException =
-          exception as? ClientRequestException ?: return@handleResponseExceptionWithRequest
-        val exceptionResponse = clientException.response
-        if (exceptionResponse.status == HttpStatusCode.NotFound) {
-          throw A2bException(ExceptionType.API, -1, clientException)
+
+    @Provides
+    fun getHttpClient(json: Json) = HttpClient(Android) {
+        engine {
+            connectTimeout = 100_000
+            socketTimeout = 100_000
         }
-      }
+        install(ContentNegotiation) {
+            json(json)
+        }
+        expectSuccess = true
+        HttpResponseValidator {
+            handleResponseExceptionWithRequest { exception, request ->
+                val clientException =
+                    exception as? ClientRequestException
+                        ?: return@handleResponseExceptionWithRequest
+                val exceptionResponse = clientException.response
+                if (exceptionResponse.status == HttpStatusCode.NotFound) {
+                    throw A2bException(ExceptionType.API, -1, clientException)
+                }
+            }
+        }
     }
-  }
 }

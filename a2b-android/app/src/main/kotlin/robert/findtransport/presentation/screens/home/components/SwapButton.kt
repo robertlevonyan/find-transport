@@ -15,16 +15,16 @@ import robert.findtransport.presentation.reusables.theme.SmallFabSize
 
 @Composable
 fun SwapButton(modifier: Modifier, onClick: () -> Unit) {
-  FloatingActionButton(
-    modifier = modifier
-      .padding(top = FabPadding)
-      .size(SmallFabSize)
-      .padding(bottom = FabPadding)
-      .padding(end = FabPadding),
-    containerColor = MaterialTheme.colorScheme.surface,
-    shape = Shapes.medium,
-    onClick = onClick,
-  ) {
-    Icon(painter = painterResource(id = R.drawable.ic_swap), contentDescription = null)
-  }
+    FloatingActionButton(
+        modifier = modifier
+            .padding(top = FabPadding)
+            .size(SmallFabSize)
+            .padding(bottom = FabPadding)
+            .padding(end = FabPadding),
+        containerColor = MaterialTheme.colorScheme.surface,
+        shape = Shapes.medium,
+        onClick = onClick,
+    ) {
+        Icon(painter = painterResource(id = R.drawable.ic_swap), contentDescription = null)
+    }
 }

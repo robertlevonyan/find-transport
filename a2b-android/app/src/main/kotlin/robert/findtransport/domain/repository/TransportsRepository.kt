@@ -8,35 +8,35 @@ import robert.findtransport.data.entity.TransportStopJoin
 import robert.findtransport.data.model.Result
 
 interface TransportsRepository {
-  suspend fun getTransportsFromApi(): Result<List<Transport>>
+    suspend fun getTransportsFromApi(): Result<List<Transport>>
 
-  suspend fun getJoinsFromApi(): Result<List<TransportStopJoin>>
+    suspend fun getJoinsFromApi(): Result<List<TransportStopJoin>>
 
-  suspend fun cacheTransports(transports: List<Transport>)
+    suspend fun cacheTransports(transports: List<Transport>)
 
-  suspend fun cacheJoins(joins: List<TransportStopJoin>)
+    suspend fun cacheJoins(joins: List<TransportStopJoin>)
 
-  fun getBusesPaged(): PagingSource<Int, Transport>
+    fun getBusesPaged(): PagingSource<Int, Transport>
 
-  fun getMicrobusesPaged(): PagingSource<Int, Transport>
+    fun getMicrobusesPaged(): PagingSource<Int, Transport>
 
-  fun getTrolleybusesPaged(): PagingSource<Int, Transport>
+    fun getTrolleybusesPaged(): PagingSource<Int, Transport>
 
-  fun getMetroPaged(): PagingSource<Int, Transport>
+    fun getMetroPaged(): PagingSource<Int, Transport>
 
-  fun getTransportById(id: Int): Flow<Transport>
+    fun getTransportById(id: Int): Flow<Transport>
 
-  suspend fun getTransportsForStop(id: Int): List<Transport>
+    suspend fun getTransportsForStop(id: Int): List<Transport>
 
-  fun getTransportStops(transportId: Int?): List<Stop>
+    fun getTransportStops(transportId: Int?): List<Stop>
 
-  fun getTransportStopsReversed(transportId: Int?): List<Stop>
+    fun getTransportStopsReversed(transportId: Int?): List<Stop>
 
-  suspend fun changeFavorite(id: Int, favorite: Boolean)
+    suspend fun changeFavorite(id: Int, favorite: Boolean)
 
-  var areTransportsCached: Boolean
+    var areTransportsCached: Boolean
 
-  var areJoinsCached: Boolean
+    var areJoinsCached: Boolean
 
-  var showOnlyFavorites: Boolean
+    var showOnlyFavorites: Boolean
 }

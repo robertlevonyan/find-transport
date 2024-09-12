@@ -7,15 +7,15 @@ import robert.findtransport.utils.PREF_LANGUAGE
 import javax.inject.Inject
 
 class LocaleRepositoryImpl @Inject constructor(
-  private val sharedPreferencesService: SharedPreferencesService
+    private val sharedPreferencesService: SharedPreferencesService
 ) : LocaleRepository {
 
-  override fun getCurrentLanguage(): String =
-    sharedPreferencesService.getString(PREF_LANGUAGE, LNG_EN)
-      ?.takeIf { it.isNotEmpty() }
-      ?: LNG_EN
+    override fun getCurrentLanguage(): String =
+        sharedPreferencesService.getString(PREF_LANGUAGE, LNG_EN)
+            ?.takeIf { it.isNotEmpty() }
+            ?: LNG_EN
 
-  override fun saveLanguage(language: String) {
-    sharedPreferencesService.putString(PREF_LANGUAGE, language)
-  }
+    override fun saveLanguage(language: String) {
+        sharedPreferencesService.putString(PREF_LANGUAGE, language)
+    }
 }

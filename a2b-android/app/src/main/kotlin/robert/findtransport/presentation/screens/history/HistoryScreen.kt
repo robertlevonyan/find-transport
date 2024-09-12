@@ -32,8 +32,8 @@ fun HistoryScreen(
     ) { contentPadding ->
         HistoryContent(
             modifier = Modifier
-              .padding(contentPadding)
-              .fillMaxSize(),
+                .padding(contentPadding)
+                .fillMaxSize(),
             navController = navController,
             historyViewModel = historyViewModel,
         )

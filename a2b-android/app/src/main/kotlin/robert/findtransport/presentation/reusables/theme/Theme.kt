@@ -10,59 +10,59 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
 fun A2bTheme(
-  theme: Int,
-  content: @Composable () -> Unit
+    theme: Int,
+    content: @Composable () -> Unit
 ) {
-  AppCompatDelegate.setDefaultNightMode(theme)
-  val systemUiController = rememberSystemUiController()
+    AppCompatDelegate.setDefaultNightMode(theme)
+    val systemUiController = rememberSystemUiController()
 
-  val colors = when (theme) {
-    AppCompatDelegate.MODE_NIGHT_NO -> LightColorPalette
-    AppCompatDelegate.MODE_NIGHT_YES -> DarkColorPalette
-    else -> if (isSystemInDarkTheme()) {
-      DarkColorPalette
-    } else {
-      LightColorPalette
+    val colors = when (theme) {
+        AppCompatDelegate.MODE_NIGHT_NO -> LightColorPalette
+        AppCompatDelegate.MODE_NIGHT_YES -> DarkColorPalette
+        else -> if (isSystemInDarkTheme()) {
+            DarkColorPalette
+        } else {
+            LightColorPalette
+        }
+    }.also {
+        systemUiController.setSystemBarsColor(color = it.primary)
     }
-  }.also {
-    systemUiController.setSystemBarsColor(color = it.primary)
-  }
 
-  MaterialTheme(
-    colorScheme = colors,
-    typography = Typography,
-    shapes = Shapes,
-    content = content
-  )
+    MaterialTheme(
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
 }
 
 @Composable
 fun isAppInDarkMode(): Boolean = when (AppCompatDelegate.getDefaultNightMode()) {
-  AppCompatDelegate.MODE_NIGHT_NO -> false
-  AppCompatDelegate.MODE_NIGHT_YES -> true
-  else -> isSystemInDarkTheme()
+    AppCompatDelegate.MODE_NIGHT_NO -> false
+    AppCompatDelegate.MODE_NIGHT_YES -> true
+    else -> isSystemInDarkTheme()
 }
 
 private val DarkColorPalette = darkColorScheme(
-  primary = Black,
-  primaryContainer = BlackPure,
-  onPrimary = WhiteVariant,
-  secondary = Accent,
-  secondaryContainer = AccentVariant,
-  onSecondary = Black,
-  background = Black,
-  surface = BlackVariant,
-  onSurface = WhiteVariant,
+    primary = Black,
+    primaryContainer = BlackPure,
+    onPrimary = WhiteVariant,
+    secondary = Accent,
+    secondaryContainer = AccentVariant,
+    onSecondary = Black,
+    background = Black,
+    surface = BlackVariant,
+    onSurface = WhiteVariant,
 )
 
 private val LightColorPalette = lightColorScheme(
-  primary = WhitePure,
-  primaryContainer = White,
-  onPrimary = BlackVariant,
-  secondary = Accent,
-  secondaryContainer = AccentVariant,
-  onSecondary = Black,
-  background = White,
-  surface = WhiteVariant,
-  onSurface = BlackVariant,
+    primary = WhitePure,
+    primaryContainer = White,
+    onPrimary = BlackVariant,
+    secondary = Accent,
+    secondaryContainer = AccentVariant,
+    onSecondary = Black,
+    background = White,
+    surface = WhiteVariant,
+    onSurface = BlackVariant,
 )

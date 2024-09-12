@@ -56,7 +56,8 @@ class ExceptionActivity : ComponentActivity() {
                     modifier = Modifier
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxSize().background(color = MaterialTheme.colorScheme.background),
+                        modifier = Modifier.fillMaxSize()
+                            .background(color = MaterialTheme.colorScheme.background),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {

@@ -8,13 +8,13 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 class StopLocation(
-  @PrimaryKey
-  @SerialName("id")
-  val id: Int? = null,
-  @SerialName("stop_id")
-  val stopId: Int? = null,
-  @SerialName("lat")
-  val lat: Double? = null,
-  @SerialName("lng")
-  val lng: Double? = null,
+    @PrimaryKey
+    @SerialName("id")
+    val id: Int? = null,
+    @SerialName("stop_id")
+    val stopId: Int? = null,
+    @SerialName("lat")
+    val lat: Double? = null,
+    @SerialName("lng")
+    val lng: Double? = null,
 )

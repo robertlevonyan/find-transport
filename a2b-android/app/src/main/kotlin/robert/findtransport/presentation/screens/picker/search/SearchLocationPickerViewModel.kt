@@ -9,10 +9,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchLocationPickerViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
+    localeUseCase: LocaleUseCase,
 //  private val transportUseCase: TransportUseCase,
-  locationUseCase: LocationUseCase,
-  permissionUseCase: PermissionUseCase,
+    locationUseCase: LocationUseCase,
+    permissionUseCase: PermissionUseCase,
 ) : LocationPickerViewModel(localeUseCase, permissionUseCase, locationUseCase) {
 
 //  private val _searchMultiTransports = MutableSharedFlow<Triple<List<MultiRoute>, Stop, Stop>>()

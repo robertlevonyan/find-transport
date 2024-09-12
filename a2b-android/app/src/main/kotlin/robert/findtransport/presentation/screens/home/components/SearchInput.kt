@@ -2,10 +2,22 @@ package robert.findtransport.presentation.screens.home.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,88 +39,88 @@ import robert.findtransport.presentation.reusables.theme.searchInputBackgroundCo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchInput(
-  modifier: Modifier,
-  @StringRes label: Int,
-  @StringRes hint: Int,
-  trailingIcon: Painter,
-  text: String = "",
-  keyboardOptions: KeyboardOptions,
-  keyboardActions: KeyboardActions,
-  onDropdownClick: () -> Unit,
-  onTrailingIconClick: () -> Unit,
+    modifier: Modifier,
+    @StringRes label: Int,
+    @StringRes hint: Int,
+    trailingIcon: Painter,
+    text: String = "",
+    keyboardOptions: KeyboardOptions,
+    keyboardActions: KeyboardActions,
+    onDropdownClick: () -> Unit,
+    onTrailingIconClick: () -> Unit,
 ) {
-  Column(modifier = modifier) {
-    Text(
-      modifier = Modifier.padding(HalfPadding),
-      text = stringResource(id = label),
-      fontWeight = FontWeight.W600,
-      fontSize = Text20,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    )
-
-    Card(
-      shape = Shapes.medium,
-      elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-      colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.surface),
-    ) {
-      Box(
-        modifier = Modifier.clickable { onDropdownClick.invoke() },
-      ) {
-        TextField(
-          modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = BarIconSize)
-            .padding(start = SmallPadding)
-            .padding(vertical = SmallPadding),
-          value = text,
-          onValueChange = {},
-          label = {
-            Text(
-              text = stringResource(id = hint),
-              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-            )
-          },
-          trailingIcon = {
-            IconButton(onClick = { onDropdownClick.invoke() }) {
-              Icon(
-                painter = painterResource(id = R.drawable.ic_arrow_drop_down),
-                contentDescription = null
-              )
-            }
-          },
-          singleLine = true,
-          shape = Shapes.medium,
-          colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = searchInputBackgroundColor(),
-            focusedBorderColor = Color.Transparent,
-            unfocusedBorderColor = Color.Transparent,
-            disabledBorderColor = Color.Transparent,
-            errorBorderColor = Color.Transparent,
-            cursorColor = MaterialTheme.colorScheme.onSurface,
-          ),
-          keyboardOptions = keyboardOptions,
-          keyboardActions = keyboardActions,
-          readOnly = true,
-          enabled = false,
-          textStyle = TextStyle(
-            color = MaterialTheme.colorScheme.onSurface,
+    Column(modifier = modifier) {
+        Text(
+            modifier = Modifier.padding(HalfPadding),
+            text = stringResource(id = label),
+            fontWeight = FontWeight.W600,
+            fontSize = Text20,
             fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-          ),
         )
 
-        IconButton(
-          modifier = Modifier
-            .size(BarIconSize)
-            .align(Alignment.CenterEnd),
-          onClick = { onTrailingIconClick.invoke() },
+        Card(
+            shape = Shapes.medium,
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.surface),
         ) {
-          Icon(
-            painter = trailingIcon,
-            tint = MaterialTheme.colorScheme.onSurface,
-            contentDescription = null
-          )
+            Box(
+                modifier = Modifier.clickable { onDropdownClick.invoke() },
+            ) {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = BarIconSize)
+                        .padding(start = SmallPadding)
+                        .padding(vertical = SmallPadding),
+                    value = text,
+                    onValueChange = {},
+                    label = {
+                        Text(
+                            text = stringResource(id = hint),
+                            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = { onDropdownClick.invoke() }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_arrow_drop_down),
+                                contentDescription = null
+                            )
+                        }
+                    },
+                    singleLine = true,
+                    shape = Shapes.medium,
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        containerColor = searchInputBackgroundColor(),
+                        focusedBorderColor = Color.Transparent,
+                        unfocusedBorderColor = Color.Transparent,
+                        disabledBorderColor = Color.Transparent,
+                        errorBorderColor = Color.Transparent,
+                        cursorColor = MaterialTheme.colorScheme.onSurface,
+                    ),
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                    readOnly = true,
+                    enabled = false,
+                    textStyle = TextStyle(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                    ),
+                )
+
+                IconButton(
+                    modifier = Modifier
+                        .size(BarIconSize)
+                        .align(Alignment.CenterEnd),
+                    onClick = { onTrailingIconClick.invoke() },
+                ) {
+                    Icon(
+                        painter = trailingIcon,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = null
+                    )
+                }
+            }
         }
-      }
     }
-  }
 }

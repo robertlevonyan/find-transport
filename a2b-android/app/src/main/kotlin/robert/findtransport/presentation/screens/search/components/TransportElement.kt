@@ -8,14 +8,14 @@ import robert.findtransport.presentation.reusables.composables.TransportListElem
 
 @Composable
 fun LazyItemScope.TransportElement(
-  multiRouteElement: RouteSearchResult,
-  locale: String,
-  onClick: (Transport) -> Unit,
+    multiRouteElement: RouteSearchResult,
+    locale: String,
+    onClick: (Transport) -> Unit,
 ) {
-  val transport = multiRouteElement.transport ?: Transport.EMPTY
-  TransportListElement(
-    transport = transport,
-    locale = locale,
-    onElementClick = onClick
-  )
+    val transport = multiRouteElement.transport ?: Transport.EMPTY
+    TransportListElement(
+        transport = transport,
+        locale = locale,
+        onElementClick = onClick
+    )
 }

@@ -5,9 +5,9 @@ import android.location.Location
 import kotlinx.coroutines.flow.Flow
 
 interface LocationRepository {
-  suspend fun getCurrentLocation(): Address?
+    suspend fun getCurrentLocation(): Address?
 
-  suspend fun getAddress(location: Location): Address?
+    suspend fun getAddress(location: Location): Address?
 
-  fun subscribeToLocationUpdates(): Flow<Location>
+    fun subscribeToLocationUpdates(): Flow<Location>
 }

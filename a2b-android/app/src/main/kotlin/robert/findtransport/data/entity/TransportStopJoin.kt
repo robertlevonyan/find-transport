@@ -8,15 +8,15 @@ import kotlinx.serialization.Serializable
 @Entity
 @Serializable
 class TransportStopJoin(
-  @PrimaryKey
-  @SerialName("id")
-  val id: Int? = null,
-  @SerialName("transport_id")
-  val transportId: Int? = 0,
-  @SerialName("stop_id")
-  val stopId: Int? = 0,
-  @SerialName("reverse")
-  val reverse: Int? = 0,
-  @SerialName("position")
-  val order: Int? = 0,
+    @PrimaryKey
+    @SerialName("id")
+    val id: Int? = null,
+    @SerialName("transport_id")
+    val transportId: Int? = 0,
+    @SerialName("stop_id")
+    val stopId: Int? = 0,
+    @SerialName("reverse")
+    val reverse: Int? = 0,
+    @SerialName("position")
+    val order: Int? = 0,
 )

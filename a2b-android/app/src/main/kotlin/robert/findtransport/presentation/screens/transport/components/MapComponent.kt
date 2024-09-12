@@ -130,7 +130,7 @@ fun MapComponent(
                     }
                     pulsingColor = context.getColorFromRes(R.color.colorAccent300)
                 }
-                onDispose {  }
+                onDispose { }
             }
         }
     )

@@ -14,14 +14,16 @@ import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun BackButton(onClick: () -> Unit) {
-  SmallFloatingActionButton(modifier = Modifier.padding(
-    vertical = FabPadding, horizontal = HalfPadding
-  ),
-    containerColor = MaterialTheme.colorScheme.secondary,
-    onClick = onClick) {
-    Icon(
-      painter = painterResource(id = R.drawable.ic_arrow_back),
-      contentDescription = stringResource(id = R.string.cd_current_location),
-    )
-  }
+    SmallFloatingActionButton(
+        modifier = Modifier.padding(
+            vertical = FabPadding, horizontal = HalfPadding
+        ),
+        containerColor = MaterialTheme.colorScheme.secondary,
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_arrow_back),
+            contentDescription = stringResource(id = R.string.cd_current_location),
+        )
+    }
 }

@@ -16,22 +16,22 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransportsViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  private val transportUseCase: TransportUseCase,
+    localeUseCase: LocaleUseCase,
+    private val transportUseCase: TransportUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val buses = transportUseCase.getBusesPaged()
-    .cachedIn(scope = viewModelScope + Dispatchers.IO)
-  val microbuses = transportUseCase.getMicrobusesPaged()
-    .cachedIn(scope = viewModelScope + Dispatchers.IO)
-  val trolleybuses = transportUseCase.getTrolleybusesPaged()
-    .cachedIn(scope = viewModelScope + Dispatchers.IO)
-  val metro = transportUseCase.getMetroPaged()
-    .cachedIn(scope = viewModelScope + Dispatchers.IO)
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val buses = transportUseCase.getBusesPaged()
+        .cachedIn(scope = viewModelScope + Dispatchers.IO)
+    val microbuses = transportUseCase.getMicrobusesPaged()
+        .cachedIn(scope = viewModelScope + Dispatchers.IO)
+    val trolleybuses = transportUseCase.getTrolleybusesPaged()
+        .cachedIn(scope = viewModelScope + Dispatchers.IO)
+    val metro = transportUseCase.getMetroPaged()
+        .cachedIn(scope = viewModelScope + Dispatchers.IO)
 
-  override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
-    viewModelScope.launch(Dispatchers.IO) {
-      transportUseCase.toggleFavorite(transport)
+    override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transportUseCase.toggleFavorite(transport)
+        }
     }
-  }
 }

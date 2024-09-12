@@ -17,38 +17,38 @@ import robert.findtransport.utils.extensions.openPrivacyPolicy
 
 @Composable
 fun HomeOptionsMenu(
-  overflowMenuState: Boolean,
-  onSettingsScreenClicked: () -> Unit,
-  onMenuDismiss: () -> Unit,
+    overflowMenuState: Boolean,
+    onSettingsScreenClicked: () -> Unit,
+    onMenuDismiss: () -> Unit,
 ) {
-  val context = LocalContext.current
+    val context = LocalContext.current
 
-  DropdownMenu(
-    modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-    expanded = overflowMenuState,
-    offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
-    onDismissRequest = { onMenuDismiss.invoke() },
-  ) {
-    DropdownMenuItem(onClick = {
-      onSettingsScreenClicked()
-      onMenuDismiss.invoke()
-    }, text = {
-      Text(
-        text = stringResource(id = R.string.action_settings),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    })
-    DropdownMenuItem(
-      onClick = {
-        context.openPrivacyPolicy()
-        onMenuDismiss.invoke()
-      },
-      text = {
-        Text(
-          text = stringResource(id = R.string.action_privacy),
-          fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+    DropdownMenu(
+        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+        expanded = overflowMenuState,
+        offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
+        onDismissRequest = { onMenuDismiss.invoke() },
+    ) {
+        DropdownMenuItem(onClick = {
+            onSettingsScreenClicked()
+            onMenuDismiss.invoke()
+        }, text = {
+            Text(
+                text = stringResource(id = R.string.action_settings),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+        })
+        DropdownMenuItem(
+            onClick = {
+                context.openPrivacyPolicy()
+                onMenuDismiss.invoke()
+            },
+            text = {
+                Text(
+                    text = stringResource(id = R.string.action_privacy),
+                    fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                )
+            },
         )
-      },
-    )
-  }
+    }
 }

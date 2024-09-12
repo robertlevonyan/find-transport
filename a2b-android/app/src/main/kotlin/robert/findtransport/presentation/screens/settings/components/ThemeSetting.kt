@@ -20,46 +20,46 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable
 fun ThemeSetting(
-  modifier: Modifier,
-  theme: Int,
-  onSettingClick: (Int) -> Unit,
+    modifier: Modifier,
+    theme: Int,
+    onSettingClick: (Int) -> Unit,
 ) {
-  val selectionIndex = when (theme) {
-    AppCompatDelegate.MODE_NIGHT_NO -> 0
-    AppCompatDelegate.MODE_NIGHT_YES -> 1
-    else -> 2
-  }
+    val selectionIndex = when (theme) {
+        AppCompatDelegate.MODE_NIGHT_NO -> 0
+        AppCompatDelegate.MODE_NIGHT_YES -> 1
+        else -> 2
+    }
 
-  Column(
-    modifier = modifier
-      .fillMaxWidth(fraction = 0.9f)
-      .wrapContentHeight()
-  ) {
-    TextSecondary(text = stringResource(id = R.string.settings_theme))
+    Column(
+        modifier = modifier
+            .fillMaxWidth(fraction = 0.9f)
+            .wrapContentHeight()
+    ) {
+        TextSecondary(text = stringResource(id = R.string.settings_theme))
 
-    RowToggleButtonGroup(
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .align(Alignment.CenterHorizontally),
-      buttonCount = 3,
-      onButtonClick = onSettingClick,
-      buttonTexts = arrayOf(
-        stringResource(id = R.string.settings_theme_light),
-        stringResource(id = R.string.settings_theme_dark),
-        stringResource(id = R.string.settings_theme_system_short),
-      ),
-      buttonIcons = arrayOf(
-        painterResource(id = R.drawable.ic_theme_day),
-        painterResource(id = R.drawable.ic_theme_night),
-        painterResource(id = R.drawable.ic_theme_system),
-      ),
-      unselectedButtonIconTint = MaterialTheme.colorScheme.onSurface,
-      primarySelection = selectionIndex,
-      selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
-      iconPosition = IconPosition.Top,
-      unselectedColor = MaterialTheme.colorScheme.background,
-      shape = Shapes.medium,
-    )
-  }
+        RowToggleButtonGroup(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .align(Alignment.CenterHorizontally),
+            buttonCount = 3,
+            onButtonClick = onSettingClick,
+            buttonTexts = arrayOf(
+                stringResource(id = R.string.settings_theme_light),
+                stringResource(id = R.string.settings_theme_dark),
+                stringResource(id = R.string.settings_theme_system_short),
+            ),
+            buttonIcons = arrayOf(
+                painterResource(id = R.drawable.ic_theme_day),
+                painterResource(id = R.drawable.ic_theme_night),
+                painterResource(id = R.drawable.ic_theme_system),
+            ),
+            unselectedButtonIconTint = MaterialTheme.colorScheme.onSurface,
+            primarySelection = selectionIndex,
+            selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[1]),
+            iconPosition = IconPosition.Top,
+            unselectedColor = MaterialTheme.colorScheme.background,
+            shape = Shapes.medium,
+        )
+    }
 }

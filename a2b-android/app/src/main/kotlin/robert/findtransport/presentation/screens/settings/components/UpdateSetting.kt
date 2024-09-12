@@ -22,50 +22,50 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable
 fun UpdateSetting(
-  modifier: Modifier,
-  checking: DataLoading,
-  onSettingClick: () -> Unit,
+    modifier: Modifier,
+    checking: DataLoading,
+    onSettingClick: () -> Unit,
 ) {
-  Column(
-    modifier = modifier
-      .fillMaxWidth(fraction = 0.9f)
-      .wrapContentHeight()
-  ) {
-    TextSecondary(text = stringResource(id = R.string.settings_check_database))
-
-    Card(
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight(),
-      elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
-      colors = CardDefaults.cardColors(containerColor = Color(integerArrayResource(id = R.array.colors_bg)[2])),
-      shape = Shapes.medium,
+    Column(
+        modifier = modifier
+            .fillMaxWidth(fraction = 0.9f)
+            .wrapContentHeight()
     ) {
-      val textLabel = when (checking) {
-        DataLoading.Loading -> R.string.message_check_download
-        is DataLoading.Failed -> R.string.error_not_downloaded
-        else -> R.string.settings_update_database
-      }
+        TextSecondary(text = stringResource(id = R.string.settings_check_database))
 
-      Column(modifier = Modifier.clickable { onSettingClick() }) {
-        TextSecondary(
-          modifier = Modifier
-            .align(Alignment.Start)
-            .wrapContentSize()
-            .padding(HalfPadding),
-          text = stringResource(id = textLabel),
-          color = BlackVariant,
-        )
-        AnimatedVisibility(
-          modifier = Modifier.fillMaxWidth(),
-          visible = checking == DataLoading.Loading
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+            colors = CardDefaults.cardColors(containerColor = Color(integerArrayResource(id = R.array.colors_bg)[2])),
+            shape = Shapes.medium,
         ) {
-          LinearProgressIndicator(
-            modifier = Modifier.fillMaxWidth(),
-            color = BlackVariant,
-          )
+            val textLabel = when (checking) {
+                DataLoading.Loading -> R.string.message_check_download
+                is DataLoading.Failed -> R.string.error_not_downloaded
+                else -> R.string.settings_update_database
+            }
+
+            Column(modifier = Modifier.clickable { onSettingClick() }) {
+                TextSecondary(
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .wrapContentSize()
+                        .padding(HalfPadding),
+                    text = stringResource(id = textLabel),
+                    color = BlackVariant,
+                )
+                AnimatedVisibility(
+                    modifier = Modifier.fillMaxWidth(),
+                    visible = checking == DataLoading.Loading
+                ) {
+                    LinearProgressIndicator(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = BlackVariant,
+                    )
+                }
+            }
         }
-      }
     }
-  }
 }

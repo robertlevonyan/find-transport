@@ -16,18 +16,18 @@ import robert.findtransport.presentation.reusables.theme.FabPadding
 
 @Composable
 fun BoxScope.CurrentLocationButton(onClick: () -> Unit) {
-  FloatingActionButton(
-    modifier = Modifier
-      .align(Alignment.BottomEnd)
-      .padding(FabPadding),
-    containerColor = MaterialTheme.colorScheme.secondary,
-    contentColor = Black,
-    onClick = onClick
-  ) {
-    Icon(
-      painter = painterResource(id = R.drawable.ic_current_location),
-      contentDescription = stringResource(id = R.string.cd_current_location),
-      tint = Black,
-    )
-  }
+    FloatingActionButton(
+        modifier = Modifier
+            .align(Alignment.BottomEnd)
+            .padding(FabPadding),
+        containerColor = MaterialTheme.colorScheme.secondary,
+        contentColor = Black,
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_current_location),
+            contentDescription = stringResource(id = R.string.cd_current_location),
+            tint = Black,
+        )
+    }
 }

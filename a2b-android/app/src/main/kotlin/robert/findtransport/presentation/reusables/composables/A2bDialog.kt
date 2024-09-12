@@ -16,56 +16,59 @@ import robert.findtransport.presentation.reusables.theme.FabPadding
 
 @Composable
 fun A2bDialog(
-  title: String,
-  text: String,
-  image: Painter,
-  onConfirm: () -> Unit,
-  onDismiss: (() -> Unit)? = null,
-  onDismissRequest: () -> Unit,
+    title: String,
+    text: String,
+    image: Painter,
+    onConfirm: () -> Unit,
+    onDismiss: (() -> Unit)? = null,
+    onDismissRequest: () -> Unit,
 ) {
-  Dialog(onDismissRequest = onDismissRequest) {
-    Column(
-      modifier = Modifier
-        .width(DialogBoxSize)
-        .background(color = MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
-        .wrapContentHeight()
-    ) {
-      TextPrimary(
-        modifier = Modifier.padding(FabPadding),
-        text = title,
-      )
-
-      TextSecondary(
-        modifier = Modifier.padding(horizontal = FabPadding),
-        text = text,
-      )
-
-      Image(
-        modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
-        painter = image,
-        contentDescription = null,
-      )
-      val bottomModifier = Modifier
-        .align(alignment = Alignment.End)
-        .padding(FabPadding)
-
-      if (onDismiss == null) {
-        RegularButton(
-          modifier = bottomModifier,
-          text = stringResource(id = R.string.label_ok),
+    Dialog(onDismissRequest = onDismissRequest) {
+        Column(
+            modifier = Modifier
+                .width(DialogBoxSize)
+                .background(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = MaterialTheme.shapes.medium
+                )
+                .wrapContentHeight()
         ) {
-          onConfirm.invoke()
+            TextPrimary(
+                modifier = Modifier.padding(FabPadding),
+                text = title,
+            )
+
+            TextSecondary(
+                modifier = Modifier.padding(horizontal = FabPadding),
+                text = text,
+            )
+
+            Image(
+                modifier = Modifier.align(alignment = Alignment.CenterHorizontally),
+                painter = image,
+                contentDescription = null,
+            )
+            val bottomModifier = Modifier
+                .align(alignment = Alignment.End)
+                .padding(FabPadding)
+
+            if (onDismiss == null) {
+                RegularButton(
+                    modifier = bottomModifier,
+                    text = stringResource(id = R.string.label_ok),
+                ) {
+                    onConfirm.invoke()
+                }
+            } else {
+                Row(modifier = bottomModifier) {
+                    RegularButton(text = stringResource(id = R.string.label_ok)) {
+                        onConfirm.invoke()
+                    }
+                    RegularButton(text = stringResource(id = R.string.label_close)) {
+                        onDismiss.invoke()
+                    }
+                }
+            }
         }
-      } else {
-        Row(modifier = bottomModifier) {
-          RegularButton(text = stringResource(id = R.string.label_ok)) {
-            onConfirm.invoke()
-          }
-          RegularButton(text = stringResource(id = R.string.label_close)) {
-            onDismiss.invoke()
-          }
-        }
-      }
     }
-  }
 }

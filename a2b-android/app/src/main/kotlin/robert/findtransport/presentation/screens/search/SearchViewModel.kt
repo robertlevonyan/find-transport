@@ -22,52 +22,52 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  private val stopsUseCase: StopsUseCase,
-  private val transportUseCase: TransportUseCase,
-  private val searchUseCase: SearchUseCase,
-  private val newSearchUseCase: NewSearchUseCase,
+    localeUseCase: LocaleUseCase,
+    private val stopsUseCase: StopsUseCase,
+    private val transportUseCase: TransportUseCase,
+    private val searchUseCase: SearchUseCase,
+    private val newSearchUseCase: NewSearchUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val fromStop = MutableStateFlow(Stop.EMPTY)
-  val toStop = MutableStateFlow(Stop.EMPTY)
-  val searchResults = MutableStateFlow<SearchState>(SearchState.NotStarted)
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val fromStop = MutableStateFlow(Stop.EMPTY)
+    val toStop = MutableStateFlow(Stop.EMPTY)
+    val searchResults = MutableStateFlow<SearchState>(SearchState.NotStarted)
 
-  fun performSearch(
-    originName: String,
-    originStopId: Int,
-    originLatitude: Float,
-    originLongitude: Float,
-    destinationName: String,
-    destinationStopId: Int,
-    destinationLatitude: Float,
-    destinationLongitude: Float,
-    opened: String
-  ) {
-    viewModelScope.launch {
-      fromStop.value = stopsUseCase.getStop(originStopId)
-      toStop.value = stopsUseCase.getStop(destinationStopId)
+    fun performSearch(
+        originName: String,
+        originStopId: Int,
+        originLatitude: Float,
+        originLongitude: Float,
+        destinationName: String,
+        destinationStopId: Int,
+        destinationLatitude: Float,
+        destinationLongitude: Float,
+        opened: String
+    ) {
+        viewModelScope.launch {
+            fromStop.value = stopsUseCase.getStop(originStopId)
+            toStop.value = stopsUseCase.getStop(destinationStopId)
 
-      newSearchUseCase.invoke(
-        originName,
-        originLatitude,
-        originLongitude,
-        destinationName,
-        destinationLatitude,
-        destinationLongitude,
-        opened
-      ).catch { e ->
-        if (e is A2bException) {
-          searchResults.value = SearchState.Failed(e.type)
+            newSearchUseCase.invoke(
+                originName,
+                originLatitude,
+                originLongitude,
+                destinationName,
+                destinationLatitude,
+                destinationLongitude,
+                opened
+            ).catch { e ->
+                if (e is A2bException) {
+                    searchResults.value = SearchState.Failed(e.type)
+                }
+            }
+                .collectLatest { searchState -> searchResults.value = searchState }
         }
-      }
-        .collectLatest { searchState -> searchResults.value = searchState }
     }
-  }
 
-  override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
-    viewModelScope.launch(Dispatchers.IO) {
-      transportUseCase.toggleFavorite(transport)
+    override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transportUseCase.toggleFavorite(transport)
+        }
     }
-  }
 }

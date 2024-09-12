@@ -15,44 +15,44 @@ import robert.findtransport.presentation.reusables.theme.MenuVerticalOffset
 
 @Composable
 fun PopupMenu(
-  showMenu: Boolean,
-  onOriginSelected: () -> Unit,
-  onDestinationSelected: () -> Unit,
-  onPassingRoutesClick: () -> Unit,
-  onMenuDismiss: () -> Unit,
+    showMenu: Boolean,
+    onOriginSelected: () -> Unit,
+    onDestinationSelected: () -> Unit,
+    onPassingRoutesClick: () -> Unit,
+    onMenuDismiss: () -> Unit,
 ) {
-  DropdownMenu(
-    modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-    expanded = showMenu,
-    offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
-    onDismissRequest = { onMenuDismiss.invoke() },
-  ) {
-    DropdownMenuItem(onClick = {
-      onOriginSelected()
-      onMenuDismiss.invoke()
-    }, text = {
-      Text(
-        text = stringResource(id = R.string.action_set_from),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    })
-    DropdownMenuItem(onClick = {
-      onDestinationSelected()
-      onMenuDismiss.invoke()
-    }, text = {
-      Text(
-        text = stringResource(id = R.string.action_set_to),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    })
-    DropdownMenuItem(onClick = {
-      onPassingRoutesClick()
-      onMenuDismiss.invoke()
-    }, text = {
-      Text(
-        text = stringResource(id = R.string.action_show),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    })
-  }
+    DropdownMenu(
+        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+        expanded = showMenu,
+        offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
+        onDismissRequest = { onMenuDismiss.invoke() },
+    ) {
+        DropdownMenuItem(onClick = {
+            onOriginSelected()
+            onMenuDismiss.invoke()
+        }, text = {
+            Text(
+                text = stringResource(id = R.string.action_set_from),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+        })
+        DropdownMenuItem(onClick = {
+            onDestinationSelected()
+            onMenuDismiss.invoke()
+        }, text = {
+            Text(
+                text = stringResource(id = R.string.action_set_to),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+        })
+        DropdownMenuItem(onClick = {
+            onPassingRoutesClick()
+            onMenuDismiss.invoke()
+        }, text = {
+            Text(
+                text = stringResource(id = R.string.action_show),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+        })
+    }
 }

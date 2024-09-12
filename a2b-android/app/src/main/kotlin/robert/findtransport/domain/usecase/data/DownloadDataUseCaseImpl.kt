@@ -17,90 +17,90 @@ import java.io.EOFException
 import javax.inject.Inject
 
 class DownloadDataUseCaseImpl @Inject constructor(
-  private val checkInternetUseCase: CheckInternetUseCase,
-  private val versionUseCase: VersionUseCase,
-  private val databaseUseCase: DatabaseUseCase,
-  private val transportUseCase: TransportUseCase,
-  private val stopsUseCase: StopsUseCase,
+    private val checkInternetUseCase: CheckInternetUseCase,
+    private val versionUseCase: VersionUseCase,
+    private val databaseUseCase: DatabaseUseCase,
+    private val transportUseCase: TransportUseCase,
+    private val stopsUseCase: StopsUseCase,
 ) : DownloadDataUseCase {
-  override fun downloadData(): Flow<DataLoading> = flow {
-    emit(DataLoading.Loading)
+    override fun downloadData(): Flow<DataLoading> = flow {
+        emit(DataLoading.Loading)
 
-    if (checkInternetUseCase.isVpnConnected()) {
-      throw DataDownloadExceptions.VpnException()
+        if (checkInternetUseCase.isVpnConnected()) {
+            throw DataDownloadExceptions.VpnException()
+        }
+
+        if (!checkInternetUseCase.isResolveIp() || !checkInternetUseCase.isInternetConnected()) {
+            if (databaseUseCase.isDatabaseEmpty()) {
+                throw DataDownloadExceptions.NoInternetException()
+            } else {
+                emit(DataLoading.Loaded)
+                return@flow
+            }
+        }
+
+        if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
+            emit(DataLoading.Loaded)
+            return@flow
+        }
+
+        try {
+            if (!databaseUseCase.isDatabaseEmpty()) {
+                databaseUseCase.clearDb()
+            }
+
+            checkForException(transportUseCase.downloadTransports())
+            checkForException(transportUseCase.downloadJoins())
+            checkForException(stopsUseCase.downloadStops())
+            checkForException(stopsUseCase.downloadLocations())
+            emit(DataLoading.Loaded)
+        } catch (e: Exception) {
+            val message = e.message ?: ""
+            throw if (message.contains("database or disk is full (code 13)")) {
+                DataDownloadExceptions.NotEnoughSpaceException()
+            } else {
+                e
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override fun forceDownloadData(): Flow<DataLoading> = flow {
+        emit(DataLoading.Loading)
+        delay(1000)
+
+        if (checkInternetUseCase.isVpnConnected()) {
+            throw DataDownloadExceptions.VpnException()
+        }
+
+        if (!checkInternetUseCase.isResolveIp() || !checkInternetUseCase.isInternetConnected()) {
+            throw DataDownloadExceptions.NoInternetException()
+        }
+
+        try {
+            databaseUseCase.clearDb()
+            checkForException(transportUseCase.downloadTransports())
+            checkForException(transportUseCase.downloadJoins())
+            checkForException(stopsUseCase.downloadStops())
+            checkForException(stopsUseCase.downloadLocations())
+            emit(DataLoading.Loaded)
+            delay(1000)
+        } catch (e: Exception) {
+            val message = e.message ?: ""
+            throw if (message.contains("database or disk is full (code 13)")) {
+                DataDownloadExceptions.NotEnoughSpaceException()
+            } else {
+                e
+            }
+        }
+    }.flowOn(Dispatchers.IO)
+
+    private fun checkForException(result: Result<Unit>) {
+        if (result is Result.Error) {
+            if (result.exception.error is EOFException) {
+                throw DataDownloadExceptions.NotDownloadedException()
+            } else {
+                throw result.exception
+            }
+        }
     }
-
-    if (!checkInternetUseCase.isResolveIp() || !checkInternetUseCase.isInternetConnected()) {
-      if (databaseUseCase.isDatabaseEmpty()) {
-        throw DataDownloadExceptions.NoInternetException()
-      } else {
-        emit(DataLoading.Loaded)
-        return@flow
-      }
-    }
-
-    if (!versionUseCase.isNewerVersion() && !databaseUseCase.isDatabaseEmpty()) {
-      emit(DataLoading.Loaded)
-      return@flow
-    }
-
-    try {
-      if (!databaseUseCase.isDatabaseEmpty()) {
-        databaseUseCase.clearDb()
-      }
-
-      checkForException(transportUseCase.downloadTransports())
-      checkForException(transportUseCase.downloadJoins())
-      checkForException(stopsUseCase.downloadStops())
-      checkForException(stopsUseCase.downloadLocations())
-      emit(DataLoading.Loaded)
-    } catch (e: Exception) {
-      val message = e.message ?: ""
-      throw if (message.contains("database or disk is full (code 13)")) {
-        DataDownloadExceptions.NotEnoughSpaceException()
-      } else {
-        e
-      }
-    }
-  }.flowOn(Dispatchers.IO)
-
-  override fun forceDownloadData(): Flow<DataLoading> = flow {
-    emit(DataLoading.Loading)
-    delay(1000)
-
-    if (checkInternetUseCase.isVpnConnected()) {
-      throw DataDownloadExceptions.VpnException()
-    }
-
-    if (!checkInternetUseCase.isResolveIp() || !checkInternetUseCase.isInternetConnected()) {
-      throw DataDownloadExceptions.NoInternetException()
-    }
-
-    try {
-      databaseUseCase.clearDb()
-      checkForException(transportUseCase.downloadTransports())
-      checkForException(transportUseCase.downloadJoins())
-      checkForException(stopsUseCase.downloadStops())
-      checkForException(stopsUseCase.downloadLocations())
-      emit(DataLoading.Loaded)
-      delay(1000)
-    } catch (e: Exception) {
-      val message = e.message ?: ""
-      throw if (message.contains("database or disk is full (code 13)")) {
-        DataDownloadExceptions.NotEnoughSpaceException()
-      } else {
-        e
-      }
-    }
-  }.flowOn(Dispatchers.IO)
-
-  private fun checkForException(result: Result<Unit>) {
-    if (result is Result.Error) {
-      if (result.exception.error is EOFException) {
-        throw DataDownloadExceptions.NotDownloadedException()
-      } else {
-        throw result.exception
-      }
-    }
-  }
 }

@@ -21,34 +21,34 @@ import robert.findtransport.presentation.reusables.theme.SmallPadding
 
 @Composable
 fun AllTransportsButton(
-  modifier: Modifier,
-  onClick: () -> Unit,
+    modifier: Modifier,
+    onClick: () -> Unit,
 ) {
-  Button(
-    modifier = modifier,
-    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
-    shape = Shapes.medium,
-    onClick = { onClick.invoke() },
-    colors = ButtonDefaults.buttonColors(
-      containerColor = MaterialTheme.colorScheme.surface
-    ),
-  ) {
-    Column(
-      modifier = Modifier
-        .padding(horizontal = HalfPadding)
-        .padding(bottom = SmallPadding),
-      horizontalAlignment = Alignment.CenterHorizontally
+    Button(
+        modifier = modifier,
+        elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
+        shape = Shapes.medium,
+        onClick = { onClick.invoke() },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
     ) {
-      Image(
-        painter = painterResource(id = R.drawable.ic_arrow_up),
-        contentDescription = null,
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
-      )
-      Text(
-        text = stringResource(id = R.string.label_all_transports),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-        color = MaterialTheme.colorScheme.onPrimary,
-      )
+        Column(
+            modifier = Modifier
+                .padding(horizontal = HalfPadding)
+                .padding(bottom = SmallPadding),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_arrow_up),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onPrimary),
+            )
+            Text(
+                text = stringResource(id = R.string.label_all_transports),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+        }
     }
-  }
 }

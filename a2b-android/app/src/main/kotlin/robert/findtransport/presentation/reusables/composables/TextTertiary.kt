@@ -13,44 +13,44 @@ import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
 fun TextTertiary(
-  modifier: Modifier = Modifier,
-  text: String,
-  color: Color = MaterialTheme.colorScheme.onSurface,
-  textAlign: TextAlign = TextAlign.Center,
-  overflow: TextOverflow = TextOverflow.Clip,
-  maxLines: Int = Int.MAX_VALUE,
+    modifier: Modifier = Modifier,
+    text: String,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    textAlign: TextAlign = TextAlign.Center,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = MaterialTheme.typography.displaySmall.fontSize,
-    fontWeight = MaterialTheme.typography.displaySmall.fontWeight,
-    fontFamily = MaterialTheme.typography.displaySmall.fontFamily,
-    color = color,
-    textAlign = textAlign,
-    overflow = overflow,
-    maxLines = maxLines,
-  )
+    Text(
+        modifier = modifier.padding(HalfPadding),
+        text = text,
+        fontSize = MaterialTheme.typography.displaySmall.fontSize,
+        fontWeight = MaterialTheme.typography.displaySmall.fontWeight,
+        fontFamily = MaterialTheme.typography.displaySmall.fontFamily,
+        color = color,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines,
+    )
 }
 
 @Composable
 fun TextTertiary(
-  modifier: Modifier = Modifier,
-  text: AnnotatedString,
-  color: Color = MaterialTheme.colorScheme.onSurface,
-  textAlign: TextAlign = TextAlign.Center,
-  overflow: TextOverflow = TextOverflow.Clip,
-  maxLines: Int = Int.MAX_VALUE,
+    modifier: Modifier = Modifier,
+    text: AnnotatedString,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+    textAlign: TextAlign = TextAlign.Center,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
 ) {
-  Text(
-    modifier = modifier.padding(HalfPadding),
-    text = text,
-    fontSize = MaterialTheme.typography.displaySmall.fontSize,
-    fontWeight = MaterialTheme.typography.displaySmall.fontWeight,
-    fontFamily = MaterialTheme.typography.displaySmall.fontFamily,
-    color = color,
-    textAlign = textAlign,
-    overflow = overflow,
-    maxLines = maxLines,
-  )
+    Text(
+        modifier = modifier.padding(HalfPadding),
+        text = text,
+        fontSize = MaterialTheme.typography.displaySmall.fontSize,
+        fontWeight = MaterialTheme.typography.displaySmall.fontWeight,
+        fontFamily = MaterialTheme.typography.displaySmall.fontFamily,
+        color = color,
+        textAlign = textAlign,
+        overflow = overflow,
+        maxLines = maxLines,
+    )
 }

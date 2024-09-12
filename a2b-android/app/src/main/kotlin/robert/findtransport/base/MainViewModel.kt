@@ -14,24 +14,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-  themeUseCase: ThemeUseCase,
-  localeUseCase: LocaleUseCase,
+    themeUseCase: ThemeUseCase,
+    localeUseCase: LocaleUseCase,
 ) : BaseViewModel() {
-  val theme = MutableStateFlow(themeUseCase.getTheme())
-  val currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
+    val theme = MutableStateFlow(themeUseCase.getTheme())
+    val currentLanguage = MutableStateFlow(localeUseCase.getCurrentLanguage())
 
-  init {
-    viewModelScope.launch {
-      launch {
-        SharedPreferencesService.getPreferenceChangedValue<Int>(PREF_THEME).collectLatest { value ->
-          theme.value = value
+    init {
+        viewModelScope.launch {
+            launch {
+                SharedPreferencesService.getPreferenceChangedValue<Int>(PREF_THEME)
+                    .collectLatest { value ->
+                        theme.value = value
+                    }
+            }
+            launch {
+                SharedPreferencesService.getPreferenceChangedValue<String>(PREF_LANGUAGE)
+                    .collectLatest { value ->
+                        currentLanguage.value = value
+                    }
+            }
         }
-      }
-      launch {
-        SharedPreferencesService.getPreferenceChangedValue<String>(PREF_LANGUAGE).collectLatest { value ->
-          currentLanguage.value = value
-        }
-      }
     }
-  }
 }

@@ -12,15 +12,15 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun Loading() {
-  Box(
-    modifier = Modifier
-      .fillMaxSize()
-      .clickable(enabled = false, onClick = {})
-  ) {
-    CircularProgressIndicator(
-      modifier = Modifier
-        .wrapContentSize()
-        .align(Alignment.Center), color = MaterialTheme.colorScheme.secondary
-    )
-  }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(enabled = false, onClick = {})
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center), color = MaterialTheme.colorScheme.secondary
+        )
+    }
 }

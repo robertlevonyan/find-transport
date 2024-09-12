@@ -18,29 +18,29 @@ import robert.findtransport.utils.extensions.getHeader
 import javax.inject.Inject
 
 class FeedbackRepositoryImpl @Inject constructor(
-  private val httpClient: HttpClient,
-  private val resourcesService: ResourcesService,
+    private val httpClient: HttpClient,
+    private val resourcesService: ResourcesService,
 ) : FeedbackRepository {
-  override suspend fun sendFeedback(email: String, subject: String, message: String) {
-    try {
-      val httpResponse = httpClient.post {
-        url {
-          protocol = URLProtocol.HTTPS
-          host = BASE_URL
-          path("a2b/feedb/")
-          header("a2bkey", "Bearer ${getHeader()}")
+    override suspend fun sendFeedback(email: String, subject: String, message: String) {
+        try {
+            val httpResponse = httpClient.post {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = BASE_URL
+                    path("a2b/feedb/")
+                    header("a2bkey", "Bearer ${getHeader()}")
+                }
+                parameter("mail", email)
+                parameter("subject", subject)
+                parameter("message", message)
+            }
+            Result.Success(httpResponse.body<Any>())
+        } catch (e: Exception) {
+            Log.e("A2B", "ERROR", e)
+            Result.Error(A2bException(ExceptionType.API, -1, e))
         }
-        parameter("mail", email)
-        parameter("subject", subject)
-        parameter("message", message)
-      }
-      Result.Success(httpResponse.body<Any>())
-    } catch (e: Exception) {
-      Log.e("A2B", "ERROR", e)
-      Result.Error(A2bException(ExceptionType.API, -1, e))
     }
-  }
 
-  override fun getExceptionMessage(type: ExceptionType): Int =
-    resourcesService.getExceptionMessage(type)
+    override fun getExceptionMessage(type: ExceptionType): Int =
+        resourcesService.getExceptionMessage(type)
 }

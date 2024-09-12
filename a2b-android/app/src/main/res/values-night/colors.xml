@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorPrimary">#1a1a1a</color>
-  <color name="colorPrimaryVariant">#000000</color>
-  <color name="colorPrimaryVariantTransparent">#65000000</color>
-  <color name="colorAccent100">#FFEDD1</color>
-  <color name="colorAccent300">#e7a942</color>
-  <color name="colorAccent500">#CEA053</color>
-  <color name="colorOnPrimary">#C9C9C9</color>
-  <color name="colorOnPrimaryLight">#9C9C9C</color>
+    <color name="colorPrimary">#1a1a1a</color>
+    <color name="colorPrimaryVariant">#000000</color>
+    <color name="colorPrimaryVariantTransparent">#65000000</color>
+    <color name="colorAccent100">#FFEDD1</color>
+    <color name="colorAccent300">#e7a942</color>
+    <color name="colorAccent500">#CEA053</color>
+    <color name="colorOnPrimary">#C9C9C9</color>
+    <color name="colorOnPrimaryLight">#9C9C9C</color>
 
-  <color name="colorIconWheels">#000000</color>
-  <color name="colorTrolleyGreen">#86C569</color>
-  <color name="colorTrolleySecondary">#6B7C5E</color>
+    <color name="colorIconWheels">#000000</color>
+    <color name="colorTrolleyGreen">#86C569</color>
+    <color name="colorTrolleySecondary">#6B7C5E</color>
 
-  <color name="ic_launcher_background">#1a1a1a</color>
-  <color name="colorRemoveRed">#D32F2F</color>
+    <color name="ic_launcher_background">#1a1a1a</color>
+    <color name="colorRemoveRed">#D32F2F</color>
 </resources>

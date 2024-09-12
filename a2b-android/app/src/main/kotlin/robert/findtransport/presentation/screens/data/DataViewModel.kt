@@ -23,9 +23,9 @@ class DataViewModel @Inject constructor(
     private val downloadDataUseCase: DownloadDataUseCase,
     private val feedbackUseCase: FeedbackUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
-  val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val theme = MutableStateFlow(themeUseCase.getTheme()).asStateFlow()
+    val loaded = MutableStateFlow<DataLoading>(DataLoading.NotStarted)
 
     fun checkData(isPreviouslyFailed: Boolean = false) {
         val loadedValue = loaded.value

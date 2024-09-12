@@ -35,11 +35,13 @@ fun MapContent(
             isPrimary = isPrimary
         )
 
-        SmallFloatingActionButton(modifier = Modifier.padding(
-            vertical = FabPadding, horizontal = HalfPadding
-        ),
+        SmallFloatingActionButton(
+            modifier = Modifier.padding(
+                vertical = FabPadding, horizontal = HalfPadding
+            ),
             containerColor = MaterialTheme.colorScheme.secondary,
-            onClick = onBackClick) {
+            onClick = onBackClick
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_arrow_back),
                 contentDescription = stringResource(id = R.string.label_close),

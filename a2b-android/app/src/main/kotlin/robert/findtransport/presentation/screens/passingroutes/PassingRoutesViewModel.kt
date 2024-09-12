@@ -17,18 +17,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PassingRoutesViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  private val stopsUseCase: StopsUseCase,
-  private val transportUseCase: TransportUseCase
+    localeUseCase: LocaleUseCase,
+    private val stopsUseCase: StopsUseCase,
+    private val transportUseCase: TransportUseCase
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val stop = MutableSharedFlow<Stop>()
-  val transports = MutableStateFlow<List<Transport>>(emptyList())
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val stop = MutableSharedFlow<Stop>()
+    val transports = MutableStateFlow<List<Transport>>(emptyList())
 
-  fun getStopAndTransports(stopId: Int) {
-    viewModelScope.launch(Dispatchers.IO) {
-      launch { stop.emit(stopsUseCase.getStop(stopId)) }
-      launch { transports.emit(transportUseCase.getTransportsForStop(stopId)) }
+    fun getStopAndTransports(stopId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            launch { stop.emit(stopsUseCase.getStop(stopId)) }
+            launch { transports.emit(transportUseCase.getTransportsForStop(stopId)) }
+        }
     }
-  }
 }

@@ -15,18 +15,18 @@ import robert.findtransport.R
 
 @Composable
 fun BoxScope.CentralPointer(isMapMoving: State<Boolean>) {
-  val icon = if (isMapMoving.value) {
-    R.drawable.ic_origin
-  } else {
-    R.drawable.ic_origin_idle
-  }
-  Image(
-    modifier = Modifier
-      .wrapContentSize()
-      .align(Alignment.Center)
-      .animateContentSize(),
-    painter = painterResource(id = icon),
-    contentDescription = null,
-    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-  )
+    val icon = if (isMapMoving.value) {
+        R.drawable.ic_origin
+    } else {
+        R.drawable.ic_origin_idle
+    }
+    Image(
+        modifier = Modifier
+            .wrapContentSize()
+            .align(Alignment.Center)
+            .animateContentSize(),
+        painter = painterResource(id = icon),
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+    )
 }

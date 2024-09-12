@@ -6,33 +6,33 @@ import robert.findtransport.data.entity.StopLocation
 import robert.findtransport.data.model.Result
 
 interface StopsRepository {
-  suspend fun getStopsFromApi(): Result<List<Stop>>
+    suspend fun getStopsFromApi(): Result<List<Stop>>
 
-  suspend fun getStopLocationsFromApi(): Result<List<StopLocation>>
+    suspend fun getStopLocationsFromApi(): Result<List<StopLocation>>
 
-  suspend fun cacheStops(stops: List<Stop>)
+    suspend fun cacheStops(stops: List<Stop>)
 
-  suspend fun cacheStopLocations(locations: List<StopLocation>)
+    suspend fun cacheStopLocations(locations: List<StopLocation>)
 
-  fun saveStopsToInMemoryCache(stops: List<Stop>)
+    fun saveStopsToInMemoryCache(stops: List<Stop>)
 
-  suspend fun getStopsFromCache(): List<Stop>
+    suspend fun getStopsFromCache(): List<Stop>
 
-  fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
+    fun getAllStopsPagedEn(word: String): PagingSource<Int, Stop>
 
-  fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
+    fun getAllStopsPagedAm(word: String): PagingSource<Int, Stop>
 
-  fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
+    fun getAllStopsPagedRu(word: String): PagingSource<Int, Stop>
 
-  fun getStopsFromInMemoryCache(): List<Stop>
+    fun getStopsFromInMemoryCache(): List<Stop>
 
-  suspend fun getStopById(id: Int): Stop?
+    suspend fun getStopById(id: Int): Stop?
 
-  suspend fun getStopLocations(stopId: Int?): List<StopLocation>
+    suspend fun getStopLocations(stopId: Int?): List<StopLocation>
 
-  suspend fun getStopLocationsFromCache(): List<StopLocation>
+    suspend fun getStopLocationsFromCache(): List<StopLocation>
 
-  var areStopsCached: Boolean
+    var areStopsCached: Boolean
 
-  var areLocationsCached: Boolean
+    var areLocationsCached: Boolean
 }

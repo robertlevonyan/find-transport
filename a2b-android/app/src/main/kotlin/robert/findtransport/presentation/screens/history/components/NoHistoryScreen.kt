@@ -11,13 +11,13 @@ import robert.findtransport.R
 
 @Composable
 fun NoHistoryScreen(modifier: Modifier) {
-  Box(modifier = modifier) {
-    Image(
-      modifier = Modifier
-        .wrapContentSize()
-        .align(Alignment.Center),
-      painter = painterResource(id = R.drawable.il_no_data),
-      contentDescription = null,
-    )
-  }
+    Box(modifier = modifier) {
+        Image(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center),
+            painter = painterResource(id = R.drawable.il_no_data),
+            contentDescription = null,
+        )
+    }
 }

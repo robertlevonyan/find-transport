@@ -25,233 +25,235 @@ import java.util.Date
 import javax.inject.Inject
 
 class NewSearchUseCaseImpl @Inject constructor(
-  private val historyRepository: HistoryRepository,
-  private val localeRepository: LocaleRepository,
-  private val stopsUseCase: StopsUseCase,
-  private val transportsUseCase: TransportUseCase,
+    private val historyRepository: HistoryRepository,
+    private val localeRepository: LocaleRepository,
+    private val stopsUseCase: StopsUseCase,
+    private val transportsUseCase: TransportUseCase,
 ) : NewSearchUseCase {
 
-  override suspend fun invoke(
-    originName: String,
-    originLatitude: Float,
-    originLongitude: Float,
-    destinationName: String,
-    destinationLatitude: Float,
-    destinationLongitude: Float,
-    opened: String
-  ): Flow<SearchState> = flow {
-    emit(SearchState.Searching)
+    override suspend fun invoke(
+        originName: String,
+        originLatitude: Float,
+        originLongitude: Float,
+        destinationName: String,
+        destinationLatitude: Float,
+        destinationLongitude: Float,
+        opened: String
+    ): Flow<SearchState> = flow {
+        emit(SearchState.Searching)
 
-    val originLocation = Location(originName).apply {
-      latitude = originLatitude.toDouble()
-      longitude = originLongitude.toDouble()
+        val originLocation = Location(originName).apply {
+            latitude = originLatitude.toDouble()
+            longitude = originLongitude.toDouble()
+        }
+        val originStops = stopsUseCase.getNearbyStops(location = originLocation)
+
+        val destinationLocation = Location(destinationName).apply {
+            latitude = destinationLatitude.toDouble()
+            longitude = destinationLongitude.toDouble()
+        }
+        val destinationStops = stopsUseCase.getNearbyStops(location = destinationLocation)
+
+        if (originStops.isNotEmpty() && destinationStops.isNotEmpty()) {
+            for ((originIndex, intermediateOriginStop) in originStops.withIndex()) {
+                val destinationSize =
+                    if (destinationStops.size < SEARCH_THRESHOLD) destinationStops.size else SEARCH_THRESHOLD
+
+                for (destinationIndex in 0 until destinationSize) {
+                    val intermediateDestinationStop = destinationStops[destinationIndex]
+
+                    val transports = searchRoutes(
+                        originStop = intermediateOriginStop,
+                        destinationStop = intermediateDestinationStop,
+                    )
+
+                    if (transports.isNotEmpty()) {
+                        val currentLocale = localeRepository.getCurrentLanguage()
+                        if (originIndex >= SEARCH_THRESHOLD) {
+                            val originTransports = searchRoutes(
+                                originStop = originStops.first(),
+                                destinationStop = intermediateOriginStop,
+                            )
+                            val originResults = createResults(
+                                transports = originTransports,
+                                originName = originName,
+                                destinationName = intermediateOriginStop.getCurrentName(
+                                    currentLocale
+                                ),
+                                intermediateOriginStop = originStops.first(),
+                                intermediateDestinationStop = intermediateOriginStop,
+                                opened = opened,
+                                originLocation = originLocation,
+                                destinationLocation = destinationLocation,
+                            )
+                            val destinationTransports = searchRoutes(
+                                originStop = intermediateOriginStop,
+                                destinationStop = intermediateDestinationStop,
+                            )
+                            val destinationResults = createResults(
+                                transports = destinationTransports,
+                                originName = intermediateOriginStop.getCurrentName(currentLocale),
+                                destinationName = destinationName,
+                                intermediateOriginStop = intermediateOriginStop,
+                                intermediateDestinationStop = intermediateDestinationStop,
+                                opened = opened,
+                                originLocation = originLocation,
+                                destinationLocation = destinationLocation,
+                            )
+                            emit(SearchState.Result(result = originResults + destinationResults))
+                            return@flow
+                        }
+
+                        val searchResults = createResults(
+                            transports = transports,
+                            originName = originName,
+                            destinationName = destinationName,
+                            intermediateOriginStop = intermediateOriginStop,
+                            intermediateDestinationStop = intermediateDestinationStop,
+                            opened = opened,
+                            originLocation = originLocation,
+                            destinationLocation = destinationLocation,
+                        )
+                        emit(SearchState.Result(result = searchResults))
+                        return@flow
+                    }
+                }
+            }
+        }
+
+        emit(SearchState.Failed(ExceptionType.EMPTY_SEARCH))
+    }.flowOn(Dispatchers.IO)
+
+    private suspend fun searchRoutes(
+        originStop: Stop,
+        destinationStop: Stop,
+    ): List<Transport> {
+        val originTransports = transportsUseCase.getTransportsForStop(originStop.id)
+        val destinationTransports = transportsUseCase.getTransportsForStop(destinationStop.id)
+
+        return originTransports.intersectTransports(destinationTransports)
     }
-    val originStops = stopsUseCase.getNearbyStops(location = originLocation)
 
-    val destinationLocation = Location(destinationName).apply {
-      latitude = destinationLatitude.toDouble()
-      longitude = destinationLongitude.toDouble()
-    }
-    val destinationStops = stopsUseCase.getNearbyStops(location = destinationLocation)
-
-    if (originStops.isNotEmpty() && destinationStops.isNotEmpty()) {
-      for ((originIndex, intermediateOriginStop) in originStops.withIndex()) {
-        val destinationSize =
-          if (destinationStops.size < SEARCH_THRESHOLD) destinationStops.size else SEARCH_THRESHOLD
-
-        for (destinationIndex in 0 until destinationSize) {
-          val intermediateDestinationStop = destinationStops[destinationIndex]
-
-          val transports = searchRoutes(
-            originStop = intermediateOriginStop,
-            destinationStop = intermediateDestinationStop,
-          )
-
-          if (transports.isNotEmpty()) {
+    private suspend fun createResults(
+        transports: List<Transport>,
+        originName: String,
+        destinationName: String,
+        intermediateOriginStop: Stop,
+        intermediateDestinationStop: Stop,
+        opened: String,
+        originLocation: Location,
+        destinationLocation: Location,
+    ): List<RouteSearchResult> {
+        val results = buildList {
             val currentLocale = localeRepository.getCurrentLanguage()
-            if (originIndex >= SEARCH_THRESHOLD) {
-              val originTransports = searchRoutes(
-                originStop = originStops.first(),
-                destinationStop = intermediateOriginStop,
-              )
-              val originResults = createResults(
-                transports = originTransports,
-                originName = originName,
-                destinationName = intermediateOriginStop.getCurrentName(currentLocale),
-                intermediateOriginStop = originStops.first(),
-                intermediateDestinationStop = intermediateOriginStop,
-                opened = opened,
-                originLocation = originLocation,
-                destinationLocation = destinationLocation,
-              )
-              val destinationTransports = searchRoutes(
-                originStop = intermediateOriginStop,
-                destinationStop = intermediateDestinationStop,
-              )
-              val destinationResults = createResults(
-                transports = destinationTransports,
-                originName = intermediateOriginStop.getCurrentName(currentLocale),
-                destinationName = destinationName,
-                intermediateOriginStop = intermediateOriginStop,
-                intermediateDestinationStop = intermediateDestinationStop,
-                opened = opened,
-                originLocation = originLocation,
-                destinationLocation = destinationLocation,
-              )
-              emit(SearchState.Result(result = originResults + destinationResults))
-              return@flow
+
+            if (originName != intermediateOriginStop.getCurrentName(currentLocale)) {
+                add(
+                    RouteSearchResult(
+                        type = RouteSearchElementType.WALK_FROM,
+                        walkDestination = originName,
+                        case = RouteSearchCase.SINGLE_FROM,
+                    )
+                )
             }
 
-            val searchResults = createResults(
-              transports = transports,
-              originName = originName,
-              destinationName = destinationName,
-              intermediateOriginStop = intermediateOriginStop,
-              intermediateDestinationStop = intermediateDestinationStop,
-              opened = opened,
-              originLocation = originLocation,
-              destinationLocation = destinationLocation,
+            add(
+                RouteSearchResult(
+                    type = RouteSearchElementType.TRANSPORT_TITLE,
+                    stop = intermediateOriginStop,
+                    case = RouteSearchCase.SINGLE_FROM
+                )
             )
-            emit(SearchState.Result(result = searchResults))
-            return@flow
-          }
-        }
-      }
-    }
 
-    emit(SearchState.Failed(ExceptionType.EMPTY_SEARCH))
-  }.flowOn(Dispatchers.IO)
-
-  private suspend fun searchRoutes(
-    originStop: Stop,
-    destinationStop: Stop,
-  ): List<Transport> {
-    val originTransports = transportsUseCase.getTransportsForStop(originStop.id)
-    val destinationTransports = transportsUseCase.getTransportsForStop(destinationStop.id)
-
-    return originTransports.intersectTransports(destinationTransports)
-  }
-
-  private suspend fun createResults(
-    transports: List<Transport>,
-    originName: String,
-    destinationName: String,
-    intermediateOriginStop: Stop,
-    intermediateDestinationStop: Stop,
-    opened: String,
-    originLocation: Location,
-    destinationLocation: Location,
-  ): List<RouteSearchResult> {
-    val results = buildList {
-      val currentLocale = localeRepository.getCurrentLanguage()
-
-      if (originName != intermediateOriginStop.getCurrentName(currentLocale)) {
-        add(
-          RouteSearchResult(
-            type = RouteSearchElementType.WALK_FROM,
-            walkDestination = originName,
-            case = RouteSearchCase.SINGLE_FROM,
-          )
-        )
-      }
-
-      add(
-        RouteSearchResult(
-          type = RouteSearchElementType.TRANSPORT_TITLE,
-          stop = intermediateOriginStop,
-          case = RouteSearchCase.SINGLE_FROM
-        )
-      )
-
-      for (transport in transports) {
-        add(
-          RouteSearchResult(
-            type = RouteSearchElementType.TRANSPORT,
-            transport = transport,
-            case = RouteSearchCase.SINGLE_FROM
-          )
-        )
-      }
-      add(
-        RouteSearchResult(
-          type = RouteSearchElementType.INTERCHANGE_TO,
-          stop = intermediateDestinationStop,
-          case = RouteSearchCase.SINGLE_FROM
-        )
-      )
-
-      if (destinationName != intermediateDestinationStop.getCurrentName(currentLocale)) {
-        add(
-          RouteSearchResult(
-            type = RouteSearchElementType.WALK_TO,
-            walkDestination = destinationName,
-            case = RouteSearchCase.SINGLE_FROM,
-          )
-        )
-      }
-    }
-
-    tryToSaveToHistory(
-      opened = opened,
-      originId = intermediateOriginStop.id,
-      destinationId = intermediateDestinationStop.id,
-      originName = originName,
-      destinationName = destinationName,
-      originLatitude = originLocation.latitude.toFloat(),
-      originLongitude = originLocation.longitude.toFloat(),
-      destinationLatitude = destinationLocation.latitude.toFloat(),
-      destinationLongitude = destinationLocation.longitude.toFloat(),
-    )
-
-    return results
-  }
-
-  private suspend fun tryToSaveToHistory(
-    opened: String,
-    originId: Int,
-    destinationId: Int,
-    originName: String,
-    destinationName: String,
-    originLatitude: Float,
-    originLongitude: Float,
-    destinationLatitude: Float,
-    destinationLongitude: Float,
-  ) {
-    val saveToHistory = try {
-      SearchOpenInitiator.valueOf(opened).let { initiator ->
-        when (initiator) {
-          SearchOpenInitiator.HOME -> true
-          SearchOpenInitiator.HISTORY -> false
-        }
-      }
-    } catch (e: Exception) {
-      false
-    }
-    if (!saveToHistory) return
-
-    historyRepository.getHistory().firstOrNull()
-      ?.any { history ->
-        history.fromStopId == originId && history.toStopId == destinationId
-      }?.let { contains ->
-        if (!contains) {
-          historyRepository.saveInHistory(
-            History(
-              fromStopId = originId,
-              toStopId = destinationId,
-              timestamp = Date().time,
-              originName = originName,
-              destinationName = destinationName,
-              originLatitude = originLatitude,
-              originLongitude = originLongitude,
-              destinationLatitude = destinationLatitude,
-              destinationLongitude = destinationLongitude,
+            for (transport in transports) {
+                add(
+                    RouteSearchResult(
+                        type = RouteSearchElementType.TRANSPORT,
+                        transport = transport,
+                        case = RouteSearchCase.SINGLE_FROM
+                    )
+                )
+            }
+            add(
+                RouteSearchResult(
+                    type = RouteSearchElementType.INTERCHANGE_TO,
+                    stop = intermediateDestinationStop,
+                    case = RouteSearchCase.SINGLE_FROM
+                )
             )
-          )
-        }
-      }
-  }
 
-  companion object {
-    private const val SEARCH_THRESHOLD = 5
-  }
+            if (destinationName != intermediateDestinationStop.getCurrentName(currentLocale)) {
+                add(
+                    RouteSearchResult(
+                        type = RouteSearchElementType.WALK_TO,
+                        walkDestination = destinationName,
+                        case = RouteSearchCase.SINGLE_FROM,
+                    )
+                )
+            }
+        }
+
+        tryToSaveToHistory(
+            opened = opened,
+            originId = intermediateOriginStop.id,
+            destinationId = intermediateDestinationStop.id,
+            originName = originName,
+            destinationName = destinationName,
+            originLatitude = originLocation.latitude.toFloat(),
+            originLongitude = originLocation.longitude.toFloat(),
+            destinationLatitude = destinationLocation.latitude.toFloat(),
+            destinationLongitude = destinationLocation.longitude.toFloat(),
+        )
+
+        return results
+    }
+
+    private suspend fun tryToSaveToHistory(
+        opened: String,
+        originId: Int,
+        destinationId: Int,
+        originName: String,
+        destinationName: String,
+        originLatitude: Float,
+        originLongitude: Float,
+        destinationLatitude: Float,
+        destinationLongitude: Float,
+    ) {
+        val saveToHistory = try {
+            SearchOpenInitiator.valueOf(opened).let { initiator ->
+                when (initiator) {
+                    SearchOpenInitiator.HOME -> true
+                    SearchOpenInitiator.HISTORY -> false
+                }
+            }
+        } catch (e: Exception) {
+            false
+        }
+        if (!saveToHistory) return
+
+        historyRepository.getHistory().firstOrNull()
+            ?.any { history ->
+                history.fromStopId == originId && history.toStopId == destinationId
+            }?.let { contains ->
+                if (!contains) {
+                    historyRepository.saveInHistory(
+                        History(
+                            fromStopId = originId,
+                            toStopId = destinationId,
+                            timestamp = Date().time,
+                            originName = originName,
+                            destinationName = destinationName,
+                            originLatitude = originLatitude,
+                            originLongitude = originLongitude,
+                            destinationLatitude = destinationLatitude,
+                            destinationLongitude = destinationLongitude,
+                        )
+                    )
+                }
+            }
+    }
+
+    companion object {
+        private const val SEARCH_THRESHOLD = 5
+    }
 }

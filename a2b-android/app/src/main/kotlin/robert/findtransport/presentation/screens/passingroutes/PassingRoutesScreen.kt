@@ -41,8 +41,8 @@ fun PassingRoutesScreen(
     ) { contentPadding ->
         PassingRoutesContent(
             modifier = Modifier
-              .padding(contentPadding)
-              .fillMaxSize(),
+                .padding(contentPadding)
+                .fillMaxSize(),
             navController = navController,
             passingRoutesViewModel = passingRoutesViewModel,
         )

@@ -10,23 +10,23 @@ import robert.findtransport.data.cache.TransportRouteTypeConverter
 @Entity
 @Serializable
 class Transport(
-  @PrimaryKey
-  @SerialName("id")
-  val id: Int? = null,
-  @SerialName("name")
-  val name: String? = null,
-  @SerialName("vehicle_type")
-  val type: Int? = null,
-  @TypeConverters(TransportRouteTypeConverter::class)
-  @SerialName("route")
-  val route: TransportRoute? = null,
-  val favorite: Boolean = false,
+    @PrimaryKey
+    @SerialName("id")
+    val id: Int? = null,
+    @SerialName("name")
+    val name: String? = null,
+    @SerialName("vehicle_type")
+    val type: Int? = null,
+    @TypeConverters(TransportRouteTypeConverter::class)
+    @SerialName("route")
+    val route: TransportRoute? = null,
+    val favorite: Boolean = false,
 )
 
 @Serializable
 class TransportRoute(
-  @SerialName("main_route")
-  val mainRoute: List<List<Double>>,
-  @SerialName("reversed_route")
-  val reversedRoute: List<List<Double>>,
+    @SerialName("main_route")
+    val mainRoute: List<List<Double>>,
+    @SerialName("reversed_route")
+    val reversedRoute: List<List<Double>>,
 )

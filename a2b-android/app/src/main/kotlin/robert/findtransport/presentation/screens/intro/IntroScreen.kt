@@ -1,10 +1,23 @@
 package robert.findtransport.presentation.screens.intro
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -48,8 +61,8 @@ fun IntroScreen(
     Scaffold(modifier = modifier.fillMaxSize()) { contentPadding ->
         ConstraintLayout(
             modifier = Modifier
-              .fillMaxSize()
-              .padding(contentPadding)
+                .fillMaxSize()
+                .padding(contentPadding)
         ) {
             val (bg, title, hello, buttons, next) = createRefs()
 
@@ -68,24 +81,24 @@ fun IntroScreen(
 
             TitleAndLogo(
                 modifier = Modifier
-                  .wrapContentSize()
-                  .constrainAs(title) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                  }
-                  .padding(DoublePadding)
+                    .wrapContentSize()
+                    .constrainAs(title) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                    }
+                    .padding(DoublePadding)
             )
 
             Text(
                 modifier = Modifier
-                  .wrapContentSize()
-                  .constrainAs(hello) {
-                    start.linkTo(parent.start)
-                    top.linkTo(title.bottom)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(buttons.top)
-                  },
+                    .wrapContentSize()
+                    .constrainAs(hello) {
+                        start.linkTo(parent.start)
+                        top.linkTo(title.bottom)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(buttons.top)
+                    },
                 text = stringResource(id = welcomeMessage),
                 fontWeight = FontWeight.SemiBold,
                 fontSize = Text24,
@@ -95,14 +108,14 @@ fun IntroScreen(
 
             ColumnToggleButtonGroup(
                 modifier = Modifier
-                  .fillMaxWidth(fraction = 0.8f)
-                  .wrapContentHeight()
-                  .constrainAs(buttons) {
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                  },
+                    .fillMaxWidth(fraction = 0.8f)
+                    .wrapContentHeight()
+                    .constrainAs(buttons) {
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    },
                 buttonCount = 3,
                 primarySelection = currentLanguageIndex,
                 selectedColor = Accent.copy(alpha = 0.2f),

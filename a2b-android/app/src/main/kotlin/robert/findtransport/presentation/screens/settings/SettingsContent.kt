@@ -23,68 +23,68 @@ import robert.findtransport.utils.LNG_RU
 
 @Composable
 fun SettingsContent(modifier: Modifier, settingsViewModel: SettingsViewModel) {
-  val currentContext = LocalContext.current
-  val currentLanguage by settingsViewModel.locale.collectAsState()
-  val theme by settingsViewModel.theme.collectAsState()
-  val checking by settingsViewModel.loaded.collectAsState()
+    val currentContext = LocalContext.current
+    val currentLanguage by settingsViewModel.locale.collectAsState()
+    val theme by settingsViewModel.theme.collectAsState()
+    val checking by settingsViewModel.loaded.collectAsState()
 
-  LazyColumn(modifier = modifier) {
-    item {
-      Box(modifier = Modifier.fillMaxWidth()) {
-        LanguageSetting(
-          modifier = Modifier.align(Alignment.Center),
-          currentLanguage = currentLanguage,
-        ) { position: Int ->
-          when (position) {
-            0 -> settingsViewModel.changeLanguage(LNG_AM)
-            1 -> settingsViewModel.changeLanguage(LNG_EN)
-            2 -> settingsViewModel.changeLanguage(LNG_RU)
-          }
-          if (currentContext is Activity) {
-            currentContext.recreate()
-          }
+    LazyColumn(modifier = modifier) {
+        item {
+            Box(modifier = Modifier.fillMaxWidth()) {
+                LanguageSetting(
+                    modifier = Modifier.align(Alignment.Center),
+                    currentLanguage = currentLanguage,
+                ) { position: Int ->
+                    when (position) {
+                        0 -> settingsViewModel.changeLanguage(LNG_AM)
+                        1 -> settingsViewModel.changeLanguage(LNG_EN)
+                        2 -> settingsViewModel.changeLanguage(LNG_RU)
+                    }
+                    if (currentContext is Activity) {
+                        currentContext.recreate()
+                    }
+                }
+            }
         }
-      }
-    }
-    item {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = FabPadding)
-      ) {
-        ThemeSetting(
-          modifier = Modifier.align(Alignment.Center),
-          theme = theme,
-        ) { position: Int ->
-          when (position) {
-            0 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_NO)
-            1 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_YES)
-            2 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-          }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = FabPadding)
+            ) {
+                ThemeSetting(
+                    modifier = Modifier.align(Alignment.Center),
+                    theme = theme,
+                ) { position: Int ->
+                    when (position) {
+                        0 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_NO)
+                        1 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_YES)
+                        2 -> settingsViewModel.changeTheme(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    }
+                }
+            }
         }
-      }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = FabPadding)
+            ) {
+                UpdateSetting(
+                    modifier = Modifier.align(Alignment.Center),
+                    checking = checking,
+                    onSettingClick = settingsViewModel::checkForUpdate,
+                )
+            }
+        }
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = FabPadding)
+            ) {
+                GeneralSettings(modifier = Modifier.align(Alignment.Center))
+            }
+        }
     }
-    item {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = FabPadding)
-      ) {
-        UpdateSetting(
-          modifier = Modifier.align(Alignment.Center),
-          checking = checking,
-          onSettingClick = settingsViewModel::checkForUpdate,
-        )
-      }
-    }
-    item {
-      Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(top = FabPadding)
-      ) {
-        GeneralSettings(modifier = Modifier.align(Alignment.Center))
-      }
-    }
-  }
 }

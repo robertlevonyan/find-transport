@@ -21,47 +21,47 @@ import robert.findtransport.utils.LNG_EN
 
 @Composable
 fun LanguageSetting(
-  modifier: Modifier,
-  currentLanguage: String,
-  onSettingClick: (Int) -> Unit,
+    modifier: Modifier,
+    currentLanguage: String,
+    onSettingClick: (Int) -> Unit,
 ) {
-  val selectionIndex = when (currentLanguage) {
-    LNG_AM -> 0
-    LNG_EN -> 1
-    else -> 2
-  }
+    val selectionIndex = when (currentLanguage) {
+        LNG_AM -> 0
+        LNG_EN -> 1
+        else -> 2
+    }
 
-  Column(
-    modifier = modifier
-      .fillMaxWidth(fraction = 0.9f)
-      .wrapContentHeight()
-  ) {
-    TextSecondary(text = stringResource(id = R.string.settings_language))
+    Column(
+        modifier = modifier
+            .fillMaxWidth(fraction = 0.9f)
+            .wrapContentHeight()
+    ) {
+        TextSecondary(text = stringResource(id = R.string.settings_language))
 
-    RowToggleButtonGroup(
-      modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight()
-        .align(Alignment.CenterHorizontally),
-      buttonCount = 3,
-      onButtonClick = onSettingClick,
-      buttonTexts = arrayOf(
-        stringResource(id = R.string.settings_language_am_short),
-        stringResource(id = R.string.settings_language_en_short),
-        stringResource(id = R.string.settings_language_ru_short),
-      ),
-      buttonIcons = arrayOf(
-        painterResource(id = R.drawable.ic_lng_arm),
-        painterResource(id = R.drawable.ic_lng_eng),
-        painterResource(id = R.drawable.ic_lng_rus),
-      ),
-      buttonIconTint = Color.Transparent,
-      unselectedButtonIconTint = Color.Transparent,
-      primarySelection = selectionIndex,
-      selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
-      iconPosition = IconPosition.Top,
-      unselectedColor = MaterialTheme.colorScheme.background,
-      shape = Shapes.medium,
-    )
-  }
+        RowToggleButtonGroup(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .align(Alignment.CenterHorizontally),
+            buttonCount = 3,
+            onButtonClick = onSettingClick,
+            buttonTexts = arrayOf(
+                stringResource(id = R.string.settings_language_am_short),
+                stringResource(id = R.string.settings_language_en_short),
+                stringResource(id = R.string.settings_language_ru_short),
+            ),
+            buttonIcons = arrayOf(
+                painterResource(id = R.drawable.ic_lng_arm),
+                painterResource(id = R.drawable.ic_lng_eng),
+                painterResource(id = R.drawable.ic_lng_rus),
+            ),
+            buttonIconTint = Color.Transparent,
+            unselectedButtonIconTint = Color.Transparent,
+            primarySelection = selectionIndex,
+            selectedColor = Color(integerArrayResource(id = R.array.colors_bg)[0]),
+            iconPosition = IconPosition.Top,
+            unselectedColor = MaterialTheme.colorScheme.background,
+            shape = Shapes.medium,
+        )
+    }
 }

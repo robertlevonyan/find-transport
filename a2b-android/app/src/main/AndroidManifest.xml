@@ -38,8 +38,8 @@
 
         <activity
             android:name=".presentation.reusables.activity.ExceptionActivity"
-            android:exported="false"
             android:clearTaskOnLaunch="true"
+            android:exported="false"
             android:theme="@style/AppTheme" />
 
         <meta-data

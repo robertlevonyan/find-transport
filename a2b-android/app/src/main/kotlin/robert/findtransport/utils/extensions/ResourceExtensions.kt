@@ -6,9 +6,9 @@ import androidx.annotation.DimenRes
 import androidx.core.content.ContextCompat
 
 fun Context.getColorFromRes(@ColorRes clr: Int): Int {
-  return ContextCompat.getColor(this, clr)
+    return ContextCompat.getColor(this, clr)
 }
 
 fun Context.getDimenInt(@DimenRes dmn: Int): Int {
-  return resources.getDimensionPixelSize(dmn)
+    return resources.getDimensionPixelSize(dmn)
 }

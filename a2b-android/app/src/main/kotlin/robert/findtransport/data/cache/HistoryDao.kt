@@ -9,15 +9,15 @@ import robert.findtransport.data.entity.History
 
 @Dao
 interface HistoryDao {
-  @Insert(onConflict = OnConflictStrategy.REPLACE)
-  fun insert(history: History)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(history: History)
 
-  @Query("SELECT * FROM History ORDER BY timestamp DESC")
-  fun getHistory(): Flow<List<History>>
+    @Query("SELECT * FROM History ORDER BY timestamp DESC")
+    fun getHistory(): Flow<List<History>>
 
-  @Query("DELETE FROM History")
-  fun clearHistory()
+    @Query("DELETE FROM History")
+    fun clearHistory()
 
-  @Query("DELETE FROM History WHERE id = :id")
-  fun removeHistoryItem(id: Int)
+    @Query("DELETE FROM History WHERE id = :id")
+    fun removeHistoryItem(id: Int)
 }

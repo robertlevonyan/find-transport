@@ -17,30 +17,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TransportViewModel @Inject constructor(
-  localeUseCase: LocaleUseCase,
-  private val transportUseCase: TransportUseCase,
-  private val stopsUseCase: StopsUseCase,
+    localeUseCase: LocaleUseCase,
+    private val transportUseCase: TransportUseCase,
+    private val stopsUseCase: StopsUseCase,
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
-  val selectedTransport = MutableStateFlow(Transport.EMPTY)
-  val isPrimary = MutableStateFlow(true)
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage()).asStateFlow()
+    val selectedTransport = MutableStateFlow(Transport.EMPTY)
+    val isPrimary = MutableStateFlow(true)
 
-  fun getTransport(id: Int) {
-    viewModelScope.launch(Dispatchers.IO) {
-      transportUseCase.getTransportById(id).collect { transport ->
-        selectedTransport.value = transport
-      }
+    fun getTransport(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transportUseCase.getTransportById(id).collect { transport ->
+                selectedTransport.value = transport
+            }
+        }
     }
-  }
 
-  override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
-    viewModelScope.launch(Dispatchers.IO) {
-      transportUseCase.toggleFavorite(transport)
-      toggleFinishAction.invoke()
+    override fun toggleTransportFavorite(transport: Transport, toggleFinishAction: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transportUseCase.toggleFavorite(transport)
+            toggleFinishAction.invoke()
+        }
     }
-  }
 
-  suspend fun getAddress(stop: Stop): Address? {
-    return stopsUseCase.getAddress(stop)
-  }
+    suspend fun getAddress(stop: Stop): Address? {
+        return stopsUseCase.getAddress(stop)
+    }
 }

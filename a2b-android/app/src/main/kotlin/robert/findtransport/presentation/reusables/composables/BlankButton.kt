@@ -11,23 +11,23 @@ import robert.findtransport.presentation.reusables.theme.Shapes
 
 @Composable
 fun BlankButton(
-  modifier: Modifier = Modifier,
-  text: String,
-  onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    text: String,
+    onClick: () -> Unit,
 ) {
-  Button(
-    modifier = modifier,
-    onClick = onClick,
-    shape = Shapes.small,
-    colors = ButtonDefaults.buttonColors(
-      containerColor = MaterialTheme.colorScheme.surface,
-      contentColor = MaterialTheme.colorScheme.onPrimary,
-    )
-  ) {
-    Text(
-      text = text,
-      fontWeight = FontWeight.Bold,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    )
-  }
+    Button(
+        modifier = modifier,
+        onClick = onClick,
+        shape = Shapes.small,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+        )
+    ) {
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold,
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+        )
+    }
 }

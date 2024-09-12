@@ -23,69 +23,69 @@ import robert.findtransport.utils.extensions.openPrivacyPolicy
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun A2bAppBar(
-  title: String,
-  hasFeedbackButton: Boolean,
-  @DrawableRes navigationIcon: Int,
-  onNavigationIconClick: () -> Unit,
-  onFeedbackClick: () -> Unit,
-  additionalActions: @Composable RowScope.() -> Unit = {},
+    title: String,
+    hasFeedbackButton: Boolean,
+    @DrawableRes navigationIcon: Int,
+    onNavigationIconClick: () -> Unit,
+    onFeedbackClick: () -> Unit,
+    additionalActions: @Composable RowScope.() -> Unit = {},
 ) {
-  var overflowMenuState by rememberSaveable { mutableStateOf(false) }
-  val context = LocalContext.current
+    var overflowMenuState by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
 
-  TopAppBar(
-    modifier = Modifier.statusBarsPadding(),
-    navigationIcon = {
-      IconButton(onClick = onNavigationIconClick) {
-        Icon(painter = painterResource(id = navigationIcon), contentDescription = null)
-      }
-    },
-    title = {
-      TextPrimary(
-        modifier = Modifier
-          .fillMaxWidth(),
-        text = title,
-        textAlign = TextAlign.Center,
-      )
-    },
-    actions = {
-      additionalActions.invoke(this)
-
-      if (hasFeedbackButton) {
-        IconButton(onClick = { onFeedbackClick() }) {
-          Icon(
-            painter = painterResource(id = R.drawable.ic_feedback),
-            contentDescription = stringResource(id = R.string.action_feedback),
-            tint = MaterialTheme.colorScheme.onSurface,
-          )
-        }
-      }
-      IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
-        Icon(
-          painter = painterResource(id = R.drawable.ic_more),
-          contentDescription = stringResource(id = R.string.action_settings),
-          tint = MaterialTheme.colorScheme.onSurface,
-        )
-      }
-      DropdownMenu(
-        modifier = Modifier.background(MaterialTheme.colorScheme.surface),
-        expanded = overflowMenuState,
-        offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
-        onDismissRequest = { overflowMenuState = false },
-      ) {
-        DropdownMenuItem(
-          onClick = {
-            context.openPrivacyPolicy()
-            overflowMenuState = false
-          },
-          text = {
-            Text(
-              text = stringResource(id = R.string.action_privacy),
-              fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+    TopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+        navigationIcon = {
+            IconButton(onClick = onNavigationIconClick) {
+                Icon(painter = painterResource(id = navigationIcon), contentDescription = null)
+            }
+        },
+        title = {
+            TextPrimary(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = title,
+                textAlign = TextAlign.Center,
             )
-          })
-      }
-    },
-    colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
-  )
+        },
+        actions = {
+            additionalActions.invoke(this)
+
+            if (hasFeedbackButton) {
+                IconButton(onClick = { onFeedbackClick() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_feedback),
+                        contentDescription = stringResource(id = R.string.action_feedback),
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
+            IconButton(onClick = { overflowMenuState = !overflowMenuState }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_more),
+                    contentDescription = stringResource(id = R.string.action_settings),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+            DropdownMenu(
+                modifier = Modifier.background(MaterialTheme.colorScheme.surface),
+                expanded = overflowMenuState,
+                offset = DpOffset(x = 0.dp, y = MenuVerticalOffset),
+                onDismissRequest = { overflowMenuState = false },
+            ) {
+                DropdownMenuItem(
+                    onClick = {
+                        context.openPrivacyPolicy()
+                        overflowMenuState = false
+                    },
+                    text = {
+                        Text(
+                            text = stringResource(id = R.string.action_privacy),
+                            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                        )
+                    })
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+    )
 }

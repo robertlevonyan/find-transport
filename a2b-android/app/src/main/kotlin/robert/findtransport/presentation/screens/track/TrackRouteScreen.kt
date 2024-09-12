@@ -9,22 +9,22 @@ import androidx.navigation.NavController
 
 @Composable
 fun TrackRouteScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  trackRouteViewModel: TrackRouteViewModel = hiltViewModel(),
-  transportId: Int,
-  fromId: Int,
-  toId: Int,
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    trackRouteViewModel: TrackRouteViewModel = hiltViewModel(),
+    transportId: Int,
+    fromId: Int,
+    toId: Int,
 ) {
-  trackRouteViewModel.initData(transportId, fromId, toId)
+    trackRouteViewModel.initData(transportId, fromId, toId)
 
-  Scaffold(
-    modifier = modifier,
-  ) { contentPadding ->
-    TrackRouteContent(
-      modifier = Modifier.padding(contentPadding),
-      navController = navController,
-      trackRouteViewModel = trackRouteViewModel,
-    )
-  }
+    Scaffold(
+        modifier = modifier,
+    ) { contentPadding ->
+        TrackRouteContent(
+            modifier = Modifier.padding(contentPadding),
+            navController = navController,
+            trackRouteViewModel = trackRouteViewModel,
+        )
+    }
 }

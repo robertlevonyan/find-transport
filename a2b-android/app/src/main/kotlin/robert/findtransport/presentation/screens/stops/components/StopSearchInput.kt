@@ -2,7 +2,11 @@ package robert.findtransport.presentation.screens.stops.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,38 +23,38 @@ import robert.findtransport.presentation.reusables.theme.searchInputBackgroundCo
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StopSearchInput(onValueChange: (String) -> Unit) {
-  var inputText by rememberSaveable { mutableStateOf("") }
+    var inputText by rememberSaveable { mutableStateOf("") }
 
-  OutlinedTextField(
-    modifier = Modifier
-      .fillMaxWidth()
-      .padding(horizontal = HalfPadding)
-      .padding(bottom = HalfPadding),
-    value = inputText,
-    onValueChange = {
-      inputText = it
-      onValueChange.invoke(it)
-    },
-    singleLine = true,
-    shape = Shapes.medium,
-    label = {
-      Text(
-        text = stringResource(id = R.string.hint_search),
-        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      )
-    },
-    colors = TextFieldDefaults.outlinedTextFieldColors(
-      containerColor = searchInputBackgroundColor(),
-      focusedBorderColor = MaterialTheme.colorScheme.surface,
-      unfocusedBorderColor = MaterialTheme.colorScheme.surface,
-      disabledBorderColor = MaterialTheme.colorScheme.surface,
-      errorBorderColor = MaterialTheme.colorScheme.error,
-      cursorColor = MaterialTheme.colorScheme.onSurface,
-      focusedLabelColor = MaterialTheme.colorScheme.onSurface,
-    ),
-    textStyle = TextStyle(
-      color = MaterialTheme.colorScheme.onSurface,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-    ),
-  )
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = HalfPadding)
+            .padding(bottom = HalfPadding),
+        value = inputText,
+        onValueChange = {
+            inputText = it
+            onValueChange.invoke(it)
+        },
+        singleLine = true,
+        shape = Shapes.medium,
+        label = {
+            Text(
+                text = stringResource(id = R.string.hint_search),
+                fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            )
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = searchInputBackgroundColor(),
+            focusedBorderColor = MaterialTheme.colorScheme.surface,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surface,
+            disabledBorderColor = MaterialTheme.colorScheme.surface,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            cursorColor = MaterialTheme.colorScheme.onSurface,
+            focusedLabelColor = MaterialTheme.colorScheme.onSurface,
+        ),
+        textStyle = TextStyle(
+            color = MaterialTheme.colorScheme.onSurface,
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+        ),
+    )
 }

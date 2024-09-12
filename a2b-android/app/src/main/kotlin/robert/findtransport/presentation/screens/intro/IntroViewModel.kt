@@ -15,28 +15,28 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IntroViewModel @Inject constructor(
-  private val introUseCase: IntroUseCase,
-  private val localeUseCase: LocaleUseCase
+    private val introUseCase: IntroUseCase,
+    private val localeUseCase: LocaleUseCase
 ) : BaseViewModel() {
-  val locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
-  val currentLanguageIndex = MutableStateFlow(localeUseCase.getCurrentLanguageIndex())
-    .asStateFlow()
+    val locale = MutableStateFlow(localeUseCase.getCurrentLanguage())
+    val currentLanguageIndex = MutableStateFlow(localeUseCase.getCurrentLanguageIndex())
+        .asStateFlow()
 
-  fun setIntroPassed() {
-    viewModelScope.launch {
-      introUseCase.setIntroPassed()
+    fun setIntroPassed() {
+        viewModelScope.launch {
+            introUseCase.setIntroPassed()
+        }
     }
-  }
 
-  fun setLanguage(position: Int) {
-    val language = when (position) {
-      1 -> LNG_EN
-      2 -> LNG_RU
-      else -> LNG_AM
+    fun setLanguage(position: Int) {
+        val language = when (position) {
+            1 -> LNG_EN
+            2 -> LNG_RU
+            else -> LNG_AM
+        }
+        viewModelScope.launch {
+            locale.value = language
+            localeUseCase.saveLanguage(language)
+        }
     }
-    viewModelScope.launch {
-      locale.value = language
-      localeUseCase.saveLanguage(language)
-    }
-  }
 }

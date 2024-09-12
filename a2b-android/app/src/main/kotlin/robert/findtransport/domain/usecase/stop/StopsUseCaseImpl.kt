@@ -24,205 +24,207 @@ import robert.findtransport.domain.usecase.permission.PermissionUseCase
 import robert.findtransport.utils.LNG_AM
 import robert.findtransport.utils.LNG_RU
 import robert.findtransport.utils.STOP_ICON_SIZE
-import robert.findtransport.utils.extensions.orEmpty
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 import robert.findtransport.data.entity.Stop as ApiStop
 
 class StopsUseCaseImpl @Inject constructor(
-  private val stopsRepository: StopsRepository,
-  private val locationRepository: LocationRepository,
-  private val resourcesRepository: ResourcesRepository,
-  private val permissionUseCase: PermissionUseCase,
+    private val stopsRepository: StopsRepository,
+    private val locationRepository: LocationRepository,
+    private val resourcesRepository: ResourcesRepository,
+    private val permissionUseCase: PermissionUseCase,
 ) : StopsUseCase {
 
-  override suspend fun getStops(): List<Stop> = withContext(Dispatchers.IO) {
-    (stopsRepository.getStopsFromInMemoryCache()
-      .takeIf { it.isNotEmpty() }
-      ?: run { stopsRepository.getStopsFromCache() })
-      .takeIf { it.isNotEmpty() }
-      ?.let { cachedStops ->
-        cachedStops.map { apiStop ->
-          apiStop.toStop(
-            stopsRepository.getStopLocations(apiStop.id ?: 0)
-              .map { it.toStopLocation(apiStop) })
-        }
-      }
-      ?: emptyList()
-  }
-
-  override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> =
-    Pager(config = PagingConfig(pageSize = 10)) {
-      when (locale) {
-        LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
-        LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
-        else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
-      }
-    }
-      .flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
-        value.map { apiStop ->
-          val currentStop = apiStop.toStop(
-            coordinates = getStopCoordinates(apiStop)
-          )
-          currentStop
-        }
-      }
-
-  override suspend fun getStopsLocations(): List<PointAnnotationOptions> =
-    withContext(Dispatchers.IO) {
-      val iconBitmap =
-        resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()
-      getStops()
-        .asSequence()
-        .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
-        .flatMap { it.coordinates.asSequence() }
-        .map { location ->
-          PointAnnotationOptions()
-            .withPoint(Point.fromLngLat(location.lng, location.lat))
-            .withData(location.parentStop.toApiStop().toJson())
-            .withIconSize(STOP_ICON_SIZE)
-            .withIconImage(iconBitmap)
-        }
-        .toList()
+    override suspend fun getStops(): List<Stop> = withContext(Dispatchers.IO) {
+        (stopsRepository.getStopsFromInMemoryCache()
+            .takeIf { it.isNotEmpty() }
+            ?: run { stopsRepository.getStopsFromCache() })
+            .takeIf { it.isNotEmpty() }
+            ?.let { cachedStops ->
+                cachedStops.map { apiStop ->
+                    apiStop.toStop(
+                        stopsRepository.getStopLocations(apiStop.id ?: 0)
+                            .map { it.toStopLocation(apiStop) })
+                }
+            }
+            ?: emptyList()
     }
 
-  override suspend fun getMetroStopsLocations(): List<PointAnnotationOptions> =
-    withContext(Dispatchers.IO) {
-      val iconBitmap =
-        resourcesRepository.getMetroStopIconBitmap() ?: return@withContext emptyList()
-      getStops()
-        .asSequence()
-        .filter { it.nameEn.contains("m/s", ignoreCase = true) }
-        .flatMap { it.coordinates.asSequence() }
-        .map { location ->
-          PointAnnotationOptions()
-            .withPoint(Point.fromLngLat(location.lng, location.lat))
-            .withData(location.parentStop.toApiStop().toJson())
-            .withIconSize(STOP_ICON_SIZE)
-            .withIconImage(iconBitmap)
+    override fun getStopsPaged(stop: String, locale: String): Flow<PagingData<Stop>> =
+        Pager(config = PagingConfig(pageSize = 10)) {
+            when (locale) {
+                LNG_AM -> stopsRepository.getAllStopsPagedAm(stop.replace("'", ""))
+                LNG_RU -> stopsRepository.getAllStopsPagedRu(stop.replace("'", ""))
+                else -> stopsRepository.getAllStopsPagedEn(stop.replace("'", ""))
+            }
         }
-        .toList()
-    }
+            .flow.map { value: PagingData<robert.findtransport.data.entity.Stop> ->
+                value.map { apiStop ->
+                    val currentStop = apiStop.toStop(
+                        coordinates = getStopCoordinates(apiStop)
+                    )
+                    currentStop
+                }
+            }
 
-  override suspend fun getNearbyStop(location: Location): Stop? = withContext(Dispatchers.IO) {
-    val stops = getStops()
-    if (stops.isEmpty()) return@withContext null
-
-    val nearby = mutableListOf<NearbyLocation>()
-
-    stops.forEach { stop ->
-      stop.coordinates.forEach { coordinate ->
-        val newLocation = Location("next").apply {
-          latitude = coordinate.lat
-          longitude = coordinate.lng
+    override suspend fun getStopsLocations(): List<PointAnnotationOptions> =
+        withContext(Dispatchers.IO) {
+            val iconBitmap =
+                resourcesRepository.getTransportStopIconBitmap() ?: return@withContext emptyList()
+            getStops()
+                .asSequence()
+                .filter { !it.nameEn.contains("m/s", ignoreCase = true) }
+                .flatMap { it.coordinates.asSequence() }
+                .map { location ->
+                    PointAnnotationOptions()
+                        .withPoint(Point.fromLngLat(location.lng, location.lat))
+                        .withData(location.parentStop.toApiStop().toJson())
+                        .withIconSize(STOP_ICON_SIZE)
+                        .withIconImage(iconBitmap)
+                }
+                .toList()
         }
 
-        val distance = location.distanceTo(newLocation)
+    override suspend fun getMetroStopsLocations(): List<PointAnnotationOptions> =
+        withContext(Dispatchers.IO) {
+            val iconBitmap =
+                resourcesRepository.getMetroStopIconBitmap() ?: return@withContext emptyList()
+            getStops()
+                .asSequence()
+                .filter { it.nameEn.contains("m/s", ignoreCase = true) }
+                .flatMap { it.coordinates.asSequence() }
+                .map { location ->
+                    PointAnnotationOptions()
+                        .withPoint(Point.fromLngLat(location.lng, location.lat))
+                        .withData(location.parentStop.toApiStop().toJson())
+                        .withIconSize(STOP_ICON_SIZE)
+                        .withIconImage(iconBitmap)
+                }
+                .toList()
+        }
 
-        nearby.add(
-          NearbyLocation(
-            stop = stop,
-            latitude = newLocation.latitude,
-            longitude = newLocation.longitude,
-            locationDistance = distance,
-          )
-        )
-      }
-    }
+    override suspend fun getNearbyStop(location: Location): Stop? = withContext(Dispatchers.IO) {
+        val stops = getStops()
+        if (stops.isEmpty()) return@withContext null
 
-    nearby.sortBy { it.locationDistance }
+        val nearby = mutableListOf<NearbyLocation>()
+
+        stops.forEach { stop ->
+            stop.coordinates.forEach { coordinate ->
+                val newLocation = Location("next").apply {
+                    latitude = coordinate.lat
+                    longitude = coordinate.lng
+                }
+
+                val distance = location.distanceTo(newLocation)
+
+                nearby.add(
+                    NearbyLocation(
+                        stop = stop,
+                        latitude = newLocation.latitude,
+                        longitude = newLocation.longitude,
+                        locationDistance = distance,
+                    )
+                )
+            }
+        }
+
+        nearby.sortBy { it.locationDistance }
 
 //    stops.find { stop -> stop.id == nearby.firstOrNull()?.stop?.id }
-    nearby.firstOrNull()?.stop
-  }
+        nearby.firstOrNull()?.stop
+    }
 
-  override suspend fun getNearbyStops(location: Location): List<Stop> = withContext(Dispatchers.IO) {
-    val stops = getStops()
-    if (stops.isEmpty()) return@withContext emptyList<Stop>()
+    override suspend fun getNearbyStops(location: Location): List<Stop> =
+        withContext(Dispatchers.IO) {
+            val stops = getStops()
+            if (stops.isEmpty()) return@withContext emptyList<Stop>()
 
-    val nearby = mutableListOf<NearbyLocation>()
+            val nearby = mutableListOf<NearbyLocation>()
 
-    stops.forEach { stop ->
-      stop.coordinates.forEach { coordinate ->
-        val newLocation = Location("next").apply {
-          latitude = coordinate.lat
-          longitude = coordinate.lng
+            stops.forEach { stop ->
+                stop.coordinates.forEach { coordinate ->
+                    val newLocation = Location("next").apply {
+                        latitude = coordinate.lat
+                        longitude = coordinate.lng
+                    }
+
+                    val distance = location.distanceTo(newLocation)
+
+                    nearby.add(
+                        NearbyLocation(
+                            stop = stop,
+                            latitude = newLocation.latitude,
+                            longitude = newLocation.longitude,
+                            locationDistance = distance,
+                        )
+                    )
+                }
+            }
+
+            nearby.sortBy { it.locationDistance }
+
+            return@withContext nearby.map { it.stop }
         }
 
-        val distance = location.distanceTo(newLocation)
-
-        nearby.add(
-          NearbyLocation(
-            stop = stop,
-            latitude = newLocation.latitude,
-            longitude = newLocation.longitude,
-            locationDistance = distance,
-          )
-        )
-      }
+    override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {
+        stopsRepository.getStopById(id)?.toStop() ?: Stop.EMPTY
     }
 
-    nearby.sortBy { it.locationDistance }
+    override suspend fun downloadStops(): Result<Unit> = withContext(Dispatchers.IO) {
+        when (val apiStopsResult = stopsRepository.getStopsFromApi()) {
+            is Result.Success -> {
+                stopsRepository.cacheStops(apiStopsResult.data)
+                stopsRepository.areStopsCached = true
+                Result.Success(Unit)
+            }
 
-    return@withContext nearby.map { it.stop }
-  }
-
-  override suspend fun getStop(id: Int): Stop = withContext(Dispatchers.IO) {
-    stopsRepository.getStopById(id)?.toStop() ?: Stop.EMPTY
-  }
-
-  override suspend fun downloadStops(): Result<Unit> = withContext(Dispatchers.IO) {
-    when (val apiStopsResult = stopsRepository.getStopsFromApi()) {
-      is Result.Success -> {
-        stopsRepository.cacheStops(apiStopsResult.data)
-        stopsRepository.areStopsCached = true
-        Result.Success(Unit)
-      }
-      is Result.Error -> {
-        stopsRepository.cacheStops(emptyList())
-        stopsRepository.areStopsCached = false
-        apiStopsResult
-      }
-    }
-  }
-
-  override suspend fun downloadLocations(): Result<Unit> = withContext(Dispatchers.IO) {
-    when (val apiLocationsResult = stopsRepository.getStopLocationsFromApi()) {
-      is Result.Success -> {
-        stopsRepository.cacheStopLocations(apiLocationsResult.data)
-        stopsRepository.areLocationsCached = true
-        Result.Success(Unit)
-      }
-      is Result.Error -> {
-        stopsRepository.cacheStopLocations(emptyList())
-        stopsRepository.areLocationsCached = false
-        apiLocationsResult
-      }
-    }
-  }
-
-  override suspend fun getStopCoordinates(stop: ApiStop): List<StopLocation> =
-    withContext(Dispatchers.IO) {
-      stopsRepository.getStopLocations(stop.id).map {
-        it.toStopLocation(stop)
-      }
+            is Result.Error -> {
+                stopsRepository.cacheStops(emptyList())
+                stopsRepository.areStopsCached = false
+                apiStopsResult
+            }
+        }
     }
 
-  override fun areLocationsCached(): Boolean = stopsRepository.areLocationsCached
+    override suspend fun downloadLocations(): Result<Unit> = withContext(Dispatchers.IO) {
+        when (val apiLocationsResult = stopsRepository.getStopLocationsFromApi()) {
+            is Result.Success -> {
+                stopsRepository.cacheStopLocations(apiLocationsResult.data)
+                stopsRepository.areLocationsCached = true
+                Result.Success(Unit)
+            }
 
-  override fun areStopsCached(): Boolean = stopsRepository.areLocationsCached
-
-  override suspend fun getAddress(stop: Stop): Address? {
-    val coordinate = stop.coordinates.firstOrNull() ?: return null
-
-    return Location(stop.nameEn).apply {
-      latitude = coordinate.lat
-      longitude = coordinate.lng
-    }.let {
-      locationRepository.getAddress(it) ?: Address(Locale.getDefault()).apply {
-        latitude = coordinate.lat
-        longitude = coordinate.lng
-      }
+            is Result.Error -> {
+                stopsRepository.cacheStopLocations(emptyList())
+                stopsRepository.areLocationsCached = false
+                apiLocationsResult
+            }
+        }
     }
-  }
+
+    override suspend fun getStopCoordinates(stop: ApiStop): List<StopLocation> =
+        withContext(Dispatchers.IO) {
+            stopsRepository.getStopLocations(stop.id).map {
+                it.toStopLocation(stop)
+            }
+        }
+
+    override fun areLocationsCached(): Boolean = stopsRepository.areLocationsCached
+
+    override fun areStopsCached(): Boolean = stopsRepository.areLocationsCached
+
+    override suspend fun getAddress(stop: Stop): Address? {
+        val coordinate = stop.coordinates.firstOrNull() ?: return null
+
+        return Location(stop.nameEn).apply {
+            latitude = coordinate.lat
+            longitude = coordinate.lng
+        }.let {
+            locationRepository.getAddress(it) ?: Address(Locale.getDefault()).apply {
+                latitude = coordinate.lat
+                longitude = coordinate.lng
+            }
+        }
+    }
 }

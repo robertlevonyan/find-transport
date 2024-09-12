@@ -12,23 +12,23 @@ import java.util.*
 import javax.inject.Inject
 
 class LocationRepositoryImpl @Inject constructor(
-  private val fusedLocationService: FusedLocationService,
-  private val locationObserverService: LocationObserverService,
-  private val addressProviderService: AddressProviderService,
+    private val fusedLocationService: FusedLocationService,
+    private val locationObserverService: LocationObserverService,
+    private val addressProviderService: AddressProviderService,
 ) : LocationRepository {
 
-  override suspend fun getCurrentLocation(): Address? =
-    fusedLocationService.getCurrentLocation()
-      ?.let { location ->
-        addressProviderService.getAddress(location) ?: Address(Locale.getDefault()).apply {
-          latitude = location.latitude
-          longitude = location.longitude
-        }
-      }
+    override suspend fun getCurrentLocation(): Address? =
+        fusedLocationService.getCurrentLocation()
+            ?.let { location ->
+                addressProviderService.getAddress(location) ?: Address(Locale.getDefault()).apply {
+                    latitude = location.latitude
+                    longitude = location.longitude
+                }
+            }
 
-  override suspend fun getAddress(location: Location): Address? =
-    addressProviderService.getAddress(location)
+    override suspend fun getAddress(location: Location): Address? =
+        addressProviderService.getAddress(location)
 
-  override fun subscribeToLocationUpdates(): Flow<Location> =
-    locationObserverService.getLocationUpdates().filterNotNull()
+    override fun subscribeToLocationUpdates(): Flow<Location> =
+        locationObserverService.getLocationUpdates().filterNotNull()
 }

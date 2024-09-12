@@ -23,40 +23,40 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable
 fun TransportTypeBus(
-  modifier: Modifier,
-  transportCategory: TransportCategory,
-  isSelected: Boolean,
-  onTransportCategoryClick: (TransportCategory) -> Unit,
+    modifier: Modifier,
+    transportCategory: TransportCategory,
+    isSelected: Boolean,
+    onTransportCategoryClick: (TransportCategory) -> Unit,
 ) {
-  val borderWidth = if (isSelected) 2.dp else 0.dp
-  val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
-  Card(
-    modifier = modifier.padding(HalfPadding),
-    border = BorderStroke(
-      width = borderWidth,
-      color = color,
-    )
-  ) {
-    Column(modifier = Modifier
-      .fillMaxWidth()
-      .clickable {
-        if (transportCategory != TransportCategory.BUS) {
-          onTransportCategoryClick.invoke(TransportCategory.BUS)
-        }
-      }) {
-      TextSecondary(
-        modifier = Modifier
-          .padding(horizontal = HalfPadding)
-          .padding(top = HalfPadding), text = stringResource(id = R.string.label_bus)
-      )
+    val borderWidth = if (isSelected) 2.dp else 0.dp
+    val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
+    Card(
+        modifier = modifier.padding(HalfPadding),
+        border = BorderStroke(
+            width = borderWidth,
+            color = color,
+        )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (transportCategory != TransportCategory.BUS) {
+                    onTransportCategoryClick.invoke(TransportCategory.BUS)
+                }
+            }) {
+            TextSecondary(
+                modifier = Modifier
+                    .padding(horizontal = HalfPadding)
+                    .padding(top = HalfPadding), text = stringResource(id = R.string.label_bus)
+            )
 
-      Image(
-        modifier = Modifier
-          .size(56.dp)
-          .align(alignment = Alignment.End),
-        painter = painterResource(id = R.drawable.ic_bus_outline),
-        contentDescription = null,
-      )
+            Image(
+                modifier = Modifier
+                    .size(56.dp)
+                    .align(alignment = Alignment.End),
+                painter = painterResource(id = R.drawable.ic_bus_outline),
+                contentDescription = null,
+            )
+        }
     }
-  }
 }

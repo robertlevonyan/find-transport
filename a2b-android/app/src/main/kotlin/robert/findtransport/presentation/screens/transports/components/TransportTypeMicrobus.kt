@@ -23,41 +23,41 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable
 fun TransportTypeMicrobus(
-  modifier: Modifier,
-  transportCategory: TransportCategory,
-  isSelected: Boolean,
-  onTransportCategoryClick: (TransportCategory) -> Unit,
+    modifier: Modifier,
+    transportCategory: TransportCategory,
+    isSelected: Boolean,
+    onTransportCategoryClick: (TransportCategory) -> Unit,
 ) {
-  val borderWidth = if (isSelected) 2.dp else 0.dp
-  val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
-  Card(
-    modifier = modifier.padding(HalfPadding),
-    border = BorderStroke(
-      width = borderWidth,
-      color = color,
-    )
-  ) {
-    Column(modifier = Modifier
-      .fillMaxWidth()
-      .clickable {
-        if (transportCategory != TransportCategory.MICROBUS) {
-          onTransportCategoryClick.invoke(TransportCategory.MICROBUS)
-        }
-      }) {
-      TextSecondary(
-        modifier = Modifier
-          .padding(horizontal = HalfPadding)
-          .padding(top = HalfPadding),
-        text = stringResource(id = R.string.label_microbus)
-      )
+    val borderWidth = if (isSelected) 2.dp else 0.dp
+    val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
+    Card(
+        modifier = modifier.padding(HalfPadding),
+        border = BorderStroke(
+            width = borderWidth,
+            color = color,
+        )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (transportCategory != TransportCategory.MICROBUS) {
+                    onTransportCategoryClick.invoke(TransportCategory.MICROBUS)
+                }
+            }) {
+            TextSecondary(
+                modifier = Modifier
+                    .padding(horizontal = HalfPadding)
+                    .padding(top = HalfPadding),
+                text = stringResource(id = R.string.label_microbus)
+            )
 
-      Image(
-        modifier = Modifier
-          .size(56.dp)
-          .align(alignment = Alignment.End),
-        painter = painterResource(id = R.drawable.ic_microbus_outline),
-        contentDescription = null,
-      )
+            Image(
+                modifier = Modifier
+                    .size(56.dp)
+                    .align(alignment = Alignment.End),
+                painter = painterResource(id = R.drawable.ic_microbus_outline),
+                contentDescription = null,
+            )
+        }
     }
-  }
 }

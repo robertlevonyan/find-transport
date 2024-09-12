@@ -25,39 +25,39 @@ import robert.findtransport.presentation.reusables.theme.Shapes
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LazyItemScope.HistoryListElement(
-  history: History,
-  onSwipe: (History) -> Unit,
-  onItemClick: (History) -> Unit,
-  onDeleteClick: (History) -> Unit,
+    history: History,
+    onSwipe: (History) -> Unit,
+    onItemClick: (History) -> Unit,
+    onDeleteClick: (History) -> Unit,
 ) {
-  val deleteSwipeAction = SwipeAction(
-    icon = {
-      Icon(
-        painter = painterResource(id = R.drawable.ic_delete),
-        contentDescription = null,
-        tint = Color.Black,
-      )
-    },
-    isUndo = true,
-    background = colorResource(id = R.color.colorRemoveRed),
-    onSwipe = { onSwipe(history) },
-  )
+    val deleteSwipeAction = SwipeAction(
+        icon = {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_delete),
+                contentDescription = null,
+                tint = Color.Black,
+            )
+        },
+        isUndo = true,
+        background = colorResource(id = R.color.colorRemoveRed),
+        onSwipe = { onSwipe(history) },
+    )
 
-  Card(
-    modifier = Modifier
-      .animateItemPlacement()
-      .fillMaxWidth()
-      .wrapContentHeight()
-      .padding(horizontal = FabPadding, vertical = HalfPadding),
-    shape = Shapes.medium,
-    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-  ) {
-    SwipeableActionsBox(endActions = listOf(deleteSwipeAction)) {
-      HistoryItem(
-        history = history,
-        onItemClick = { onItemClick(history) },
-        onDeleteClick = { onDeleteClick(history) },
-      )
+    Card(
+        modifier = Modifier
+            .animateItemPlacement()
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(horizontal = FabPadding, vertical = HalfPadding),
+        shape = Shapes.medium,
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+    ) {
+        SwipeableActionsBox(endActions = listOf(deleteSwipeAction)) {
+            HistoryItem(
+                history = history,
+                onItemClick = { onItemClick(history) },
+                onDeleteClick = { onDeleteClick(history) },
+            )
+        }
     }
-  }
 }

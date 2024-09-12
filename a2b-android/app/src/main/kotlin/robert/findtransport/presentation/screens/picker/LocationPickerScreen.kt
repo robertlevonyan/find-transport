@@ -32,120 +32,120 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
+import robert.findtransport.presentation.reusables.composables.TextPrimary
+import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.reusables.theme.Accent
 import robert.findtransport.presentation.reusables.theme.Black
 import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.theme.Shapes
-import robert.findtransport.presentation.reusables.composables.TextPrimary
-import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.screens.home.HomeViewModel
 
 @Composable
 fun LocationPickerScreen(
-  modifier: Modifier = Modifier,
-  navController: NavController,
-  locationPickerViewModel: LocationPickerViewModel = hiltViewModel(),
-  homeViewModel: HomeViewModel,
-  pickerType: StopType,
+    modifier: Modifier = Modifier,
+    navController: NavController,
+    locationPickerViewModel: LocationPickerViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
+    pickerType: StopType,
 ) {
-  val locationEnabled = locationPickerViewModel.locationEnabled.collectAsState()
-  var showPermissionDialog by rememberSaveable { mutableStateOf(!locationEnabled.value) }
+    val locationEnabled = locationPickerViewModel.locationEnabled.collectAsState()
+    var showPermissionDialog by rememberSaveable { mutableStateOf(!locationEnabled.value) }
 
-  val launcher = rememberLauncherForActivityResult(
-    ActivityResultContracts.RequestMultiplePermissions()
-  ) { results ->
-    locationPickerViewModel.setLocationEnabled(results.values.all { it })
-  }
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { results ->
+        locationPickerViewModel.setLocationEnabled(results.values.all { it })
+    }
 
-  if (showPermissionDialog) {
-    PermissionDialog(
-      modifier = modifier,
-      onDismiss = { showPermissionDialog = false },
-      onGrant = {
-        launcher.launch(
-          arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-          )
-        )
-        showPermissionDialog = false
-      },
-      onDecline = { showPermissionDialog = false })
-  }
+    if (showPermissionDialog) {
+        PermissionDialog(
+            modifier = modifier,
+            onDismiss = { showPermissionDialog = false },
+            onGrant = {
+                launcher.launch(
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    )
+                )
+                showPermissionDialog = false
+            },
+            onDecline = { showPermissionDialog = false })
+    }
 
-  LocationPickerContent(
-    modifier = modifier,
-    locationPickerViewModel = locationPickerViewModel,
-    homeViewModel = homeViewModel,
-    navController = navController,
-    pickerType = pickerType,
-  )
+    LocationPickerContent(
+        modifier = modifier,
+        locationPickerViewModel = locationPickerViewModel,
+        homeViewModel = homeViewModel,
+        navController = navController,
+        pickerType = pickerType,
+    )
 }
 
 @Composable
 fun PermissionDialog(
-  modifier: Modifier,
-  onDismiss: () -> Unit,
-  onGrant: () -> Unit,
-  onDecline: () -> Unit,
+    modifier: Modifier,
+    onDismiss: () -> Unit,
+    onGrant: () -> Unit,
+    onDecline: () -> Unit,
 ) {
-  Dialog(onDismissRequest = onDismiss) {
-    Card(
-      modifier = Modifier
-        .padding(horizontal = FabPadding)
-        .padding(bottom = FabPadding)
-        .fillMaxWidth()
-        .wrapContentSize(),
-      shape = Shapes.medium,
-      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    ) {
-      Column(modifier) {
-        TextPrimary(
-          modifier = Modifier
-            .padding(FabPadding)
-            .align(Alignment.CenterHorizontally),
-          text = stringResource(id = R.string.permission_title)
-        )
-        Image(
-          modifier = Modifier.align(Alignment.CenterHorizontally),
-          painter = painterResource(id = R.drawable.il_location_access),
-          contentDescription = stringResource(id = R.string.permission_title)
-        )
-        TextSecondary(
-          modifier = Modifier
-            .padding(FabPadding)
-            .align(Alignment.CenterHorizontally),
-          text = stringResource(id = R.string.permission_message),
-          textAlign = TextAlign.Start,
-        )
-        Button(
-          modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
-            containerColor = Accent,
-            contentColor = Black,
-          ), onClick = onGrant, shape = RectangleShape
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier
+              .padding(horizontal = FabPadding)
+              .padding(bottom = FabPadding)
+              .fillMaxWidth()
+              .wrapContentSize(),
+            shape = Shapes.medium,
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         ) {
-          Text(
-            text = stringResource(id = R.string.permission_yes),
-            fontWeight = FontWeight.Bold,
-            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-          )
+            Column(modifier) {
+                TextPrimary(
+                    modifier = Modifier
+                      .padding(FabPadding)
+                      .align(Alignment.CenterHorizontally),
+                    text = stringResource(id = R.string.permission_title)
+                )
+                Image(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    painter = painterResource(id = R.drawable.il_location_access),
+                    contentDescription = stringResource(id = R.string.permission_title)
+                )
+                TextSecondary(
+                    modifier = Modifier
+                      .padding(FabPadding)
+                      .align(Alignment.CenterHorizontally),
+                    text = stringResource(id = R.string.permission_message),
+                    textAlign = TextAlign.Start,
+                )
+                Button(
+                    modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(
+                        containerColor = Accent,
+                        contentColor = Black,
+                    ), onClick = onGrant, shape = RectangleShape
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.permission_yes),
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                    )
+                }
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+                    onClick = onDecline,
+                    shape = RectangleShape,
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.permission_no),
+                        textAlign = TextAlign.Center,
+                        fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+                    )
+                }
+            }
         }
-        Button(
-          modifier = Modifier.fillMaxWidth(),
-          colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-          ),
-          onClick = onDecline,
-          shape = RectangleShape,
-        ) {
-          Text(
-            text = stringResource(id = R.string.permission_no),
-            textAlign = TextAlign.Center,
-            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-          )
-        }
-      }
     }
-  }
 }

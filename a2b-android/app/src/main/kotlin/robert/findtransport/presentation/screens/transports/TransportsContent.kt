@@ -18,35 +18,35 @@ import robert.findtransport.presentation.screens.transports.components.Transport
 
 @Composable
 fun TransportsContent(
-  modifier: Modifier,
-  transports: LazyPagingItems<Transport>,
-  locale: String,
-  transportCategory: TransportCategory,
-  onTransportCategoryClick: (TransportCategory) -> Unit,
-  onTransportClick: (Transport) -> Unit,
+    modifier: Modifier,
+    transports: LazyPagingItems<Transport>,
+    locale: String,
+    transportCategory: TransportCategory,
+    onTransportCategoryClick: (TransportCategory) -> Unit,
+    onTransportClick: (Transport) -> Unit,
 ) {
-  LazyColumn(modifier = modifier) {
-    item { TransportTypeSelector(transportCategory, onTransportCategoryClick) }
-    items(
-      count = transports.itemCount,
-      key = transports.itemKey { it.id },
-      contentType = transports.itemContentType { it.number },
-    ) { index ->
-      val item = transports[index]
-      if (item == null) {
-        Box(modifier = Modifier.size(0.dp))
-      } else {
-        TransportListElement(
-          transport = item,
-          locale = locale,
-          onElementClick = onTransportClick,
-        )
-        val thickness = if (index < transports.itemCount - 1) 0.5.dp else 0.dp
-        Divider(
-          color = colorVariantInvertTransparent(),
-          thickness = thickness,
-        )
-      }
+    LazyColumn(modifier = modifier) {
+        item { TransportTypeSelector(transportCategory, onTransportCategoryClick) }
+        items(
+            count = transports.itemCount,
+            key = transports.itemKey { it.id },
+            contentType = transports.itemContentType { it.number },
+        ) { index ->
+            val item = transports[index]
+            if (item == null) {
+                Box(modifier = Modifier.size(0.dp))
+            } else {
+                TransportListElement(
+                    transport = item,
+                    locale = locale,
+                    onElementClick = onTransportClick,
+                )
+                val thickness = if (index < transports.itemCount - 1) 0.5.dp else 0.dp
+                Divider(
+                    color = colorVariantInvertTransparent(),
+                    thickness = thickness,
+                )
+            }
+        }
     }
-  }
 }

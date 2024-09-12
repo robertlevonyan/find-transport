@@ -31,102 +31,107 @@ import robert.findtransport.utils.extensions.getHeader
 import javax.inject.Inject
 
 class TransportsRepositoryImpl @Inject constructor(
-  private val httpClient: HttpClient,
-  private val json: Json,
-  private val transportsDao: TransportsDao,
-  private val preferencesService: SharedPreferencesService,
+    private val httpClient: HttpClient,
+    private val json: Json,
+    private val transportsDao: TransportsDao,
+    private val preferencesService: SharedPreferencesService,
 ) : TransportsRepository {
-  override suspend fun getTransportsFromApi(): Result<List<Transport>> =
-    try {
-      val httpResponse = httpClient.get {
-        url {
-          protocol = URLProtocol.HTTPS
-          host = BASE_URL
-          path("a2b/newtransport/")
+    override suspend fun getTransportsFromApi(): Result<List<Transport>> =
+        try {
+            val httpResponse = httpClient.get {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = BASE_URL
+                    path("a2b/newtransport/")
 //          path("a2b/newtransport/test")
-          header("a2bkey", "Bearer ${getHeader()}")
-          contentType(Json)
+                    header("a2bkey", "Bearer ${getHeader()}")
+                    contentType(Json)
+                }
+            }
+            httpResponse.body<String?>()?.let { jsonString ->
+                Result.Success(
+                    json.decodeFromString(
+                        ListSerializer(Transport.serializer()),
+                        jsonString
+                    )
+                )
+            } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
+        } catch (e: Exception) {
+            Log.e("A2B", "ERROR", e)
+            Result.Error(A2bException(ExceptionType.API, -1, e))
         }
-      }
-      httpResponse.body<String?>()?.let { jsonString ->
-        Result.Success(json.decodeFromString(ListSerializer(Transport.serializer()), jsonString))
-      } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
-    } catch (e: Exception) {
-      Log.e("A2B", "ERROR", e)
-      Result.Error(A2bException(ExceptionType.API, -1, e))
+
+    override suspend fun getJoinsFromApi(): Result<List<TransportStopJoin>> =
+        try {
+            val httpResponse = httpClient.get {
+                url {
+                    protocol = URLProtocol.HTTPS
+                    host = BASE_URL
+                    path("a2b/newtsjoin/")
+                    header("a2bkey", "Bearer ${getHeader()}")
+                }
+            }
+            httpResponse.body<String?>()?.let { jsonString ->
+                Result.Success(
+                    json.decodeFromString(
+                        ListSerializer(TransportStopJoin.serializer()),
+                        jsonString
+                    )
+                )
+            } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
+        } catch (e: Exception) {
+            Log.e("A2B", "ERROR", e)
+            Result.Error(A2bException(ExceptionType.API, -1, e))
+        }
+
+    override suspend fun cacheTransports(transports: List<Transport>) {
+        val saved = transportsDao.saveTransports(transports)
+        Log.d("A2B Transport", "${saved.size}")
     }
 
-  override suspend fun getJoinsFromApi(): Result<List<TransportStopJoin>> =
-    try {
-      val httpResponse = httpClient.get {
-        url {
-          protocol = URLProtocol.HTTPS
-          host = BASE_URL
-          path("a2b/newtsjoin/")
-          header("a2bkey", "Bearer ${getHeader()}")
-        }
-      }
-      httpResponse.body<String?>()?.let { jsonString ->
-        Result.Success(
-          json.decodeFromString(
-            ListSerializer(TransportStopJoin.serializer()),
-            jsonString
-          )
-        )
-      } ?: Result.Error(A2bException(ExceptionType.API, -1, NullPointerException("No Data")))
-    } catch (e: Exception) {
-      Log.e("A2B", "ERROR", e)
-      Result.Error(A2bException(ExceptionType.API, -1, e))
+    override suspend fun cacheJoins(joins: List<TransportStopJoin>) {
+        val saved = transportsDao.saveJoins(joins)
+        Log.d("A2B Join", "${saved.size}")
     }
 
-  override suspend fun cacheTransports(transports: List<Transport>) {
-    val saved = transportsDao.saveTransports(transports)
-    Log.d("A2B Transport", "${saved.size}")
-  }
+    override fun getBusesPaged(): PagingSource<Int, Transport> =
+        transportsDao.getBusesPaged()
 
-  override suspend fun cacheJoins(joins: List<TransportStopJoin>) {
-    val saved = transportsDao.saveJoins(joins)
-    Log.d("A2B Join", "${saved.size}")
-  }
+    override fun getMicrobusesPaged(): PagingSource<Int, Transport> =
+        transportsDao.getMicrobusesPaged()
 
-  override fun getBusesPaged(): PagingSource<Int, Transport> =
-    transportsDao.getBusesPaged()
+    override fun getTrolleybusesPaged(): PagingSource<Int, Transport> =
+        transportsDao.getTrolleybusesPaged()
 
-  override fun getMicrobusesPaged(): PagingSource<Int, Transport> =
-    transportsDao.getMicrobusesPaged()
+    override fun getMetroPaged(): PagingSource<Int, Transport> =
+        transportsDao.getMetroPaged()
 
-  override fun getTrolleybusesPaged(): PagingSource<Int, Transport> =
-    transportsDao.getTrolleybusesPaged()
+    override fun getTransportById(id: Int): Flow<Transport> =
+        transportsDao.getTransportById(id)
+            .distinctUntilChanged()
 
-  override fun getMetroPaged(): PagingSource<Int, Transport> =
-    transportsDao.getMetroPaged()
+    override suspend fun getTransportsForStop(id: Int): List<Transport> =
+        transportsDao.getTransportsForStop(id)
 
-  override fun getTransportById(id: Int): Flow<Transport> =
-    transportsDao.getTransportById(id)
-      .distinctUntilChanged()
+    override fun getTransportStops(transportId: Int?): List<Stop> =
+        transportId?.let { id -> transportsDao.getTransportStops(id) } ?: emptyList()
 
-  override suspend fun getTransportsForStop(id: Int): List<Transport> =
-    transportsDao.getTransportsForStop(id)
+    override fun getTransportStopsReversed(transportId: Int?): List<Stop> =
+        transportId?.let { id -> transportsDao.getTransportStopsReversed(id) } ?: emptyList()
 
-  override fun getTransportStops(transportId: Int?): List<Stop> =
-    transportId?.let { id -> transportsDao.getTransportStops(id) } ?: emptyList()
+    override suspend fun changeFavorite(id: Int, favorite: Boolean) {
+        transportsDao.changeFavorite(id, favorite)
+    }
 
-  override fun getTransportStopsReversed(transportId: Int?): List<Stop> =
-    transportId?.let { id -> transportsDao.getTransportStopsReversed(id) } ?: emptyList()
+    override var areTransportsCached: Boolean
+        get() = preferencesService.getBoolean(PREF_TRANSPORTS_ERROR, false)
+        set(value) = preferencesService.putBoolean(PREF_TRANSPORTS_ERROR, value)
 
-  override suspend fun changeFavorite(id: Int, favorite: Boolean) {
-    transportsDao.changeFavorite(id, favorite)
-  }
+    override var areJoinsCached: Boolean
+        get() = preferencesService.getBoolean(PREF_JOINS_ERROR, false)
+        set(value) = preferencesService.putBoolean(PREF_JOINS_ERROR, value)
 
-  override var areTransportsCached: Boolean
-    get() = preferencesService.getBoolean(PREF_TRANSPORTS_ERROR, false)
-    set(value) = preferencesService.putBoolean(PREF_TRANSPORTS_ERROR, value)
-
-  override var areJoinsCached: Boolean
-    get() = preferencesService.getBoolean(PREF_JOINS_ERROR, false)
-    set(value) = preferencesService.putBoolean(PREF_JOINS_ERROR, value)
-
-  override var showOnlyFavorites: Boolean
-    get() = preferencesService.getBoolean(PREF_ONLY_FAVORITES, false)
-    set(value) = preferencesService.putBoolean(PREF_ONLY_FAVORITES, value)
+    override var showOnlyFavorites: Boolean
+        get() = preferencesService.getBoolean(PREF_ONLY_FAVORITES, false)
+        set(value) = preferencesService.putBoolean(PREF_ONLY_FAVORITES, value)
 }

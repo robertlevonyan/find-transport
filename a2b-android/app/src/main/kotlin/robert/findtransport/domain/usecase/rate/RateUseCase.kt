@@ -1,9 +1,9 @@
 package robert.findtransport.domain.usecase.rate
 
 interface RateUseCase {
-  fun setRate()
+    fun setRate()
 
-  fun showDialog(): Boolean
+    fun showDialog(): Boolean
 
-  fun updateInterval()
+    fun updateInterval()
 }

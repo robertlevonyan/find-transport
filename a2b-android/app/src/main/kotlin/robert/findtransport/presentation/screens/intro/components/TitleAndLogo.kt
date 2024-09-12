@@ -20,24 +20,24 @@ import robert.findtransport.presentation.reusables.theme.TextIntroLabel
 
 @Composable
 fun TitleAndLogo(modifier: Modifier) {
-  Row(modifier = modifier.wrapContentSize()) {
-    Image(
-      modifier = Modifier
-        .scale(0.75f)
-        .align(Alignment.CenterVertically),
-      painter = painterResource(id = R.drawable.ic_logo),
-      contentDescription = null,
-    )
-    Text(
-      modifier = modifier
-        .padding(HalfPadding)
-        .align(Alignment.CenterVertically),
-      text = stringResource(id = R.string.app_name),
-      color = MaterialTheme.colorScheme.onSurface,
-      fontSize = TextIntroLabel,
-      fontWeight = FontWeight.Bold,
-      fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
-      textAlign = TextAlign.Center,
-    )
-  }
+    Row(modifier = modifier.wrapContentSize()) {
+        Image(
+            modifier = Modifier
+                .scale(0.75f)
+                .align(Alignment.CenterVertically),
+            painter = painterResource(id = R.drawable.ic_logo),
+            contentDescription = null,
+        )
+        Text(
+            modifier = modifier
+                .padding(HalfPadding)
+                .align(Alignment.CenterVertically),
+            text = stringResource(id = R.string.app_name),
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = TextIntroLabel,
+            fontWeight = FontWeight.Bold,
+            fontFamily = MaterialTheme.typography.displayMedium.fontFamily,
+            textAlign = TextAlign.Center,
+        )
+    }
 }

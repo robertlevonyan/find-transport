@@ -6,7 +6,7 @@ import robert.findtransport.presentation.reusables.theme.isAppInDarkMode
 
 @Composable
 fun getMapStyle(): String = if (isAppInDarkMode()) {
-  BuildConfig.MAPBOX_STYLE_NIGHT
+    BuildConfig.MAPBOX_STYLE_NIGHT
 } else {
-  BuildConfig.MAPBOX_STYLE_LIGHT
+    BuildConfig.MAPBOX_STYLE_LIGHT
 }

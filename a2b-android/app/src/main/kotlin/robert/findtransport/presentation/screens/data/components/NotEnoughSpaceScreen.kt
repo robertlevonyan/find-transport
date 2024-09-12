@@ -10,25 +10,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import robert.findtransport.R
-import robert.findtransport.presentation.reusables.theme.HalfPadding
-import robert.findtransport.presentation.reusables.theme.SmallPadding
 import robert.findtransport.presentation.reusables.composables.RegularButton
 import robert.findtransport.presentation.reusables.composables.TextSecondary
+import robert.findtransport.presentation.reusables.theme.HalfPadding
+import robert.findtransport.presentation.reusables.theme.SmallPadding
 
 @Composable
 fun NotEnoughSpaceScreen() {
-  val context = LocalContext.current
+    val context = LocalContext.current
 
-  Column {
-    TextSecondary(text = stringResource(id = R.string.error_storage))
+    Column {
+        TextSecondary(text = stringResource(id = R.string.error_storage))
 
-    RegularButton(
-      modifier = Modifier
-        .padding(horizontal = HalfPadding)
-        .padding(bottom = SmallPadding)
-        .align(Alignment.End),
-      text = stringResource(id = R.string.label_open_settings),
-      onClick = { context.startActivity(Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)) },
-    )
-  }
+        RegularButton(
+            modifier = Modifier
+                .padding(horizontal = HalfPadding)
+                .padding(bottom = SmallPadding)
+                .align(Alignment.End),
+            text = stringResource(id = R.string.label_open_settings),
+            onClick = { context.startActivity(Intent(Settings.ACTION_INTERNAL_STORAGE_SETTINGS)) },
+        )
+    }
 }

@@ -23,41 +23,41 @@ import robert.findtransport.presentation.reusables.composables.TextSecondary
 
 @Composable
 fun TransportTypeTrolleybus(
-  modifier: Modifier,
-  transportCategory: TransportCategory,
-  isSelected: Boolean,
-  onTransportCategoryClick: (TransportCategory) -> Unit,
+    modifier: Modifier,
+    transportCategory: TransportCategory,
+    isSelected: Boolean,
+    onTransportCategoryClick: (TransportCategory) -> Unit,
 ) {
-  val borderWidth = if (isSelected) 2.dp else 0.dp
-  val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
-  Card(
-    modifier = modifier.padding(HalfPadding),
-    border = BorderStroke(
-      width = borderWidth,
-      color = color,
-    )
-  ) {
-    Column(modifier = Modifier
-      .fillMaxWidth()
-      .clickable {
-        if (transportCategory != TransportCategory.TROLLEYBUS) {
-          onTransportCategoryClick.invoke(TransportCategory.TROLLEYBUS)
-        }
-      }) {
-      TextSecondary(
-        modifier = Modifier
-          .padding(horizontal = HalfPadding)
-          .padding(top = HalfPadding),
-        text = stringResource(id = R.string.label_trolleybus)
-      )
+    val borderWidth = if (isSelected) 2.dp else 0.dp
+    val color = if (isSelected) MaterialTheme.colorScheme.onPrimary else Color.Transparent
+    Card(
+        modifier = modifier.padding(HalfPadding),
+        border = BorderStroke(
+            width = borderWidth,
+            color = color,
+        )
+    ) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                if (transportCategory != TransportCategory.TROLLEYBUS) {
+                    onTransportCategoryClick.invoke(TransportCategory.TROLLEYBUS)
+                }
+            }) {
+            TextSecondary(
+                modifier = Modifier
+                    .padding(horizontal = HalfPadding)
+                    .padding(top = HalfPadding),
+                text = stringResource(id = R.string.label_trolleybus)
+            )
 
-      Image(
-        modifier = Modifier
-          .size(56.dp)
-          .align(alignment = Alignment.End),
-        painter = painterResource(id = R.drawable.ic_trolleybus_outline),
-        contentDescription = null,
-      )
+            Image(
+                modifier = Modifier
+                    .size(56.dp)
+                    .align(alignment = Alignment.End),
+                painter = painterResource(id = R.drawable.ic_trolleybus_outline),
+                contentDescription = null,
+            )
+        }
     }
-  }
 }

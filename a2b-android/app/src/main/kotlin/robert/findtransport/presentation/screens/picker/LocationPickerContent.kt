@@ -26,7 +26,6 @@ import com.mapbox.maps.extension.compose.DisposableMapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
 import com.mapbox.maps.extension.compose.animation.viewport.rememberMapViewportState
 import com.mapbox.maps.extension.compose.style.GenericStyle
-import com.mapbox.maps.extension.style.expressions.dsl.generated.image
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.animation.MapAnimationOptions
@@ -39,9 +38,9 @@ import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.navigation.NavigationScreens
+import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.reusables.theme.CompassEndPadding
 import robert.findtransport.presentation.reusables.theme.CompassTopPadding
-import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.screens.home.HomeViewModel
 import robert.findtransport.presentation.screens.picker.components.BackButton
 import robert.findtransport.presentation.screens.picker.components.CentralPointer
@@ -51,7 +50,6 @@ import robert.findtransport.presentation.screens.picker.components.SelectLocatio
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.extensions.getColorFromRes
-import robert.findtransport.utils.extensions.getLocationComponent
 
 @OptIn(MapboxExperimental::class)
 @Composable
@@ -151,7 +149,7 @@ fun LocationPickerContent(
                 }
             },
 
-        )
+            )
 
         CentralPointer(isMapMoving = isMapMoving)
         BackButton { navController.popBackStack() }

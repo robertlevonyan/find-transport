@@ -27,16 +27,16 @@ import robert.findtransport.R
 import robert.findtransport.data.model.Stop
 import robert.findtransport.data.model.Transport
 import robert.findtransport.presentation.navigation.NavigationScreens
+import robert.findtransport.presentation.reusables.composables.A2bDialog
+import robert.findtransport.presentation.reusables.composables.RegularButton
+import robert.findtransport.presentation.reusables.composables.TextPrimary
+import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.reusables.theme.Accent
 import robert.findtransport.presentation.reusables.theme.Black
 import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.theme.HalfPadding
 import robert.findtransport.presentation.reusables.theme.Padding85
 import robert.findtransport.presentation.reusables.theme.TextTrackerLabel
-import robert.findtransport.presentation.reusables.composables.A2bDialog
-import robert.findtransport.presentation.reusables.composables.RegularButton
-import robert.findtransport.presentation.reusables.composables.TextPrimary
-import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.utils.extensions.getCurrentName
 import robert.findtransport.utils.extensions.getTypeName
 import robert.findtransport.utils.extensions.showToast
@@ -72,8 +72,8 @@ fun TrackRouteContent(
 
     ConstraintLayout(
         modifier = modifier
-          .fillMaxSize()
-          .background(color = Accent)
+            .fillMaxSize()
+            .background(color = Accent)
     ) {
         val (labelSelected, labelStopName, stopName, stopButton, progress) = createRefs()
         val guide = createGuidelineFromTop(fraction = 0.5f)
@@ -97,14 +97,14 @@ fun TrackRouteContent(
 
             TextPrimary(
                 modifier = Modifier
-                  .padding(top = Padding85)
-                  .constrainAs(labelSelected) {
-                    width = Dimension.wrapContent
-                    height = Dimension.wrapContent
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    top.linkTo(parent.top)
-                  },
+                    .padding(top = Padding85)
+                    .constrainAs(labelSelected) {
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                        end.linkTo(parent.end)
+                        start.linkTo(parent.start)
+                        top.linkTo(parent.top)
+                    },
                 text = selectedTransportString,
                 color = Black,
             )
@@ -125,29 +125,29 @@ fun TrackRouteContent(
         } else {
             TextSecondary(
                 modifier = Modifier
-                  .padding(bottom = HalfPadding)
-                  .constrainAs(labelStopName) {
-                    width = Dimension.wrapContent
-                    height = Dimension.wrapContent
-                    bottom.linkTo(guide)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                  },
+                    .padding(bottom = HalfPadding)
+                    .constrainAs(labelStopName) {
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                        bottom.linkTo(guide)
+                        end.linkTo(parent.end)
+                        start.linkTo(parent.start)
+                    },
                 text = stringResource(id = R.string.label_current_stop),
                 color = Black,
             )
 
             TextPrimary(
                 modifier = Modifier
-                  .padding(top = HalfPadding)
-                  .padding(horizontal = FabPadding)
-                  .constrainAs(stopName) {
-                    width = Dimension.wrapContent
-                    height = Dimension.wrapContent
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    top.linkTo(guide)
-                  },
+                    .padding(top = HalfPadding)
+                    .padding(horizontal = FabPadding)
+                    .constrainAs(stopName) {
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                        end.linkTo(parent.end)
+                        start.linkTo(parent.start)
+                        top.linkTo(guide)
+                    },
                 text = currentStop.getCurrentName(locale),
                 fontSize = TextTrackerLabel,
                 color = Black,
@@ -156,14 +156,14 @@ fun TrackRouteContent(
 
             RegularButton(
                 modifier = Modifier
-                  .padding(bottom = Padding85)
-                  .constrainAs(stopButton) {
-                    width = Dimension.wrapContent
-                    height = Dimension.wrapContent
-                    bottom.linkTo(parent.bottom)
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                  },
+                    .padding(bottom = Padding85)
+                    .constrainAs(stopButton) {
+                        width = Dimension.wrapContent
+                        height = Dimension.wrapContent
+                        bottom.linkTo(parent.bottom)
+                        end.linkTo(parent.end)
+                        start.linkTo(parent.start)
+                    },
                 text = stringResource(id = R.string.label_stop_tracker),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Black,

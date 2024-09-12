@@ -8,19 +8,24 @@ import robert.findtransport.R
 
 @Composable
 fun A2bAlertDialog(
-  title: String,
-  text: String,
-  onConfirm: () -> Unit,
-  onDismiss: () -> Unit = {},
-  onDismissRequest: () -> Unit,
+    title: String,
+    text: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit = {},
+    onDismissRequest: () -> Unit,
 ) {
-  AlertDialog(
-    title = { TextPrimary(text = title) },
-    text = { TextSecondary(text = text, textAlign = TextAlign.Start) },
-    confirmButton = {
-      RegularButton(text = stringResource(id = R.string.label_yes), onClick = onConfirm)
-    },
-    dismissButton = { BlankButton(text = stringResource(id = R.string.label_no), onClick = onDismiss) },
-    onDismissRequest = onDismissRequest,
-  )
+    AlertDialog(
+        title = { TextPrimary(text = title) },
+        text = { TextSecondary(text = text, textAlign = TextAlign.Start) },
+        confirmButton = {
+            RegularButton(text = stringResource(id = R.string.label_yes), onClick = onConfirm)
+        },
+        dismissButton = {
+            BlankButton(
+                text = stringResource(id = R.string.label_no),
+                onClick = onDismiss
+            )
+        },
+        onDismissRequest = onDismissRequest,
+    )
 }
