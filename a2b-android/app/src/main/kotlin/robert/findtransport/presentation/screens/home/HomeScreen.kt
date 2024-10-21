@@ -23,14 +23,15 @@ fun HomeScreen(
                 containerColor = Color.Transparent,
                 onHistoryButtonClicked = { navController.navigate(NavigationScreens.HistoryScreen) },
                 onSettingsScreenClicked = { navController.navigate(NavigationScreens.SettingsScreen) },
-                onFeedbackScreenClicked = { navController.navigate(NavigationScreens.FeedbackScreen) }
+                onFeedbackScreenClicked = { navController.navigate(NavigationScreens.FeedbackScreen) },
             )
-        }
+        },
     ) { contentPadding ->
         HomeContent(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(contentPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding),
             navController = navController,
             homeViewModel = homeViewModel,
         )

@@ -59,14 +59,16 @@ fun TransportScreen(
     val locationEnabled by locationPickerViewModel.locationEnabled.collectAsState()
 
     val scope = rememberCoroutineScope()
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = SheetState(
-            initialValue = SheetValue.PartiallyExpanded,
-            skipPartiallyExpanded = false,
-            skipHiddenState = true,
-            density = Density(LocalContext.current)
+    val bottomSheetScaffoldState =
+        rememberBottomSheetScaffoldState(
+            bottomSheetState =
+                SheetState(
+                    initialValue = SheetValue.PartiallyExpanded,
+                    skipPartiallyExpanded = false,
+                    skipHiddenState = true,
+                    density = Density(LocalContext.current),
+                ),
         )
-    )
     val lazyColumnState = rememberLazyListState()
 
     BottomSheetScaffold(
@@ -107,20 +109,22 @@ fun TransportScreen(
         },
         sheetDragHandle = {
             Box(
-                modifier = Modifier
-                    .padding(HalfPadding)
-                    .size(40.dp, 7.dp)
-                    .background(
-                        color = Color.Black,
-                        shape = MaterialTheme.shapes.medium,
-                    ),
+                modifier =
+                    Modifier
+                        .padding(HalfPadding)
+                        .size(40.dp, 7.dp)
+                        .background(
+                            color = Color.Black,
+                            shape = MaterialTheme.shapes.medium,
+                        ),
             )
-        }
+        },
     ) {
         MapContent(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
+            modifier =
+                Modifier
+                    .padding(it)
+                    .fillMaxSize(),
             locale = locale,
             locationEnabled = locationEnabled,
             transport = transport,

@@ -106,7 +106,7 @@ fun Navigation() {
             LocationPickerScreen(
                 navController = navController,
                 homeViewModel = homeViewModel,
-                pickerType = StopType.entries[args.type]
+                pickerType = StopType.entries[args.type],
             )
         }
     }
@@ -129,7 +129,9 @@ sealed class NavigationScreens {
     ) : NavigationScreens()
 
     @Serializable
-    data class StopsPickerScreen(val isFrom: Boolean) : NavigationScreens()
+    data class StopsPickerScreen(
+        val isFrom: Boolean,
+    ) : NavigationScreens()
 
     @Serializable
     data object SettingsScreen : NavigationScreens()
@@ -141,7 +143,9 @@ sealed class NavigationScreens {
     data object HistoryScreen : NavigationScreens()
 
     @Serializable
-    data class PassingRoutesScreen(val stopId: Int) : NavigationScreens()
+    data class PassingRoutesScreen(
+        val stopId: Int,
+    ) : NavigationScreens()
 
     @Serializable
     data class SearchScreen(
@@ -164,5 +168,7 @@ sealed class NavigationScreens {
     ) : NavigationScreens()
 
     @Serializable
-    data class LocationPicker(val type: Int) : NavigationScreens()
+    data class LocationPicker(
+        val type: Int,
+    ) : NavigationScreens()
 }
