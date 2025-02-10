@@ -31,11 +31,7 @@ fun Context.getBitmapFromVectorDrawable(drawableId: Int): Bitmap? {
 
 fun MainActivity.requestedOrientation() {
     requestedOrientation = if (Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {
-        if (isTablet()) {
-            ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        } else {
-            ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-        }
+        ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
     } else {
         ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }

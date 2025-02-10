@@ -1,5 +1,3 @@
-@file:OptIn(MapboxExperimental::class)
-
 package robert.findtransport.presentation.screens.transport.components
 
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import com.mapbox.geojson.Point
 import com.mapbox.maps.ImageHolder
-import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.extension.compose.ComposeMapInitOptions
 import com.mapbox.maps.extension.compose.DisposableMapEffect
 import com.mapbox.maps.extension.compose.MapboxMap
@@ -32,16 +29,15 @@ import robert.findtransport.domain.mapper.fromJson
 import robert.findtransport.domain.mapper.toApiStop
 import robert.findtransport.domain.mapper.toJson
 import robert.findtransport.domain.mapper.toStop
+import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.reusables.theme.CompassEndPadding
 import robert.findtransport.presentation.reusables.theme.CompassTopPadding
-import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
 import robert.findtransport.utils.STOP_ICON_SIZE
 import robert.findtransport.utils.extensions.getBitmapFromVectorDrawable
 import robert.findtransport.utils.extensions.getColorFromRes
 import robert.findtransport.utils.extensions.getCurrentName
-import robert.findtransport.utils.extensions.getLocationComponent
 import robert.findtransport.utils.extensions.showToast
 
 @Composable
@@ -57,7 +53,8 @@ fun MapComponent(
     MapboxMap(
         modifier = Modifier.fillMaxSize(),
         composeMapInitOptions = ComposeMapInitOptions(pixelRatio = 2.5f),
-        mapViewportState = MapViewportState().apply {
+        mapViewportState =
+        MapViewportState().apply {
             setCameraOptions {
                 zoom(13.0)
                 center(Point.fromLngLat(DEFAULT_LONGITUDE, DEFAULT_LATITUDE))
@@ -71,27 +68,32 @@ fun MapComponent(
                 content = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_compass),
-                        contentDescription = null
+                        contentDescription = null,
                     )
-                }
+                },
             )
         },
         style = { GenericStyle(style = mapStyle) },
         content = {
             if (transport == Transport.EMPTY) return@MapboxMap
 
-            val coordinates = transport.run {
-                if (isPrimary) stops else stopsReversed
-            }.flatMap { it.coordinates }
+            val coordinates =
+                transport
+                    .run {
+                        if (isPrimary) stops else stopsReversed
+                    }.flatMap { it.coordinates }
 
-            val route = transport.run {
-                if (isPrimary) route.mainRoute else route.reversedRoute
-            }.map { coord ->
-                Point.fromLngLat(coord[0], coord[1])
-            }
+            val route =
+                transport
+                    .run {
+                        if (isPrimary) route.mainRoute else route.reversedRoute
+                    }.map { coord ->
+                        Point.fromLngLat(coord[0], coord[1])
+                    }
 
             PolylineAnnotation(
-                points = coordinates.map { coord -> Point.fromLngLat(coord.lng, coord.lat) },
+//                points = coordinates.map { coord -> Point.fromLngLat(coord.lng, coord.lat) },
+                points = route,
                 init = {
                     lineColor = Color(context.getColorFromRes(R.color.colorAccent300))
                     lineWidth = 5.0
@@ -100,12 +102,14 @@ fun MapComponent(
             )
 
             context.getBitmapFromVectorDrawable(R.drawable.ic_stop_sign)?.let { iconBitmap ->
-                val points = coordinates.map { location ->
-                    PointAnnotationOptions().withPoint(Point.fromLngLat(location.lng, location.lat))
-                        .withData(location.parentStop.toApiStop().toJson())
-                        .withIconSize(STOP_ICON_SIZE)
-                        .withIconImage(iconBitmap)
-                }
+                val points =
+                    coordinates.map { location ->
+                        PointAnnotationOptions()
+                            .withPoint(Point.fromLngLat(location.lng, location.lat))
+                            .withData(location.parentStop.toApiStop().toJson())
+                            .withIconSize(STOP_ICON_SIZE)
+                            .withIconImage(iconBitmap)
+                    }
 
                 PointAnnotationGroup(
                     annotations = points,
@@ -115,7 +119,7 @@ fun MapComponent(
                             context.showToast(stop.getCurrentName(locale))
                         }
                         true
-                    }
+                    },
                 )
             }
 
@@ -126,13 +130,14 @@ fun MapComponent(
                     pulsingMaxRadius = 100f
                     puckBearingEnabled = true
                     puckBearing = PuckBearing.HEADING
-                    locationPuck = LocationPuck2D().apply {
-                        topImage = ImageHolder.from(R.drawable.ic_bearing)
-                    }
+                    locationPuck =
+                        LocationPuck2D().apply {
+                            topImage = ImageHolder.from(R.drawable.ic_bearing)
+                        }
                     pulsingColor = context.getColorFromRes(R.color.colorAccent300)
                 }
                 onDispose { }
             }
-        }
+        },
     )
 }

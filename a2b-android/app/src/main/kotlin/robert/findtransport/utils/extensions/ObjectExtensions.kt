@@ -43,7 +43,7 @@ fun isTablet(): Boolean {
     val yInches = metrics.heightPixels / metrics.ydpi
     val xInches = metrics.widthPixels / metrics.xdpi
     val diagonalInches = sqrt((xInches * xInches + yInches * yInches).toDouble())
-    return diagonalInches >= 6.8
+    return diagonalInches > 6.8
 }
 
 fun Date.format(): String = SimpleDateFormat("dd/MM/yy HH:mm:ss", Locale.getDefault()).format(this)
