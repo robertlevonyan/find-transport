@@ -28,10 +28,9 @@ fun HomeScreen(
         },
     ) { contentPadding ->
         HomeContent(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(contentPadding),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(contentPadding),
             navController = navController,
             homeViewModel = homeViewModel,
         )

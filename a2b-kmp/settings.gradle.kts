@@ -1,4 +1,4 @@
-rootProject.name = "A2BTransport"
+rootProject.name = "a2b-kmp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

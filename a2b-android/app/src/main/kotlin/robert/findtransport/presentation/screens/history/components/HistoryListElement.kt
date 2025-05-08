@@ -45,7 +45,7 @@ fun LazyItemScope.HistoryListElement(
 
     Card(
         modifier = Modifier
-            .animateItemPlacement()
+            .animateItem()
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(horizontal = FabPadding, vertical = HalfPadding),

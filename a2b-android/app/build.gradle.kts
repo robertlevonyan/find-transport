@@ -21,7 +21,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 337
-        versionName = "4.3.7"
+        versionName = "4.3.8"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -101,7 +101,7 @@ androidComponents {
         val mapboxStyleLight = localProperties.getProperty("MAPBOX_STYLE_LIGHT")
         val mapboxStyleNight = localProperties.getProperty("MAPBOX_STYLE_NIGHT")
 
-        with(it.buildConfigFields) {
+        it?.buildConfigFields?.run {
             put("MAPBOX_TOKEN", BuildConfigField("String", mapboxToken, "MAPBOX_TOKEN"))
             put("IP_ADDRESS", BuildConfigField("String", ipAddress, "IP_ADDRESS"))
             put("KEY_PREFIX", BuildConfigField("String", keyPrefix, "KEY_PREFIX"))
