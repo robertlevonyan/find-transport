@@ -14,14 +14,14 @@ plugins {
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
     namespace = "robert.findtransport"
     defaultConfig {
         applicationId = "robert.findtransport"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 337
-        versionName = "4.3.8"
+        targetSdk = 36
+        versionCode = 338
+        versionName = "4.3.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
