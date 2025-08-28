@@ -20,7 +20,7 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 26
         targetSdk = 36
-        versionCode = 338
+        versionCode = 339
         versionName = "4.3.9"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -31,8 +31,11 @@ android {
             debugSymbolLevel = "SYMBOL_TABLE"
         }
 
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+        ksp.arg("room.schemaLocation", "$projectDir/schemas")
+        externalNativeBuild {
+            cmake {
+                arguments += listOf("-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON")
+            }
         }
     }
     buildTypes {
@@ -62,20 +65,9 @@ android {
         checkReleaseBuilds = false
         abortOnError = false
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    kotlinOptions {
-        jvmTarget = "17"
-        freeCompilerArgs = freeCompilerArgs.toMutableList().apply {
-            add("-opt-in=kotlin.RequiresOptIn")
-            add("-Xcontext-receivers")
-        }
     }
     bundle {
         language { enableSplit = false }
@@ -85,8 +77,15 @@ android {
 }
 
 kotlin {
+    jvmToolchain(17)
     sourceSets.all {
         languageSettings.enableLanguageFeature("ExplicitBackingFields")
+    }
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xcontext-receivers"
+        )
     }
 }
 
