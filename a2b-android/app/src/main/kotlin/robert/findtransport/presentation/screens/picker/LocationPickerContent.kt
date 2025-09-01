@@ -2,6 +2,7 @@ package robert.findtransport.presentation.screens.picker
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
@@ -11,10 +12,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import androidx.navigation.NavController
 import com.mapbox.android.gestures.MoveGestureDetector
@@ -39,6 +42,7 @@ import kotlinx.coroutines.flow.onEach
 import robert.findtransport.R
 import robert.findtransport.data.model.enums.StopType
 import robert.findtransport.presentation.navigation.NavigationScreens
+import robert.findtransport.presentation.reusables.composables.A2bAlertDialog
 import robert.findtransport.presentation.reusables.composables.getMapStyle
 import robert.findtransport.presentation.reusables.theme.CompassEndPadding
 import robert.findtransport.presentation.reusables.theme.CompassTopPadding
@@ -47,6 +51,7 @@ import robert.findtransport.presentation.screens.picker.components.BackButton
 import robert.findtransport.presentation.screens.picker.components.CentralPointer
 import robert.findtransport.presentation.screens.picker.components.CurrentLocationButton
 import robert.findtransport.presentation.screens.picker.components.FeedbackButton
+import robert.findtransport.presentation.screens.picker.components.InfoButton
 import robert.findtransport.presentation.screens.picker.components.SelectLocationButton
 import robert.findtransport.utils.DEFAULT_LATITUDE
 import robert.findtransport.utils.DEFAULT_LONGITUDE
@@ -73,6 +78,7 @@ fun LocationPickerContent(
             bearing(0.0)
         }
     }
+    var showInfo by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         locationPickerViewModel.locationEnabled.onEach { locationEnabled ->
@@ -154,8 +160,11 @@ fun LocationPickerContent(
 
         CentralPointer(isMapMoving = isMapMoving)
         BackButton { navController.popBackStack() }
-        FeedbackButton(modifier = Modifier.statusBarsPadding().align(Alignment.TopEnd)) {
-            navController.navigate(NavigationScreens.FeedbackScreen)
+        Row(modifier = Modifier.statusBarsPadding().align(Alignment.TopEnd)) {
+            InfoButton { showInfo = true }
+            FeedbackButton {
+                navController.navigate(NavigationScreens.FeedbackScreen)
+            }
         }
 
         SelectLocationButton(
@@ -169,6 +178,16 @@ fun LocationPickerContent(
 
         if (locationEnabled) {
             CurrentLocationButton { locationPickerViewModel.getCurrentLocation() }
+        }
+
+        if (showInfo) {
+            A2bAlertDialog(
+                title = "",
+                text = stringResource(R.string.message_info),
+                confirmTitle = stringResource(R.string.label_ok),
+                onDismissRequest = { showInfo = false },
+                onConfirm = { showInfo = false },
+            )
         }
     }
 }

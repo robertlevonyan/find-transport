@@ -2,8 +2,18 @@ package robert.findtransport.presentation.reusables.composables
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,10 +34,10 @@ import robert.findtransport.utils.extensions.openPrivacyPolicy
 @Composable
 fun A2bAppBar(
     title: String,
-    hasFeedbackButton: Boolean,
     @DrawableRes navigationIcon: Int,
     onNavigationIconClick: () -> Unit,
-    onFeedbackClick: () -> Unit,
+    onFeedbackClick: (() -> Unit)? = null,
+    onInfoClick: (() -> Unit)? = null,
     additionalActions: @Composable RowScope.() -> Unit = {},
 ) {
     var overflowMenuState by rememberSaveable { mutableStateOf(false) }
@@ -51,7 +61,16 @@ fun A2bAppBar(
         actions = {
             additionalActions.invoke(this)
 
-            if (hasFeedbackButton) {
+            onInfoClick?.let {
+                IconButton(onClick = { onInfoClick() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_info),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
+            onFeedbackClick?.let {
                 IconButton(onClick = { onFeedbackClick() }) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_feedback),

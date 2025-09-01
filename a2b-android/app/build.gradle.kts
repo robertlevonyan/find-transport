@@ -20,14 +20,14 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 26
         targetSdk = 36
-        versionCode = 339
-        versionName = "4.3.9"
+        versionCode = 340
+        versionName = "4.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
 
         ndk {
-            abiFilters.addAll(mutableSetOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64"))
+            abiFilters.addAll(setOf("armeabi-v7a", "arm64-v8a", "x86_64"))
             debugSymbolLevel = "SYMBOL_TABLE"
         }
 
@@ -38,6 +38,7 @@ android {
             }
         }
     }
+    ndkVersion = "26.3.11579264"
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"

@@ -13,15 +13,15 @@ import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.theme.HalfPadding
 
 @Composable
-fun FeedbackButton(onClick: () -> Unit) {
+fun InfoButton(onClick: () -> Unit) {
     SmallFloatingActionButton(
         modifier = Modifier.padding(horizontal = HalfPadding),
         containerColor = MaterialTheme.colorScheme.secondary,
         onClick = onClick
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_feedback),
-            contentDescription = stringResource(id = R.string.action_feedback),
+            painter = painterResource(id = R.drawable.ic_info),
+            contentDescription = null,
         )
     }
 }

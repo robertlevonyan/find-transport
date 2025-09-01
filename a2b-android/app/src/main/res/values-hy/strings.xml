@@ -18,6 +18,7 @@
     <string name="message_next_stop">Դուք մոտենում եք նշված կանգառին։ Իջեք հաջորդ կանգառում։</string>
     <string name="message_arrived">Դուք հասել եք։ Կարող եք իջնել տրանսպորտից</string>
     <string name="message_check_download">Թարմացման ստուգում</string>
+    <string name="message_info">Հավելվածի տվյալները կարող են չհամապատասխանել իրական փոփոխություններին։ Հավելվածն այլևս չի սպասարկվում և կստանա միայն կարևոր անվտանգային թարմացումներ։</string>
 
     <!--labels-->
     <string name="label_bus">Ավտոբուս</string>

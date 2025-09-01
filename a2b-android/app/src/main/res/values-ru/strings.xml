@@ -18,6 +18,7 @@
     <string name="message_next_stop">Вы приближаетесь к выбранной точке. Выходите на следующей остановке.</string>
     <string name="message_arrived">Вы доехали до пункта назначения</string>
     <string name="message_check_download">Поиск обновлений</string>
+    <string name="message_info">Данные в приложении могут не отражать изменения в реальной жизни. Приложение больше не поддерживается и будет получать только критические обновления безопасности.</string>
 
     <!--labels-->
     <string name="label_bus">Автобус</string>

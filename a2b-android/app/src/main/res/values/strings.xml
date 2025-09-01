@@ -20,6 +20,7 @@
     <string name="message_next_stop">You are arriving to your destination. Exit on the next stop.</string>
     <string name="message_arrived">You have arrived to your destination</string>
     <string name="message_check_download">Checking for update</string>
+    <string name="message_info">The data in the app may not reflect real-world changes. This app is no longer actively maintained and will only receive critical security updates.</string>
 
     <!--labels-->
     <string name="label_bus">Bus</string>

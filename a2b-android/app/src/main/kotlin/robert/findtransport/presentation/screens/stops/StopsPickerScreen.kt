@@ -2,16 +2,13 @@ package robert.findtransport.presentation.screens.stops
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,13 +19,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.launch
+import robert.findtransport.R
 import robert.findtransport.data.model.StopWithAddress
 import robert.findtransport.presentation.navigation.NavigationScreens
+import robert.findtransport.presentation.reusables.composables.A2bAlertDialog
 import robert.findtransport.presentation.reusables.composables.TextSecondary
 import robert.findtransport.presentation.reusables.theme.FabPadding
 import robert.findtransport.presentation.reusables.theme.HalfPadding
@@ -50,6 +50,7 @@ fun StopsPickerScreen(
     val locale by stopsPickerViewModel.locale.collectAsState()
     val stops by stopsPickerViewModel.allStops.collectAsState()
     var searchBoxState by rememberSaveable { mutableStateOf(false) }
+    var showInfo by rememberSaveable { mutableStateOf(false) }
 
     stopsPickerViewModel.findStops("")
 
@@ -59,6 +60,7 @@ fun StopsPickerScreen(
             TopBar(
                 onBackClick = { navController.popBackStack() },
                 onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
+                onInfoClick = { showInfo = true },
                 searchBoxStateToggle = {
                     searchBoxState = !searchBoxState
                     if (!searchBoxState) {
@@ -113,6 +115,15 @@ fun StopsPickerScreen(
                     }
                 }
             }
+        }
+        if (showInfo) {
+            A2bAlertDialog(
+                title = "",
+                text = stringResource(R.string.message_info),
+                confirmTitle = stringResource(R.string.label_ok),
+                onDismissRequest = { showInfo = false },
+                onConfirm = { showInfo = false },
+            )
         }
     }
 }

@@ -23,10 +23,8 @@ fun SettingsScreen(
         topBar = {
             A2bAppBar(
                 title = stringResource(id = R.string.title_settings),
-                hasFeedbackButton = true,
                 navigationIcon = R.drawable.ic_arrow_back,
                 onNavigationIconClick = { navController.popBackStack() },
-                onFeedbackClick = { navController.navigate(NavigationScreens.FeedbackScreen) },
             )
         }
     ) { contentPadding ->

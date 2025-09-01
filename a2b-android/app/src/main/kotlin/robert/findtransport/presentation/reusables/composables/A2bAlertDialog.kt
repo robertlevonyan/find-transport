@@ -10,21 +10,24 @@ import robert.findtransport.R
 fun A2bAlertDialog(
     title: String,
     text: String,
+    confirmTitle: String = stringResource(id = R.string.label_yes),
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit = {},
+    onDismiss: (() -> Unit)? = null,
     onDismissRequest: () -> Unit,
 ) {
     AlertDialog(
-        title = { TextPrimary(text = title) },
+        title = title.takeIf { it.isNotEmpty() }?.let { { TextPrimary(text = title) } },
         text = { TextSecondary(text = text, textAlign = TextAlign.Start) },
         confirmButton = {
-            RegularButton(text = stringResource(id = R.string.label_yes), onClick = onConfirm)
+            RegularButton(text = confirmTitle, onClick = onConfirm)
         },
-        dismissButton = {
-            BlankButton(
-                text = stringResource(id = R.string.label_no),
-                onClick = onDismiss
-            )
+        dismissButton = onDismiss?.let {
+            {
+                BlankButton(
+                    text = stringResource(id = R.string.label_no),
+                    onClick = it,
+                )
+            }
         },
         onDismissRequest = onDismissRequest,
     )

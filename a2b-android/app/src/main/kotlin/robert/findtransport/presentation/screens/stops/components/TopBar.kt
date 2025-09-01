@@ -14,13 +14,14 @@ fun TopBar(
     onBackClick: () -> Unit,
     searchBoxStateToggle: () -> Unit,
     onFeedbackClick: () -> Unit,
+    onInfoClick: () -> Unit,
 ) {
     A2bAppBar(
         title = stringResource(id = R.string.label_select_stop),
-        hasFeedbackButton = true,
         navigationIcon = R.drawable.ic_arrow_back,
         onNavigationIconClick = onBackClick,
         onFeedbackClick = onFeedbackClick,
+        onInfoClick = onInfoClick,
         additionalActions = {
             IconButton(onClick = searchBoxStateToggle) {
                 Icon(

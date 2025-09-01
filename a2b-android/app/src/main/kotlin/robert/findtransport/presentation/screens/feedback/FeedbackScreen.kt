@@ -28,10 +28,8 @@ fun FeedbackScreen(
         topBar = {
             A2bAppBar(
                 title = stringResource(id = R.string.title_feedback),
-                hasFeedbackButton = false,
                 navigationIcon = R.drawable.ic_arrow_back,
                 onNavigationIconClick = { navController.popBackStack() },
-                onFeedbackClick = { },
             )
         },
         snackbarHost = {
