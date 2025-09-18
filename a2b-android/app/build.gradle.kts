@@ -20,8 +20,8 @@ android {
         applicationId = "robert.findtransport"
         minSdk = 26
         targetSdk = 36
-        versionCode = 340
-        versionName = "4.4.0"
+        versionCode = 341
+        versionName = "4.4.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled = true
@@ -38,7 +38,7 @@ android {
             }
         }
     }
-    ndkVersion = "26.3.11579264"
+    ndkVersion = "29.0.14033849"
     buildTypes {
         debug {
             applicationIdSuffix = ".debug"
@@ -163,8 +163,7 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
 
     //map
-    implementation(libs.mapbox.android)
-    implementation(libs.mapbox.android.compose)
+    implementation(libs.bundles.mapbox)
 
     //other
     implementation(libs.compose.lottie)
